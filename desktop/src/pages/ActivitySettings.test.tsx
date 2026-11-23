@@ -119,7 +119,7 @@ describe('ActivitySettings', () => {
         schemaVersion: 2,
         profile: {
           displayName: 'wangmai',
-          subtitle: 'github.com/wangmai-ai/wangmai-agent',
+          subtitle: 'github.com/Shomura-AI/wangmai-agent',
           avatarFile: null,
           avatarUpdatedAt: null,
         },
@@ -157,7 +157,7 @@ describe('ActivitySettings', () => {
         schemaVersion: 2,
         profile: {
           displayName: 'wangmai',
-          subtitle: 'github.com/wangmai-ai/wangmai-agent',
+          subtitle: 'github.com/Shomura-AI/wangmai-agent',
           avatarFile: 'profile/avatar.png',
           avatarUpdatedAt: '2026-05-09T12:00:00.000Z',
         },
@@ -176,7 +176,7 @@ describe('ActivitySettings', () => {
         schemaVersion: 2,
         profile: {
           displayName: 'wangmai',
-          subtitle: 'github.com/wangmai-ai/wangmai-agent',
+          subtitle: 'github.com/Shomura-AI/wangmai-agent',
           avatarFile: null,
           avatarUpdatedAt: null,
         },
@@ -206,9 +206,9 @@ describe('ActivitySettings', () => {
     expect(screen.getByText('wangmai')).toBeInTheDocument()
     expect(screen.getByAltText('wangmai avatar')).toHaveAttribute('src', '/app-icon.png')
     expect(screen.getByAltText('wangmai avatar')).toHaveClass('scale-[1.28]')
-    expect(screen.getByRole('link', { name: 'github.com/wangmai-ai/wangmai-agent' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'github.com/Shomura-AI/wangmai-agent' })).toHaveAttribute(
       'href',
-      'https://github.com/wangmai-ai/wangmai-agent',
+      'https://github.com/Shomura-AI/wangmai-agent',
     )
     // 2,672,000 + 64,000 + 128,000 tokens.
     expect(screen.getByTestId('token-total-value')).toHaveTextContent('2.9')

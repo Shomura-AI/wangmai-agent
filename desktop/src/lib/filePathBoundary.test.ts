@@ -217,11 +217,11 @@ describe('splitTextByFilePaths', () => {
 describe('matchGitHubRef', () => {
   it('reads the owner/repo#123 form the prompt asks for', () => {
     // src/constants/prompts.ts:438 — "so they render as clickable links".
-    expect(matchGitHubRef('wangmai-ai/wangmai-agent#1146')).toMatchObject({
+    expect(matchGitHubRef('Shomura-AI/wangmai-agent#1146')).toMatchObject({
       owner: 'wangmai-ai',
       repo: 'wangmai',
       number: 1146,
-      url: 'https://github.com/wangmai-ai/wangmai-agent/issues/1146',
+      url: 'https://github.com/Shomura-AI/wangmai-agent/issues/1146',
     })
   })
 
@@ -236,8 +236,8 @@ describe('matchGitHubRef', () => {
   })
 
   it('is picked over the path matcher when splitting prose', () => {
-    const segments = splitTextByFilePaths('见 wangmai-ai/wangmai-agent#1146 和 src/app.ts:4')
-    expect(segments.filter((s) => s.type === 'github').map((s) => s.value)).toEqual(['wangmai-ai/wangmai-agent#1146'])
+    const segments = splitTextByFilePaths('见 Shomura-AI/wangmai-agent#1146 和 src/app.ts:4')
+    expect(segments.filter((s) => s.type === 'github').map((s) => s.value)).toEqual(['Shomura-AI/wangmai-agent#1146'])
     expect(segments.filter((s) => s.type === 'path').map((s) => s.value)).toEqual(['src/app.ts:4'])
   })
 })

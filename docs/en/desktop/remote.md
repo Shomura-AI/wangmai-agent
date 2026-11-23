@@ -13,7 +13,7 @@ A task is running on your computer and you want to check on it, or add one more 
 
 | How to open WangMai Agent on your phone | Availability | How to get started |
 |---|---|---|
-| WangMai Agent Android app | Available; a signed APK ships with every desktop release | Download `wangmai-mobile-*.apk` from [GitHub Releases](https://github.com/wangmai-ai/wangmai-agent/releases/latest) and install it |
+| WangMai Agent Android app | Available; a signed APK ships with every desktop release | Download `wangmai-mobile-*.apk` from [GitHub Releases](https://github.com/Shomura-AI/wangmai-agent/releases/latest) and install it |
 | WangMai Agent iPhone / iPad app | TestFlight public beta | Install TestFlight from the App Store, then open the [public link](https://testflight.apple.com/join/Nd49JrWZ) |
 | Phone browser (H5) | Available now | Select **Use phone browser**, then enable the connection and scan as described below |
 

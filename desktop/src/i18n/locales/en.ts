@@ -1410,7 +1410,7 @@ Row 9, all 8 cells: continuing from straight down, turning left through lower-le
   'settings.activity.profileTitle': 'Profile',
   'settings.activity.avatarAlt': '{name} avatar',
   'settings.activity.profilePrivacy': 'Local only',
-  'settings.activity.defaultHandle': 'github.com/wangmai-ai/wangmai-agent',
+  'settings.activity.defaultHandle': 'github.com/Shomura-AI/wangmai-agent',
   'settings.activity.editProfile': 'Edit profile',
   'settings.activity.displayName': 'Display name',
   'settings.activity.subtitle': 'Second line',

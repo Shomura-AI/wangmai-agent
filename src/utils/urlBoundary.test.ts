@@ -59,8 +59,8 @@ const BOUNDARY_CASES: Array<{
     why: 'space ends the URL',
   },
   {
-    input: 'https://github.com/wangmai-ai/wangmai-agent/issues/1145 里',
-    expected: 'https://github.com/wangmai-ai/wangmai-agent/issues/1145',
+    input: 'https://github.com/Shomura-AI/wangmai-agent/issues/1145 里',
+    expected: 'https://github.com/Shomura-AI/wangmai-agent/issues/1145',
     why: 'nested path',
   },
   {

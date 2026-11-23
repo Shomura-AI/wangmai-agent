@@ -245,7 +245,7 @@ describe('settings summaries and copy', () => {
 
   test('about links point at the public repository', () => {
     for (const url of Object.values(aboutLinks))
-      expect(url.startsWith('https://github.com/wangmai-ai/wangmai-agent')).toBe(true)
+      expect(url.startsWith('https://github.com/Shomura-AI/wangmai-agent')).toBe(true)
     expect(aboutLinks.issues.endsWith('/issues')).toBe(true)
     expect(aboutLinks.license.endsWith('/LICENSE')).toBe(true)
   })

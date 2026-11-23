@@ -9,7 +9,7 @@ order: 5
 
 A long task is running on your computer and you need to step away. Open **Phone connection** in the desktop's left sidebar and scan with your phone browser to see the same session, answer questions, and respond to permission requests. The work still runs on the computer.
 
-You can also install the WangMai Agent mobile app: download the APK from [GitHub Releases](https://github.com/wangmai-ai/wangmai-agent/releases/latest) on Android, or join through the [TestFlight public link](https://testflight.apple.com/join/Nd49JrWZ) on iPhone. It needs desktop v0.7.6 or later. The steps below use the phone browser, with no app installation required. Connect directly on the same Wi-Fi, or use the desktop-managed Cloudflare tunnel while away; no phone VPN is needed.
+You can also install the WangMai Agent mobile app: download the APK from [GitHub Releases](https://github.com/Shomura-AI/wangmai-agent/releases/latest) on Android, or join through the [TestFlight public link](https://testflight.apple.com/join/Nd49JrWZ) on iPhone. It needs desktop v0.7.6 or later. The steps below use the phone browser, with no app installation required. Connect directly on the same Wi-Fi, or use the desktop-managed Cloudflare tunnel while away; no phone VPN is needed.
 
 ## Before you start
 

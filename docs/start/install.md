@@ -13,7 +13,7 @@ order: 1
 
 ## 挑对安装包
 
-所有安装包都在 [GitHub Releases](https://github.com/wangmai-ai/wangmai-agent/releases/latest)，按系统和 CPU 架构选一个：
+所有安装包都在 [GitHub Releases](https://github.com/Shomura-AI/wangmai-agent/releases/latest)，按系统和 CPU 架构选一个：
 
 | 你的系统 | 下载 |
 |---|---|
@@ -99,7 +99,7 @@ ARM64 机器换成对应的 `Linux-arm64` 文件。
 想改代码、调试内核，或者只想在终端里用 CLI，可以从源码起：
 
 ```bash
-git clone https://github.com/wangmai-ai/wangmai-agent.git
+git clone https://github.com/Shomura-AI/wangmai-agent.git
 cd wangmai-agent
 bun install
 cp .env.example .env

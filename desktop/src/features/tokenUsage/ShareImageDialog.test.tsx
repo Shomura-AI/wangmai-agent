@@ -48,7 +48,7 @@ async function settle() {
   })
 }
 
-const dialogProfile = { displayName: 'Ada', subtitle: 'github.com/wangmai-ai/wangmai-agent' }
+const dialogProfile = { displayName: 'Ada', subtitle: 'github.com/Shomura-AI/wangmai-agent' }
 
 function dialogElement(open: boolean, onClose: () => void, overrides: Partial<Parameters<typeof ShareImageDialog>[0]> = {}) {
   return (

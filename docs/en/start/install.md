@@ -13,7 +13,7 @@ The product is now called **WangMai Agent**. Older packages, installed apps, and
 
 ## Pick the right package
 
-Everything lives on [GitHub Releases](https://github.com/wangmai-ai/wangmai-agent/releases/latest). Choose by operating system and CPU architecture:
+Everything lives on [GitHub Releases](https://github.com/Shomura-AI/wangmai-agent/releases/latest). Choose by operating system and CPU architecture:
 
 | Your system | Download |
 |---|---|
@@ -99,7 +99,7 @@ On ARM64 machines, use the corresponding `Linux-arm64` file.
 If you want to modify the code, debug the engine, or just use the CLI in a terminal:
 
 ```bash
-git clone https://github.com/wangmai-ai/wangmai-agent.git
+git clone https://github.com/Shomura-AI/wangmai-agent.git
 cd wangmai-agent
 bun install
 cp .env.example .env

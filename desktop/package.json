@@ -1,9 +1,9 @@
 {
   "name": "wangmai-desktop",
   "private": true,
-  "version": "0.7.9",
+  "version": "0.7.10",
   "description": "网脉智能体 · 本地优先的跨平台 AI Agent 桌面工作台",
-  "homepage": "https://github.com/wangmai-ai/wangmai-agent",
+  "homepage": "https://github.com/Shomura-AI/wangmai-agent",
   "author": "网脉科技 <dev@wangmai.example.com>",
   "type": "module",
   "main": "electron-dist/main.cjs",
@@ -90,7 +90,7 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "wangmai-ai",
+        "owner": "Shomura-AI",
         "repo": "wangmai-agent"
       }
     ],

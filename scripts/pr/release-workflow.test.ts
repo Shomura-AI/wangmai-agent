@@ -324,7 +324,7 @@ describe('release desktop workflow', () => {
     }
 
     expect(desktopPackage.description).toBeTruthy()
-    expect(desktopPackage.homepage).toBe('https://github.com/wangmai-ai/wangmai-agent')
+    expect(desktopPackage.homepage).toBe('https://github.com/Shomura-AI/wangmai-agent')
     expect(desktopPackage.author?.name).toBe('wangmai-ai')
     expect(desktopPackage.author?.email).toBe('dev@wangmai.example.com')
     expect(desktopPackage.build?.linux?.maintainer).toBe('wangmai-ai <dev@wangmai.example.com>')
@@ -731,14 +731,14 @@ describe('release desktop workflow', () => {
           env: {
             PATH: `${fakeBin}:${process.env.PATH}`,
             HOME: directory,
-            GITHUB_REPOSITORY: 'wangmai-ai/wangmai-agent',
+            GITHUB_REPOSITORY: 'Shomura-AI/wangmai-agent',
             FAKE_GH_MODE: scenario.mode,
             FAKE_GH_LOG: log,
           },
         })
         const output = `${result.stdout.toString()}${result.stderr.toString()}`
         expect(result.exitCode, `${scenario.mode}: ${output}`).toBe(scenario.code)
-        expect(readFileSync(log, 'utf8')).toBe("api repos/wangmai-ai/wangmai-agent/releases/tags/v0.7.7 --jq .draft\n")
+        expect(readFileSync(log, 'utf8')).toBe("api repos/Shomura-AI/wangmai-agent/releases/tags/v0.7.7 --jq .draft\n")
         if (scenario.mode === 'published') {
           expect(output).toContain('::error::Refusing to overwrite published release v0.7.7')
         }

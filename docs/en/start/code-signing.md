@@ -15,7 +15,7 @@ The service is provided by [SignPath.io](https://about.signpath.io) and the [Sig
 
 ## Signing scope
 
-Signing is limited to the Windows desktop application, project-owned sidecars, and final x64 and ARM64 NSIS installers built from source owned by this project in [wangmai-ai/wangmai-agent](https://github.com/wangmai-ai/wangmai-agent).
+Signing is limited to the Windows desktop application, project-owned sidecars, and final x64 and ARM64 NSIS installers built from source owned by this project in [Shomura-AI/wangmai-agent](https://github.com/Shomura-AI/wangmai-agent).
 
 Release packages may include third-party or upstream open-source components distributed under their respective licenses. Those components may be bundled unchanged, but they will not be signed as binaries owned by WangMai Agent. The certificate will not be used for other projects, personal builds, debug builds, or files of unknown origin.
 
@@ -47,10 +47,10 @@ Get-AuthenticodeSignature ".\WangMai-Agent-<version>-Windows-x64-Setup.exe" |
   Format-List Status, StatusMessage, SignerCertificate, TimeStamperCertificate
 ```
 
-Continue with installation only when `Status` is `Valid`, the product and version are expected, and the file came from this project's [GitHub Releases](https://github.com/wangmai-ai/wangmai-agent/releases).
+Continue with installation only when `Status` is `Valid`, the product and version are expected, and the file came from this project's [GitHub Releases](https://github.com/Shomura-AI/wangmai-agent/releases).
 
 ## Security incidents and revocation
 
-Report suspected misuse of the certificate, signing accounts, build process, or release artifacts through a [private GitHub security advisory](https://github.com/wangmai-ai/wangmai-agent/security/advisories/new) or by email to [dev@WangMai Agent.example.com](mailto:dev@WangMai Agent.example.com). The maintainer will pause affected releases and signing requests, remove affected downloads, investigate the source, and ask the SignPath Foundation to revoke the certificate or signature when necessary.
+Report suspected misuse of the certificate, signing accounts, build process, or release artifacts through a [private GitHub security advisory](https://github.com/Shomura-AI/wangmai-agent/security/advisories/new) or by email to [dev@WangMai Agent.example.com](mailto:dev@WangMai Agent.example.com). The maintainer will pause affected releases and signing requests, remove affected downloads, investigate the source, and ask the SignPath Foundation to revoke the certificate or signature when necessary.
 
 See [Privacy and network access](./privacy.md) for the software's network and local-data behavior.

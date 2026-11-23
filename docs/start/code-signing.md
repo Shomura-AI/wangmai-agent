@@ -15,7 +15,7 @@ Free code signing provided by SignPath.io, certificate by SignPath Foundation.
 
 ## 签名范围
 
-签名仅用于本项目拥有并从 [wangmai-ai/wangmai-agent](https://github.com/wangmai-ai/wangmai-agent) 源码构建的 Windows 桌面程序、项目自有 sidecar，以及最终的 x64 和 ARM64 NSIS 安装包。
+签名仅用于本项目拥有并从 [Shomura-AI/wangmai-agent](https://github.com/Shomura-AI/wangmai-agent) 源码构建的 Windows 桌面程序、项目自有 sidecar，以及最终的 x64 和 ARM64 NSIS 安装包。
 
 发布包可能包含在各自许可证下分发的第三方或上游开源组件。这些组件可以原样打包，但不会以网脉智能体自有二进制的身份签名。证书不会用于其他项目、个人构建、调试构建或来源不明的文件。
 
@@ -47,10 +47,10 @@ Get-AuthenticodeSignature ".\WangMai-Agent-<version>-Windows-x64-Setup.exe" |
   Format-List Status, StatusMessage, SignerCertificate, TimeStamperCertificate
 ```
 
-只在 `Status` 为 `Valid`、产品与版本符合预期且文件来自本项目 [GitHub Releases](https://github.com/wangmai-ai/wangmai-agent/releases) 时继续安装。
+只在 `Status` 为 `Valid`、产品与版本符合预期且文件来自本项目 [GitHub Releases](https://github.com/Shomura-AI/wangmai-agent/releases) 时继续安装。
 
 ## 安全事件与撤销
 
-如发现证书、签名账户、构建流程或发布产物可能被滥用，请通过 [GitHub 私密安全报告](https://github.com/wangmai-ai/wangmai-agent/security/advisories/new) 或发送邮件至 [dev@wangmai.example.com](mailto:dev@wangmai.example.com) 报告。维护者会暂停相关发布和签名请求、移除受影响的下载、调查来源，并在需要时联系 SignPath Foundation 撤销证书或签名。
+如发现证书、签名账户、构建流程或发布产物可能被滥用，请通过 [GitHub 私密安全报告](https://github.com/Shomura-AI/wangmai-agent/security/advisories/new) 或发送邮件至 [dev@wangmai.example.com](mailto:dev@wangmai.example.com) 报告。维护者会暂停相关发布和签名请求、移除受影响的下载、调查来源，并在需要时联系 SignPath Foundation 撤销证书或签名。
 
 软件联网与本地数据处理方式见[隐私与联网说明](./privacy.md)。

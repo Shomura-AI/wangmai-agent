@@ -6,11 +6,11 @@
 
 <div align="center">
 
-[![GitHub Stars](https://img.shields.io/github/stars/wangmai-ai/wangmai-agent?style=social)](https://github.com/wangmai-ai/wangmai-agent/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/wangmai-ai/wangmai-agent?style=social)](https://github.com/wangmai-ai/wangmai-agent/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/wangmai-ai/wangmai-agent)](https://github.com/wangmai-ai/wangmai-agent/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/wangmai-ai/wangmai-agent)](https://github.com/wangmai-ai/wangmai-agent/pulls)
-[![License](https://img.shields.io/badge/License-Community_Source-orange)](https://github.com/wangmai-ai/wangmai-agent/blob/main/LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/Shomura-AI/wangmai-agent?style=social)](https://github.com/Shomura-AI/wangmai-agent/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/Shomura-AI/wangmai-agent?style=social)](https://github.com/Shomura-AI/wangmai-agent/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/Shomura-AI/wangmai-agent)](https://github.com/Shomura-AI/wangmai-agent/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/Shomura-AI/wangmai-agent)](https://github.com/Shomura-AI/wangmai-agent/pulls)
+[![License](https://img.shields.io/badge/License-Community_Source-orange)](https://github.com/Shomura-AI/wangmai-agent/blob/main/LICENSE)
 [![English](https://img.shields.io/badge/🇺🇸_English-Current-blue)](README.en.md)
 [![中文](https://img.shields.io/badge/🇨🇳_简体中文-Available-green)](README.md)
 [![Docs](https://img.shields.io/badge/📖_Documentation-Visit-FF7A00)](https://wangmai.example.com)
@@ -44,8 +44,8 @@ WangMai Agent is a **desktop Claude Code workspace** for macOS, Windows, and Lin
 ## Feature Preview
 
 <p align="center">
-  <a href="https://github.com/wangmai-ai/wangmai-agent/releases"><img src="https://img.shields.io/badge/⬇_Download_Desktop-macOS_%7C_Windows_%7C_Linux-FF7A00?style=for-the-badge" alt="Download Desktop"></a>
-  <a href="https://github.com/wangmai-ai/wangmai-agent/releases/latest"><img src="https://img.shields.io/badge/Android-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Download the Android APK"></a>
+  <a href="https://github.com/Shomura-AI/wangmai-agent/releases"><img src="https://img.shields.io/badge/⬇_Download_Desktop-macOS_%7C_Windows_%7C_Linux-FF7A00?style=for-the-badge" alt="Download Desktop"></a>
+  <a href="https://github.com/Shomura-AI/wangmai-agent/releases/latest"><img src="https://img.shields.io/badge/Android-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Download the Android APK"></a>
   <a href="https://testflight.apple.com/join/Nd49JrWZ"><img src="https://img.shields.io/badge/iOS-TestFlight-1F1A17?style=for-the-badge&logo=apple&logoColor=white" alt="Install the iOS app with TestFlight"></a>
 </p>
 
@@ -151,7 +151,7 @@ This project is maintained in the author's spare time. Corporate or individual s
 
 ## Install
 
-1. Download the macOS / Windows / Linux desktop installer from [Releases](https://github.com/wangmai-ai/wangmai-agent/releases).
+1. Download the macOS / Windows / Linux desktop installer from [Releases](https://github.com/Shomura-AI/wangmai-agent/releases).
 2. On first launch, configure your model provider, API key, and default model in Settings.
 3. Public macOS releases require signing and notarization. Draft or unsigned temporary builds may still need one-time manual approval. Unsigned Windows installers may show SmartScreen; click "More info" -> "Run anyway". See the [desktop installation guide](docs/en/start/install.md).
 4. Mobile (optional; the app interface is currently Chinese only): on Android, download `wangmai-mobile-*.apk` from Releases; on iPhone, install TestFlight and open the [public link](https://testflight.apple.com/join/Nd49JrWZ). The mobile app needs desktop v0.7.6 or later. Pair it by scanning the QR code under **Phone connection** in the desktop app: connect directly on the same Wi-Fi, or through Cloudflare when you are away. See [Mobile app and remote connection](docs/en/desktop/remote.md).
@@ -248,7 +248,7 @@ Thanks to the following open-source projects and community practices for referen
 - [cc-switch](https://github.com/farion1231/cc-switch): reference for model provider configuration.
 - [t3code](https://github.com/pingdotgg/t3code): visual texture and interaction design reference for the desktop UI.
 - [LINUX DO](https://linux.do/): a new ideal developer community.
-- [AtomGit](https://atomgit.com/wangmai-ai/wangmai-agent): code hosting for this project in China.
+- [AtomGit](https://atomgit.com/Shomura-AI/wangmai-agent): code hosting for this project in China.
 
 ---
 

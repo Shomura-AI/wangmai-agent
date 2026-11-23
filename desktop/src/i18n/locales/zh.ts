@@ -1409,7 +1409,7 @@ export const zh: Record<TranslationKey, string> = {
   'settings.activity.profileTitle': '个人资料',
   'settings.activity.avatarAlt': '{name} 的头像',
   'settings.activity.profilePrivacy': '仅本地',
-  'settings.activity.defaultHandle': 'github.com/wangmai-ai/wangmai-agent',
+  'settings.activity.defaultHandle': 'github.com/Shomura-AI/wangmai-agent',
   'settings.activity.editProfile': '编辑个人资料',
   'settings.activity.displayName': '显示名称',
   'settings.activity.subtitle': '第二行',

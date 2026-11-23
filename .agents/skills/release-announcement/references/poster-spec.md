@@ -19,7 +19,7 @@
     {"login": "example-user", "contribution": "此人本次被署名的贡献"}
   ],
   "install_note": "仅在发布说明明确写有安装提醒时填写。",
-  "footer_url": "github.com/wangmai-ai/wangmai-agent"
+  "footer_url": "github.com/Shomura-AI/wangmai-agent"
 }
 ```
 

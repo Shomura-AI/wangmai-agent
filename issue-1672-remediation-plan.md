@@ -1,6 +1,6 @@
 # PR #1672 Remediation Plan
 
-**Repository:** `wangmai-ai/wangmai-agent`
+**Repository:** `Shomura-AI/wangmai-agent`
 **Pull request:** #1672 (`fix(desktop): restore workspace entry on new-session drafts`)
 **Plan owner:** `yukitakasama`
 **Status:** Planning only; this document does not implement the remediation.

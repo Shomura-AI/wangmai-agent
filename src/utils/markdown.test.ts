@@ -106,9 +106,9 @@ describe('applyMarkdown bare-URL hyperlinks', () => {
   })
 
   test('still linkifies owner/repo#123 references', () => {
-    const rendered = applyMarkdown('见 wangmai-ai/wangmai-agent#1145 的讨论', 'dark')
+    const rendered = applyMarkdown('见 Shomura-AI/wangmai-agent#1145 的讨论', 'dark')
     expect(hyperlinkTargets(rendered)).toEqual([
-      'https://github.com/wangmai-ai/wangmai-agent/issues/1145',
+      'https://github.com/Shomura-AI/wangmai-agent/issues/1145',
     ])
   })
 })

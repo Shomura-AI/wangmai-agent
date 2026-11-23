@@ -13,7 +13,7 @@ type DisplayProfile = DesktopProfilePreferences & { avatarDataUrl?: string | nul
 
 export const DEFAULT_PROFILE: DesktopProfilePreferences = {
   displayName: 'wangmai',
-  subtitle: 'github.com/wangmai-ai/wangmai-agent',
+  subtitle: 'github.com/Shomura-AI/wangmai-agent',
   avatarFile: null,
   avatarUpdatedAt: null,
 }

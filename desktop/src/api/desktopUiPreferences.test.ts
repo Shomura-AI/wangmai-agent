@@ -7,7 +7,7 @@ const preferences = {
   projectDisplayNames: {},
   profile: {
     displayName: 'wangmai',
-    subtitle: 'github.com/wangmai-ai/wangmai-agent',
+    subtitle: 'github.com/Shomura-AI/wangmai-agent',
     avatarFile: null,
     avatarUpdatedAt: null,
   },

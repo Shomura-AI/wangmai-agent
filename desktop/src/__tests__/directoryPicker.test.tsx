@@ -49,7 +49,7 @@ const PROJECTS: RecentProject[] = [
     realPath: '/Users/nanmi/workspace/myself_code/wangmai-agent',
     projectName: 'wangmai-agent',
     isGit: true,
-    repoName: 'wangmai-ai/wangmai-agent',
+    repoName: 'Shomura-AI/wangmai-agent',
     branch: 'main',
     modifiedAt: '2026-09-17T10:00:00Z',
     sessionCount: 30,
@@ -101,7 +101,7 @@ describe('DirectoryPicker project list', () => {
     await screen.findByText('wangmai-ai/MediaCrawler')
     expect(sessionsApi.getRecentProjects).toHaveBeenCalledWith(500, 5000)
     // All known projects render, not just a top-10 slice.
-    expect(screen.getByText('wangmai-ai/wangmai-agent')).toBeInTheDocument()
+    expect(screen.getByText('Shomura-AI/wangmai-agent')).toBeInTheDocument()
     expect(screen.getByText('399-Union-Alpha-新模型')).toBeInTheDocument()
   })
 
@@ -110,7 +110,7 @@ describe('DirectoryPicker project list', () => {
     const search = await screen.findByPlaceholderText('搜索项目…')
     fireEvent.change(search, { target: { value: 'wangmai' } })
 
-    expect(screen.getByText('wangmai-ai/wangmai-agent')).toBeInTheDocument()
+    expect(screen.getByText('Shomura-AI/wangmai-agent')).toBeInTheDocument()
     expect(screen.queryByText('wangmai-ai/MediaCrawler')).not.toBeInTheDocument()
     expect(screen.queryByText('399-Union-Alpha-新模型')).not.toBeInTheDocument()
 

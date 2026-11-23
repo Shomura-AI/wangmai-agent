@@ -104,7 +104,7 @@ describe('Electron updater service', () => {
   it('treats missing GitHub channel metadata as no update', async () => {
     const service = new ElectronUpdaterService(updater)
     updater.checkForUpdates.mockRejectedValueOnce(Object.assign(
-      new Error('Cannot find latest-mac.yml in the latest release artifacts (https://github.com/wangmai-ai/wangmai-agent/releases/download/v0.3.2/latest-mac.yml): HttpError: 404'),
+      new Error('Cannot find latest-mac.yml in the latest release artifacts (https://github.com/Shomura-AI/wangmai-agent/releases/download/v0.3.2/latest-mac.yml): HttpError: 404'),
       { code: 'ERR_UPDATER_CHANNEL_FILE_NOT_FOUND' },
     ))
 
@@ -114,7 +114,7 @@ describe('Electron updater service', () => {
   it('treats missing GitHub channel metadata as no update even without an error code', async () => {
     const service = new ElectronUpdaterService(updater)
     updater.checkForUpdates.mockRejectedValueOnce(
-      new Error('Cannot find latest-mac.yml in the latest release artifacts (https://github.com/wangmai-ai/wangmai-agent/releases/download/v0.3.2/latest-mac.yml): HttpError: 404'),
+      new Error('Cannot find latest-mac.yml in the latest release artifacts (https://github.com/Shomura-AI/wangmai-agent/releases/download/v0.3.2/latest-mac.yml): HttpError: 404'),
     )
 
     await expect(service.checkForUpdates()).resolves.toBeNull()
@@ -123,7 +123,7 @@ describe('Electron updater service', () => {
   it('treats stringified missing GitHub channel metadata as no update', async () => {
     const service = new ElectronUpdaterService(updater)
     updater.checkForUpdates.mockRejectedValueOnce(
-      'Error: Cannot find latest-mac.yml in the latest release artifacts (https://github.com/wangmai-ai/wangmai-agent/releases/download/v0.3.2/latest-mac.yml): HttpError: 404',
+      'Error: Cannot find latest-mac.yml in the latest release artifacts (https://github.com/Shomura-AI/wangmai-agent/releases/download/v0.3.2/latest-mac.yml): HttpError: 404',
     )
 
     await expect(service.checkForUpdates()).resolves.toBeNull()

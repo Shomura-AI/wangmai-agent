@@ -5,8 +5,8 @@ import { rememberLocale } from '../lib/locale'
 import { useTheme } from '../lib/theme'
 import SearchDialog from './SearchDialog'
 
-export const GITHUB_URL = 'https://github.com/wangmai-ai/wangmai-agent'
-export const DOWNLOAD_URL = 'https://github.com/wangmai-ai/wangmai-agent/releases/latest'
+export const GITHUB_URL = 'https://github.com/Shomura-AI/wangmai-agent'
+export const DOWNLOAD_URL = 'https://github.com/Shomura-AI/wangmai-agent/releases/latest'
 
 const copy = {
   zh: {

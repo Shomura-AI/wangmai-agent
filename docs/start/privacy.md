@@ -36,6 +36,6 @@ order: 6
 
 ## 联系方式
 
-隐私或安全问题可以通过 [GitHub 私密安全报告](https://github.com/wangmai-ai/wangmai-agent/security/advisories/new) 或 [dev@wangmai.example.com](mailto:dev@wangmai.example.com) 联系维护者。
+隐私或安全问题可以通过 [GitHub 私密安全报告](https://github.com/Shomura-AI/wangmai-agent/security/advisories/new) 或 [dev@wangmai.example.com](mailto:dev@wangmai.example.com) 联系维护者。
 
 本说明最近更新于 2026 年 8 月 5 日。

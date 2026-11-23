@@ -6,11 +6,11 @@
 
 <div align="center">
 
-[![GitHub Stars](https://img.shields.io/github/stars/wangmai-ai/wangmai-agent?style=social)](https://github.com/wangmai-ai/wangmai-agent/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/wangmai-ai/wangmai-agent?style=social)](https://github.com/wangmai-ai/wangmai-agent/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/wangmai-ai/wangmai-agent)](https://github.com/wangmai-ai/wangmai-agent/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/wangmai-ai/wangmai-agent)](https://github.com/wangmai-ai/wangmai-agent/pulls)
-[![License](https://img.shields.io/badge/License-Community_Source-orange)](https://github.com/wangmai-ai/wangmai-agent/blob/main/LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/Shomura-AI/wangmai-agent?style=social)](https://github.com/Shomura-AI/wangmai-agent/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/Shomura-AI/wangmai-agent?style=social)](https://github.com/Shomura-AI/wangmai-agent/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/Shomura-AI/wangmai-agent)](https://github.com/Shomura-AI/wangmai-agent/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/Shomura-AI/wangmai-agent)](https://github.com/Shomura-AI/wangmai-agent/pulls)
+[![License](https://img.shields.io/badge/License-Community_Source-orange)](https://github.com/Shomura-AI/wangmai-agent/blob/main/LICENSE)
 [![中文](https://img.shields.io/badge/🇨🇳_简体中文-当前-blue)](README.md)
 [![English](https://img.shields.io/badge/🇺🇸_English-Available-green)](README.en.md)
 [![Docs](https://img.shields.io/badge/📖_文档站点-Visit-FF7A00)](https://wangmai.example.com)
@@ -44,8 +44,8 @@
 ## 功能预览
 
 <p align="center">
-  <a href="https://github.com/wangmai-ai/wangmai-agent/releases"><img src="https://img.shields.io/badge/⬇_下载桌面端-macOS_%7C_Windows_%7C_Linux-FF7A00?style=for-the-badge" alt="下载桌面端"></a>
-  <a href="https://github.com/wangmai-ai/wangmai-agent/releases/latest"><img src="https://img.shields.io/badge/Android-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="下载 Android APK"></a>
+  <a href="https://github.com/Shomura-AI/wangmai-agent/releases"><img src="https://img.shields.io/badge/⬇_下载桌面端-macOS_%7C_Windows_%7C_Linux-FF7A00?style=for-the-badge" alt="下载桌面端"></a>
+  <a href="https://github.com/Shomura-AI/wangmai-agent/releases/latest"><img src="https://img.shields.io/badge/Android-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="下载 Android APK"></a>
   <a href="https://testflight.apple.com/join/Nd49JrWZ"><img src="https://img.shields.io/badge/iOS-TestFlight-1F1A17?style=for-the-badge&logo=apple&logoColor=white" alt="通过 TestFlight 安装 iOS App"></a>
 </p>
 
@@ -151,7 +151,7 @@
 
 ## 安装
 
-1. 前往 [Releases](https://github.com/wangmai-ai/wangmai-agent/releases) 下载 macOS / Windows / Linux 桌面端安装包。
+1. 前往 [Releases](https://github.com/Shomura-AI/wangmai-agent/releases) 下载 macOS / Windows / Linux 桌面端安装包。
 2. 首次启动后，在桌面端设置里配置模型提供商、API Key 和默认模型。
 3. 正式 macOS Release 需要经过签名和公证；如果安装的是 draft/unsigned 临时包，首次打开可能仍需手动放行。Windows 未签名安装包可能出现 SmartScreen 提示，点「更多信息」→「仍要运行」即可。详见 [桌面端安装指南](docs/start/install.md)。
 4. 手机端（可选）：Android 在 Releases 下载 `wangmai-mobile-*.apk` 安装；iPhone 先装 TestFlight，再打开[公开链接](https://testflight.apple.com/join/Nd49JrWZ)加入测试。手机 App 需要桌面端 v0.7.6 或更新版本。在桌面端「手机连接」里扫码配对，同一 Wi-Fi 直连，外出用 Cloudflare 连接，详见 [手机 App 与远程连接](docs/desktop/remote.md)。
@@ -248,7 +248,7 @@
 - [cc-switch](https://github.com/farion1231/cc-switch)：模型供应商配置能力参考。
 - [t3code](https://github.com/pingdotgg/t3code)：桌面端 UI 质感与交互设计参考。
 - [LINUX DO](https://linux.do/)：新的理想型开发者社区。
-- [AtomGit](https://atomgit.com/wangmai-ai/wangmai-agent)：为本项目提供国内代码托管。
+- [AtomGit](https://atomgit.com/Shomura-AI/wangmai-agent)：为本项目提供国内代码托管。
 
 ---
 

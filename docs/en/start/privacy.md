@@ -36,6 +36,6 @@ Uninstalling the application does not automatically delete sessions and configur
 
 ## Contact
 
-For privacy or security questions, contact the maintainer through a [private GitHub security advisory](https://github.com/wangmai-ai/wangmai-agent/security/advisories/new) or at [dev@WangMai Agent.example.com](mailto:dev@WangMai Agent.example.com).
+For privacy or security questions, contact the maintainer through a [private GitHub security advisory](https://github.com/Shomura-AI/wangmai-agent/security/advisories/new) or at [dev@WangMai Agent.example.com](mailto:dev@WangMai Agent.example.com).
 
 Last updated: August 5, 2026.

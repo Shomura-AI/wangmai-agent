@@ -1411,7 +1411,7 @@ export const jp: Record<TranslationKey, string> = {
   'settings.activity.profileTitle': 'プロフィール',
   'settings.activity.avatarAlt': '{name} のアバター',
   'settings.activity.profilePrivacy': 'ローカルのみ',
-  'settings.activity.defaultHandle': 'github.com/wangmai-ai/wangmai-agent',
+  'settings.activity.defaultHandle': 'github.com/Shomura-AI/wangmai-agent',
   'settings.activity.editProfile': 'プロフィールを編集',
   'settings.activity.displayName': '表示名',
   'settings.activity.subtitle': '2 行目',

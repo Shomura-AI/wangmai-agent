@@ -23,7 +23,7 @@ const MIN_PET_SIZE = 96
 const MAX_PET_SIZE = 192
 const DEFAULT_PET_SIZE = 144
 const MAX_PET_SESSION_ID_LENGTH = 200
-const DEFAULT_PROFILE_SUBTITLE = 'github.com/wangmai-ai/wangmai-agent'
+const DEFAULT_PROFILE_SUBTITLE = 'github.com/Shomura-AI/wangmai-agent'
 const DEFAULT_PET_ID = 'dada-code'
 
 const AVATAR_CONTENT_TYPES = {

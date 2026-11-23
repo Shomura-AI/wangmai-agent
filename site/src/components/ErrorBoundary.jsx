@@ -45,7 +45,7 @@ export default class ErrorBoundary extends Component {
           </button>
           <a
             className="btn btn--ghost"
-            href="https://github.com/wangmai-ai/wangmai-agent/issues"
+            href="https://github.com/Shomura-AI/wangmai-agent/issues"
             rel="noreferrer"
             target="_blank"
           >

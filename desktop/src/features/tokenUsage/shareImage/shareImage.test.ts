@@ -33,7 +33,7 @@ const models = [
 
 const DATA: ShareImageData = {
   displayName: 'Ada Lovelace',
-  linkText: 'github.com/wangmai-ai/wangmai-agent',
+  linkText: 'github.com/Shomura-AI/wangmai-agent',
   dateLabel: '2026.10.17',
   caption: '累计 Token',
   totalValue: '241',
@@ -156,7 +156,7 @@ describe('buildShareImageData', () => {
     totalTokens: 24_100_000_000,
     locale,
     t: (key, params) => translate(locale, key, params),
-    profile: { displayName: 'Ada', subtitle: 'github.com/wangmai-ai/wangmai-agent' },
+    profile: { displayName: 'Ada', subtitle: 'github.com/Shomura-AI/wangmai-agent' },
     now: new Date('2026-10-17T12:00:00'),
   })
 

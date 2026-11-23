@@ -551,7 +551,7 @@ export function versionLabel(version: string | undefined, build?: string | null)
   return build ? `${version} (${build})` : version
 }
 
-export const repoUrl = 'https://github.com/wangmai-ai/wangmai-agent'
+export const repoUrl = 'https://github.com/Shomura-AI/wangmai-agent'
 export const aboutLinks = {
   guide: repoUrl,
   issues: `${repoUrl}/issues`,

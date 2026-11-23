@@ -79,7 +79,7 @@ describe('DesktopUiPreferencesService', () => {
       schemaVersion: 8,
       profile: {
         displayName: 'wangmai',
-        subtitle: 'github.com/wangmai-ai/wangmai-agent',
+        subtitle: 'github.com/Shomura-AI/wangmai-agent',
         avatarFile: null,
         avatarUpdatedAt: null,
       },
@@ -139,7 +139,7 @@ describe('DesktopUiPreferencesService', () => {
       futureField: { keep: true },
       profile: {
         displayName: 'wangmai',
-        subtitle: 'github.com/wangmai-ai/wangmai-agent',
+        subtitle: 'github.com/Shomura-AI/wangmai-agent',
         avatarFile: null,
         avatarUpdatedAt: null,
       },
@@ -163,7 +163,7 @@ describe('DesktopUiPreferencesService', () => {
       futureField: { keep: true },
       profile: {
         displayName: 'wangmai',
-        subtitle: 'github.com/wangmai-ai/wangmai-agent',
+        subtitle: 'github.com/Shomura-AI/wangmai-agent',
         avatarFile: null,
         avatarUpdatedAt: null,
       },
@@ -608,7 +608,7 @@ describe('desktop UI preferences API', () => {
         schemaVersion: 8,
         profile: {
           displayName: 'wangmai',
-          subtitle: 'github.com/wangmai-ai/wangmai-agent',
+          subtitle: 'github.com/Shomura-AI/wangmai-agent',
           avatarFile: null,
           avatarUpdatedAt: null,
         },
@@ -638,7 +638,7 @@ describe('desktop UI preferences API', () => {
         schemaVersion: 8,
         profile: {
           displayName: 'wangmai',
-          subtitle: 'github.com/wangmai-ai/wangmai-agent',
+          subtitle: 'github.com/Shomura-AI/wangmai-agent',
           avatarFile: null,
           avatarUpdatedAt: null,
         },
@@ -833,7 +833,7 @@ describe('desktop UI preferences API', () => {
     const response = await handleDesktopUiApi(request.req, request.url, request.segments)
     expect(response.status).toBe(200)
     expect(await response.json()).toEqual({
-      profile: { displayName: 'wangmai', subtitle: 'github.com/wangmai-ai/wangmai-agent', avatarDataUrl: null },
+      profile: { displayName: 'wangmai', subtitle: 'github.com/Shomura-AI/wangmai-agent', avatarDataUrl: null },
     })
   })
 

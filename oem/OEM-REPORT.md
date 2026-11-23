@@ -37,9 +37,9 @@
 
 ## 3. 关键文件现状
 
-- desktop/package.json：name wangmai-desktop，build.appId com.wangmai.agent，build.productName 网脉智能体，build.executableName wangmai-desktop，build.nsis.shortcutName 网脉智能体，artifactName WangMai-Agent-版本-平台.扩展名，publish 指向 wangmai-ai/wangmai-agent。
+- desktop/package.json：name wangmai-desktop，build.appId com.wangmai.agent，build.productName 网脉智能体，build.executableName wangmai-desktop，build.nsis.shortcutName 网脉智能体，artifactName WangMai-Agent-版本-平台.扩展名，publish 指向 Shomura-AI/wangmai-agent。
 - desktop/electron/services/appIdentity.ts：WINDOWS_APP_USER_MODEL_ID = com.wangmai.agent，单测断言与 build.appId 一致。
-- desktop/src-tauri/tauri.conf.json：productName/窗口标题 网脉智能体，identifier com.wangmai.agent，updater 指向 github.com/wangmai-ai/wangmai-agent/releases/latest/download/latest.json，externalBin binaries/wangmai-sidecar。
+- desktop/src-tauri/tauri.conf.json：productName/窗口标题 网脉智能体，identifier com.wangmai.agent，updater 指向 github.com/Shomura-AI/wangmai-agent/releases/latest/download/latest.json，externalBin binaries/wangmai-sidecar。
 - mobile/app.json：expo.name 网脉智能体，slug/scheme wangmai，iOS com.wangmai.agent.mobile，Android app.wangmai.mobile，owner wangmai-ai。
 - 改名：bin/claude-haha 到 bin/wangmai；desktop/sidecars/claude-sidecar.ts 到 wangmai-sidecar.ts；desktop/src/api 与 stores 下 8 个 haha* 文件到 wangmai*；src/server 下 4 个 haha-*-oauth.ts 到 wangmai-*-oauth.ts；services 下 4 个 haha*OAuthService.ts；mobile/modules 下 cchaha-duty / cchaha-network 到 wangmai-duty / wangmai-network；docs/ui-clone 下 stitch_claudecode_haha_frontend_design 到 stitch_claudecode_wangmai_frontend_design。
 - 图标：oem/make-icons.mjs 生成 60 个文件，写满 desktop/src-tauri/icons（含 ico/icns/ios/android mipmap）、desktop/public、src-tauri、docs/images、mobile/assets。
@@ -76,7 +76,7 @@ bun run check:policy 结果 497 pass / 1 skip / 94 fail，全部落在这三类 
 
 ## 7. 上线前要做的事
 
-1. 仓库改名或新建 wangmai-ai/wangmai-agent，否则 autoUpdater 与 releases 链接 404。
+1. 仓库改名或新建 Shomura-AI/wangmai-agent，否则 autoUpdater 与 releases 链接 404。
 2. 换掉占位域名 wangmai.example.com（site/scripts/prepare-static-output.mjs 的 expectedCustomDomain 与 CNAME、docs 中的域名）。
 3. 重新签发签名与公证：macOS 换 developer id，Windows 换代码签名证书，并更新 desktop/package.json 的 mac.identity 与 signIgnore 之外的证书配置。
 4. 移动端 rebuild：mobile/app.json 的 EAS projectId 仍是上游账户下的项目，需要 eas init 重新绑定。

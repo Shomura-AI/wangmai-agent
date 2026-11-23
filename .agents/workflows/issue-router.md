@@ -39,7 +39,7 @@ CLI 解析 NUL porcelain 并验证共享 Git 目录身份，将唯一状态根�
 bun --no-env-file /path/to/checkout/scripts/issue-router/cli.ts locate --cwd /path/to/linked-worktree
 bun --no-env-file /path/to/checkout/scripts/issue-router/cli.ts install-exclude --cwd /path/to/primary
 bun --no-env-file /path/to/checkout/scripts/issue-router/cli.ts init --cwd /path/to/primary --input - <<'JSON'
-{"repository_id":"GITHUB_STABLE_REPOSITORY_ID","repository":"wangmai-ai/wangmai-agent","required_checks":["pr-quality-gate"]}
+{"repository_id":"GITHUB_STABLE_REPOSITORY_ID","repository":"Shomura-AI/wangmai-agent","required_checks":["pr-quality-gate"]}
 JSON
 bun --no-env-file /path/to/checkout/scripts/issue-router/cli.ts configure --cwd /path/to/primary --input - <<'JSON'
 {"created_since":"2026-10-23T04:01:01.000Z","reference":"已获用户授权的固定创建时间边界记录"}
@@ -47,7 +47,7 @@ JSON
 bun --no-env-file /path/to/checkout/scripts/issue-router/cli.ts status --cwd /path/to/linked-worktree
 ```
 
-init 的 repository_id 来自 GitHub 仓库元数据（wangmai-ai/wangmai-agent 为 1197569406），不能用易重命名的 slug 替代。该库只服务一个仓库；meta 保存 repository_id、slug、主目录、共享 Git 目录和配置；SQLite user_version 当前为 4。init 遇到已有文件（包括空库/损坏库）报错，不覆盖。独立 clone 不共用本库。
+init 的 repository_id 来自 GitHub 仓库元数据（Shomura-AI/wangmai-agent 为 1197569406），不能用易重命名的 slug 替代。该库只服务一个仓库；meta 保存 repository_id、slug、主目录、共享 Git 目录和配置；SQLite user_version 当前为 4。init 遇到已有文件（包括空库/损坏库）报错，不覆盖。独立 clone 不共用本库。
 
 首次派单前显式 configure 固定 created_since；上述时间是已授权边界的示例，执行时使用本轮用户确定的值。它按真实 GitHub created_at 做包含等号的过滤，不按 updated_at 放行旧 issue，也不随两小时扫描滚动。重复配置相同时间幂等，改变已固定边界会拒绝。status.dispatch_policy 显示当前配置，issues[].dispatch_eligibility 显示日期是否满足派单条件；缺少创建时间的旧记录等待真实元数据补齐，不猜测日期。已有 active run 继续沿原 owner/generation 工作。
 
