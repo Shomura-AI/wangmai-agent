@@ -4,7 +4,7 @@ import { OAUTH_BETA_HEADER } from '../../constants/oauth.js'
 import { createModelCatalogCache } from '../../services/modelCatalogCache.js'
 import { MODEL_REASONING_EFFORTS } from '../../shared/modelReasoning.js'
 import { getClaudeCodeUserAgent } from '../../utils/userAgent.js'
-import { hahaOAuthService } from './hahaOAuthService.js'
+import { wangmaiOAuthService } from './wangmaiOAuthService.js'
 import { getNetworkProxyFetchOptions, loadNetworkSettings } from './networkSettings.js'
 
 export type ClaudeModelCatalogEntry = {
@@ -196,7 +196,7 @@ export async function getDesktopClaudeModelCatalog(options?: {
   throwOnError?: boolean
   fetchOverride?: typeof fetch
 }): Promise<ClaudeModelCatalogEntry[]> {
-  const tokens = await hahaOAuthService.ensureFreshTokens().catch(() => null)
+  const tokens = await wangmaiOAuthService.ensureFreshTokens().catch(() => null)
   if (!tokens?.accessToken) {
     if (options?.forceRefresh && options.throwOnError) throw new Error('Claude OAuth token is unavailable')
     return CLAUDE_MODEL_CATALOG

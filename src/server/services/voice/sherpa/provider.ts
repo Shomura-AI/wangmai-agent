@@ -36,7 +36,7 @@ import type { WorkerConfig } from './protocol.js'
 import { SherpaRecognizer, type SpawnWorker } from './recognizer.js'
 
 export interface LocalModelProviderOptions {
-  /** Defaults to `<config dir>/cc-haha/voice`. */
+  /** Defaults to `<config dir>/wangmai/voice`. */
   dataRoot?: string
   fetch?: FetchLike
   /** Extra fetch options per URL (proxy). Defaults to the configured network proxy. */

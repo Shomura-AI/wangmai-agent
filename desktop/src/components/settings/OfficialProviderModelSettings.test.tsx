@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { modelsApi } from '@/api/models'
 import { providersApi } from '@/api/providers'
 import { useProviderStore } from '@/stores/providerStore'
-import { useHahaOpenAIOAuthStore } from '@/stores/hahaOpenAIOAuthStore'
+import { useWangMaiOpenAIOAuthStore } from '@/stores/wangmaiOpenAIOAuthStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { OfficialProviderModelSettings } from './OfficialProviderModelSettings'
 
@@ -23,7 +23,7 @@ const futureCatalog = {
 describe('OfficialProviderModelSettings', () => {
   beforeEach(() => {
     useSettingsStore.setState({ locale: 'en' })
-    useHahaOpenAIOAuthStore.setState({ status: null })
+    useWangMaiOpenAIOAuthStore.setState({ status: null })
     vi.spyOn(modelsApi, 'catalog').mockResolvedValue({
       models: [
         { id: 'gpt-6-astra', name: 'GPT-6 Astra', description: 'Frontier', context: '258400' },
@@ -230,7 +230,7 @@ describe('OfficialProviderModelSettings', () => {
   })
 
   it('ignores the previous account refresh after signing in to another account of the same provider', async () => {
-    useHahaOpenAIOAuthStore.setState({
+    useWangMaiOpenAIOAuthStore.setState({
       status: { loggedIn: true, accountId: 'account-a', email: 'a@example.test', expiresAt: null },
     })
     render(<OfficialProviderModelSettings providerId="openai-official" />)
@@ -242,7 +242,7 @@ describe('OfficialProviderModelSettings', () => {
     vi.mocked(modelsApi.catalog).mockResolvedValueOnce({
       models: [{ id: 'account-b-model', name: 'Account B model', description: '', context: '' }],
     })
-    act(() => useHahaOpenAIOAuthStore.setState({
+    act(() => useWangMaiOpenAIOAuthStore.setState({
       status: { loggedIn: true, accountId: 'account-b', email: 'b@example.test', expiresAt: null },
     }))
     const main = await screen.findByRole('combobox', { name: /Main Model/ })

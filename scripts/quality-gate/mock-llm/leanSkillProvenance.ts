@@ -218,7 +218,7 @@ async function runCase(rootDir: string, artifactDir: string, testCase: Provenanc
     ], {
       cwd: workDir, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe',
       env: {
-        ...sandbox.env, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1', TEST_ENABLE_SESSION_PERSISTENCE: '1',
+        ...sandbox.env, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1', TEST_ENABLE_SESSION_PERSISTENCE: '1',
         ANTHROPIC_BASE_URL: gate ? `http://127.0.0.1:${gate.port}` : upstream.url, ANTHROPIC_API_KEY: 'mock-api-key',
         ANTHROPIC_DEFAULT_HAIKU_MODEL: 'mock-model', ANTHROPIC_DEFAULT_SONNET_MODEL: 'mock-model',
         ANTHROPIC_DEFAULT_OPUS_MODEL: 'mock-model',

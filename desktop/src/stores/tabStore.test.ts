@@ -36,11 +36,11 @@ function historicalSummary(id = 'historical-session') {
 
 describe('tabStore', () => {
   it('migrates an untyped connector tab identity and restores it without a server session', async () => {
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({ openTabs: [{ sessionId: CONNECTORS_TAB_ID, title: 'Connectors' }], activeTabId: CONNECTORS_TAB_ID }))
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({ openTabs: [{ sessionId: CONNECTORS_TAB_ID, title: 'Connectors' }], activeTabId: CONNECTORS_TAB_ID }))
     await useTabStore.getState().restoreTabs()
     expect(useTabStore.getState().tabs[0]).toMatchObject({ sessionId: MARKET_TAB_ID, type: 'market' })
     useTabStore.getState().saveTabs()
-    expect(JSON.parse(localStorage.getItem('cc-haha-open-tabs')!).openTabs[0].type).toBe('market')
+    expect(JSON.parse(localStorage.getItem('wangmai-open-tabs')!).openTabs[0].type).toBe('market')
   })
 
   beforeEach(() => {
@@ -57,19 +57,19 @@ describe('tabStore', () => {
   it.each([undefined, 'lean'] as const)('restores legacy tabs with server-owned profile %s before activation', async (agentProfile) => {
     const session = { ...historicalSummary(), ...(agentProfile ? { agentProfile } : {}) }
     // Old tab fixtures contain no profile; the server is authoritative after a restart.
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({ openTabs: [{ sessionId: session.id, title: session.title }], activeTabId: session.id }))
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({ openTabs: [{ sessionId: session.id, title: session.title }], activeTabId: session.id }))
     vi.mocked(sessionsApi.getSummary).mockResolvedValue(session)
     await useTabStore.getState().restoreTabs()
     const restored = useSessionStore.getState().sessions.find(item => item.id === session.id)
     expect(restored?.agentProfile ?? 'standard').toBe(agentProfile ?? 'standard')
     expect(useTabStore.getState().activeTabId).toBe(session.id)
     useTabStore.getState().saveTabs()
-    expect(JSON.parse(localStorage.getItem('cc-haha-open-tabs')!).openTabs[0]).not.toHaveProperty('agentProfile')
+    expect(JSON.parse(localStorage.getItem('wangmai-open-tabs')!).openTabs[0]).not.toHaveProperty('agentProfile')
   })
 
   it.each([false, true])('preserves a confirmed model switch during tab restoration (historical=%s)', async (historical) => {
     const summary = historicalSummary()
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [{ sessionId: summary.id, title: summary.title }], activeTabId: summary.id,
     }))
     let resolveList!: (value: Awaited<ReturnType<typeof sessionsApi.list>>) => void
@@ -88,8 +88,8 @@ describe('tabStore', () => {
   it('starts with no tabs when restoring on launch is turned off, and keeps the saved tabs for later', async () => {
     const summary = historicalSummary('session-left-open')
     const saved = JSON.stringify({ openTabs: [{ sessionId: summary.id, title: summary.title, type: 'session' }], activeTabId: summary.id })
-    localStorage.setItem('cc-haha-open-tabs', saved)
-    localStorage.setItem('cc-haha-tab-behavior', JSON.stringify({ version: 1, sessionTabLimit: null, restoreOnLaunch: false }))
+    localStorage.setItem('wangmai-open-tabs', saved)
+    localStorage.setItem('wangmai-tab-behavior', JSON.stringify({ version: 1, sessionTabLimit: null, restoreOnLaunch: false }))
     vi.mocked(sessionsApi.list).mockResolvedValue({ sessions: [summary], total: 1 } as never)
 
     await useTabStore.getState().restoreTabs()
@@ -97,10 +97,10 @@ describe('tabStore', () => {
     expect(useTabStore.getState().tabs).toEqual([])
     expect(useTabStore.getState().activeTabId).toBeNull()
     expect(sessionsApi.list).not.toHaveBeenCalled()
-    expect(localStorage.getItem('cc-haha-open-tabs')).toBe(saved)
+    expect(localStorage.getItem('wangmai-open-tabs')).toBe(saved)
 
     // Turning it back on brings those tabs back on the next launch.
-    localStorage.setItem('cc-haha-tab-behavior', JSON.stringify({ version: 1, sessionTabLimit: null, restoreOnLaunch: true }))
+    localStorage.setItem('wangmai-tab-behavior', JSON.stringify({ version: 1, sessionTabLimit: null, restoreOnLaunch: true }))
     await useTabStore.getState().restoreTabs()
     expect(useTabStore.getState().tabs.map((tab) => tab.sessionId)).toEqual([summary.id])
   })
@@ -252,7 +252,7 @@ describe('tabStore', () => {
       activeTabId: '__workbench__session-a',
     })
     useTabStore.getState().saveTabs()
-    expect(JSON.parse(localStorage.getItem('cc-haha-open-tabs')!)).toEqual({
+    expect(JSON.parse(localStorage.getItem('wangmai-open-tabs')!)).toEqual({
       openTabs: [{ sessionId: 'session-a', title: 'Task A', type: 'session' }], activeTabId: 'session-a',
     })
   })
@@ -275,7 +275,7 @@ describe('tabStore', () => {
       },
     ])
     expect(useTabStore.getState().activeTabId).toBe('__subagent__session-1__tool-1')
-    expect(localStorage.getItem('cc-haha-open-tabs')).toBe(JSON.stringify({
+    expect(localStorage.getItem('wangmai-open-tabs')).toBe(JSON.stringify({
       openTabs: [],
       activeTabId: null,
     }))
@@ -298,7 +298,7 @@ describe('tabStore', () => {
       teamMemberAgentId: 'reviewer@review-team',
       returnTabId: workbenchTabId,
     })
-    expect(localStorage.getItem('cc-haha-open-tabs')).toBe(JSON.stringify({
+    expect(localStorage.getItem('wangmai-open-tabs')).toBe(JSON.stringify({
       openTabs: [{ sessionId: 'session-1', title: 'Lead session', type: 'session' }],
       activeTabId: 'session-1',
     }))
@@ -337,7 +337,7 @@ describe('tabStore', () => {
     vi.mocked(sessionsApi.list).mockReturnValueOnce(new Promise((resolve) => {
       resolveSessions = resolve
     }) as never)
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [{ sessionId: 'session-1', title: 'Old Session', type: 'session' }],
       activeTabId: 'session-1',
     }))
@@ -359,7 +359,7 @@ describe('tabStore', () => {
   })
 
   it('restores the market tab without requiring a server session', async () => {
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [{ sessionId: MARKET_TAB_ID, title: 'Market', type: 'market' }],
       activeTabId: MARKET_TAB_ID,
     }))
@@ -379,7 +379,7 @@ describe('tabStore', () => {
 
   it('restores historical session tabs by id with metadata ready before activation', async () => {
     const historical = historicalSummary()
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [
         { sessionId: historical.id, title: 'Saved old title', type: 'session' },
       ],
@@ -425,7 +425,7 @@ describe('tabStore', () => {
       modifiedAt: '2026-08-01T00:00:00.000Z',
     }))
     useSessionStore.setState({ sessions: recent.slice(0, 6) })
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [{ sessionId: restored.id, title: 'Saved title', type: 'session' }],
       activeTabId: restored.id,
     }))
@@ -460,7 +460,7 @@ describe('tabStore', () => {
     // Second guard behind persistenceMigrations: a schema-5 payload that
     // reaches restore unchanged must not resurrect the removed Trace page.
     const historical = historicalSummary()
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [
         { sessionId: '__traces__', title: 'Traces', type: 'traces' },
         { sessionId: `__trace__${historical.id}`, title: 'Saved trace title', type: 'trace', traceSessionId: historical.id },
@@ -480,14 +480,14 @@ describe('tabStore', () => {
     expect(useTabStore.getState().activeTabId).toBe(historical.id)
 
     useTabStore.getState().saveTabs()
-    expect(JSON.parse(localStorage.getItem('cc-haha-open-tabs')!)).toEqual({
+    expect(JSON.parse(localStorage.getItem('wangmai-open-tabs')!)).toEqual({
       openTabs: [{ sessionId: historical.id, title: historical.title, type: 'session' }],
       activeTabId: historical.id,
     })
   })
 
   it('clears the saved tabs when only the retired Trace list was open', async () => {
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [{ sessionId: '__traces__', title: 'Traces', type: 'traces' }],
       activeTabId: '__traces__',
     }))
@@ -496,12 +496,12 @@ describe('tabStore', () => {
 
     expect(useTabStore.getState().tabs).toEqual([])
     expect(sessionsApi.list).not.toHaveBeenCalled()
-    expect(localStorage.getItem('cc-haha-open-tabs')).toBeNull()
+    expect(localStorage.getItem('wangmai-open-tabs')).toBeNull()
   })
 
   it('drops only tabs whose individual historical summary returns 404', async () => {
     const available = historicalSummary('history-available')
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [
         { sessionId: 'history-missing', title: 'Deleted session', type: 'session' },
         { sessionId: available.id, title: 'Available session', type: 'session' },
@@ -524,12 +524,12 @@ describe('tabStore', () => {
       openTabs: [{ sessionId: 'history-offline', title: 'Saved session', type: 'session' }],
       activeTabId: 'history-offline',
     })
-    localStorage.setItem('cc-haha-open-tabs', persisted)
+    localStorage.setItem('wangmai-open-tabs', persisted)
     vi.mocked(sessionsApi.getSummary).mockRejectedValueOnce(new ApiError(503, 'Server unavailable'))
 
     await useTabStore.getState().restoreTabs()
 
-    expect(localStorage.getItem('cc-haha-open-tabs')).toBe(persisted)
+    expect(localStorage.getItem('wangmai-open-tabs')).toBe(persisted)
     expect(useSessionStore.getState().sessions).toEqual([])
     expect(useUIStore.getState().toasts[0]).toMatchObject({ type: 'error', action: { onClick: expect.any(Function) } })
     vi.mocked(sessionsApi.getSummary).mockResolvedValueOnce(historicalSummary('history-offline'))
@@ -539,10 +539,10 @@ describe('tabStore', () => {
 
   it('retains the snapshot when every saved session is unavailable', async () => {
     const saved = JSON.stringify({ openTabs: [{ sessionId: 'missing-all', title: 'Saved' }], activeTabId: 'missing-all' })
-    localStorage.setItem('cc-haha-open-tabs', saved)
+    localStorage.setItem('wangmai-open-tabs', saved)
     await useTabStore.getState().restoreTabs()
     expect(useTabStore.getState().tabs).toEqual([])
-    expect(localStorage.getItem('cc-haha-open-tabs')).toBe(saved)
+    expect(localStorage.getItem('wangmai-open-tabs')).toBe(saved)
     expect(useUIStore.getState().toasts[0]).toMatchObject({ type: 'error', action: { onClick: expect.any(Function) } })
     vi.mocked(sessionsApi.getSummary).mockResolvedValueOnce(historicalSummary('missing-all'))
     await useTabStore.getState().restoreTabs()
@@ -550,32 +550,32 @@ describe('tabStore', () => {
   })
 
   it.each(['{broken', '{"openTabs":null}', '{"openTabs":[null]}'])('reports malformed saved data without deleting it: %s', async (saved) => {
-    localStorage.setItem('cc-haha-open-tabs', saved)
+    localStorage.setItem('wangmai-open-tabs', saved)
     await useTabStore.getState().restoreTabs()
-    expect(localStorage.getItem('cc-haha-open-tabs')).toBe(saved)
+    expect(localStorage.getItem('wangmai-open-tabs')).toBe(saved)
     expect(useUIStore.getState().toasts[0]?.type).toBe('error')
   })
 
   it('keeps saved tabs and offers retry when the recent session list is offline', async () => {
     const saved = JSON.stringify({ openTabs: [{ sessionId: 'list-offline', title: 'Saved' }], activeTabId: 'list-offline' })
-    localStorage.setItem('cc-haha-open-tabs', saved)
+    localStorage.setItem('wangmai-open-tabs', saved)
     vi.mocked(sessionsApi.list).mockRejectedValueOnce(new ApiError(503, 'offline'))
     await useTabStore.getState().restoreTabs()
-    expect(localStorage.getItem('cc-haha-open-tabs')).toBe(saved)
+    expect(localStorage.getItem('wangmai-open-tabs')).toBe(saved)
     expect(useUIStore.getState().toasts[0]).toMatchObject({ type: 'error', action: { onClick: expect.any(Function) } })
   })
 
   it('reports storage write failures and offers to retry saving current tabs', async () => {
     useTabStore.getState().openTab('save-before', 'Before')
-    const saved = localStorage.getItem('cc-haha-open-tabs')
+    const saved = localStorage.getItem('wangmai-open-tabs')
     const write = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('quota exceeded') })
     useTabStore.getState().openTab('save-after', 'After')
-    expect(localStorage.getItem('cc-haha-open-tabs')).toBe(saved)
+    expect(localStorage.getItem('wangmai-open-tabs')).toBe(saved)
     expect(useTabStore.getState().activeTabId).toBe('save-after')
     expect(useUIStore.getState().toasts[0]?.type).toBe('error')
     write.mockRestore()
     useUIStore.getState().toasts[0]!.action!.onClick()
-    expect(JSON.parse(localStorage.getItem('cc-haha-open-tabs')!).activeTabId).toBe('save-after')
+    expect(JSON.parse(localStorage.getItem('wangmai-open-tabs')!).activeTabId).toBe('save-after')
   })
 
   it('does not activate or hydrate restored history after a user opens a tab during its lookup', async () => {
@@ -584,7 +584,7 @@ describe('tabStore', () => {
     vi.mocked(sessionsApi.getSummary).mockReturnValueOnce(new Promise((resolve) => {
       resolveSummary = resolve
     }))
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [{ sessionId: historical.id, title: 'Saved session', type: 'session' }],
       activeTabId: historical.id,
     }))
@@ -602,7 +602,7 @@ describe('tabStore', () => {
 
   it('bounds simultaneous historical summary lookups while restoring several tabs', async () => {
     const ids = ['history-a', 'history-b', 'history-c']
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: ids.map((sessionId) => ({ sessionId, title: sessionId, type: 'session' })),
       activeTabId: ids[0],
     }))
@@ -643,7 +643,7 @@ describe('tabStore', () => {
         runtimeProviderId: 'provider-after',
         runtimeModelId: 'model-after',
       }
-      localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+      localStorage.setItem('wangmai-open-tabs', JSON.stringify({
         openTabs: [
           { sessionId: savedRecent.id, title: savedRecent.title, type: 'session' },
           { sessionId: historical.id, title: historical.title, type: 'session' },
@@ -684,7 +684,7 @@ describe('tabStore', () => {
       modelId: 'gpt-5.4',
       effortLevel: 'max',
     } } })
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [{ sessionId: 'session-1', title: 'Runtime session', type: 'session' }],
       activeTabId: 'session-1',
     }))
@@ -709,7 +709,7 @@ describe('tabStore', () => {
   })
 
   it('canonicalizes mismatched persisted special tab ids and types during restore', async () => {
-    localStorage.setItem('cc-haha-open-tabs', JSON.stringify({
+    localStorage.setItem('wangmai-open-tabs', JSON.stringify({
       openTabs: [
         { sessionId: SETTINGS_TAB_ID, title: 'Settings', type: 'market' },
         { sessionId: MARKET_TAB_ID, title: 'Market', type: 'settings' },
@@ -749,7 +749,7 @@ it('maps both legacy market entry points to one canonical tab', () => {
 it('restores duplicate legacy markets as one tab and retains their active selection', async () => {
   useTabStore.setState({ tabs: [], activeTabId: null })
   vi.mocked(sessionsApi.list).mockResolvedValue({ sessions: [] } as never)
-  localStorage.setItem('cc-haha-open-tabs', JSON.stringify({ openTabs: [
+  localStorage.setItem('wangmai-open-tabs', JSON.stringify({ openTabs: [
     { sessionId: SETTINGS_TAB_ID, title: 'Settings', type: 'settings' },
     { sessionId: MARKET_TAB_ID, title: 'Skills', type: 'market' },
     { sessionId: CONNECTORS_TAB_ID, title: 'Connectors', type: 'connectors' },

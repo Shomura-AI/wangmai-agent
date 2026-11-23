@@ -3,20 +3,20 @@ import { act, cleanup, fireEvent, render, screen, within } from '@testing-librar
 import '@testing-library/jest-dom'
 
 import { ModelSelector } from './ModelSelector'
-import { useHahaOAuthStore } from '../../stores/hahaOAuthStore'
-import { useHahaOpenAIOAuthStore } from '../../stores/hahaOpenAIOAuthStore'
-import { useHahaGrokOAuthStore } from '../../stores/hahaGrokOAuthStore'
-import { useHahaDeepSeekOAuthStore } from '../../stores/hahaDeepSeekOAuthStore'
+import { useWangMaiOAuthStore } from '../../stores/wangmaiOAuthStore'
+import { useWangMaiOpenAIOAuthStore } from '../../stores/wangmaiOpenAIOAuthStore'
+import { useWangMaiGrokOAuthStore } from '../../stores/wangmaiGrokOAuthStore'
+import { useWangMaiDeepSeekOAuthStore } from '../../stores/wangmaiDeepSeekOAuthStore'
 import { useProviderStore } from '../../stores/providerStore'
 import { useSessionRuntimeStore } from '../../stores/sessionRuntimeStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { useUIStore } from '../../stores/uiStore'
 
 beforeEach(() => {
-  useHahaOAuthStore.setState({ status: { loggedIn: true } as never, fetchStatus: async () => {} })
-  useHahaOpenAIOAuthStore.setState({ fetchStatus: async () => {} })
-  useHahaGrokOAuthStore.setState({ fetchStatus: async () => {} })
-  useHahaDeepSeekOAuthStore.setState({ fetchStatus: async () => {} })
+  useWangMaiOAuthStore.setState({ status: { loggedIn: true } as never, fetchStatus: async () => {} })
+  useWangMaiOpenAIOAuthStore.setState({ fetchStatus: async () => {} })
+  useWangMaiGrokOAuthStore.setState({ fetchStatus: async () => {} })
+  useWangMaiDeepSeekOAuthStore.setState({ fetchStatus: async () => {} })
   useProviderStore.setState({ activeId: null, hasLoadedProviders: true, isLoading: false, providers: [] })
 })
 
@@ -25,10 +25,10 @@ afterEach(() => {
   useSettingsStore.setState(useSettingsStore.getInitialState(), true)
   useProviderStore.setState(useProviderStore.getInitialState(), true)
   useSessionRuntimeStore.setState(useSessionRuntimeStore.getInitialState(), true)
-  useHahaOAuthStore.setState(useHahaOAuthStore.getInitialState(), true)
-  useHahaOpenAIOAuthStore.setState(useHahaOpenAIOAuthStore.getInitialState(), true)
-  useHahaGrokOAuthStore.setState(useHahaGrokOAuthStore.getInitialState(), true)
-  useHahaDeepSeekOAuthStore.setState(useHahaDeepSeekOAuthStore.getInitialState(), true)
+  useWangMaiOAuthStore.setState(useWangMaiOAuthStore.getInitialState(), true)
+  useWangMaiOpenAIOAuthStore.setState(useWangMaiOpenAIOAuthStore.getInitialState(), true)
+  useWangMaiGrokOAuthStore.setState(useWangMaiGrokOAuthStore.getInitialState(), true)
+  useWangMaiDeepSeekOAuthStore.setState(useWangMaiDeepSeekOAuthStore.getInitialState(), true)
   useUIStore.setState(useUIStore.getInitialState(), true)
   vi.restoreAllMocks()
 })

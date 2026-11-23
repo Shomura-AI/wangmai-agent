@@ -15,24 +15,24 @@ function decodeFileWrites(nsh: string): string {
 
 describe('Windows installer process matching', () => {
   test.skipIf(process.platform !== 'win32')('handles blocked helper writes and old-uninstaller results in native NSIS', () => {
-    const compiler = process.env.CC_HAHA_TEST_MAKENSIS ?? path.join(
+    const compiler = process.env.WANGMAI_TEST_MAKENSIS ?? path.join(
       process.env.LOCALAPPDATA ?? '', 'electron-builder', 'Cache', 'nsis',
       'nsis-3.0.4.1-nsis-3.0.4.1', 'Bin', 'makensis.exe',
     )
-    const templates = process.env.CC_HAHA_TEST_NSIS_TEMPLATES
+    const templates = process.env.WANGMAI_TEST_NSIS_TEMPLATES
       ?? path.resolve('desktop/node_modules/app-builder-lib/templates/nsis')
     if (!existsSync(compiler) || !existsSync(path.join(templates, 'include/getProcessInfo.nsh'))) {
-      throw new Error('Native NSIS regression requires electron-builder dependencies and its cached compiler, or CC_HAHA_TEST_MAKENSIS/CC_HAHA_TEST_NSIS_TEMPLATES')
+      throw new Error('Native NSIS regression requires electron-builder dependencies and its cached compiler, or WANGMAI_TEST_MAKENSIS/WANGMAI_TEST_NSIS_TEMPLATES')
     }
     const installer = readFileSync('desktop/build/installer.nsh', 'utf8').replace(/\r\n/g, '\n')
     const checkStart = installer.indexOf('!macro customCheckAppRunning')
     const writeStart = installer.indexOf('!insertmacro IS_POWERSHELL_AVAILABLE', checkStart)
-    const writeEnd = installer.indexOf('  StrCpy $ccHahaProcessDiagnostic ""', writeStart)
+    const writeEnd = installer.indexOf('  StrCpy $wangmaiProcessDiagnostic ""', writeStart)
     expect(writeStart).toBeGreaterThan(checkStart)
     expect(writeEnd).toBeGreaterThan(writeStart)
     // Expand the actual hook's write/fallback transition, rather than copying it.
     const writeHook = installer.slice(installer.indexOf('\n', writeStart) + 1, writeEnd)
-    const root = mkdtempSync(path.join(tmpdir(), 'cc-haha-nsis-write-'))
+    const root = mkdtempSync(path.join(tmpdir(), 'wangmai-nsis-write-'))
     const env = createSandboxedTestEnvironment(path.join(root, 'home'))
     const cases = [
       { name: 'locked', target: 'locked', result: 0, exit: 0 },
@@ -55,8 +55,8 @@ AllowSkipFiles off
 Name "Isolated installer write regression"
 OutFile "${executable}"
 !addincludedir "${templates}\include"
-!define APP_GUID "cc-haha-nsis-test-no-user-state"
-!define UNINSTALL_APP_KEY "cc-haha-nsis-test-no-user-state"
+!define APP_GUID "wangmai-nsis-test-no-user-state"
+!define UNINSTALL_APP_KEY "wangmai-nsis-test-no-user-state"
 !define APP_FILENAME "isolated-test"
 !define PRODUCT_FILENAME "isolated-test"
 !define BUILD_RESOURCES_DIR "${path.resolve('desktop/build')}"
@@ -74,12 +74,12 @@ Section
 ${writeHook}
   ${fixture.target === 'locked' ? "System::Call 'kernel32::CloseHandle(p $lockedHandle)'" : ''}
   FileOpen $journalHandle "${journal}" w
-  FileWrite $journalHandle "blocked=$ccHahaProcessHelperWriteBlocked; powershell=$IsPowerShellAvailable$\n"
+  FileWrite $journalHandle "blocked=$wangmaiProcessHelperWriteBlocked; powershell=$IsPowerShellAvailable$\n"
   FileClose $journalHandle
   ${fixture.target === 'normal' ? `CopyFiles /SILENT "$PLUGINSDIR\\check-install-processes.ps1" "${extracted}"` : ''}
   StrCpy $R0 ${fixture.result}
   ${fixture.result === 22 ? 'SetErrors' : 'ClearErrors'}
-  !insertmacro CcHahaHandleOldUninstallerResult
+  !insertmacro WangMaiHandleOldUninstallerResult
   FileOpen $journalHandle "${journal}" a
   FileSeek $journalHandle 0 END
   FileWrite $journalHandle "continued$\n"
@@ -112,12 +112,12 @@ SectionEnd
   test('resets the PowerShell module path before deciding whether PowerShell is usable', () => {
     const installerHook = readFileSync('desktop/build/installer.nsh', 'utf8').replace(/\r\n/g, '\n')
     const macro = installerHook.match(
-      /!macro CcHahaUseDefaultPowerShellModulePath\n([\s\S]*?)!macroend/,
+      /!macro WangMaiUseDefaultPowerShellModulePath\n([\s\S]*?)!macroend/,
     )?.[1]
     expect(macro).toContain('System::Call \'kernel32::SetEnvironmentVariable(w "PSModulePath", p 0)\'')
 
     const checkStart = installerHook.indexOf('!macro customCheckAppRunning')
-    const reset = installerHook.indexOf('!insertmacro CcHahaUseDefaultPowerShellModulePath', checkStart)
+    const reset = installerHook.indexOf('!insertmacro WangMaiUseDefaultPowerShellModulePath', checkStart)
     const availability = installerHook.indexOf('!insertmacro IS_POWERSHELL_AVAILABLE', checkStart)
     expect(checkStart).toBeGreaterThan(-1)
     expect(reset).toBeGreaterThan(checkStart)
@@ -125,16 +125,16 @@ SectionEnd
   })
 
   test.skipIf(process.platform !== 'win32')('drops an inherited foreign PSModulePath before PowerShell children start in native NSIS', () => {
-    const compiler = process.env.CC_HAHA_TEST_MAKENSIS ?? path.join(
+    const compiler = process.env.WANGMAI_TEST_MAKENSIS ?? path.join(
       process.env.LOCALAPPDATA ?? '', 'electron-builder', 'Cache', 'nsis',
       'nsis-3.0.4.1-nsis-3.0.4.1', 'Bin', 'makensis.exe',
     )
-    const templates = process.env.CC_HAHA_TEST_NSIS_TEMPLATES
+    const templates = process.env.WANGMAI_TEST_NSIS_TEMPLATES
       ?? path.resolve('desktop/node_modules/app-builder-lib/templates/nsis')
     if (!existsSync(compiler) || !existsSync(path.join(templates, 'include/allowOnlyOneInstallerInstance.nsh'))) {
-      throw new Error('Native NSIS regression requires electron-builder dependencies and its cached compiler, or CC_HAHA_TEST_MAKENSIS/CC_HAHA_TEST_NSIS_TEMPLATES')
+      throw new Error('Native NSIS regression requires electron-builder dependencies and its cached compiler, or WANGMAI_TEST_MAKENSIS/WANGMAI_TEST_NSIS_TEMPLATES')
     }
-    const root = mkdtempSync(path.join(tmpdir(), 'cc-haha-nsis-psmodulepath-'))
+    const root = mkdtempSync(path.join(tmpdir(), 'wangmai-nsis-psmodulepath-'))
     // Stands in for PowerShell 7's Microsoft.PowerShell.Security: listed ahead
     // of the Windows PowerShell modules, it shadows Get-ExecutionPolicy and
     // fails to load in 5.1, as the real PowerShell 7 module does.
@@ -184,8 +184,8 @@ SilentInstall silent
 Name "Isolated PowerShell module path regression"
 OutFile "${executable}"
 !addincludedir "${templates}\include"
-!define APP_GUID "cc-haha-nsis-test-no-user-state"
-!define UNINSTALL_APP_KEY "cc-haha-nsis-test-no-user-state"
+!define APP_GUID "wangmai-nsis-test-no-user-state"
+!define UNINSTALL_APP_KEY "wangmai-nsis-test-no-user-state"
 !define APP_FILENAME "isolated-test"
 !define PRODUCT_FILENAME "isolated-test"
 !define BUILD_RESOURCES_DIR "${path.resolve('desktop/build')}"
@@ -197,7 +197,7 @@ Var PowerShellPath
 Var journalHandle
 Section
   StrCpy $PowerShellPath "$SYSDIR\WindowsPowerShell\v1.0\powershell.exe"
-  ${fixture.reset ? '!insertmacro CcHahaUseDefaultPowerShellModulePath' : ''}
+  ${fixture.reset ? '!insertmacro WangMaiUseDefaultPowerShellModulePath' : ''}
   FileOpen $journalHandle "${journal}" w
   nsExec::Exec ${backtick}"$PowerShellPath" -NoLogo -NoProfile -NonInteractive -Command "if ($$env:PSModulePath -like '*foreign-modules*') { exit 1 } else { exit 0 }"${backtick}
   Pop $0
@@ -232,15 +232,15 @@ SectionEnd
 
     expect(installerHook).not.toContain('!insertmacro _CHECK_APP_RUNNING')
     expect(installerHook).toContain('check-install-processes.ps1')
-    expect(installerHook).toContain('!macro CcHahaFindInstallProcess')
-    expect(installerHook).toContain('!macro CcHahaKillInstallProcess')
+    expect(installerHook).toContain('!macro WangMaiFindInstallProcess')
+    expect(installerHook).toContain('!macro WangMaiKillInstallProcess')
     expect(installerHook).toContain('-InstallerPid "$pid"')
     expect(installerHook).toContain('-InstallerParentPid "$1"')
     // The USERNAME filter makes tasklist look up every process owner, which can
     // block forever and froze setup and the silent uninstaller.
     expect(installerHook).not.toContain('USERNAME eq')
     expect(installerHook).toContain(
-      'nsExec::Exec /TIMEOUT=30000 \'"$CmdPath" /D /C tasklist /FO CSV /NH > "$PLUGINSDIR\\cc-haha-processes.csv"\'',
+      'nsExec::Exec /TIMEOUT=30000 \'"$CmdPath" /D /C tasklist /FO CSV /NH > "$PLUGINSDIR\\wangmai-processes.csv"\'',
     )
     expect(installerHook).toContain('nsExec::Exec /TIMEOUT=30000 \'"$SYSDIR\\findstr.exe" /I /L')
     expect(installerHook).toContain('tasklist process enumeration failed')
@@ -261,8 +261,8 @@ SectionEnd
       /findstr\.exe[^\n]*\n\s*Pop \$\{_RETURN\}\n\s*\$\{If\} \$\{_RETURN\} == 0\n[^\n]*\n\s*\$\{ElseIf\} \$\{_RETURN\} == 1\n/,
     )
     expect(installerHook).toContain('possibly in another user\'s session')
-    expect(installerHook).toContain('claude-sidecar-x86_64-pc-windows-msvc.exe')
-    expect(installerHook).toContain('claude-sidecar-aarch64-pc-windows-msvc.exe')
+    expect(installerHook).toContain('wangmai-sidecar-x86_64-pc-windows-msvc.exe')
+    expect(installerHook).toContain('wangmai-sidecar-aarch64-pc-windows-msvc.exe')
     expect(installerHook).toContain('/C:"OpenConsole.exe"')
     expect(installerHook).toContain('/C:"winpty-agent.exe"')
     expect(installerHook).toContain('/C:"rg.exe"')
@@ -310,42 +310,42 @@ SectionEnd
 
     const checkAppRunning = installerHook.slice(
       installerHook.indexOf('!macro customCheckAppRunning'),
-      installerHook.indexOf('cc_haha_stop_process:'),
+      installerHook.indexOf('wangmai_stop_process:'),
     )
     expect(checkAppRunning).toMatch(
-      /!insertmacro IS_POWERSHELL_AVAILABLE[\s\S]*!insertmacro CcHahaWriteInstallProcessHelper "\$PLUGINSDIR\\check-install-processes\.ps1" \$ccHahaProcessHelperWriteBlocked[\s\S]*?\$\{If\} \$ccHahaProcessHelperWriteBlocked == "1"\s+\$\{OrIfNot\} \$\{FileExists\} "\$PLUGINSDIR\\check-install-processes\.ps1"[\s\S]*?StrCpy \$IsPowerShellAvailable 1/,
+      /!insertmacro IS_POWERSHELL_AVAILABLE[\s\S]*!insertmacro WangMaiWriteInstallProcessHelper "\$PLUGINSDIR\\check-install-processes\.ps1" \$wangmaiProcessHelperWriteBlocked[\s\S]*?\$\{If\} \$wangmaiProcessHelperWriteBlocked == "1"\s+\$\{OrIfNot\} \$\{FileExists\} "\$PLUGINSDIR\\check-install-processes\.ps1"[\s\S]*?StrCpy \$IsPowerShellAvailable 1/,
     )
 
     // A helper that never ran (missing file, launch error) must not read as "no process".
     const findProcess = installerHook.slice(
-      installerHook.indexOf('!macro CcHahaFindInstallProcess'),
-      installerHook.indexOf('!macro CcHahaKillInstallProcess'),
+      installerHook.indexOf('!macro WangMaiFindInstallProcess'),
+      installerHook.indexOf('!macro WangMaiKillInstallProcess'),
     )
     expect(findProcess).toMatch(
-      /\$\{If\} \$\{_RETURN\} != 0\s+\$\{AndIf\} \$\{_RETURN\} != 1[\s\S]*?StrCpy \$IsPowerShellAvailable 1\s+\$\{EndIf\}\s+\$\{EndIf\}\s+\$\{If\} \$IsPowerShellAvailable != 0\s+Delete "\$PLUGINSDIR\\cc-haha-processes\.csv"/,
+      /\$\{If\} \$\{_RETURN\} != 0\s+\$\{AndIf\} \$\{_RETURN\} != 1[\s\S]*?StrCpy \$IsPowerShellAvailable 1\s+\$\{EndIf\}\s+\$\{EndIf\}\s+\$\{If\} \$IsPowerShellAvailable != 0\s+Delete "\$PLUGINSDIR\\wangmai-processes\.csv"/,
     )
   })
 
   test('installs over the old version when its uninstaller cannot write the helper (#1486)', () => {
     const installerHook = readFileSync('desktop/build/installer.nsh', 'utf8').replace(/\r\n/g, '\n')
     const handler = installerHook.slice(
-      installerHook.indexOf('!macro CcHahaHandleOldUninstallerResult'),
+      installerHook.indexOf('!macro WangMaiHandleOldUninstallerResult'),
       installerHook.indexOf('!macro customUnInstallCheck\n'),
     )
 
     expect(installerHook).toMatch(
-      /!macro customUnInstallCheck\s+!insertmacro CcHahaHandleOldUninstallerResult\s+!macroend/,
+      /!macro customUnInstallCheck\s+!insertmacro WangMaiHandleOldUninstallerResult\s+!macroend/,
     )
     expect(installerHook).toMatch(
-      /!macro customUnInstallCheckCurrentUser\s+!insertmacro CcHahaHandleOldUninstallerResult\s+!macroend/,
+      /!macro customUnInstallCheckCurrentUser\s+!insertmacro WangMaiHandleOldUninstallerResult\s+!macroend/,
     )
     // Overwrite in place only when this installer hit the same blocked helper
     // write, and never when the old uninstaller saw the app running (exit 22).
     expect(installerHook).toMatch(
-      /!insertmacro CcHahaWriteInstallProcessHelper[\s\S]*?StrCpy \$ccHahaProcessHelperWriteBlocked "1"/,
+      /!insertmacro WangMaiWriteInstallProcessHelper[\s\S]*?StrCpy \$wangmaiProcessHelperWriteBlocked "1"/,
     )
     expect(handler).toMatch(
-      /^\s*\$\{If\} \$R0 != 0\s+\$\{AndIf\} \$R0 != 22\s+\$\{AndIf\} \$ccHahaProcessHelperWriteBlocked == "1"\s+DetailPrint `[^`]*installing over the existing files\.`/m,
+      /^\s*\$\{If\} \$R0 != 0\s+\$\{AndIf\} \$R0 != 22\s+\$\{AndIf\} \$wangmaiProcessHelperWriteBlocked == "1"\s+DetailPrint `[^`]*installing over the existing files\.`/m,
     )
     // The launch-error branch must not swallow exit code 22 (ExecWait keeps the
     // error flag when the in-place retry runs), and other failures still quit.
@@ -361,7 +361,7 @@ SectionEnd
     )
 
     expect(installerSmoke).toContain("$siblingDir = \"$installDir Tools\"")
-    expect(installerSmoke).toContain("$siblingProbe = Join-Path $siblingDir 'Claude Code Haha.exe'")
+    expect(installerSmoke).toContain("$siblingProbe = Join-Path $siblingDir '网脉智能体.exe'")
     expect(installerSmoke).toContain('Sibling-prefix process remains running')
     expect(installerSmoke).toContain('Install-directory parent process detection')
     expect(installerSmoke).toContain('Install-directory process was not terminated')

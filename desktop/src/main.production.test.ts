@@ -12,7 +12,7 @@ import { expect, it } from 'vitest'
 const desktopRoot = fileURLToPath(new URL('../', import.meta.url))
 
 it('boots React from the production ESM chunks', async () => {
-  const outDir = await mkdtemp(join(tmpdir(), 'cc-haha-renderer-'))
+  const outDir = await mkdtemp(join(tmpdir(), 'wangmai-renderer-'))
   try {
     await build({
       root: desktopRoot,
@@ -54,10 +54,10 @@ it('boots React from the production ESM chunks', async () => {
 
         try {
           await Promise.race([
-            new Promise((_, reject) => { window.__CC_HAHA_SHOW_STARTUP_ERROR__ = reject }),
+            new Promise((_, reject) => { window.__WANGMAI_SHOW_STARTUP_ERROR__ = reject }),
             (async () => {
               await import(pathToFileURL(join(dir, manifest['index.html'].file)).href)
-              while (!window.__CC_HAHA_BOOTSTRAPPED__ || !document.querySelector('#root > *')) await delay(10)
+              while (!window.__WANGMAI_BOOTSTRAPPED__ || !document.querySelector('#root > *')) await delay(10)
             })(),
           ])
           console.log('Renderer mounted')

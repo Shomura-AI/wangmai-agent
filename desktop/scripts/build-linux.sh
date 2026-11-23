@@ -29,7 +29,7 @@ ELECTRON_OUTPUT_DIR="${DESKTOP_DIR}/build-artifacts/electron"
 
 usage() {
   cat <<'EOF'
-Build Claude Code Haha desktop for Linux with Electron Builder.
+Build 网脉智能体 desktop for Linux with Electron Builder.
 
 Usage:
   ./desktop/scripts/build-linux.sh [extra electron-builder args...]
@@ -85,7 +85,7 @@ rm -rf "${DESKTOP_DIR}/electron-dist"
 rm -rf "${ELECTRON_OUTPUT_DIR}"
 rm -rf "${CANONICAL_OUTPUT_DIR}"
 rm -f "${DESKTOP_DIR}/tsconfig.tsbuildinfo"
-rm -rf "${DESKTOP_DIR}/src-tauri/binaries/claude-sidecar-"*
+rm -rf "${DESKTOP_DIR}/src-tauri/binaries/wangmai-sidecar-"*
 
 echo "[build-linux] Building sidecars for ${TARGET_TRIPLE}..."
 (cd "${DESKTOP_DIR}" && SIDECAR_TARGET_TRIPLE="${TARGET_TRIPLE}" bun run prepare:cloudflared)

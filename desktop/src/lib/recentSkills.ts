@@ -6,7 +6,7 @@
  * Stored shape (version 1): `{ "version": 1, "ids": ["skill-id", ...] }`.
  */
 
-export const RECENT_SKILLS_STORAGE_KEY = 'cc-haha-recent-skills'
+export const RECENT_SKILLS_STORAGE_KEY = 'wangmai-recent-skills'
 export const RECENT_SKILLS_MAX = 8
 
 type StorageLike = Pick<Storage, 'getItem' | 'setItem'>

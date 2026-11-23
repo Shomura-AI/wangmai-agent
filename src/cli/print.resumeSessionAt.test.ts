@@ -44,7 +44,7 @@ async function runSideChat(options: { rows: Row[]; resumeAt?: string; resumeHook
     return new Response(completion(), { headers: { 'content-type': 'text/event-stream' } })
   } })
   const env = createSandboxedTestEnvironment(home, {
-    NODE_ENV: 'production', CI: '1', CC_HAHA_SKIP_DOTENV: '1',
+    NODE_ENV: 'production', CI: '1', WANGMAI_SKIP_DOTENV: '1',
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',
     DISABLE_AUTOUPDATER: '1', DISABLE_TELEMETRY: '1', DISABLE_ERROR_REPORTING: '1',
     ANTHROPIC_API_KEY: 'fixture-key', ANTHROPIC_BASE_URL: server.url.origin,
@@ -67,7 +67,7 @@ async function runSideChat(options: { rows: Row[]; resumeAt?: string; resumeHook
     }))
     await writeFile(transcript, lines.join('\n') + '\n')
     // The same arguments the desktop server passes for a side chat.
-    const child = Bun.spawn(['./bin/claude-haha', ...(options.resumeHook ? [] : ['--bare']), '-p', '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose',
+    const child = Bun.spawn(['./bin/wangmai', ...(options.resumeHook ? [] : ['--bare']), '-p', '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose',
       '--resume', transcript, ...(options.resumeAt ? ['--resume-session-at', options.resumeAt] : []), '--fork-session',
       '--session-id', crypto.randomUUID(), '--no-session-persistence'],
       { env, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe' })

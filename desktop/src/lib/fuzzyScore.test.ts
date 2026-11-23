@@ -10,17 +10,17 @@ describe('fuzzyScore', () => {
 
   it('matches subsequences case-insensitively', () => {
     expect(fuzzyScore('mcr', 'MediaCrawler')).toBeGreaterThan(0)
-    expect(fuzzyScore('CCH', 'claude-code-haha')).toBeGreaterThan(0)
+    expect(fuzzyScore('CCH', 'wangmai-agent')).toBeGreaterThan(0)
   })
 
   it('returns -1 when the query is not a subsequence', () => {
     expect(fuzzyScore('xyz', 'MediaCrawler')).toBe(-1)
-    expect(fuzzyScore('hahac', 'cc-haha')).toBe(-1) // 'c' after haha never appears
+    expect(fuzzyScore('wangmaic', 'wangmai')).toBe(-1) // 'c' after wangmai never appears
   })
 
   it('rewards boundary hits over mid-word scatter', () => {
-    const boundary = fuzzyScore('haha', 'cc/haha')
-    const midWord = fuzzyScore('haha', 'xhxaxhxa')
+    const boundary = fuzzyScore('wangmai', 'cc/wangmai')
+    const midWord = fuzzyScore('wangmai', 'xhxaxhxa')
     expect(midWord).toBeGreaterThan(0)
     expect(boundary).toBeGreaterThan(midWord)
   })
@@ -41,8 +41,8 @@ describe('fuzzyScore', () => {
 
 describe('fuzzyFilter', () => {
   const projects = [
-    { label: 'NanmiCoder/MediaCrawler', path: '/Users/nanmi/workspace/myself_code/MediaCrawler' },
-    { label: 'cc-haha', path: '/Users/nanmi/workspace/myself_code/claude-code-haha' },
+    { label: 'wangmai-ai/MediaCrawler', path: '/Users/nanmi/workspace/myself_code/MediaCrawler' },
+    { label: 'wangmai', path: '/Users/nanmi/workspace/myself_code/wangmai-agent' },
     { label: '399-Union-Alpha-新模型', path: '/Users/nanmi/个人自媒体/399-Union-Alpha-新模型' },
   ]
   const keys = (p: (typeof projects)[number]) => [p.label, p.path]
@@ -53,20 +53,20 @@ describe('fuzzyFilter', () => {
   })
 
   it('excludes non-matching items entirely', () => {
-    const result = fuzzyFilter(projects, 'haha', keys)
-    expect(result.map((p) => p.label)).toEqual(['cc-haha'])
+    const result = fuzzyFilter(projects, 'wangmai', keys)
+    expect(result.map((p) => p.label)).toEqual(['wangmai'])
   })
 
   it('ranks better matches first while keeping non-matches out', () => {
     const result = fuzzyFilter(projects, 'media', keys)
-    expect(result.map((p) => p.label)).toEqual(['NanmiCoder/MediaCrawler'])
+    expect(result.map((p) => p.label)).toEqual(['wangmai-ai/MediaCrawler'])
   })
 
   it('matches against any of the provided keys', () => {
     // 'myself_code' only appears in the path, not the label
     const result = fuzzyFilter(projects, 'myself_code', keys)
     expect(result).toHaveLength(2)
-    expect(result.map((p) => p.label)).toContain('cc-haha')
+    expect(result.map((p) => p.label)).toContain('wangmai')
   })
 
   it('keeps original relative order on equal scores', () => {

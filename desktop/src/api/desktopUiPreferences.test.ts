@@ -6,8 +6,8 @@ const preferences = {
   schemaVersion: 3,
   projectDisplayNames: {},
   profile: {
-    displayName: 'cc-haha',
-    subtitle: 'github.com/NanmiCoder/cc-haha',
+    displayName: 'wangmai',
+    subtitle: 'github.com/wangmai-ai/wangmai-agent',
     avatarFile: null,
     avatarUpdatedAt: null,
   },

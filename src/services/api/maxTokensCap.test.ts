@@ -7,7 +7,7 @@ describe('isMaxTokensCapEnabled resolution chain', () => {
   let settings: typeof import('../../utils/settings/settings.js')
   let growthbookGate: ReturnType<typeof spyOn>
   let settingsSpy: ReturnType<typeof spyOn>
-  const envKeys = ['ANTHROPIC_BASE_URL', 'CLAUDE_CODE_MAX_OUTPUT_TOKENS', 'CLAUDE_CODE_PROVIDER_MAX_OUTPUT_TOKENS', 'CC_HAHA_OPENAI_OAUTH_PROVIDER', 'CC_HAHA_GROK_OAUTH_PROVIDER', 'CC_HAHA_DEEPSEEK_OAUTH_PROVIDER']
+  const envKeys = ['ANTHROPIC_BASE_URL', 'CLAUDE_CODE_MAX_OUTPUT_TOKENS', 'CLAUDE_CODE_PROVIDER_MAX_OUTPUT_TOKENS', 'WANGMAI_OPENAI_OAUTH_PROVIDER', 'WANGMAI_GROK_OAUTH_PROVIDER', 'WANGMAI_DEEPSEEK_OAUTH_PROVIDER']
   let previousEnv: Array<string | undefined>
 
   beforeAll(async () => {
@@ -79,7 +79,7 @@ describe('isMaxTokensCapEnabled resolution chain', () => {
     process.env.ANTHROPIC_BASE_URL = 'http://127.0.0.1:3456/proxy/providers/fixture'
     expect(getMaxOutputTokensForModel('fixture-model')).toBe(32_000)
     delete process.env.ANTHROPIC_BASE_URL
-    for (const key of ['CC_HAHA_OPENAI_OAUTH_PROVIDER', 'CC_HAHA_GROK_OAUTH_PROVIDER', 'CC_HAHA_DEEPSEEK_OAUTH_PROVIDER']) {
+    for (const key of ['WANGMAI_OPENAI_OAUTH_PROVIDER', 'WANGMAI_GROK_OAUTH_PROVIDER', 'WANGMAI_DEEPSEEK_OAUTH_PROVIDER']) {
       process.env[key] = '1'
       expect(getMaxOutputTokensForModel('fixture-model')).toBe(32_000)
       delete process.env[key]

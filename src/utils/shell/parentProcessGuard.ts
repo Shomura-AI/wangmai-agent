@@ -58,7 +58,7 @@ export function spawnWithParentProcessGuard(
   // cleanup. Normal completion kills and waits for the guardian in the
   // supervisor before returning the original exit code.
   return spawn('/bin/sh', [
-    '-c', PARENT_PROCESS_GUARD, 'cc-haha-shell-lifetime', String(process.pid),
+    '-c', PARENT_PROCESS_GUARD, 'wangmai-shell-lifetime', String(process.pid),
     command, ...args,
   ], {
     ...options,

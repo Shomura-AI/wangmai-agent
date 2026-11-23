@@ -62,7 +62,7 @@ class TestPointerEvent extends MouseEvent {
   }
 }
 
-function session(id: string, title: string, minutesAgo = 5, project = '/work/cc-haha'): SessionListItem {
+function session(id: string, title: string, minutesAgo = 5, project = '/work/wangmai'): SessionListItem {
   const modifiedAt = new Date(Date.now() - minutesAgo * 60_000).toISOString()
   return {
     id,
@@ -162,7 +162,7 @@ describe('MobileShell', () => {
     expect(within(sheet).getByTestId('new-task-page')).toHaveTextContent('new task in /work/media-crawler')
     // The list stays underneath, and the sheet is a level the system back leaves.
     expect(screen.getByTestId('mobile-session-list')).toBeInTheDocument()
-    expect(window.history.state).toEqual({ ccHahaMobileGuard: true })
+    expect(window.history.state).toEqual({ wangmaiMobileGuard: true })
 
     act(() => { window.history.back() })
 
@@ -202,7 +202,7 @@ describe('MobileShell', () => {
     // Closing goes through history.back(), which lands a tick later: wait it out.
     await act(async () => { await new Promise((resolve) => setTimeout(resolve, 50)) })
     expect(screen.getByTestId('mobile-new-task-sheet')).toBeInTheDocument()
-    expect(window.history.state).toEqual({ ccHahaMobileGuard: true })
+    expect(window.history.state).toEqual({ wangmaiMobileGuard: true })
 
     fireEvent.pointerDown(grabber, { clientY: 100 })
     fireEvent.pointerMove(grabber, { clientY: 100 + SHEET_DISMISS_DISTANCE_PX + 10 })
@@ -220,7 +220,7 @@ describe('MobileShell', () => {
 
     expect(screen.queryByTestId('mobile-new-task-sheet')).not.toBeInTheDocument()
     expect(screen.getByTestId('routed-page')).toHaveTextContent('page for s-started')
-    expect(window.history.state).toEqual({ ccHahaMobileGuard: true })
+    expect(window.history.state).toEqual({ wangmaiMobileGuard: true })
 
     fireEvent.click(screen.getByTestId('mobile-back'))
 
@@ -237,7 +237,7 @@ describe('MobileShell', () => {
     expect(connectToSession).toHaveBeenCalledWith('s-login')
     expect(screen.getByTestId('routed-page')).toHaveTextContent('page for s-login')
     expect(screen.getByTestId('mobile-top-bar')).toHaveTextContent('Fix login i18n')
-    expect(window.history.state).toEqual({ ccHahaMobileGuard: true })
+    expect(window.history.state).toEqual({ wangmaiMobileGuard: true })
 
     fireEvent.click(screen.getByTestId('mobile-back'))
 
@@ -267,7 +267,7 @@ describe('MobileShell', () => {
     await waitFor(() => expect(useTabStore.getState().activeTabId).toBe('s-login'))
     expect(useTabStore.getState().tabs.some((tab) => tab.type === 'subagent')).toBe(false)
     // Still above home, so the next back must be caught too.
-    await waitFor(() => expect(window.history.state).toEqual({ ccHahaMobileGuard: true }))
+    await waitFor(() => expect(window.history.state).toEqual({ wangmaiMobileGuard: true }))
   })
 
   it('sends a desktop-only tab home instead of showing a blank frame', async () => {
@@ -307,7 +307,7 @@ describe('MobileShell', () => {
     fireEvent.click(within(pane).getByTestId('mobile-new-task'))
 
     expect(useTabStore.getState().activeTabId).toBeNull()
-    expect(screen.getByTestId('new-task-page')).toHaveTextContent('new task in /work/cc-haha')
+    expect(screen.getByTestId('new-task-page')).toHaveTextContent('new task in /work/wangmai')
     expect(screen.queryByTestId('mobile-new-task-sheet')).not.toBeInTheDocument()
   })
 

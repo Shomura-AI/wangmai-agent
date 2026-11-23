@@ -11,7 +11,7 @@ afterEach(async () => {
   for (const stop of stops.splice(0)) await stop()
 })
 
-const RECORDED_ROOT = '/var/folders/ab/T/cc-haha-agent-replay-rec/replay-multi-tool'
+const RECORDED_ROOT = '/var/folders/ab/T/wangmai-agent-replay-rec/replay-multi-tool'
 const table = (root: string): PlaceholderTable => [{ name: 'WORK_ROOT', values: pathVariants(root) }]
 
 function anthropicToolStream(id: string, fragments: string[]): SseEvent[] {
@@ -89,7 +89,7 @@ async function post(server: ReplayServer, body: unknown, path = '/v1/messages') 
 
 describe('normalisation', () => {
   test('a path split across fragments becomes one whole placeholder and expands back for another run', () => {
-    const fragments = ['{"command":"ls /var/folders/ab/T/cc-haha-agent', '-replay-rec/replay-multi', '-tool/src"}']
+    const fragments = ['{"command":"ls /var/folders/ab/T/wangmai-agent', '-replay-rec/replay-multi', '-tool/src"}']
     const normalized = normalizeFragments(fragments, table(RECORDED_ROOT), true)
 
     expect(normalized).toHaveLength(3)

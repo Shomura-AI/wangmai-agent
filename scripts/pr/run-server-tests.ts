@@ -78,7 +78,7 @@ function summaryCount(output: string, label: 'pass' | 'fail') {
 }
 
 async function runTestFile(file: string): Promise<TestFileResult> {
-  const sandboxHome = mkdtempSync(join(tmpdir(), 'cc-haha-server-test-'))
+  const sandboxHome = mkdtempSync(join(tmpdir(), 'wangmai-server-test-'))
   try {
     const proc = Bun.spawn(
       [

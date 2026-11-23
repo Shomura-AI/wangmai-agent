@@ -47,8 +47,8 @@ beforeEach(() => {
   // provider tests start unpinned and restore whatever was there.
   originalOwnerHints = getClawhubOwnerHints()
   setClawhubOwnerHints([])
-  originalDisableProvidersEnv = process.env.HAHA_MARKET_DISABLE_PROVIDERS
-  delete process.env.HAHA_MARKET_DISABLE_PROVIDERS
+  originalDisableProvidersEnv = process.env.WANGMAI_MARKET_DISABLE_PROVIDERS
+  delete process.env.WANGMAI_MARKET_DISABLE_PROVIDERS
 })
 
 afterEach(() => {
@@ -56,9 +56,9 @@ afterEach(() => {
   setClawhubOwnerHints(originalOwnerHints)
   // Restore rather than delete: these are the developer's variables, not ours.
   if (originalDisableProvidersEnv === undefined) {
-    delete process.env.HAHA_MARKET_DISABLE_PROVIDERS
+    delete process.env.WANGMAI_MARKET_DISABLE_PROVIDERS
   } else {
-    process.env.HAHA_MARKET_DISABLE_PROVIDERS = originalDisableProvidersEnv
+    process.env.WANGMAI_MARKET_DISABLE_PROVIDERS = originalDisableProvidersEnv
   }
 })
 
@@ -205,7 +205,7 @@ describe('clawhubProvider', () => {
   })
 
   it('fails when the provider is disabled via env', async () => {
-    process.env.HAHA_MARKET_DISABLE_PROVIDERS = 'clawhub'
+    process.env.WANGMAI_MARKET_DISABLE_PROVIDERS = 'clawhub'
     stubFetch(() => ({ body: '{"items":[]}' }))
 
     await expect(clawhubProvider.list({ limit: 3 })).rejects.toThrow('disabled')

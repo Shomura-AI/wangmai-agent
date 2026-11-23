@@ -14,7 +14,7 @@ ELECTRON_BUILDER_CLI="${DESKTOP_DIR}/node_modules/electron-builder/out/cli/cli.j
 
 usage() {
   cat <<'EOF'
-Build Claude Code Haha desktop for macOS Apple Silicon with Electron Builder.
+Build 网脉智能体 desktop for macOS Apple Silicon with Electron Builder.
 
 Usage:
   ./desktop/scripts/build-macos-arm64.sh [extra electron-builder args...]
@@ -109,7 +109,7 @@ rm -rf "${DESKTOP_DIR}/dist"
 rm -rf "${DESKTOP_DIR}/electron-dist"
 rm -rf "${CANONICAL_OUTPUT_DIR}"
 rm -f "${DESKTOP_DIR}/tsconfig.tsbuildinfo"
-rm -rf "${DESKTOP_DIR}/src-tauri/binaries/claude-sidecar-"*
+rm -rf "${DESKTOP_DIR}/src-tauri/binaries/wangmai-sidecar-"*
 
 # ---------------------------------------------------------------------------
 # Resolve ONE signing identity for the entire build, before anything is signed.
@@ -128,7 +128,7 @@ rm -rf "${DESKTOP_DIR}/src-tauri/binaries/claude-sidecar-"*
 # are keyed to the identity, and an Apple Development cert expires yearly).
 # ---------------------------------------------------------------------------
 SIGN_BUILD_EFFECTIVE="${SIGN_BUILD:-}"
-RESOLVED_SIGN_IDENTITY="${CC_HAHA_SIGN_IDENTITY:-}"
+RESOLVED_SIGN_IDENTITY="${WANGMAI_SIGN_IDENTITY:-}"
 
 if [[ -z "${RESOLVED_SIGN_IDENTITY}" && "${SIGN_BUILD_EFFECTIVE}" != "0" ]]; then
   # An absent certificate is a normal fallback, not a grep/pipefail error.
@@ -164,17 +164,17 @@ if [[ "${SIGN_BUILD_EFFECTIVE}" == "0" || -z "${RESOLVED_SIGN_IDENTITY}" ]]; the
   fi
   # Pin the same explicit ad-hoc mode for both native runtimes. Otherwise the
   # sidecar may auto-select a stale certificate and the helper refuses to build.
-  export CC_HAHA_SIGN_IDENTITY="-"
-  export CC_HAHA_LOCAL_UNSIGNED_BUILD=1
+  export WANGMAI_SIGN_IDENTITY="-"
+  export WANGMAI_LOCAL_UNSIGNED_BUILD=1
   unset CSC_NAME
 else
   SIGN_BUILD_EFFECTIVE=1
-  unset CC_HAHA_LOCAL_UNSIGNED_BUILD
+  unset WANGMAI_LOCAL_UNSIGNED_BUILD
   # Every signing step reads one of these: build-sidecars.ts and
-  # native/cu-helper/build.sh read CC_HAHA_SIGN_IDENTITY, electron-builder reads
+  # native/cu-helper/build.sh read WANGMAI_SIGN_IDENTITY, electron-builder reads
   # CSC_NAME. Pinning CSC_NAME rather than leaving auto-discovery on is what
   # guarantees the host lands on the same cert as the other two.
-  export CC_HAHA_SIGN_IDENTITY="${RESOLVED_SIGN_IDENTITY}"
+  export WANGMAI_SIGN_IDENTITY="${RESOLVED_SIGN_IDENTITY}"
   # electron-builder rejects a CSC_NAME carrying the certificate-type prefix
   # ("Please remove prefix \"Developer ID Application:\" …") — it wants only the
   # common name and picks the certificate type itself. `codesign --sign` on the

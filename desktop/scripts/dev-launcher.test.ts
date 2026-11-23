@@ -8,7 +8,7 @@ import { createElectronDevEnv, DEFAULT_RENDERER_URL, mergeNoProxy, resolveElectr
 // 但 bun 默认不执行 electron 的 postinstall 下载,dist 在本机/CI 经常缺席。
 // 测试用自带夹具 desktopRoot,不依赖环境安装状态。
 function createDesktopRootFixture(withExecutables = true) {
-  const root = mkdtempSync(path.join(tmpdir(), 'cc-haha-dev-launcher-'))
+  const root = mkdtempSync(path.join(tmpdir(), 'wangmai-dev-launcher-'))
   if (!withExecutables) return root
   const dist = path.join(root, 'node_modules', 'electron', 'dist')
   mkdirSync(path.join(dist, 'Electron.app', 'Contents', 'MacOS'), { recursive: true })
@@ -26,7 +26,7 @@ describe('desktop dev launcher environment', () => {
     })
 
     expect(env.ELECTRON_RENDERER_URL).toBe(DEFAULT_RENDERER_URL)
-    expect(env.CC_HAHA_TRUSTED_RENDERER_ORIGIN).toBe(DEFAULT_RENDERER_URL)
+    expect(env.WANGMAI_TRUSTED_RENDERER_ORIGIN).toBe(DEFAULT_RENDERER_URL)
     expect(env.NO_PROXY).toBe('example.com,localhost,127.0.0.1,::1')
     expect(env.no_proxy).toBe(env.NO_PROXY)
   })
@@ -45,9 +45,9 @@ describe('desktop dev launcher environment', () => {
   it('derives the exact trusted origin from the validated renderer URL', () => {
     const env = createElectronDevEnv({
       ELECTRON_RENDERER_URL: ' http://localhost:1777/app?dev=1 ',
-      CC_HAHA_TRUSTED_RENDERER_ORIGIN: 'https://untrusted.example',
+      WANGMAI_TRUSTED_RENDERER_ORIGIN: 'https://untrusted.example',
     })
-    expect(env.CC_HAHA_TRUSTED_RENDERER_ORIGIN).toBe('http://localhost:1777')
+    expect(env.WANGMAI_TRUSTED_RENDERER_ORIGIN).toBe('http://localhost:1777')
     expect(() => createElectronDevEnv({ ELECTRON_RENDERER_URL: 'https://untrusted.example' })).toThrow('Refusing non-local')
   })
 

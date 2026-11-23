@@ -490,7 +490,7 @@ export function removeSandboxHome(directory: string, warn: (message: string) => 
 
 export async function runCommand(command: string[], cwd: string, logPath: string) {
   const started = Date.now()
-  const sandboxHome = mkdtempSync(join(tmpdir(), 'cc-haha-coverage-test-'))
+  const sandboxHome = mkdtempSync(join(tmpdir(), 'wangmai-coverage-test-'))
   const header = `$ ${command.join(' ')}\n`
   const capturePath = join(sandboxHome, 'coverage-output.log')
   let logFd: number | undefined

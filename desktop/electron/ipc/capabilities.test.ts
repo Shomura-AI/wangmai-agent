@@ -27,7 +27,7 @@ describe('Electron IPC capabilities', () => {
     expect(isElectronIpcChannelAllowedForPetWindow(channel)).toBe(false)
   })
   it('validates migration paths and identities and keeps migration IPC unavailable to pet windows', () => {
-    expect(validateElectronIpcPayload(ELECTRON_IPC_CHANNELS.migrationPrepare, { targetDir: 'D:\\cc-haha-data' })).toBe(true)
+    expect(validateElectronIpcPayload(ELECTRON_IPC_CHANNELS.migrationPrepare, { targetDir: 'D:\\wangmai-data' })).toBe(true)
     for (const payload of [undefined, {}, { targetDir: '' }, { targetDir: '   ' }, { targetDir: 2 }, { targetDir: 'bad\u0000path' }, { targetDir: 'D:\\data', sourceDir: 'C:\\data' }]) {
       expect(validateElectronIpcPayload(ELECTRON_IPC_CHANNELS.migrationPrepare, payload)).toBe(false)
     }

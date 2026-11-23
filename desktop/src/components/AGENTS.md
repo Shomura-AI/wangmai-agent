@@ -43,7 +43,7 @@
 | 复制按钮 | `CopyButton` | `ui/CopyButton.tsx` |
 | 目录选择 | `DirectoryPicker` | `composite/DirectoryPicker.tsx` |
 | 「用 X 打开」菜单 | `OpenWithMenu` | `composite/OpenWithMenu.tsx` |
-| 品牌标记 cc-haha | `BrandSeal` | `composite/BrandSeal.tsx` |
+| 品牌标记 wangmai | `BrandSeal` | `composite/BrandSeal.tsx` |
 
 ### 三个 hook
 

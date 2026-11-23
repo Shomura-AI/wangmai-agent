@@ -25,15 +25,15 @@ describe('reverse cu-helper daemon attestation', () => {
 
   test('passes the connected socket to a packaged signed helper verifier', async () => {
     const calls: { file: string; args: string[]; peerFd: number }[] = []
-    const pathRoot = mkdtempSync('/tmp/cc-haha-peer-path-')
-    const expectedPath = join(pathRoot, 'cc-haha-computer-use')
+    const pathRoot = mkdtempSync('/tmp/wangmai-peer-path-')
+    const expectedPath = join(pathRoot, 'wangmai-computer-use')
     writeFileSync(expectedPath, '')
     try {
       const result = await attestDaemonSocketPeer(
         new FakeSocket() as never,
         expectedPath,
         {
-        resolveVerifierBinary: () => '/packaged/cc-haha-computer-use',
+        resolveVerifierBinary: () => '/packaged/wangmai-computer-use',
         runVerifier: async (file, args, peerFd) => {
           calls.push({ file, args, peerFd })
           return {
@@ -47,7 +47,7 @@ describe('reverse cu-helper daemon attestation', () => {
 
       expect(result).toEqual(peer)
       expect(calls).toEqual([{
-        file: '/packaged/cc-haha-computer-use',
+        file: '/packaged/wangmai-computer-use',
         args: [
           'attest_daemon_peer',
           '--payload',
@@ -102,7 +102,7 @@ describe('reverse cu-helper daemon attestation', () => {
   })
 
   test('hard timeout reaps the direct verifier without consuming the parent socket', async () => {
-    const fixtureRoot = mkdtempSync(join(tmpdir(), 'cc-haha-peer-timeout-'))
+    const fixtureRoot = mkdtempSync(join(tmpdir(), 'wangmai-peer-timeout-'))
     const socketPath = join(fixtureRoot, 'peer.sock')
 
     const server = createServer()

@@ -230,7 +230,7 @@ function fakeParent() {
 const tempDirs: string[] = []
 
 function previewScript() {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cc-haha-workspace-browser-'))
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'wangmai-workspace-browser-'))
   tempDirs.push(dir)
   const file = path.join(dir, 'preview-agent.js')
   fs.writeFileSync(file, 'window.__previewInjected = true')
@@ -415,7 +415,7 @@ describe('Electron workspace browser service', () => {
   it('names the one shared persistent partition every guest must use', () => {
     // The attach policy admits only this partition; a per-tab partition would
     // be the bug: `storageId` restores a page, it never forks the cookie jar.
-    expect(WORKSPACE_BROWSER_PARTITION).toBe('persist:cc-haha-browser-app')
+    expect(WORKSPACE_BROWSER_PARTITION).toBe('persist:wangmai-browser-app')
   })
 
   it('hides a page without ever destroying it', async () => {

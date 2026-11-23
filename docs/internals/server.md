@@ -42,7 +42,7 @@ curl http://127.0.0.1:3456/health
 2. 在同一次同步调用里启动后台索引。会话投影在第一个 `await` 之前打开 SQLite、读取 `source_files`，全文检索回填随后才开始。
 3. 这段同步工作交还事件循环后，`/health` 就能应答，不等待发现、投影或回填；随后建立文件监听时每处理 25 个项目目录就让出一次事件循环。需要索引的 REST 请求在 `fetch` 内等待 `localIndexCoordinator.start()`。
 
-在这一切之前，`startServer` 会先打印 `[Server] modules loaded <ms> ms after process start; binding <host>:<port>`。在桌面 sidecar 里，`[claude-sidecar] starting server mode` 到这一行之间是模块加载耗时；之后到 `[Server] Claude Code API server running` 是启动工作。
+在这一切之前，`startServer` 会先打印 `[Server] modules loaded <ms> ms after process start; binding <host>:<port>`。在桌面 sidecar 里，`[wangmai-sidecar] starting server mode` 到这一行之间是模块加载耗时；之后到 `[Server] Claude Code API server running` 是启动工作。
 
 先监听并不会让 `/health` 更早应答，HTTP 仍要等这段同步工作结束。它改变的是宿主能看到的状态：旧顺序下整个同步初始化期间端口都不监听，看起来像进程已死；现在端口已打开而 `/health` 没有应答，就能判断为「进程活着但很忙」，桌面端的超时文案也据此区分。
 

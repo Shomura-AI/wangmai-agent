@@ -4,8 +4,8 @@ import { attachmentImageSource, isInlineImagePath, isManagedGeneratedImagePath, 
 
 describe('attachment image sources', () => {
   it('recognizes managed image results in a relocated data directory', () => {
-    expect(isManagedGeneratedImagePath('D:\\Haha Data\\cc-haha\\generated-images\\session\\image.png')).toBe(true)
-    expect(isManagedGeneratedImagePath('/Volumes/Data/haha/cc-haha/generated-images/session/image.png')).toBe(true)
+    expect(isManagedGeneratedImagePath('D:\\WangMai Data\\wangmai\\generated-images\\session\\image.png')).toBe(true)
+    expect(isManagedGeneratedImagePath('/Volumes/Data/wangmai/wangmai/generated-images/session/image.png')).toBe(true)
     expect(isManagedGeneratedImagePath('/project/generated-images/image.png')).toBe(false)
   })
 

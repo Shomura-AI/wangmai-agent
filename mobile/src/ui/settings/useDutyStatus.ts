@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AppState } from 'react-native'
-import CCHahaDuty from '../../../modules/cchaha-duty'
+import CCWangMaiDuty from '../../../modules/wangmai-duty'
 import type { DutyState } from './deliveryModel'
 
 /**
@@ -11,8 +11,8 @@ import type { DutyState } from './deliveryModel'
 export function useDutyStatus(enabled: boolean): DutyState | null | undefined {
   const [state, setState] = useState<DutyState | null>(null)
   useEffect(() => {
-    if (!enabled || !CCHahaDuty) return
-    const module = CCHahaDuty
+    if (!enabled || !CCWangMaiDuty) return
+    const module = CCWangMaiDuty
     const read = () => {
       try {
         setState(module.status())
@@ -28,9 +28,9 @@ export function useDutyStatus(enabled: boolean): DutyState | null | undefined {
       listener.remove()
     }
   }, [enabled])
-  return enabled && CCHahaDuty ? state : undefined
+  return enabled && CCWangMaiDuty ? state : undefined
 }
 
 export function requestBackgroundRunning() {
-  CCHahaDuty?.requestIgnoreBatteryOptimizations()
+  CCWangMaiDuty?.requestIgnoreBatteryOptimizations()
 }

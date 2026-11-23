@@ -5,9 +5,9 @@ import { tmpdir } from 'node:os'
 import { handleModelsApi } from './models.js'
 import { handleProvidersApi } from './providers.js'
 import { ProviderService } from '../services/providerService.js'
-import { hahaOAuthService } from '../services/hahaOAuthService.js'
-import { hahaOpenAIOAuthService } from '../services/hahaOpenAIOAuthService.js'
-import { hahaGrokOAuthService } from '../services/hahaGrokOAuthService.js'
+import { wangmaiOAuthService } from '../services/wangmaiOAuthService.js'
+import { wangmaiOpenAIOAuthService } from '../services/wangmaiOpenAIOAuthService.js'
+import { wangmaiGrokOAuthService } from '../services/wangmaiGrokOAuthService.js'
 import { clearDesktopClaudeModelCatalogCache } from '../services/claudeModelCatalog.js'
 import { clearOpenAICodexModelCatalogCache } from '../../services/openaiAuth/modelCatalog.js'
 import { OPENAI_CODEX_CLIENT_VERSION } from '../../services/openaiAuth/client.js'
@@ -58,11 +58,11 @@ describe('official model catalog API refresh', () => {
       network: { proxy: { mode: 'manual', url: 'http://127.0.0.1:7890' } },
       futureSetting: 'preserve',
     }))
-    await hahaOAuthService.saveTokens({ accessToken: 'fake-claude', refreshToken: null, expiresAt: null,
+    await wangmaiOAuthService.saveTokens({ accessToken: 'fake-claude', refreshToken: null, expiresAt: null,
       scopes: ['user:inference'], subscriptionType: 'pro' })
-    await hahaOpenAIOAuthService.saveTokens({ accessToken: 'fake-openai', refreshToken: null, expiresAt: null,
+    await wangmaiOpenAIOAuthService.saveTokens({ accessToken: 'fake-openai', refreshToken: null, expiresAt: null,
       accountId: 'fake-account', email: 'fixture@example.test' })
-    await hahaGrokOAuthService.saveTokens({ accessToken: 'fake-grok', refreshToken: null, expiresAt: null,
+    await wangmaiGrokOAuthService.saveTokens({ accessToken: 'fake-grok', refreshToken: null, expiresAt: null,
       email: 'fixture@example.test' })
   })
 
@@ -197,15 +197,15 @@ describe('official model catalog API refresh', () => {
     expect((await sessionWindows())[model]).toBe(475_000)
     expect(catalogRequests).toBe(2)
 
-    await hahaOpenAIOAuthService.deleteTokens()
+    await wangmaiOpenAIOAuthService.deleteTokens()
     expect((await sessionWindows())[model]).toBeUndefined()
     expect(catalogRequests).toBe(2)
   })
 
   test('refresh without a desktop login reports failure for every account provider', async () => {
-    await hahaOAuthService.deleteTokens()
-    await hahaOpenAIOAuthService.deleteTokens()
-    await hahaGrokOAuthService.deleteTokens()
+    await wangmaiOAuthService.deleteTokens()
+    await wangmaiOpenAIOAuthService.deleteTokens()
+    await wangmaiGrokOAuthService.deleteTokens()
     for (const provider of [...fixtures.map(fixture => fixture.provider), 'deepseek-account']) {
       const response = await handleModelsApi(...request(`/api/models/catalog?provider=${provider}&refresh=true`))
       expect(response.status).toBe(502)
@@ -237,7 +237,7 @@ describe('official model catalog API refresh', () => {
 
     const launch = new ProviderService().getProviderRuntimeEnv('openai-official')
     await oldRequestStarted.promise
-    await hahaOpenAIOAuthService.saveTokens({ accessToken: 'fake-new-token', refreshToken: null, expiresAt: null,
+    await wangmaiOpenAIOAuthService.saveTokens({ accessToken: 'fake-new-token', refreshToken: null, expiresAt: null,
       accountId: 'new-account', email: null })
     oldReply.resolve(reply(500_000))
 
@@ -273,9 +273,9 @@ describe('official model catalog API refresh', () => {
       const refresh = handleModelsApi(...request(`${path}&refresh=true`))
       await oldRequestStarted.promise
       if (outcome === 'logout') {
-        await hahaOpenAIOAuthService.deleteTokens()
+        await wangmaiOpenAIOAuthService.deleteTokens()
       } else {
-        await hahaOpenAIOAuthService.saveTokens({ accessToken: 'fake-new-token', refreshToken: null, expiresAt: null,
+        await wangmaiOpenAIOAuthService.saveTokens({ accessToken: 'fake-new-token', refreshToken: null, expiresAt: null,
           accountId: 'new-account', email: null })
       }
       oldReply.resolve(outcome === 'old rejection' ? new Response(null, { status: 401 }) : reply(500_000))
@@ -344,7 +344,7 @@ describe('official model catalog API refresh', () => {
     expect((await sessionWindows())[model]).toBe(750_000)
     expect(catalogRequests).toBe(2)
 
-    await hahaGrokOAuthService.deleteTokens()
+    await wangmaiGrokOAuthService.deleteTokens()
     expect((await sessionWindows())[model]).toBeUndefined()
     expect(catalogRequests).toBe(2)
   })

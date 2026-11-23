@@ -139,7 +139,7 @@ export function createMockOnlyRunners(
   return {
     async 'mock-provider-subagent-model'(ctx) {
       const endpoint = `${ctx.baseUrl}/api/providers`
-      const settingsPath = join(ctx.configDir, 'cc-haha', 'settings.json')
+      const settingsPath = join(ctx.configDir, 'wangmai', 'settings.json')
       const originalSettings = existsSync(settingsPath) ? readFileSync(settingsPath, 'utf8') : undefined
       const providers = await (await fetch(endpoint)).json() as { activeId: string | null }
       const request = async (method: string, route: string, body?: unknown) => {
@@ -199,7 +199,7 @@ export function createMockOnlyRunners(
     'mock-notebook-read-guards': ctx => runNotebookReadGuards(ctx, () => toolResultsSentUpstream(requests)),
     async 'mock-project-additional-directories'(ctx) {
       rmSync(join(ctx.artifactDir, 'project-directories.json'), { force: true })
-      const directory = mkdtempSync(join(dirname(ctx.workRoot), 'cc-haha-auxiliary 数据 files-'))
+      const directory = mkdtempSync(join(dirname(ctx.workRoot), 'wangmai-auxiliary 数据 files-'))
       const endpoint = `${ctx.baseUrl}/api/desktop-ui/preferences/project-directories`
       const update = async (additionalDirectories: string[]) => {
         const response = await fetch(endpoint, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ workDir: ctx.workRoot, additionalDirectories }) })

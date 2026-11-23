@@ -177,22 +177,22 @@ describe('Skills API', () => {
     const candidate = body.skills.find((item: { name: string }) => item.name === 'mention-fixture')
     expect(candidate.kind).toBe('skill')
     expect(candidate.modelText).toBe('Use the Skill tool with skill: "mention-fixture" for this request.')
-    expect(body.plugins.some((item: { source: string }) => item.source.endsWith('@haha-connectors'))).toBe(false)
+    expect(body.plugins.some((item: { source: string }) => item.source.endsWith('@wangmai-connectors'))).toBe(false)
   })
 
   it('offers bundled imagegen to @ mentions only when the session provider generates images', async () => {
     // The image provider is injected into each session's CLI, never into the
     // server. Nothing here may leak in from the developer's environment.
-    const imageEnvKeys = Object.keys(process.env).filter(key => key.startsWith('CC_HAHA_IMAGE_'))
+    const imageEnvKeys = Object.keys(process.env).filter(key => key.startsWith('WANGMAI_IMAGE_'))
     const savedImageEnv = Object.fromEntries(imageEnvKeys.map(key => [key, process.env[key]]))
     for (const key of imageEnvKeys) delete process.env[key]
     const models = { main: 'fixture-main', haiku: 'fixture-haiku', sonnet: 'fixture-sonnet', opus: 'fixture-opus' }
     const provider = (id: string, extra: Record<string, unknown> = {}) => ({
       id, presetId: 'custom', name: id, apiKey: 'fake-key', baseUrl: 'http://127.0.0.1:9/v1', models, ...extra,
     })
-    await fs.mkdir(path.join(tmpHome, '.claude', 'cc-haha'), { recursive: true })
+    await fs.mkdir(path.join(tmpHome, '.claude', 'wangmai'), { recursive: true })
     const writeProviders = (activeId: string | null) => fs.writeFile(
-      path.join(tmpHome, '.claude', 'cc-haha', 'providers.json'),
+      path.join(tmpHome, '.claude', 'wangmai', 'providers.json'),
       JSON.stringify({
         schemaVersion: 2,
         activeId,
@@ -228,7 +228,7 @@ describe('Skills API', () => {
       expect(imagegen.source).toBe('bundled')
       expect(imagegen.modelText).toBe('Use the Skill tool with skill: "imagegen" for this request.')
       // The provider decides availability without touching the server's env.
-      expect(Object.keys(process.env).some(key => key.startsWith('CC_HAHA_IMAGE_'))).toBe(false)
+      expect(Object.keys(process.env).some(key => key.startsWith('WANGMAI_IMAGE_'))).toBe(false)
     } finally {
       Object.assign(process.env, savedImageEnv)
     }

@@ -9,13 +9,13 @@ test('mobile checks isolate developer state, credentials, Expo network and doten
   try {
     const env = mobileCheckEnvironment(home, {
       HOME: '/real-user', EXPO_TOKEN: 'private-token', ANTHROPIC_API_KEY: 'private-key',
-      CC_HAHA_GOOGLE_SERVICES_FILE: '/real/firebase.json', PATH: process.env.PATH,
+      WANGMAI_GOOGLE_SERVICES_FILE: '/real/firebase.json', PATH: process.env.PATH,
     })
     expect(env.HOME).toBe(home)
     expect(env.CLAUDE_CONFIG_DIR).toBe(join(home, '.claude'))
     expect(env.EXPO_TOKEN).toBeUndefined()
     expect(env.ANTHROPIC_API_KEY).toBeUndefined()
-    expect(env.CC_HAHA_GOOGLE_SERVICES_FILE).toBeUndefined()
+    expect(env.WANGMAI_GOOGLE_SERVICES_FILE).toBeUndefined()
     expect(env.EXPO_OFFLINE).toBe('1')
     expect(env.EXPO_NO_TELEMETRY).toBe('1')
     expect(env.EXPO_NO_DOTENV).toBe('1')

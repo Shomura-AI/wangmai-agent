@@ -1,7 +1,7 @@
 /**
  * Desktop UI Preferences REST API
  *
- * GET  /api/desktop-ui/preferences          — read cc-haha UI preferences
+ * GET  /api/desktop-ui/preferences          — read wangmai UI preferences
  * PUT  /api/desktop-ui/preferences/sidebar  — persist sidebar project preferences
  * PUT  /api/desktop-ui/preferences/project-display-name — set or reset one project display name
  * GET  /api/desktop-ui/preferences/profile  — read profile identity and inline avatar

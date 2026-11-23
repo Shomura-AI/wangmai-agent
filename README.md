@@ -1,39 +1,39 @@
-# cc-haha
+# 网脉智能体 · WangMai Agent
 
 <p align="center">
-  <img src="docs/images/readme/cover-zh.webp" alt="cc-haha — Claude Code 桌面端 + 手机端" width="960">
+  <img src="docs/images/readme/cover-zh.webp" alt="网脉智能体 — Claude Code 桌面端 + 手机端" width="960">
 </p>
 
 <div align="center">
 
-[![GitHub Stars](https://img.shields.io/github/stars/NanmiCoder/cc-haha?style=social)](https://github.com/NanmiCoder/cc-haha/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/NanmiCoder/cc-haha?style=social)](https://github.com/NanmiCoder/cc-haha/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/NanmiCoder/cc-haha)](https://github.com/NanmiCoder/cc-haha/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/NanmiCoder/cc-haha)](https://github.com/NanmiCoder/cc-haha/pulls)
-[![License](https://img.shields.io/badge/License-Community_Source-orange)](https://github.com/NanmiCoder/cc-haha/blob/main/LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/wangmai-ai/wangmai-agent?style=social)](https://github.com/wangmai-ai/wangmai-agent/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/wangmai-ai/wangmai-agent?style=social)](https://github.com/wangmai-ai/wangmai-agent/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/wangmai-ai/wangmai-agent)](https://github.com/wangmai-ai/wangmai-agent/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/wangmai-ai/wangmai-agent)](https://github.com/wangmai-ai/wangmai-agent/pulls)
+[![License](https://img.shields.io/badge/License-Community_Source-orange)](https://github.com/wangmai-ai/wangmai-agent/blob/main/LICENSE)
 [![中文](https://img.shields.io/badge/🇨🇳_简体中文-当前-blue)](README.md)
 [![English](https://img.shields.io/badge/🇺🇸_English-Available-green)](README.en.md)
-[![Docs](https://img.shields.io/badge/📖_文档站点-Visit-FF7A00)](https://cchaha.ai)
+[![Docs](https://img.shields.io/badge/📖_文档站点-Visit-FF7A00)](https://wangmai.example.com)
 
 **简体中文** · [English](README.en.md)
 
 </div>
 
-cc-haha 是一个**桌面端 Claude Code 工作台**：多会话与全局搜索、分支 / Worktree 启动、Diff 审阅、内置浏览器预览、图形化权限审批、模型自选（Claude / ChatGPT / Grok / 预设 / 本地端点）、图片生成、MCP 与 SubAgent 可视化管理、Agent Teams 协作工作台、动态 Workflow 编排、模型请求追踪、Computer Use、技能市场、多主题、桌面宠物、手机 App 与 H5 远程访问、IM 接入和定时任务，集中在一个 macOS / Windows / Linux APP 里。**Computer Use 在 macOS 上使用原有原生引擎，在 Windows / Linux 上复用 agent-desktop；支持的后台语义操作不移动真实鼠标，物理输入仍会占用前台。** 配套的 Android / iPhone App 扫码连上电脑，离开工位也能审批、派任务。
+网脉智能体是一个**桌面端 Claude Code 工作台**：多会话与全局搜索、分支 / Worktree 启动、Diff 审阅、内置浏览器预览、图形化权限审批、模型自选（Claude / ChatGPT / Grok / 预设 / 本地端点）、图片生成、MCP 与 SubAgent 可视化管理、Agent Teams 协作工作台、动态 Workflow 编排、模型请求追踪、Computer Use、技能市场、多主题、桌面宠物、手机 App 与 H5 远程访问、IM 接入和定时任务，集中在一个 macOS / Windows / Linux APP 里。**Computer Use 在 macOS 上使用原有原生引擎，在 Windows / Linux 上复用 agent-desktop；支持的后台语义操作不移动真实鼠标，物理输入仍会占用前台。** 配套的 Android / iPhone App 扫码连上电脑，离开工位也能审批、派任务。
 
 <p align="center"><b>白金赞助商 · Modelflare</b></p>
 
 <p align="center">
-  <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=cchaha">
+  <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=wangmai">
     <img src="docs/images/sponsors/modelflare-banner-zh.png" width="720" alt="Modelflare：满血稳定不掺水，低成本享受全球 SOTA 模型">
   </a>
 </p>
 
-<p><sub>感谢 <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=cchaha">Modelflare</a> 赞助本项目！Modelflare：满血稳定不掺水，低成本享受全球 SOTA 模型。站点由美国 LLC 主体 Havenbyte LLC 运营，支持 GPT、Claude、Gemini、Grok 等主流模型和常用兼容协议，还支持 40 多种图片和视频模型，支持大陆正规商务合作。</sub></p>
+<p><sub>感谢 <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=wangmai">Modelflare</a> 赞助本项目！Modelflare：满血稳定不掺水，低成本享受全球 SOTA 模型。站点由美国 LLC 主体 Havenbyte LLC 运营，支持 GPT、Claude、Gemini、Grok 等主流模型和常用兼容协议，还支持 40 多种图片和视频模型，支持大陆正规商务合作。</sub></p>
 
 <p><sub><b>缓存补偿是一大亮点：</b>部分 OpenAI 价格优先、稳定和高级分组提供每日 65%、75%、85% 的缓存命中率保障，符合条件的请求没达到目标的，平台补偿差额，结算后可在用量看板查看。</sub></p>
 
-<p><sub><b>特惠活动：</b>单笔充值 US$20 即可解锁 0.015 倍价格倍率的 GPT 特惠分组，单笔充值 US$50 即可解锁 0.03 倍价格倍率的 Claude 特惠分组。通过 <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=cchaha">专属链接注册</a>即可参与。</sub></p>
+<p><sub><b>特惠活动：</b>单笔充值 US$20 即可解锁 0.015 倍价格倍率的 GPT 特惠分组，单笔充值 US$50 即可解锁 0.03 倍价格倍率的 Claude 特惠分组。通过 <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=wangmai">专属链接注册</a>即可参与。</sub></p>
 
 <p align="center">
   <a href="#功能预览">功能预览</a> · <a href="#安装">安装</a> · <a href="#桌面端亮点">桌面端亮点</a> · <a href="#更多文档">更多文档</a> · <a href="#赞助与合作">赞助与合作</a>
@@ -44,8 +44,8 @@ cc-haha 是一个**桌面端 Claude Code 工作台**：多会话与全局搜索�
 ## 功能预览
 
 <p align="center">
-  <a href="https://github.com/NanmiCoder/cc-haha/releases"><img src="https://img.shields.io/badge/⬇_下载桌面端-macOS_%7C_Windows_%7C_Linux-FF7A00?style=for-the-badge" alt="下载桌面端"></a>
-  <a href="https://github.com/NanmiCoder/cc-haha/releases/latest"><img src="https://img.shields.io/badge/Android-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="下载 Android APK"></a>
+  <a href="https://github.com/wangmai-ai/wangmai-agent/releases"><img src="https://img.shields.io/badge/⬇_下载桌面端-macOS_%7C_Windows_%7C_Linux-FF7A00?style=for-the-badge" alt="下载桌面端"></a>
+  <a href="https://github.com/wangmai-ai/wangmai-agent/releases/latest"><img src="https://img.shields.io/badge/Android-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="下载 Android APK"></a>
   <a href="https://testflight.apple.com/join/Nd49JrWZ"><img src="https://img.shields.io/badge/iOS-TestFlight-1F1A17?style=for-the-badge&logo=apple&logoColor=white" alt="通过 TestFlight 安装 iOS App"></a>
 </p>
 
@@ -106,12 +106,12 @@ cc-haha 是一个**桌面端 Claude Code 工作台**：多会话与全局搜索�
     </tr>
     <tr>
       <td align="center" valign="middle">
-        <a href="https://moeapi.cloud/register?utm_source=github&amp;utm_campaign=cchaha">
+        <a href="https://moeapi.cloud/register?utm_source=github&amp;utm_campaign=wangmai">
           <img src="docs/images/sponsors/moeapi-logo.png" width="180" alt="Moe API">
         </a>
       </td>
       <td valign="middle">
-        感谢 <a href="https://moeapi.cloud/register?utm_source=github&amp;utm_campaign=cchaha">Moe API</a> 对本项目的赞助！Moe API 是面向开发者与团队的统一大模型 API 平台，一个 Key 即可接入 GPT、Claude、Gemini、Grok、DeepSeek、Kimi、GLM、Qwen 等 120+ 模型，原生兼容 OpenAI（Chat / Responses）、Anthropic Messages 与 Gemini 协议，可直接用于 cc-haha、Claude Code、Codex 等工具。价格按 1 元 = 1 美元额度计费，Codex 自营号池倍率低至 0.1x，Gemini 自营 0.25x、Grok 0.2x、Claude Code 第三方号池 0.35x、DeepSeek / GLM / Kimi 0.5x 起，并支持 GPT Image、Gemini 生图。支持支付宝、微信扫码充值，余额实时到账；可按需开具发票，余额支持退款，团队采购与报销都方便。全球 CDN 线路，API 请求与响应正文不在平台持久化保存。
+        感谢 <a href="https://moeapi.cloud/register?utm_source=github&amp;utm_campaign=wangmai">Moe API</a> 对本项目的赞助！Moe API 是面向开发者与团队的统一大模型 API 平台，一个 Key 即可接入 GPT、Claude、Gemini、Grok、DeepSeek、Kimi、GLM、Qwen 等 120+ 模型，原生兼容 OpenAI（Chat / Responses）、Anthropic Messages 与 Gemini 协议，可直接用于 wangmai、Claude Code、Codex 等工具。价格按 1 元 = 1 美元额度计费，Codex 自营号池倍率低至 0.1x，Gemini 自营 0.25x、Grok 0.2x、Claude Code 第三方号池 0.35x、DeepSeek / GLM / Kimi 0.5x 起，并支持 GPT Image、Gemini 生图。支持支付宝、微信扫码充值，余额实时到账；可按需开具发票，余额支持退款，团队采购与报销都方便。全球 CDN 线路，API 请求与响应正文不在平台持久化保存。
       </td>
     </tr>
     <tr>
@@ -145,16 +145,16 @@ cc-haha 是一个**桌面端 Claude Code 工作台**：多会话与全局搜索�
   </tbody>
 </table>
 
-📧 **联系邮箱**：relakkes@gmail.com
+📧 **联系邮箱**：dev@wangmai.example.com
 
 ---
 
 ## 安装
 
-1. 前往 [Releases](https://github.com/NanmiCoder/cc-haha/releases) 下载 macOS / Windows / Linux 桌面端安装包。
+1. 前往 [Releases](https://github.com/wangmai-ai/wangmai-agent/releases) 下载 macOS / Windows / Linux 桌面端安装包。
 2. 首次启动后，在桌面端设置里配置模型提供商、API Key 和默认模型。
 3. 正式 macOS Release 需要经过签名和公证；如果安装的是 draft/unsigned 临时包，首次打开可能仍需手动放行。Windows 未签名安装包可能出现 SmartScreen 提示，点「更多信息」→「仍要运行」即可。详见 [桌面端安装指南](docs/start/install.md)。
-4. 手机端（可选）：Android 在 Releases 下载 `cc-haha-mobile-*.apk` 安装；iPhone 先装 TestFlight，再打开[公开链接](https://testflight.apple.com/join/Nd49JrWZ)加入测试。手机 App 需要桌面端 v0.7.6 或更新版本。在桌面端「手机连接」里扫码配对，同一 Wi-Fi 直连，外出用 Cloudflare 连接，详见 [手机 App 与远程连接](docs/desktop/remote.md)。
+4. 手机端（可选）：Android 在 Releases 下载 `wangmai-mobile-*.apk` 安装；iPhone 先装 TestFlight，再打开[公开链接](https://testflight.apple.com/join/Nd49JrWZ)加入测试。手机 App 需要桌面端 v0.7.6 或更新版本。在桌面端「手机连接」里扫码配对，同一 Wi-Fi 直连，外出用 Cloudflare 连接，详见 [手机 App 与远程连接](docs/desktop/remote.md)。
 
 发布可信度与隐私：[Code signing policy](docs/start/code-signing.md) · [隐私与联网说明](docs/start/privacy.md)
 
@@ -175,7 +175,7 @@ cc-haha 是一个**桌面端 Claude Code 工作台**：多会话与全局搜索�
 <b>支付宝</b>
 </td>
 <td align="center" width="33%">
-<a href="https://buymeacoffee.com/relakkes" target="_blank">
+<a href="https://buymeacoffee.com/wangmai" target="_blank">
 <img src="docs/images/donate/bmc_button.png" width="250" alt="Buy Me a Coffee">
 </a><br>
 <b>Buy Me a Coffee</b>
@@ -213,7 +213,7 @@ cc-haha 是一个**桌面端 Claude Code 工作台**：多会话与全局搜索�
 
 ## 更多文档
 
-完整文档站：<https://cchaha.ai>
+完整文档站：<https://wangmai.example.com>
 
 | 分区 | 文档 |
 |------|------|
@@ -248,22 +248,22 @@ cc-haha 是一个**桌面端 Claude Code 工作台**：多会话与全局搜索�
 - [cc-switch](https://github.com/farion1231/cc-switch)：模型供应商配置能力参考。
 - [t3code](https://github.com/pingdotgg/t3code)：桌面端 UI 质感与交互设计参考。
 - [LINUX DO](https://linux.do/)：新的理想型开发者社区。
-- [AtomGit](https://atomgit.com/NanmiCoder/cc-haha)：为本项目提供国内代码托管。
+- [AtomGit](https://atomgit.com/wangmai-ai/wangmai-agent)：为本项目提供国内代码托管。
 
 ---
 
 ## ⭐ Star History
 
-如果这个项目对你有帮助，欢迎点一个 ⭐ Star，让更多人发现 cc-haha。
+如果这个项目对你有帮助，欢迎点一个 ⭐ Star，让更多人发现 wangmai。
 
-<a href="https://www.repostars.dev/?repos=NanmiCoder%2Fcc-haha&theme=ocean">
-  <img alt="Star History Chart" src="https://www.repostars.dev/api/embed?repo=NanmiCoder%2Fcc-haha&theme=ocean" />
+<a href="https://www.repostars.dev/?repos=wangmai-ai%2Fwangmai&theme=ocean">
+  <img alt="Star History Chart" src="https://www.repostars.dev/api/embed?repo=wangmai-ai%2Fwangmai&theme=ocean" />
 </a>
 
 ---
 
 ## 许可说明
 
-当前采用 [cc-haha Community Source License 1.0](LICENSE)。允许个人非商业使用及企业内部自用；接单、对外商业盈利、收费修改或二次开发、商业分发及付费服务须事先取得书面商业授权；二次分发须显著保留来源署名。历史 MIT 授权与第三方许可继续有效。详见[许可说明](LICENSING.md)。当前许可属于源码可用许可，不是 OSI 认可的开源许可证。
+当前采用 [wangmai Community Source License 1.0](LICENSE)。允许个人非商业使用及企业内部自用；接单、对外商业盈利、收费修改或二次开发、商业分发及付费服务须事先取得书面商业授权；二次分发须显著保留来源署名。历史 MIT 授权与第三方许可继续有效。详见[许可说明](LICENSING.md)。当前许可属于源码可用许可，不是 OSI 认可的开源许可证。
 
 复用的 agent-desktop 原有代码继续适用 Apache-2.0，其原授权不受本项目 Community Source License 的额外限制；第三方依赖保留各自许可，见[第三方许可](THIRD_PARTY_LICENSES.md)。

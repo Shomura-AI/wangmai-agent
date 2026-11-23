@@ -39,17 +39,17 @@ const PROJECTS: RecentProject[] = [
     realPath: '/Users/nanmi/workspace/myself_code/MediaCrawler',
     projectName: 'MediaCrawler',
     isGit: true,
-    repoName: 'NanmiCoder/MediaCrawler',
+    repoName: 'wangmai-ai/MediaCrawler',
     branch: 'main',
     modifiedAt: '2026-09-18T10:00:00Z',
     sessionCount: 12,
   },
   {
-    projectPath: '/Users/nanmi/workspace/myself_code/claude-code-haha',
-    realPath: '/Users/nanmi/workspace/myself_code/claude-code-haha',
-    projectName: 'claude-code-haha',
+    projectPath: '/Users/nanmi/workspace/myself_code/wangmai-agent',
+    realPath: '/Users/nanmi/workspace/myself_code/wangmai-agent',
+    projectName: 'wangmai-agent',
     isGit: true,
-    repoName: 'NanmiCoder/cc-haha',
+    repoName: 'wangmai-ai/wangmai-agent',
     branch: 'main',
     modifiedAt: '2026-09-17T10:00:00Z',
     sessionCount: 30,
@@ -98,24 +98,24 @@ describe('DirectoryPicker project list', () => {
 
   it('loads the full project list with a deep scan', async () => {
     openPicker()
-    await screen.findByText('NanmiCoder/MediaCrawler')
+    await screen.findByText('wangmai-ai/MediaCrawler')
     expect(sessionsApi.getRecentProjects).toHaveBeenCalledWith(500, 5000)
     // All known projects render, not just a top-10 slice.
-    expect(screen.getByText('NanmiCoder/cc-haha')).toBeInTheDocument()
+    expect(screen.getByText('wangmai-ai/wangmai-agent')).toBeInTheDocument()
     expect(screen.getByText('399-Union-Alpha-新模型')).toBeInTheDocument()
   })
 
   it('filters projects by fuzzy query and restores them when cleared', async () => {
     openPicker()
     const search = await screen.findByPlaceholderText('搜索项目…')
-    fireEvent.change(search, { target: { value: 'haha' } })
+    fireEvent.change(search, { target: { value: 'wangmai' } })
 
-    expect(screen.getByText('NanmiCoder/cc-haha')).toBeInTheDocument()
-    expect(screen.queryByText('NanmiCoder/MediaCrawler')).not.toBeInTheDocument()
+    expect(screen.getByText('wangmai-ai/wangmai-agent')).toBeInTheDocument()
+    expect(screen.queryByText('wangmai-ai/MediaCrawler')).not.toBeInTheDocument()
     expect(screen.queryByText('399-Union-Alpha-新模型')).not.toBeInTheDocument()
 
     fireEvent.change(search, { target: { value: '' } })
-    expect(screen.getByText('NanmiCoder/MediaCrawler')).toBeInTheDocument()
+    expect(screen.getByText('wangmai-ai/MediaCrawler')).toBeInTheDocument()
   })
 
   it('shows an empty-filter state instead of an empty list', async () => {
@@ -132,7 +132,7 @@ describe('DirectoryPicker project list', () => {
     fireEvent.keyDown(search, { key: 'ArrowDown' })
     fireEvent.keyDown(search, { key: 'Enter' })
 
-    expect(onChange).toHaveBeenCalledWith('/Users/nanmi/workspace/myself_code/claude-code-haha')
+    expect(onChange).toHaveBeenCalledWith('/Users/nanmi/workspace/myself_code/wangmai-agent')
     await waitFor(() => {
       expect(screen.queryByTestId('directory-picker-menu')).not.toBeInTheDocument()
     })
@@ -156,7 +156,7 @@ describe('DirectoryPicker project list', () => {
 
     // No repo context → the pill opens straight on the directory view.
     fireEvent.click(screen.getByRole('button', { name: /选择项目/ }))
-    await screen.findByText('NanmiCoder/MediaCrawler')
+    await screen.findByText('wangmai-ai/MediaCrawler')
 
     fireEvent.click(screen.getByText('新建项目'))
 
@@ -164,12 +164,12 @@ describe('DirectoryPicker project list', () => {
 
     // Pick the source folder through the modal's own picker.
     fireEvent.click(within(dialog).getByText('选择项目...'))
-    const folderRow = await screen.findByRole('option', { name: /cc-haha/ })
+    const folderRow = await screen.findByRole('option', { name: /wangmai/ })
     fireEvent.click(folderRow)
 
     // The name defaults to the folder basename; rename it.
     const nameInput = within(dialog).getByLabelText(/项目名称/) as HTMLInputElement
-    await waitFor(() => expect(nameInput.value).toBe('claude-code-haha'))
+    await waitFor(() => expect(nameInput.value).toBe('wangmai-agent'))
     fireEvent.change(nameInput, { target: { value: '我的项目' } })
 
     await waitFor(() => expect(within(dialog).getByRole('button', { name: '创建项目' })).not.toBeDisabled())
@@ -177,11 +177,11 @@ describe('DirectoryPicker project list', () => {
 
     await waitFor(() => {
       expect(desktopUiPreferencesApi.updateProjectDisplayName)
-        .toHaveBeenCalledWith('/Users/nanmi/workspace/myself_code/claude-code-haha', '我的项目')
+        .toHaveBeenCalledWith('/Users/nanmi/workspace/myself_code/wangmai-agent', '我的项目')
     })
-    expect(desktopUiPreferencesApi.updateProjectDirectories).toHaveBeenCalledWith('/Users/nanmi/workspace/myself_code/claude-code-haha', [], { createProject: true })
+    expect(desktopUiPreferencesApi.updateProjectDirectories).toHaveBeenCalledWith('/Users/nanmi/workspace/myself_code/wangmai-agent', [], { createProject: true })
     await waitFor(() => {
-      expect(onWorkDirChange).toHaveBeenCalledWith('/Users/nanmi/workspace/myself_code/claude-code-haha')
+      expect(onWorkDirChange).toHaveBeenCalledWith('/Users/nanmi/workspace/myself_code/wangmai-agent')
     })
     await waitFor(() => {
       expect(screen.queryByRole('dialog', { name: '创建项目' })).not.toBeInTheDocument()

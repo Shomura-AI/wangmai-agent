@@ -69,13 +69,13 @@ function withoutHostManagedProviderVars(
 // Internal launch controls are never supplied by settings.env. This also
 // covers sdk-cli/OAuth sessions without host-managed provider routing.
 const HOST_TEAM_ENV_KEYS = new Set([
-  'CC_HAHA_AGENT_TEAMS_ENABLED',
-  'CC_HAHA_AGENT_TEAMS_DEFAULT',
+  'WANGMAI_AGENT_TEAMS_ENABLED',
+  'WANGMAI_AGENT_TEAMS_DEFAULT',
 ])
 
 const HOST_OWNED_ENV_KEYS = new Set([
   'CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST',
-  'CC_HAHA_LOCAL_ACCESS_TOKEN',
+  'WANGMAI_LOCAL_ACCESS_TOKEN',
 ])
 
 function withoutHostOwnedEnvVars(
@@ -127,12 +127,12 @@ function filterSettingsEnv(
 }
 
 /**
- * Read env vars from ~/.claude/cc-haha/settings.json (Haha-specific provider
+ * Read env vars from ~/.claude/wangmai/settings.json (WangMai-specific provider
  * config). This file is written by ProviderService.syncToSettings() and
  * contains ANTHROPIC_BASE_URL, ANTHROPIC_AUTH_TOKEN, model defaults, etc.
  * Returns an empty object if the file doesn't exist or is invalid.
  */
-function getCcHahaSettingsEnv(): Record<string, string> {
+function getWangMaiSettingsEnv(): Record<string, string> {
   const configDir = getClaudeConfigHomeDir()
   const serverPort =
     !isEnvTruthy(process.env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST) &&
@@ -140,8 +140,8 @@ function getCcHahaSettingsEnv(): Record<string, string> {
       ? ensureStandaloneProviderProxy()
       : undefined
   try {
-    const ccHahaSettings = join(configDir, 'cc-haha', 'settings.json')
-    const raw = readFileSync(ccHahaSettings, 'utf-8')
+    const wangmaiSettings = join(configDir, 'wangmai', 'settings.json')
+    const raw = readFileSync(wangmaiSettings, 'utf-8')
     const parsed = JSON.parse(raw) as { env?: Record<string, string>; providerEnvOwner?: unknown }
     const settingsEnv = normalizeLegacyDeepSeekManagedEnv(parsed.env ?? {}).env
     return mergeActiveProviderManagedEnv(settingsEnv, configDir, { serverPort, settingsProviderId: parsed.providerEnvOwner })
@@ -208,11 +208,11 @@ export function applySafeConfigEnvironmentVariables(): void {
     )
   }
 
-  // cc-haha provider isolation: apply env from ~/.claude/cc-haha/settings.json
-  // AFTER userSettings so Haha-specific provider config takes priority over
-  // the original Claude Code's settings. This prevents Haha from polluting
+  // wangmai provider isolation: apply env from ~/.claude/wangmai/settings.json
+  // AFTER userSettings so WangMai-specific provider config takes priority over
+  // the original Claude Code's settings. This prevents WangMai from polluting
   // ~/.claude/settings.json while still allowing it to override provider vars.
-  Object.assign(process.env, filterSettingsEnv(getCcHahaSettingsEnv()))
+  Object.assign(process.env, filterSettingsEnv(getWangMaiSettingsEnv()))
 
   // Compute remote-managed-settings eligibility now, with userSettings and
   // flagSettings env applied. Eligibility reads CLAUDE_CODE_USE_BEDROCK,
@@ -255,9 +255,9 @@ export function applyConfigEnvironmentVariables(): void {
 
   Object.assign(process.env, filterSettingsEnv(getSettings_DEPRECATED()?.env))
 
-  // cc-haha provider isolation: same as in applySafeConfigEnvironmentVariables,
-  // apply Haha-specific env last so it overrides the original settings.
-  Object.assign(process.env, filterSettingsEnv(getCcHahaSettingsEnv()))
+  // wangmai provider isolation: same as in applySafeConfigEnvironmentVariables,
+  // apply WangMai-specific env last so it overrides the original settings.
+  Object.assign(process.env, filterSettingsEnv(getWangMaiSettingsEnv()))
 
   // Clear caches so agents are rebuilt with the new env vars
   clearCACertsCache()

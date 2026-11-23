@@ -17,7 +17,7 @@ function powershellQuote(value: string) {
 
 export function renderNativeConnectorSkill(definition: ConnectorDefinition, installation: ConnectorInstallation): string {
   const expectedName = `office-${definition.id}`
-  if (definition.pluginId !== `${expectedName}@haha-connectors` || !nativeConnectorRecipes[definition.id]) {
+  if (definition.pluginId !== `${expectedName}@wangmai-connectors` || !nativeConnectorRecipes[definition.id]) {
     throw new Error('Invalid managed native connector identity')
   }
   const recipe = nativeConnectorRecipes[definition.id]!

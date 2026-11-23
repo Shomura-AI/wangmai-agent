@@ -64,7 +64,7 @@ test('zero-duration single-message tasks do not invent a minute of work', () => 
 })
 
 test('profile subtitles only open ordinary web links', () => {
-  expect(subtitleLink('github.com/NanmiCoder/cc-haha')).toBe('https://github.com/NanmiCoder/cc-haha')
+  expect(subtitleLink('github.com/wangmai-ai/wangmai-agent')).toBe('https://github.com/wangmai-ai/wangmai-agent')
   expect(subtitleLink('https://example.com')).toBe('https://example.com/')
   for (const value of ['javascript:alert(1)', 'file:///tmp/private', 'https://user:password@example.com', '我的日常记录'])
     expect(subtitleLink(value)).toBeNull()

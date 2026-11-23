@@ -8,7 +8,7 @@ import { createSandboxedTestEnvironment } from '../../../scripts/pr/test-environ
 import type { Message } from '../../types/message.js'
 import type { ImageBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs'
 
-const inFixtureProcess = process.env.CC_HAHA_IMAGE_DIMENSIONS_FIXTURE === '1'
+const inFixtureProcess = process.env.WANGMAI_IMAGE_DIMENSIONS_FIXTURE === '1'
 const fixtureTest = inFixtureProcess ? test : test.skip
 
 if (!inFixtureProcess) {
@@ -16,7 +16,7 @@ if (!inFixtureProcess) {
     const home = await mkdtemp(join(tmpdir(), 'image-dimensions-worker-'))
     const child = Bun.spawn([process.execPath, '--no-env-file', 'test', fileURLToPath(import.meta.url)], {
       cwd: home, stdin: 'ignore', stdout: 'pipe', stderr: 'pipe',
-      env: createSandboxedTestEnvironment(home, { CC_HAHA_IMAGE_DIMENSIONS_FIXTURE: '1' }),
+      env: createSandboxedTestEnvironment(home, { WANGMAI_IMAGE_DIMENSIONS_FIXTURE: '1' }),
     })
     const timer = setTimeout(() => child.kill('SIGKILL'), 50_000)
     try {
@@ -313,7 +313,7 @@ fixtureTest('real CLI resumes a persisted 20-image session and sends 21 complian
         NODE_ENV: 'production', ANTHROPIC_API_KEY: 'offline-cli-fixture-key',
         ANTHROPIC_BASE_URL: `http://127.0.0.1:${server.port}`, CALLER_DIR: project,
         CLAUDE_CODE_SIMPLE: '1', CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',
-        DISABLE_AUTOUPDATER: '1', CC_HAHA_SKIP_DOTENV: '1',
+        DISABLE_AUTOUPDATER: '1', WANGMAI_SKIP_DOTENV: '1',
       }),
     })
     const timer = setTimeout(() => child.kill('SIGKILL'), 15_000)

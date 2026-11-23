@@ -186,7 +186,7 @@ async function main() {
       }
     }
 
-    const diagnostics = join(sandbox.configDir, 'cc-haha', 'diagnostics', 'diagnostics.jsonl')
+    const diagnostics = join(sandbox.configDir, 'wangmai', 'diagnostics', 'diagnostics.jsonl')
     if (existsSync(diagnostics)) {
       const stalls = readFileSync(diagnostics, 'utf8').split('\n').filter(line => line.includes('event_loop'))
       if (stalls.length) console.log(`\nevent-loop stall diagnostics: ${stalls.length}`)

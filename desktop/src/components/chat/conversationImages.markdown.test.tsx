@@ -51,7 +51,7 @@ describe('conversation gallery Markdown parity', () => {
   })
 
   it('ignores srcset sources and keeps managed generation images owned by their result card', () => {
-    const managed = '/Users/me/.claude/cc-haha/generated-images/session/generated.png'
+    const managed = '/Users/me/.claude/wangmai/generated-images/session/generated.png'
     expect(collect([
       `<img src="${first}" srcset="${second}">`,
       `<img src="${managed}">`,

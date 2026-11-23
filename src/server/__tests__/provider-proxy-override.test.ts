@@ -148,8 +148,8 @@ describe('per-provider proxy override', () => {
 
   describe('providers index normalization', () => {
     test('a legacy index without proxy fields loads unchanged', async () => {
-      const ccHahaDir = path.join(tmpDir, 'cc-haha')
-      await fs.mkdir(ccHahaDir, { recursive: true })
+      const wangmaiDir = path.join(tmpDir, 'wangmai')
+      await fs.mkdir(wangmaiDir, { recursive: true })
       const legacy = {
         schemaVersion: 8,
         activeId: 'legacy-provider',
@@ -164,7 +164,7 @@ describe('per-provider proxy override', () => {
         }],
         providerOrder: ['legacy-provider'],
       }
-      await fs.writeFile(path.join(ccHahaDir, 'providers.json'), JSON.stringify(legacy))
+      await fs.writeFile(path.join(wangmaiDir, 'providers.json'), JSON.stringify(legacy))
 
       const svc = new ProviderService()
       const provider = await svc.getProvider('legacy-provider')

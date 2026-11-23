@@ -14,9 +14,9 @@
 
 选择规则（`mobile/src/state/pushProvider.ts`）：Android 有 `desktop` 就用 `desktop`；否则电脑自己配了该平台凭据就直连；iOS 再退到 `expo`。旧电脑不返回 `providers`，手机按原来的直连流程登记，不发送 `provider` 字段。
 
-**Expo 中转的前提**（发布者一次性操作，不在仓库里）：在 expo.dev 的项目凭据里为 `com.yunce.cchaha.mobile` 配好 APNs Push Key（`bunx eas-cli credentials --platform ios`），并保持 Expo 的 Enhanced Push Security 关闭——开启后发送需要 Expo access token，而这个 token 不能放进分发给用户的电脑。关闭时，持有手机 Expo token 的人都能给这台手机发通知；token 只登记在已配对的电脑上，且加密保存。电脑把通知发往 `https://exp.host/--/api/v2/push/send`（走 cc-haha 网络设置里的代理），通知标题和正文会经过 Expo 和 Apple；不想让命令原文经过第三方的用户可以关掉「锁屏上显示命令」。Expo 只回执 `DeviceNotRegistered` 时电脑删除登记，其余错误按投递失败重试；最近一次 Expo 发送失败的原因通过 `GET` 的 `relayErrors.expo` 告诉手机，下一次发送成功后清除，手机设置页据此显示「推送发送失败」并提示配置网络代理。电脑的推送轮询分两条互不等待的通道：手机拉取只是入队，Expo / APNs / FCM 要等网络（连不上时每次最多 15 秒），所以中转卡住不会拖慢安卓的提醒。
+**Expo 中转的前提**（发布者一次性操作，不在仓库里）：在 expo.dev 的项目凭据里为 `com.wangmai.agent.mobile` 配好 APNs Push Key（`bunx eas-cli credentials --platform ios`），并保持 Expo 的 Enhanced Push Security 关闭——开启后发送需要 Expo access token，而这个 token 不能放进分发给用户的电脑。关闭时，持有手机 Expo token 的人都能给这台手机发通知；token 只登记在已配对的电脑上，且加密保存。电脑把通知发往 `https://exp.host/--/api/v2/push/send`（走 wangmai 网络设置里的代理），通知标题和正文会经过 Expo 和 Apple；不想让命令原文经过第三方的用户可以关掉「锁屏上显示命令」。Expo 只回执 `DeviceNotRegistered` 时电脑删除登记，其余错误按投递失败重试；最近一次 Expo 发送失败的原因通过 `GET` 的 `relayErrors.expo` 告诉手机，下一次发送成功后清除，手机设置页据此显示「推送发送失败」并提示配置网络代理。电脑的推送轮询分两条互不等待的通道：手机拉取只是入队，Expo / APNs / FCM 要等网络（连不上时每次最多 15 秒），所以中转卡住不会拖慢安卓的提醒。
 
-**手机拉取**：Android 对每台电脑生成一个随机拉取 token（32 字节，存 SecureStore；一台电脑只知道自己的那个，移除电脑时删除）。App 每次登记成功后把这台电脑的地址、认证头和 token 单独交给本地模块 `mobile/modules/cchaha-duty` 的前台服务（类型 `specialUse`，通知栏常驻「正在值守」）；服务自己保存电脑列表，App 只增删单台电脑，所以启动时暂时连不上的电脑不会被挤出列表。服务对每台电脑循环 `POST /api/sessions/mobile-push/pull`，电脑最多挂起 25 秒，有通知立即返回；手机按 id 去重并在下一次请求里 `ack`，电脑删除已确认的条目，未确认的保留 10 分钟、每个 token 最多 32 条。耗电上，服务只在被唤醒（回复到达、重试到期、放弃半开连接）到下一次拉取发出之间持有唤醒锁，拉取挂在电脑上时靠电脑的回复唤醒手机。连接失败按 2 秒起倍增、最长 30 秒重试；一台电脑连续 5 分钟连不上（换了网络、电脑合盖）后改为每 5 分钟试一次，打开 App 或网络变化时立即重连。线程计时在 CPU 休眠时不走，所以服务另有一个约每分钟的系统闹钟（`setAndAllowWhileIdle`，Doze 下会被拉长）：只处理已到期的重试和超过 40 秒没有回音的半开连接，其余时候不持锁。配置用 Android Keystore 加密保存，开机和 App 更新后自动恢复。只有电脑本身的两种回答会让服务停止拉取这台电脑：401（配对凭据被拒）和 404 `NO_REGISTRATION`（电脑没有这台手机的登记），直到 App 重新登记；隧道、代理返回的 403/5xx 都按网络错误重试。国产 ROM 仍可能清理后台：设置页会引导「允许后台运行」（电池优化豁免）和到应用设置里打开自启动。
+**手机拉取**：Android 对每台电脑生成一个随机拉取 token（32 字节，存 SecureStore；一台电脑只知道自己的那个，移除电脑时删除）。App 每次登记成功后把这台电脑的地址、认证头和 token 单独交给本地模块 `mobile/modules/wangmai-duty` 的前台服务（类型 `specialUse`，通知栏常驻「正在值守」）；服务自己保存电脑列表，App 只增删单台电脑，所以启动时暂时连不上的电脑不会被挤出列表。服务对每台电脑循环 `POST /api/sessions/mobile-push/pull`，电脑最多挂起 25 秒，有通知立即返回；手机按 id 去重并在下一次请求里 `ack`，电脑删除已确认的条目，未确认的保留 10 分钟、每个 token 最多 32 条。耗电上，服务只在被唤醒（回复到达、重试到期、放弃半开连接）到下一次拉取发出之间持有唤醒锁，拉取挂在电脑上时靠电脑的回复唤醒手机。连接失败按 2 秒起倍增、最长 30 秒重试；一台电脑连续 5 分钟连不上（换了网络、电脑合盖）后改为每 5 分钟试一次，打开 App 或网络变化时立即重连。线程计时在 CPU 休眠时不走，所以服务另有一个约每分钟的系统闹钟（`setAndAllowWhileIdle`，Doze 下会被拉长）：只处理已到期的重试和超过 40 秒没有回音的半开连接，其余时候不持锁。配置用 Android Keystore 加密保存，开机和 App 更新后自动恢复。只有电脑本身的两种回答会让服务停止拉取这台电脑：401（配对凭据被拒）和 404 `NO_REGISTRATION`（电脑没有这台手机的登记），直到 App 重新登记；隧道、代理返回的 403/5xx 都按网络错误重试。国产 ROM 仍可能清理后台：设置页会引导「允许后台运行」（电池优化豁免）和到应用设置里打开自启动。
 
 ## 电脑配置
 
@@ -25,16 +25,16 @@
 iOS 直连需要与已安装 App 的 bundle ID 和签名环境对应的 APNs 配置。仅从明确设置的环境变量读取；不会扫描钥匙串或开发者目录。
 
 ```sh
-CC_HAHA_APNS_KEY_PATH=/absolute/path/AuthKey.p8
-CC_HAHA_APNS_KEY_ID=YOUR_KEY_ID
-CC_HAHA_APNS_TEAM_ID=YOUR_TEAM_ID
-CC_HAHA_APNS_TOPIC=com.yunce.cchaha.mobile
-CC_HAHA_APNS_SANDBOX=false
+WANGMAI_APNS_KEY_PATH=/absolute/path/AuthKey.p8
+WANGMAI_APNS_KEY_ID=YOUR_KEY_ID
+WANGMAI_APNS_TEAM_ID=YOUR_TEAM_ID
+WANGMAI_APNS_TOPIC=com.wangmai.agent.mobile
+WANGMAI_APNS_SANDBOX=false
 ```
 
 `SANDBOX=true` 用于开发 APNs 环境，Ad Hoc / TestFlight / 正式分发通常使用生产环境。应以实际签名 entitlement 为准，不能用手机型号判断。普通通知使用 bundle topic；实时活动自动使用 `.push-type.liveactivity` 后缀。实时活动需要用户允许、系统支持及具备正确 entitlement 的原生构建。
 
-Android 使用 `GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/service-account.json`。当前支持显式 service-account ADC 文件；不自动读取 gcloud 用户登录或云机器元数据。手机必须配置属于同一 Firebase 项目的原生 FCM 文件并获得设备 token。通知 channel 默认为 `cc-haha`；登记带 `delivery.channels: 'split'` 时按事件使用 `cc-haha-decisions` / `cc-haha-completed` / `cc-haha-errors`。没有这部分配置不能宣称后台推送可用。
+Android 使用 `GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/service-account.json`。当前支持显式 service-account ADC 文件；不自动读取 gcloud 用户登录或云机器元数据。手机必须配置属于同一 Firebase 项目的原生 FCM 文件并获得设备 token。通知 channel 默认为 `wangmai`；登记带 `delivery.channels: 'split'` 时按事件使用 `wangmai-decisions` / `wangmai-completed` / `wangmai-errors`。没有这部分配置不能宣称后台推送可用。
 
 电脑必须保持运行且可连接 Apple / Google。系统免打扰、设备网络、通知权限和系统节流仍会影响展示；接口的 `configured` 仅表明已配置文件，不能证明真机已收到。投递失败显示不含凭据的诊断，APNs / FCM 报废的 token 会移除。
 
@@ -47,7 +47,7 @@ Android 使用 `GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/service-account.js
 - `PUT /api/sessions/mobile-push` → `{ registered, status: 'registered' | 'notConfigured', id?, expiresAt? }`。
 - `DELETE /api/sessions/mobile-push`，body `{ token: ordinaryDevicePushToken, hostId }` → `{ removed: number }`，幂等删除本手机在此主机的普通通知和关联的实时活动。未配置 provider 时也能删除旧登记。
 - `DELETE /api/sessions/mobile-push/:id`，body `{ token }` 保留单项注销；不匹配返回 404。
-- `POST /api/sessions/mobile-push/test`，body `{ token: ordinaryDevicePushToken, hostId?: string }` → `{ status: 'sent' | 'notConfigured' | 'noRegistration' | 'failed', error? }`。只匹配当前调用者（LAN 为该 token 的归属，远程为已验证的配对设备）自己的普通通知登记，不接受 owner/device ID；`hostId` 给出时只发该主机的登记。发送标题“测试通知 · cc-haha”、正文“电脑推送正常：这条是电脑发给你手机的。”，APNs category 为 `cchahaResult`，data 为 `{ hostId, eventType: 'test' }`（没有 sessionId）。这是用户主动测试，不受通知类别偏好和免打扰限制。测试是为了看到横幅：Android 在拆分渠道下使用高重要程度的 `cc-haha-decisions`（「任务完成」渠道是默认重要程度，只响铃不弹横幅），手机在 App 前台时也照常弹出测试通知（其余提醒在前台只进通知栏）。`notConfigured` 表示电脑没有该平台的 APNs / FCM 配置，`noRegistration` 表示没有匹配登记，`failed` 的 `error` 不含 token 或凭据。
+- `POST /api/sessions/mobile-push/test`，body `{ token: ordinaryDevicePushToken, hostId?: string }` → `{ status: 'sent' | 'notConfigured' | 'noRegistration' | 'failed', error? }`。只匹配当前调用者（LAN 为该 token 的归属，远程为已验证的配对设备）自己的普通通知登记，不接受 owner/device ID；`hostId` 给出时只发该主机的登记。发送标题“测试通知 · wangmai”、正文“电脑推送正常：这条是电脑发给你手机的。”，APNs category 为 `wangmaiResult`，data 为 `{ hostId, eventType: 'test' }`（没有 sessionId）。这是用户主动测试，不受通知类别偏好和免打扰限制。测试是为了看到横幅：Android 在拆分渠道下使用高重要程度的 `wangmai-decisions`（「任务完成」渠道是默认重要程度，只响铃不弹横幅），手机在 App 前台时也照常弹出测试通知（其余提醒在前台只进通知栏）。`notConfigured` 表示电脑没有该平台的 APNs / FCM 配置，`noRegistration` 表示没有匹配登记，`failed` 的 `error` 不含 token 或凭据。
 
 普通注册 body：
 
@@ -77,20 +77,20 @@ delivery?: {
 ```
 
 - 各字段类型严格校验，未知字段被拒绝；随登记保存，再次注册会整体替换（不带 `delivery` 的注册会清除旧值）。旧数据没有该字段也能原样加载。
-- `channels: 'split'`：FCM `channel_id` 按事件选择，等待审批 / 问答 / 计划为 `cc-haha-decisions`，完成为 `cc-haha-completed`，失败和无进展为 `cc-haha-errors`；否则一律 `cc-haha`。手机需要自己创建这三个渠道。
+- `channels: 'split'`：FCM `channel_id` 按事件选择，等待审批 / 问答 / 计划为 `wangmai-decisions`，完成为 `wangmai-completed`，失败和无进展为 `wangmai-errors`；否则一律 `wangmai`。手机需要自己创建这三个渠道。
 - `timeSensitive: true`：决定类推送的 aps 带 `"interruption-level": "time-sensitive"`，其他类型保持默认 `active`。
 - `liveActivity: 'decisions'`：只在等待决定时远程更新实时活动；运行中状态不发 `update`，而是对仅在运行的活动发送 `end` 并移除登记，避免远程推送把它重新唤起。缺省或 `'running'` 保持原样。
 - `showCommand: false`：实时活动 `detail` 不含原始命令 / 预览：等待中的 Bash 为“打开 App 查看命令”，其他等待为“需要你做决定”，运行中为空，结束为“本次运行已结束”。
 
 `hostId` 仅用于返回手机后的主机导航，不能建立或改变授权。客户端需要安全保存注册 ID 及原 token，以便重启后、移除主机时或 token 轮换时撤销旧登记。因关闭通知权限等原因撤销时，离线注销不能表示成功，应保留待注销记录以重试；移除电脑是例外：连不上电脑也必须能移除，所以只尝试撤销一次（最多等 3 秒），失败不拦移除也不再重试——连接凭据随移除一起删除，没送达的登记留在电脑上等它过期或撤销配对。注册有效期为 30 天，不超过远程配对的实际期限；实时活动登记最多 8 小时。
 
-Live Activity 只走电脑直连（Expo 中转不支持 ActivityKit 推送），登记不能带 `provider`。Live Activity 增加 `{ kind: 'liveActivity', sessionId, activityId, name: 'CCHahaTaskActivity', deviceToken: ordinaryDevicePushToken }`，`token` 使用 ActivityKit 的专用推送 token；`deviceToken` 只保存摘要，用于关联普通设备登记和整机注销。服务端发送 `aps.event=update/end`、`timestamp`、`stale-date`，以及 `content-state: { name, props: JSON.stringify(props) }`。持续运行或等待中的活动每 60 秒刷新一次，stale-date 延长到本次投递后 90 秒；电脑离线时不会继续伪造新鲜状态。真实会话结束后会发送 end 并移除登记。客户端仍应在本地结束活动时撤销注册。
+Live Activity 只走电脑直连（Expo 中转不支持 ActivityKit 推送），登记不能带 `provider`。Live Activity 增加 `{ kind: 'liveActivity', sessionId, activityId, name: 'CCWangMaiTaskActivity', deviceToken: ordinaryDevicePushToken }`，`token` 使用 ActivityKit 的专用推送 token；`deviceToken` 只保存摘要，用于关联普通设备登记和整机注销。服务端发送 `aps.event=update/end`、`timestamp`、`stale-date`，以及 `content-state: { name, props: JSON.stringify(props) }`。持续运行或等待中的活动每 60 秒刷新一次，stale-date 延长到本次投递后 90 秒；电脑离线时不会继续伪造新鲜状态。真实会话结束后会发送 end 并移除登记。客户端仍应在本地结束活动时撤销注册。
 
-普通通知 data 为 `{ hostId, sessionId, requestId?, eventType }`。APNs category 为 `cchahaTool`、`cchahaDecision` 或 `cchahaResult`。只有普通工具权限提供允许/拒绝动作（手机拉取通道由前台服务发出同样的两个按钮，点按后打开 App）；问答、计划和 Computer Use 必须打开 App 处理。动作到达 App 后必须再次核对原主机、原会话及仍待处理的 request ID；推送本身不批准权限。
+普通通知 data 为 `{ hostId, sessionId, requestId?, eventType }`。APNs category 为 `wangmaiTool`、`wangmaiDecision` 或 `wangmaiResult`。只有普通工具权限提供允许/拒绝动作（手机拉取通道由前台服务发出同样的两个按钮，点按后打开 App）；问答、计划和 Computer Use 必须打开 App 处理。动作到达 App 后必须再次核对原主机、原会话及仍待处理的 request ID；推送本身不批准权限。
 
 ## 持久化与撤销
 
-配置目录的 `cc-haha/mobile-push.json` 保存 token 摘要、设备归属、偏好和 AES-GCM 密文；相邻 `.key` 文件为随机本地加密密钥。两者权限为 0600。未注册时不会创建文件。空 v0 数据迁移为 v1，未知扩展字段保留，未来 schema 拒绝写入。不要把这些文件加入 Git 或同步到公共存储。
+配置目录的 `wangmai/mobile-push.json` 保存 token 摘要、设备归属、偏好和 AES-GCM 密文；相邻 `.key` 文件为随机本地加密密钥。两者权限为 0600。未注册时不会创建文件。空 v0 数据迁移为 v1，未知扩展字段保留，未来 schema 拒绝写入。不要把这些文件加入 Git 或同步到公共存储。
 
 撤销配对、配对到期后，服务端删除该远程设备的登记。远程入口暂时关闭（包括 cloudflared 重连时监听短暂停止）期间只暂停投递、保留登记，入口恢复后补发仍成立的状态；这样隧道每次重连都不会要求所有手机重新登记。迁移或关闭服务时停止轮询并等待在途工作，避免迁移过程中写回数据。
 

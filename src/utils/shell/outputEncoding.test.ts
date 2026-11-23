@@ -74,7 +74,7 @@ test('returns replacement text and complete offsets if the native decoder declin
 })
 
 test.skipIf(process.platform !== 'win32')('file range cursors and tails preserve bounded UTF-8 output', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'cc-haha-output-encoding-'))
+  const directory = await mkdtemp(join(tmpdir(), 'wangmai-output-encoding-'))
   try {
     const path = join(directory, 'shell.output')
     const output = Buffer.from('abc🙂\r\nfinish')
@@ -95,7 +95,7 @@ test.skipIf(process.platform !== 'win32')('file range cursors and tails preserve
 })
 
 test('reading persisted output preserves line ranges across a split multibyte character', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'cc-haha-persisted-encoding-'))
+  const directory = await mkdtemp(join(tmpdir(), 'wangmai-persisted-encoding-'))
   try {
     const file = join(directory, 'shell.txt')
     // The legacy character begins in the last byte of the first stream chunk.

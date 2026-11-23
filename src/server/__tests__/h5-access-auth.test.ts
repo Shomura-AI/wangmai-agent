@@ -234,17 +234,17 @@ beforeEach(async () => {
   originalH5DistDir = process.env.CLAUDE_H5_DIST_DIR
   originalClaudeAppRoot = process.env.CLAUDE_APP_ROOT
   originalServerAuthRequired = process.env.SERVER_AUTH_REQUIRED
-  originalLocalAccessToken = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-  originalTrustedRendererOrigin = process.env.CC_HAHA_TRUSTED_RENDERER_ORIGIN
-  delete process.env.CC_HAHA_TRUSTED_RENDERER_ORIGIN
-  originalPetAccessToken = process.env.CC_HAHA_PET_ACCESS_TOKEN
+  originalLocalAccessToken = process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+  originalTrustedRendererOrigin = process.env.WANGMAI_TRUSTED_RENDERER_ORIGIN
+  delete process.env.WANGMAI_TRUSTED_RENDERER_ORIGIN
+  originalPetAccessToken = process.env.WANGMAI_PET_ACCESS_TOKEN
   originalServerPort = ProviderService.getServerPort()
   process.env.CLAUDE_CONFIG_DIR = tmpDir
   const h5DistDir = path.join(tmpDir, 'dist')
   process.env.CLAUDE_H5_DIST_DIR = h5DistDir
   delete process.env.ANTHROPIC_API_KEY
-  delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-  delete process.env.CC_HAHA_PET_ACCESS_TOKEN
+  delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+  delete process.env.WANGMAI_PET_ACCESS_TOKEN
   await fs.mkdir(path.join(h5DistDir, 'assets'), { recursive: true })
   await fs.writeFile(
     path.join(h5DistDir, 'index.html'),
@@ -273,12 +273,12 @@ afterEach(async () => {
   else process.env.CLAUDE_APP_ROOT = originalClaudeAppRoot
   if (originalServerAuthRequired === undefined) delete process.env.SERVER_AUTH_REQUIRED
   else process.env.SERVER_AUTH_REQUIRED = originalServerAuthRequired
-  if (originalLocalAccessToken === undefined) delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-  else process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = originalLocalAccessToken
-  if (originalTrustedRendererOrigin === undefined) delete process.env.CC_HAHA_TRUSTED_RENDERER_ORIGIN
-  else process.env.CC_HAHA_TRUSTED_RENDERER_ORIGIN = originalTrustedRendererOrigin
-  if (originalPetAccessToken === undefined) delete process.env.CC_HAHA_PET_ACCESS_TOKEN
-  else process.env.CC_HAHA_PET_ACCESS_TOKEN = originalPetAccessToken
+  if (originalLocalAccessToken === undefined) delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+  else process.env.WANGMAI_LOCAL_ACCESS_TOKEN = originalLocalAccessToken
+  if (originalTrustedRendererOrigin === undefined) delete process.env.WANGMAI_TRUSTED_RENDERER_ORIGIN
+  else process.env.WANGMAI_TRUSTED_RENDERER_ORIGIN = originalTrustedRendererOrigin
+  if (originalPetAccessToken === undefined) delete process.env.WANGMAI_PET_ACCESS_TOKEN
+  else process.env.WANGMAI_PET_ACCESS_TOKEN = originalPetAccessToken
 
   await fs.rm(tmpDir, {
     recursive: true,
@@ -290,7 +290,7 @@ afterEach(async () => {
 
 describe('remote H5 auth and CORS integration', () => {
   test('power lease handoff requires the machine token even for a full loopback WebSocket', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'power-auth-fixture'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'power-auth-fixture'
     const leaseId = 'power-upgrade:message'
     const acquired = await fetch(`${baseUrl}/api/sessions/power-activity-lease`, {
       method: 'POST', headers: { Authorization: 'Bearer power-auth-fixture', 'Content-Type': 'application/json' },
@@ -324,8 +324,8 @@ describe('remote H5 auth and CORS integration', () => {
   })
 
   test('allows configured dev renderer H5 preflight but requires the process token for requests', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'fixture-desktop-token'
-    process.env.CC_HAHA_TRUSTED_RENDERER_ORIGIN = 'http://localhost:1420'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'fixture-desktop-token'
+    process.env.WANGMAI_TRUSTED_RENDERER_ORIGIN = 'http://localhost:1420'
     await restartRemoteServer()
     const headers = {
       Origin: 'http://localhost:1420',
@@ -397,7 +397,7 @@ describe('remote H5 auth and CORS integration', () => {
   })
 
   test('rejects loopback preflight when no renderer origin is trusted', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'fixture-desktop-token'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'fixture-desktop-token'
     await restartRemoteServer()
 
     const response = await fetch(`${baseUrl}/api/settings`, {
@@ -480,14 +480,14 @@ describe('remote H5 auth and CORS integration', () => {
     // The desktop shell injects a process token, but the browser windows it
     // opens (OAuth success pages, `/preview-fs` links) and local scripts cannot
     // carry it. Loopback must stay trusted on its own.
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     await restartRemoteServer()
 
     const tokenlessResponse = await fetch(`${baseUrl}/api/status`)
     expect(tokenlessResponse.status).toBe(200)
     await expect(tokenlessResponse.json()).resolves.toMatchObject({ status: 'ok' })
 
-    const oauthSuccessResponse = await fetch(`${baseUrl}/api/haha-grok-oauth/success`)
+    const oauthSuccessResponse = await fetch(`${baseUrl}/api/wangmai-grok-oauth/success`)
     expect(oauthSuccessResponse.status).toBe(200)
     expect(oauthSuccessResponse.headers.get('Content-Type')).toContain('text/html')
 
@@ -499,7 +499,7 @@ describe('remote H5 auth and CORS integration', () => {
   })
 
   test('rejects tokenless loopback browser origins when desktop local auth is configured', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     await restartRemoteServer()
 
     const browserResponse = await fetch(`${baseUrl}/api/status`, {
@@ -517,7 +517,7 @@ describe('remote H5 auth and CORS integration', () => {
   })
 
   test('still requires the desktop process token for the H5 control plane', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     await restartRemoteServer()
 
     // Another browser or script on the same machine must not be able to publish
@@ -543,7 +543,7 @@ describe('remote H5 auth and CORS integration', () => {
     ['POST', '/enable'],
     ['POST', '/disable'],
   ])('blocks H5 bearer %s on control-plane slash variants %s without changing settings', async (method, endpoint) => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     await restartRemoteServer()
     const token = await enableH5Access({ allowedOrigins: [PHONE_ORIGIN] })
     const service = new H5AccessService()
@@ -578,7 +578,7 @@ describe('remote H5 auth and CORS integration', () => {
     expect(remoteRead.status).toBe(403)
     await remoteRead.text()
 
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     await new H5AccessService().disable()
     await restartRemoteServer()
     const localEnable = await fetch(`${baseUrl}/api//h5-access/enable`, { method: 'POST' })
@@ -588,7 +588,7 @@ describe('remote H5 auth and CORS integration', () => {
   })
 
   test('preserves phone verification and desktop token lifecycle across slash variants', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     await restartRemoteServer()
     const token = await enableH5Access({ allowedOrigins: [PHONE_ORIGIN] })
     const phoneHeaders = { Origin: PHONE_ORIGIN, Authorization: `Bearer ${token}` }
@@ -632,7 +632,7 @@ describe('remote H5 auth and CORS integration', () => {
   })
 
   test('does not extend tokenless loopback trust to cross-site subresource loads', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     await restartRemoteServer()
 
     // A malicious page embedding `<img src="http://127.0.0.1:<port>/api/...">`
@@ -657,7 +657,7 @@ describe('remote H5 auth and CORS integration', () => {
   })
 
   test('serves same-capability preview assets without opening ordinary local APIs', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     await restartRemoteServer()
 
     const workDir = path.join(tmpDir, 'preview-workspace')
@@ -717,8 +717,8 @@ describe('remote H5 auth and CORS integration', () => {
   })
 
   test('enforces the pet bearer capability allowlist before API routing', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
-    process.env.CC_HAHA_PET_ACCESS_TOKEN = 'pet-capability-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_PET_ACCESS_TOKEN = 'pet-capability-secret'
     await restartRemoteServer()
     const petHeaders = { Authorization: 'Bearer pet-capability-secret' }
     const privateWorkDir = path.join(tmpDir, 'private-workspace')
@@ -834,7 +834,7 @@ describe('remote H5 auth and CORS integration', () => {
   })
 
   test('keeps the host-managed provider proxy working with local auth across H5 modes', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     await restartRemoteServer()
 
     const requestProxy = (authorized: boolean) => fetch(`${baseUrl}/proxy/v1/messages`, {
@@ -1053,14 +1053,14 @@ describe('remote H5 auth and CORS integration', () => {
   })
 
   test('opens the P2P endpoint link only with its own launch token, never the local access token', async () => {
-    const original = process.env.CC_HAHA_P2P_ENDPOINT_TOKEN
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'p2p-local-fixture'
+    const original = process.env.WANGMAI_P2P_ENDPOINT_TOKEN
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'p2p-local-fixture'
     const status = async (base: string, query: string) =>
       (await fetch(`${base}/api/public-access/p2p/endpoint${query}`, { headers: makeUpgradeHeaders() })).status
     try {
-      delete process.env.CC_HAHA_P2P_ENDPOINT_TOKEN
+      delete process.env.WANGMAI_P2P_ENDPOINT_TOKEN
       expect(await status(baseUrl, '?endpointToken=anything')).toBe(403)
-      process.env.CC_HAHA_P2P_ENDPOINT_TOKEN = 'p2p-endpoint-fixture'
+      process.env.WANGMAI_P2P_ENDPOINT_TOKEN = 'p2p-endpoint-fixture'
       expect(await status(baseUrl, '')).toBe(403)
       expect(await status(baseUrl, '?endpointToken=wrong')).toBe(403)
       expect(await status(baseUrl, '?localToken=p2p-local-fixture')).toBe(403)
@@ -1071,8 +1071,8 @@ describe('remote H5 auth and CORS integration', () => {
         expect(await status(lanBaseUrl, '?endpointToken=p2p-endpoint-fixture')).toBe(403)
       }
     } finally {
-      if (original === undefined) delete process.env.CC_HAHA_P2P_ENDPOINT_TOKEN
-      else process.env.CC_HAHA_P2P_ENDPOINT_TOKEN = original
+      if (original === undefined) delete process.env.WANGMAI_P2P_ENDPOINT_TOKEN
+      else process.env.WANGMAI_P2P_ENDPOINT_TOKEN = original
     }
   })
 

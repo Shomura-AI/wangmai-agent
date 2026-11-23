@@ -121,8 +121,8 @@ jobs:
             exit 1
           fi
           set -euo pipefail
-          certificate_path="${RUNNER_TEMP}/cc-haha-signing.p12"
-          keychain_path="${RUNNER_TEMP}/cc-haha-signing.keychain-db"
+          certificate_path="${RUNNER_TEMP}/wangmai-signing.p12"
+          keychain_path="${RUNNER_TEMP}/wangmai-signing.keychain-db"
           keychain_password="$(uuidgen)"
           printf '%s' "$CSC_LINK" | base64 --decode > "$certificate_path"
           security create-keychain -p "$keychain_password" "$keychain_path"
@@ -150,9 +150,9 @@ jobs:
             echo "::error::Imported certificate does not contain a Developer ID Application identity."
             exit 1
           fi
-          echo "CC_HAHA_SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
-          echo "CC_HAHA_CI_KEYCHAIN=$keychain_path" >> "$GITHUB_ENV"
-          echo "CC_HAHA_CI_CERTIFICATE=$certificate_path" >> "$GITHUB_ENV"
+          echo "WANGMAI_SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
+          echo "WANGMAI_CI_KEYCHAIN=$keychain_path" >> "$GITHUB_ENV"
+          echo "WANGMAI_CI_CERTIFICATE=$certificate_path" >> "$GITHUB_ENV"
           echo "Imported native-runtime signing identity: $identity"
 
       - name: Prepare bundled ripgrep
@@ -188,7 +188,7 @@ jobs:
         if: matrix.smoke_platform == 'windows' && matrix.arch == 'x64'
         working-directory: desktop
         env:
-          CC_HAHA_COMPILED_SIDECAR_SMOKE_STARTS: '20'
+          WANGMAI_COMPILED_SIDECAR_SMOKE_STARTS: '20'
         run: bun run test:compiled-sidecar-smoke
 
       - name: Build renderer and Electron bundles
@@ -208,7 +208,7 @@ jobs:
         # Reuse the native-runtime keychain so the app is signed by the same
         # Developer ID as the sidecar and helper.
         run: |
-          export CSC_KEYCHAIN="${CC_HAHA_CI_KEYCHAIN:?macOS signing keychain was not prepared}"
+          export CSC_KEYCHAIN="${WANGMAI_CI_KEYCHAIN:?macOS signing keychain was not prepared}"
           node ./node_modules/electron-builder/out/cli/cli.js ${{ matrix.builder_args }} --publish never -c.mac.notarize=false
 
       - name: Build Electron app
@@ -231,18 +231,18 @@ jobs:
         if: always() && matrix.smoke_platform == 'macos'
         shell: bash
         run: |
-          if [ -n "${CC_HAHA_CI_KEYCHAIN:-}" ]; then
-            security delete-keychain "$CC_HAHA_CI_KEYCHAIN" 2>/dev/null || true
+          if [ -n "${WANGMAI_CI_KEYCHAIN:-}" ]; then
+            security delete-keychain "$WANGMAI_CI_KEYCHAIN" 2>/dev/null || true
           fi
-          if [ -n "${CC_HAHA_CI_CERTIFICATE:-}" ]; then
-            rm -f "$CC_HAHA_CI_CERTIFICATE"
+          if [ -n "${WANGMAI_CI_CERTIFICATE:-}" ]; then
+            rm -f "$WANGMAI_CI_CERTIFICATE"
           fi
 
       - name: Collect artifacts
         id: collect
         shell: bash
         run: |
-          STAGING="desktop/build-artifacts/ci-Claude-Code-Haha-v${{ steps.version.outputs.version }}-${{ matrix.artifact_name }}"
+          STAGING="desktop/build-artifacts/ci-WangMai-Agent-v${{ steps.version.outputs.version }}-${{ matrix.artifact_name }}"
           mkdir -p "$STAGING"
           find desktop/build-artifacts/electron -maxdepth 1 -type f \
             \( -name "*.dmg" -o -name "*.exe" -o -name "*.deb" -o -name "*.AppImage" -o -name "*.yml" \) \
@@ -258,7 +258,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Claude-Code-Haha-v${{ steps.version.outputs.version }}-${{ matrix.artifact_name }}
+          name: WangMai-Agent-v${{ steps.version.outputs.version }}-${{ matrix.artifact_name }}
           path: ${{ steps.collect.outputs.staging_dir }}
           retention-days: 7
           if-no-files-found: warn

@@ -67,31 +67,31 @@ test('KeepAwakeBridge tracks preference toggle, Android background/foreground, a
 
     prefState = { preferences: { keepAwake: true }, ready: true, error: '' }
     await render()
-    assert.deepEqual(calls, ['activate:cc-haha-keep-awake'])
+    assert.deepEqual(calls, ['activate:wangmai-keep-awake'])
 
     emit('background'); await flush()
-    assert.deepEqual(calls, ['activate:cc-haha-keep-awake', 'deactivate:cc-haha-keep-awake'])
+    assert.deepEqual(calls, ['activate:wangmai-keep-awake', 'deactivate:wangmai-keep-awake'])
 
     emit('active'); await flush()
     assert.deepEqual(calls, [
-      'activate:cc-haha-keep-awake',
-      'deactivate:cc-haha-keep-awake',
-      'activate:cc-haha-keep-awake',
+      'activate:wangmai-keep-awake',
+      'deactivate:wangmai-keep-awake',
+      'activate:wangmai-keep-awake',
     ])
 
     prefState = { preferences: { keepAwake: false }, ready: true, error: '' }
     await render()
     assert.deepEqual(calls, [
-      'activate:cc-haha-keep-awake',
-      'deactivate:cc-haha-keep-awake',
-      'activate:cc-haha-keep-awake',
-      'deactivate:cc-haha-keep-awake',
+      'activate:wangmai-keep-awake',
+      'deactivate:wangmai-keep-awake',
+      'activate:wangmai-keep-awake',
+      'deactivate:wangmai-keep-awake',
     ])
 
     prefState = { preferences: { keepAwake: true }, ready: true, error: '' }
     await render()
     await unmount()
-    assert.equal(calls.at(-1), 'deactivate:cc-haha-keep-awake')
+    assert.equal(calls.at(-1), 'deactivate:wangmai-keep-awake')
     assert.equal(appListeners.size, 0)
   `)
 })

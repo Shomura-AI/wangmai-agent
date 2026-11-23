@@ -15,7 +15,7 @@ describe('ConversationService startup output', () => {
   const envKeys = [
     'CLAUDE_CLI_PATH',
     'CLAUDE_CONFIG_DIR',
-    'CC_HAHA_DISABLE_TERMINAL_SHELL_ENV',
+    'WANGMAI_DISABLE_TERMINAL_SHELL_ENV',
     'MOCK_SDK_STARTUP_STDOUT',
     'MOCK_SDK_STARTUP_STDERR',
     'MOCK_SDK_STARTUP_EXIT_CODE',
@@ -23,7 +23,7 @@ describe('ConversationService startup output', () => {
 
   beforeEach(async () => {
     service = new ConversationService()
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-startup-output-'))
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-startup-output-'))
     for (const key of envKeys) {
       originalEnv.set(key, process.env[key])
     }
@@ -32,7 +32,7 @@ describe('ConversationService startup output', () => {
       new URL('./fixtures/mock-startup-exit-cli.ts', import.meta.url),
     )
     process.env.CLAUDE_CONFIG_DIR = tmpDir
-    process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV = '1'
+    process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV = '1'
     process.env.MOCK_SDK_STARTUP_STDOUT = 'provider rejected request: invalid model id'
   })
 

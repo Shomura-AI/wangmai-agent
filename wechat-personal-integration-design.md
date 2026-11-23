@@ -1,4 +1,4 @@
-# cc-haha 个人微信接入架构设计
+# 网脉智能体 个人微信接入架构设计
 
 日期：2026-11-04。修订：v4，补充连接状态、持久投递与媒体体验。代码基线：`56805c1d`。状态：设计蓝图及历史记录保留；当前交付、验证及剩余边界以第 14 节为准。手机四类媒体验收暂由用户延后。
 
@@ -8,17 +8,17 @@
 
 ## 1. 结论与目标
 
-**采用个人微信 ClawBot / iLink 通道，直接连接 cc-haha 现有微信 adapter，再复用 cc-haha 的本地会话、模型和工具运行时。** 不需要另部署 OpenClaw，也不需要企业微信账号、公网回调服务器或内网穿透。
+**采用个人微信 ClawBot / iLink 通道，直接连接 wangmai 现有微信 adapter，再复用 wangmai 的本地会话、模型和工具运行时。** 不需要另部署 OpenClaw，也不需要企业微信账号、公网回调服务器或内网穿透。
 
 截图中的入口已经有完整后端实现：扫码、凭据保存、adapter 启动、长轮询收消息、配对授权、会话创建与恢复、工具权限审批、回复发送均已存在。因此工作应定位为「验证已有接入并补齐可靠性」，而非重新开发微信机器人。
 
-预期体验：用户在手机的微信 ClawBot 对话中发送“看看 cc-haha 项目当前状态”，本机 cc-haha 在选定项目中执行任务，微信收到结果；需要权限时，用户在微信回复审批指令。后续消息继续使用同一条 cc-haha 会话。
+预期体验：用户在手机的微信 ClawBot 对话中发送“看看 wangmai 项目当前状态”，本机 wangmai 在选定项目中执行任务，微信收到结果；需要权限时，用户在微信回复审批指令。后续消息继续使用同一条 wangmai 会话。
 
-本设计默认单台 Windows 电脑、一个微信绑定账号、用户本人私聊。电脑必须开机、联网，cc-haha 的 server 和 adapter 必须运行；手机不必与电脑处在同一局域网。桌面窗口关闭后的驻留行为沿用现有宿主设置，不能把“窗口关了”直接等同于服务仍在线。
+本设计默认单台 Windows 电脑、一个微信绑定账号、用户本人私聊。电脑必须开机、联网，wangmai 的 server 和 adapter 必须运行；手机不必与电脑处在同一局域网。桌面窗口关闭后的驻留行为沿用现有宿主设置，不能把“窗口关了”直接等同于服务仍在线。
 
 基础接入范围：文本、现有语音转文字输入、图片/文件输入、项目切换、会话恢复、停止任务、文本审批。本次修订将**图片回传、文件回传、视频收发与分析、语音合成后以音频文件回复**纳入明确实施范围；原生微信语音气泡作为需验证的增强能力，未验证前不承诺可用。
 
-群聊、联系人自动回复、朋友圈操作、多账号并行、无人值守主动推送不在本次范围内。允许用户列表只是 cc-haha 的权限配置，不意味着微信平台允许其他联系人加入同一 ClawBot。媒体传输、内容理解、内容生成是三项独立能力：支持发视频并不等于内置视频生成模型。
+群聊、联系人自动回复、朋友圈操作、多账号并行、无人值守主动推送不在本次范围内。允许用户列表只是 wangmai 的权限配置，不意味着微信平台允许其他联系人加入同一 ClawBot。媒体传输、内容理解、内容生成是三项独立能力：支持发视频并不等于内置视频生成模型。
 
 ### 1.1 设计时基线能力与目标矩阵
 
@@ -43,7 +43,7 @@
 | UI 状态与 API | [adapterStore.ts](desktop/src/stores/adapterStore.ts)、[adapters.ts](desktop/src/api/adapters.ts) | 扫码轮询、成功后更新配置并请求宿主重启；重启失败记录 warning，但绑定成功与运行就绪仍混在一起 |
 | 本地绑定 API | [adapters.ts](src/server/api/adapters.ts)，`handleWechatAdaptersApi` | `login/start`、`login/poll`、`unbind`；换绑会清空 `pairedUsers`，当前保留 `allowedUsers` |
 | 配置持久化 | [adapterService.ts](src/server/services/adapterService.ts) | 脱敏返回、进程内串行更新、临时文件 rename；不能据此推断跨进程写入互斥 |
-| 宿主与进程 | [serverRuntime.ts](desktop/electron/services/serverRuntime.ts)、[sidecarManager.ts](desktop/electron/services/sidecarManager.ts)、[claude-sidecar.ts](desktop/sidecars/claude-sidecar.ts) | 已包含 `--wechat`，为平台创建 adapter 子进程，注入动态 `ADAPTER_SERVER_URL`；当前重启入口重启全部 adapter |
+| 宿主与进程 | [serverRuntime.ts](desktop/electron/services/serverRuntime.ts)、[sidecarManager.ts](desktop/electron/services/sidecarManager.ts)、[wangmai-sidecar.ts](desktop/sidecars/wangmai-sidecar.ts) | 已包含 `--wechat`，为平台创建 adapter 子进程，注入动态 `ADAPTER_SERVER_URL`；当前重启入口重启全部 adapter |
 | 微信协议 | [protocol.ts](adapters/wechat/protocol.ts) | iLink 扫码、收发文本、typing；默认 `https://ilinkai.weixin.qq.com`，代码声明协议版本 `2.1.7` |
 | 微信消息循环 | [index.ts](adapters/wechat/index.ts) | 长轮询、文本分片、项目/会话、审批、消息队列；仍维护独立编排，没有接入共享 `ImChatRuntime` |
 | 媒体输入 | [media.ts](adapters/wechat/media.ts) | 下载、AES 解密、图片/文件落地；下载完整内容后才检查大小，缺少下载阶段字节上限和超时 |
@@ -66,12 +66,12 @@
 flowchart LR
   U[手机个人微信 / ClawBot] <--> W[微信 iLink 服务]
   subgraph PC[用户 Windows 电脑]
-    UI[cc-haha 设置页] --> API[本地 Adapter API / 配置服务]
+    UI[wangmai 设置页] --> API[本地 Adapter API / 配置服务]
     UI --> HOST[Electron 宿主 / 进程管理]
     HOST --> WA[微信 Adapter]
     WA <--> PORT[WechatChatPort]
     PORT <--> RT[共享 ImChatRuntime]
-    RT <-->|HTTP / WebSocket| S[cc-haha Server / 会话服务]
+    RT <-->|HTTP / WebSocket| S[wangmai Server / 会话服务]
     S <--> AG[已有 Agent / Provider / Tools]
     S <--> MEDIA[媒体任务服务 / 产物登记]
     MEDIA <--> PROCESS[视频处理 / 语音识别 / 语音合成]
@@ -107,13 +107,13 @@ flowchart LR
 ### 4.1 首次接入
 
 1. 在手机微信确认 ClawBot 可用；入口通常为「我 → 设置 → 插件 → ClawBot」。手机版本、账号开放情况以实际客户端为准。
-2. 在 cc-haha 的 IM 设置中选定默认项目和允许访问目录。默认项目选本机实际仓库目录（例如 `C:\Projects\cc-haha`），并让允许目录覆盖它。
+2. 在 wangmai 的 IM 设置中选定默认项目和允许访问目录。默认项目选本机实际仓库目录（例如 `C:\Projects\wangmai`），并让允许目录覆盖它。
 3. 点击「扫码绑定」，手机扫描并确认；本地 server 保存凭据，宿主启动或重启微信 adapter。
 4. 显示“账号已绑定，等待通道连接”，收到 adapter 健康报告后显示“通道在线，待配对”。
 5. 使用现有「生成配对码」，在微信 ClawBot 对话中发送。保留现有 6 位一次性码和 60 分钟有效期；不自动把扫码账号转换成工具执行授权。
 6. 配对后先发 `/status`、`/help`，再发一条项目只读任务。首条回复完成后才显示“已验证收发”。
 
-不新增“登录 OpenClaw”步骤。用户在 cc-haha 扫码即可；微信端显示名称可能由平台控制，不能承诺改成 cc-haha。
+不新增“登录 OpenClaw”步骤。用户在 wangmai 扫码即可；微信端显示名称可能由平台控制，不能承诺改成 wangmai。
 
 ### 4.2 两组独立状态
 
@@ -228,15 +228,15 @@ type WechatRuntimeReport = {
 
 回复状态：`pending → sending → sent / failed / unknown`。生成分片时固定 `clientId`；微信是否按该字段幂等去重必须单独验证，不能假定支持。已明确送达的分片不重发；网络超时造成未知状态时保留记录，让用户查看桌面结果或显式补发，不能重跑 Agent 来补一条回复。
 
-M2 目标是持久接收、可恢复状态和避免重复提交，**不承诺端到端 exactly-once**，也不承诺微信离线消息永久保留或任意时刻主动推送。长任务完成但 context 不再可用时，结果仍留在 cc-haha，用户下一次主动消息可获取摘要。
+M2 目标是持久接收、可恢复状态和避免重复提交，**不承诺端到端 exactly-once**，也不承诺微信离线消息永久保留或任意时刻主动推送。长任务完成但 context 不再可用时，结果仍留在 wangmai，用户下一次主动消息可获取摘要。
 
 ## 7. 工具权限与多媒体架构
 
-权限继续由 cc-haha 的 Agent/server 决定。微信仅承载 `/allow <requestId>`、`/deny <requestId>`、`/always <requestId>` 等既有决策；requestId 必须匹配当前绑定、用户、session 的待决请求，旧 session 和重放审批不得放行。`/always` 沿用已有规则语义，不扩成全部工具永久授权。
+权限继续由 wangmai 的 Agent/server 决定。微信仅承载 `/allow <requestId>`、`/deny <requestId>`、`/always <requestId>` 等既有决策；requestId 必须匹配当前绑定、用户、session 的待决请求，旧 session 和重放审批不得放行。`/always` 沿用已有规则语义，不扩成全部工具永久授权。
 
 项目访问复用 `defaultProjectDir / allowedProjectRoots` 与既有路径解析，确认 Windows 路径、符号链接和真实路径边界。Computer Use 继续遵循项目已有总开关、统一同意、OS 权限及目标有效性检查，不为微信另加逐应用审批体系。
 
-附件维持项目当前的图片 10 MiB、文件 30 MiB 限制，这是 cc-haha 的应用策略：下载前检查可用长度元数据，流式读取时执行硬上限，解密后再次检查；增加超时、总附件数量/总字节预算和临时文件清理。未知文件名经过现有 AttachmentStore 路径处理，拒绝穿越目录。
+附件维持项目当前的图片 10 MiB、文件 30 MiB 限制，这是 wangmai 的应用策略：下载前检查可用长度元数据，流式读取时执行硬上限，解密后再次检查；增加超时、总附件数量/总字节预算和临时文件清理。未知文件名经过现有 AttachmentStore 路径处理，拒绝穿越目录。
 
 微信返回的媒体 URL、登录 redirect host 和 base URL 需要按核对后的官方服务主机集合校验 HTTPS、重定向目的地与地址范围，拒绝 localhost/内网目标；不能直接信任返回字符串再携带凭据请求。测试的 loopback 传输通过注入 mock 完成，不能因此放宽生产 URL 校验。当前 CDN fallback 是否与最新服务一致列入联调项，本文不凭其他项目的地址直接改写它。
 
@@ -380,11 +380,11 @@ M3 正式交付依赖 M1 的身份与授权边界、M2 的媒体可恢复投递�
 
 ## 10. 外部依据与待核实事项
 
-截至 2026-11-04，腾讯的 [CodeBuddy Channels 官方文档](https://intl.cloud.tencent.com/zh/document/product/1316/84459) 说明可通过微信 ClawBot 扫码建立双向消息通道，入口位于微信插件页。这证明 ClawBot 可承载第三方运行时的聊天桥；其中 CodeBuddy 的 MCP channel 机制不是 cc-haha 必须采用的架构。
+截至 2026-11-04，腾讯的 [CodeBuddy Channels 官方文档](https://intl.cloud.tencent.com/zh/document/product/1316/84459) 说明可通过微信 ClawBot 扫码建立双向消息通道，入口位于微信插件页。这证明 ClawBot 可承载第三方运行时的聊天桥；其中 CodeBuddy 的 MCP channel 机制不是 wangmai 必须采用的架构。
 
 腾讯的 [云桌面通道配置文档](https://cloud.tencent.com.cn/document/product/1291/129132) 展示微信扫码后在 ClawBot 对话中交互的操作流程。另可参考 [AstrBot 个人微信适配器文档](https://github.com/AstrBotDevs/AstrBot/blob/master/docs/zh/platform/weixin_oc.md) 对官方 `openclaw-weixin` 接口、扫码与长轮询的集成说明；它是项目自身实现文档，不是腾讯协议稳定性承诺。
 
-外部文档只用于核对接入路径。本文对 cc-haha 的能力和缺口以当前本地源码为依据，未将其他产品支持的上传、群聊或消息类型自动等同于本项目支持。
+外部文档只用于核对接入路径。本文对 wangmai 的能力和缺口以当前本地源码为依据，未将其他产品支持的上传、群聊或消息类型自动等同于本项目支持。
 
 本次多媒体修订补充 [腾讯 openclaw-weixin 官方协议文档](https://github.com/Tencent/openclaw-weixin/blob/main/docs/protocol.md)：参考客户端已实现图片、视频和文件的上传发送；文档明确指出语音上传类型存在，但当前文件发送流程未实现该分支。参考文档描述客户端行为，不等同于完整服务端契约。链接指向可变的 main，实施时必须锁定审阅 commit、许可证与脱敏协议 fixture，不能只把本地版本号从 `2.1.7` 改成文档示例版本便认为兼容。
 
@@ -433,7 +433,7 @@ v2 修订检查（2026-11-04）：
 
 ### 12.1 协议实现依据
 
-本次核对腾讯参考实现的固定 commit `7c04adc3e95775efd661ab9fba0626d86d237713`（版本 2.4.9-beta.0，2026-09-08），不将其称为最新 HEAD，也不修改 cc-haha 现有协议版本声明。字段依据为 [上传参数与 AES/MD5](https://github.com/Tencent/openclaw-weixin/blob/7c04adc3e95775efd661ab9fba0626d86d237713/src/cdn/upload.ts)、[图片、视频和文件消息](https://github.com/Tencent/openclaw-weixin/blob/7c04adc3e95775efd661ab9fba0626d86d237713/src/messaging/send.ts)、[CDN 上传与返回头](https://github.com/Tencent/openclaw-weixin/blob/7c04adc3e95775efd661ab9fba0626d86d237713/src/cdn/cdn-upload.ts)。该版本 [LICENSE 为 MIT](https://github.com/Tencent/openclaw-weixin/blob/7c04adc3e95775efd661ab9fba0626d86d237713/LICENSE)，版权声明 Tencent © 2026。
+本次核对腾讯参考实现的固定 commit `7c04adc3e95775efd661ab9fba0626d86d237713`（版本 2.4.9-beta.0，2026-09-08），不将其称为最新 HEAD，也不修改 wangmai 现有协议版本声明。字段依据为 [上传参数与 AES/MD5](https://github.com/Tencent/openclaw-weixin/blob/7c04adc3e95775efd661ab9fba0626d86d237713/src/cdn/upload.ts)、[图片、视频和文件消息](https://github.com/Tencent/openclaw-weixin/blob/7c04adc3e95775efd661ab9fba0626d86d237713/src/messaging/send.ts)、[CDN 上传与返回头](https://github.com/Tencent/openclaw-weixin/blob/7c04adc3e95775efd661ab9fba0626d86d237713/src/cdn/cdn-upload.ts)。该版本 [LICENSE 为 MIT](https://github.com/Tencent/openclaw-weixin/blob/7c04adc3e95775efd661ab9fba0626d86d237713/LICENSE)，版权声明 Tencent © 2026。
 
 新增协议测试使用合成字节、假凭据和 mock 请求核对线格式、加解密和错误分支；没有保存真实微信数据。参考代码与 mock 结果不能替代账号级兼容性验证。
 

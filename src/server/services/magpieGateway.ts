@@ -25,7 +25,7 @@ import {
 import { getNetworkProxyFetchOptions, loadNetworkSettings } from './networkSettings.js'
 
 export const MAGPIE_PRESET_ID = 'magpie'
-export const MAGPIE_CLIENT_KEY = 'magpie-cc-haha'
+export const MAGPIE_CLIENT_KEY = 'magpie-wangmai'
 export const MAGPIE_DEFAULT_PORT = 3425
 
 const PROBE_TIMEOUT_MS = 1_200
@@ -148,7 +148,7 @@ export function magpieRuntimeModelId(id: string, contextWindow: number | undefin
   return /claude/i.test(id) && (contextWindow ?? 0) >= 1_000_000 ? `${id}[1m]` : id
 }
 
-/** `GET /v1/models` as cc-haha uses it: chat models only, limits kept when known. */
+/** `GET /v1/models` as wangmai uses it: chat models only, limits kept when known. */
 export function parseMagpieModels(body: unknown): MagpieModel[] {
   const data = body && typeof body === 'object' ? (body as Record<string, unknown>).data : undefined
   if (!Array.isArray(data)) return []
@@ -236,7 +236,7 @@ export async function fetchMagpieModels(
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${MAGPIE_CLIENT_KEY}`,
-        'User-Agent': 'cc-haha',
+        'User-Agent': 'wangmai',
       },
       signal: AbortSignal.timeout(CATALOG_TIMEOUT_MS),
     })

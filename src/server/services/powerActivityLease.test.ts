@@ -15,13 +15,13 @@ function request(body: unknown, token = 'fixture-local-token', method = 'POST'):
 }
 
 beforeEach(() => {
-  previousToken = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-  process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'fixture-local-token'
+  previousToken = process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+  process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'fixture-local-token'
 })
 afterEach(() => {
   for (const id of leaseIds) releasePowerActivityLease(id)
-  if (previousToken === undefined) delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-  else process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = previousToken
+  if (previousToken === undefined) delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+  else process.env.WANGMAI_LOCAL_ACCESS_TOKEN = previousToken
 })
 
 describe('inbound power activity leases', () => {
@@ -57,15 +57,15 @@ describe('inbound power activity leases', () => {
   })
 
   it('rejects missing, wrong, and public-device credentials when local power authority is configured', async () => {
-    for (const token of ['', 'wrong', 'haha_mobile_device_fixture']) {
+    for (const token of ['', 'wrong', 'wangmai_mobile_device_fixture']) {
       expect((await handlePowerActivityLease(request({ leaseId: leaseIds[0], active: true }, token))).status).toBe(403)
     }
     expect(hasPowerActivityLeases()).toBe(false)
   })
 
   it.each([undefined, '', '   '])('declares leases unavailable without local power authority: %j', async token => {
-    if (token === undefined) delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-    else process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = token
+    if (token === undefined) delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+    else process.env.WANGMAI_LOCAL_ACCESS_TOKEN = token
     const before = powerActivityClock.read(false).revision
     expect((await handlePowerActivityLease(request({ leaseId: leaseIds[0], active: true }))).status).toBe(404)
     expect(hasPowerActivityLeases()).toBe(false)
@@ -117,7 +117,7 @@ describe('adapter lease admission over loopback HTTP', () => {
   }
 
   it('admits paired CLI messages when the source server has no native power authority', async () => {
-    delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
+    delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
     const server = serveLeases()
     try {
       const client = new AdapterHttpClient(server.url)
@@ -138,13 +138,13 @@ describe('adapter lease admission over loopback HTTP', () => {
     }
   })
 
-  it.each([undefined, 'wrong', 'haha_mobile_device_fixture'])('blocks adapter admission with unauthorized credentials: %j', async token => {
+  it.each([undefined, 'wrong', 'wangmai_mobile_device_fixture'])('blocks adapter admission with unauthorized credentials: %j', async token => {
     const server = serveLeases()
     try {
       // Construct the client without inheriting the server's private credential.
-      delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
+      delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
       const client = new AdapterHttpClient(server.url, { localAccessToken: token })
-      process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'fixture-local-token'
+      process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'fixture-local-token'
       const errors: string[] = []
       let routed = false
       await enqueueInboundPowerActivity(client, 'unprotected-cli-user', async () => {

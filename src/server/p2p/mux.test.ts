@@ -24,8 +24,8 @@ afterEach(() => { while (cleanups.length) cleanups.pop()!() })
 /** A real gateway, stream layer and broker, with a fake Electron endpoint. */
 async function setup() {
   const dir = mkdtempSync(path.join(os.tmpdir(), 'p2p-mux-test-'))
-  const oldToken = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-  process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'fixture-process-credential'
+  const oldToken = process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+  process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'fixture-process-credential'
   const api: { path: string; aborted?: boolean }[] = []
   const sessionFrames: string[] = []
   let session: { send(text: string): unknown } | undefined
@@ -57,8 +57,8 @@ async function setup() {
   cleanups.push(() => {
     service.disable()
     broker!.closeAll()
-    if (oldToken === undefined) delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-    else process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = oldToken
+    if (oldToken === undefined) delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+    else process.env.WANGMAI_LOCAL_ACCESS_TOKEN = oldToken
     rmSync(dir, { recursive: true, force: true })
   })
   const control = (route: string, body: unknown = {}) => service.control(new Request(`http://localhost/api/public-access/${route}`, {

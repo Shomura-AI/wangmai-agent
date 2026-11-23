@@ -28,8 +28,8 @@ async function run(command: string, args: string[], cwd: string, env: NodeJS.Pro
 
 describe.skipIf(process.platform !== 'darwin')('compiled desktop Computer Use worker routing', () => {
   it('boots the real merged entrypoint inside the production sandbox without preload and retains native App bindings', async () => {
-    const directory = await realpath(await mkdtemp(path.join(tmpdir(), 'cc-haha-sidecar-cu-worker-')))
-    const executable = path.join(directory, 'claude-sidecar-aarch64-apple-darwin')
+    const directory = await realpath(await mkdtemp(path.join(tmpdir(), 'wangmai-sidecar-cu-worker-')))
+    const executable = path.join(directory, 'wangmai-sidecar-aarch64-apple-darwin')
     const env: NodeJS.ProcessEnv = {
       PATH: process.env.PATH,
       HOME: directory,
@@ -48,7 +48,7 @@ describe.skipIf(process.platform !== 'darwin')('compiled desktop Computer Use wo
       // These are the optional externals used by build-sidecars.ts; Acorn and
       // sandbox-runtime remain bundled. No signing identity/keychain discovery.
       const build = {
-        entrypoints: [path.join(repoRoot, 'desktop/sidecars/claude-sidecar.ts')],
+        entrypoints: [path.join(repoRoot, 'desktop/sidecars/wangmai-sidecar.ts')],
         features: ['TRANSCRIPT_CLASSIFIER'],
         minify: { whitespace: true, identifiers: true, syntax: true },
         sourcemap: 'none',

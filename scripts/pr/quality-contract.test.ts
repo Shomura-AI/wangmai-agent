@@ -60,19 +60,19 @@ describe('feature quality contract', () => {
   test('keeps quality policy and cross-process boundaries maintainer-owned', () => {
     const codeowners = readFileSync('.github/CODEOWNERS', 'utf8')
 
-    expect(codeowners).toContain('/.github/workflows/ @NanmiCoder')
-    expect(codeowners).toContain('/AGENTS.md @NanmiCoder')
-    expect(codeowners).toContain('**/AGENTS.md @NanmiCoder')
-    expect(codeowners).toContain('/CONTRIBUTING.md @NanmiCoder')
-    expect(codeowners).toContain('/scripts/pr/ @NanmiCoder')
-    expect(codeowners).toContain('/scripts/quality-gate/ @NanmiCoder')
-    expect(codeowners).toContain('/desktop/src/api/websocket* @NanmiCoder')
-    expect(codeowners).toContain('/desktop/src/lib/persistenceMigrations* @NanmiCoder')
-    expect(codeowners).toContain('/src/server/services/conversationService* @NanmiCoder')
-    expect(codeowners).toContain('/src/server/proxy/ @NanmiCoder')
-    expect(codeowners).toContain('/src/server/ws/ @NanmiCoder')
-    expect(codeowners).toContain('/src/services/openaiAuth/ @NanmiCoder')
-    expect(codeowners).toContain('/src/utils/model/ @NanmiCoder')
+    expect(codeowners).toContain('/.github/workflows/ @wangmai-ai')
+    expect(codeowners).toContain('/AGENTS.md @wangmai-ai')
+    expect(codeowners).toContain('**/AGENTS.md @wangmai-ai')
+    expect(codeowners).toContain('/CONTRIBUTING.md @wangmai-ai')
+    expect(codeowners).toContain('/scripts/pr/ @wangmai-ai')
+    expect(codeowners).toContain('/scripts/quality-gate/ @wangmai-ai')
+    expect(codeowners).toContain('/desktop/src/api/websocket* @wangmai-ai')
+    expect(codeowners).toContain('/desktop/src/lib/persistenceMigrations* @wangmai-ai')
+    expect(codeowners).toContain('/src/server/services/conversationService* @wangmai-ai')
+    expect(codeowners).toContain('/src/server/proxy/ @wangmai-ai')
+    expect(codeowners).toContain('/src/server/ws/ @wangmai-ai')
+    expect(codeowners).toContain('/src/services/openaiAuth/ @wangmai-ai')
+    expect(codeowners).toContain('/src/utils/model/ @wangmai-ai')
   })
 
   test('keeps the one-command verification entrypoint documented', () => {
@@ -191,7 +191,7 @@ describe('feature quality contract', () => {
     expect(sandbox).toContain('createSandboxedTestEnvironment')
     expect(sandbox).toContain('GUARDED_USER_STATE_PATHS')
     expect(sandbox).toContain("'settings.json'")
-    expect(sandbox).toContain("'cc-haha/providers.json'")
+    expect(sandbox).toContain("'wangmai/providers.json'")
   })
 
   test('keeps general AI coding tools pointed at the same quality bar', () => {

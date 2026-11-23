@@ -70,10 +70,10 @@ export async function executeReplayDesktopSmoke(rootDir: string, artifactDir: st
   const sandbox = createQualityGateSandbox({
     label: 'desktop-ui-replay',
     seedProviders: false,
-    envOverrides: { CC_HAHA_DISABLE_TERMINAL_SHELL_ENV: '1', CI: '' },
+    envOverrides: { WANGMAI_DISABLE_TERMINAL_SHELL_ENV: '1', CI: '' },
   })
-  mkdirSync(join(sandbox.configDir, 'cc-haha'), { recursive: true })
-  writeFileSync(join(sandbox.configDir, 'cc-haha', 'providers.json'), `${JSON.stringify({
+  mkdirSync(join(sandbox.configDir, 'wangmai'), { recursive: true })
+  writeFileSync(join(sandbox.configDir, 'wangmai', 'providers.json'), `${JSON.stringify({
     activeId: REPLAY_PROVIDER_ID,
     providers: [{ ...cassette.providerConfig, id: REPLAY_PROVIDER_ID, name: 'Replay (isolated)', apiKey: 'replay-fake-key', baseUrl: replay.url }],
   }, null, 2)}\n`)

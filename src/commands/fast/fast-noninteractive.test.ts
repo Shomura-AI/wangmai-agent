@@ -49,7 +49,7 @@ describe('/fast non-interactive command', () => {
   let savedClientType: string
 
   beforeEach(() => {
-    tempDir = mkdtempSync(join(tmpdir(), 'cc-haha-fast-cmd-test-'))
+    tempDir = mkdtempSync(join(tmpdir(), 'wangmai-fast-cmd-test-'))
     savedEnv = {}
     for (const key of SAVED_ENV_KEYS) {
       savedEnv[key] = process.env[key]

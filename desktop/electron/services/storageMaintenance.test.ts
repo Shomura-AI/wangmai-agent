@@ -18,7 +18,7 @@ afterEach(() => {
 
 describe('host data migration write barrier', () => {
   it('freezes event and quit-time root writers while leaving them available after rollback', () => {
-    root = fs.mkdtempSync(path.join(os.tmpdir(), 'haha-host-maintenance-'))
+    root = fs.mkdtempSync(path.join(os.tmpdir(), 'wangmai-host-maintenance-'))
     const fakeApp = { getPath() { return root! } } as unknown as App
     const configDir = path.join(root, 'data')
     const env = { CLAUDE_CONFIG_DIR: configDir }
@@ -26,7 +26,7 @@ describe('host data migration write barrier', () => {
       writeWindowState(fakeApp, { x: 1, y: 2, width: 1200, height: 800, maximized: false }, env)
       writeAppearanceState(fakeApp, { isDark: false, background: '#ffffff', lightBackground: '#ffffff', followSystem: false }, env)
       writePetWindowPosition({ x: 10, y: 20 }, env, root!)
-      appendHostDiagnostic(path.join(configDir, 'cc-haha', 'diagnostics', 'electron-host.log'), 'fixture', { homeDir: root! })
+      appendHostDiagnostic(path.join(configDir, 'wangmai', 'diagnostics', 'electron-host.log'), 'fixture', { homeDir: root! })
     }
     setStorageWritesFrozen(true)
     expect(areStorageWritesFrozen()).toBe(true)
@@ -36,7 +36,7 @@ describe('host data migration write barrier', () => {
     writeAll()
     expect(fs.existsSync(path.join(configDir, 'window-state.json'))).toBe(true)
     expect(fs.existsSync(path.join(configDir, 'appearance-state.json'))).toBe(true)
-    expect(fs.existsSync(path.join(configDir, 'cc-haha', 'pet-window.json'))).toBe(true)
-    expect(fs.existsSync(path.join(configDir, 'cc-haha', 'diagnostics', 'electron-host.log'))).toBe(true)
+    expect(fs.existsSync(path.join(configDir, 'wangmai', 'pet-window.json'))).toBe(true)
+    expect(fs.existsSync(path.join(configDir, 'wangmai', 'diagnostics', 'electron-host.log'))).toBe(true)
   })
 })

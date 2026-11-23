@@ -22,10 +22,10 @@ describe('sessionRuntimeStore runtime cleanup', () => {
     registerSideChatSession('side-runtime-test', 'parent')
     store.setSelection('side-runtime-test', { providerId: 'example', modelId: 'side-model' })
     expect(useSessionRuntimeStore.getState().selections['side-runtime-test']?.modelId).toBe('side-model')
-    expect(JSON.parse(localStorage.getItem('cc-haha-session-runtime')!)).toEqual({ parent })
+    expect(JSON.parse(localStorage.getItem('wangmai-session-runtime')!)).toEqual({ parent })
     unregisterSideChatSession('side-runtime-test')
     store.setSelection('side-runtime-test', { providerId: 'example', modelId: 'late-update' })
-    expect(JSON.parse(localStorage.getItem('cc-haha-session-runtime')!)).toEqual({ parent })
+    expect(JSON.parse(localStorage.getItem('wangmai-session-runtime')!)).toEqual({ parent })
   })
 
   it('keeps an explicit model choice through stale, matching, then stale metadata refreshes', () => {
@@ -43,7 +43,7 @@ describe('sessionRuntimeStore runtime cleanup', () => {
     }, oldSession]) {
       store.syncFromSessions([metadata], startedWith)
       expect(useSessionRuntimeStore.getState().selections[oldSession.id]).toEqual(next)
-      expect(JSON.parse(localStorage.getItem('cc-haha-session-runtime')!)[oldSession.id]).toEqual(next)
+      expect(JSON.parse(localStorage.getItem('wangmai-session-runtime')!)[oldSession.id]).toEqual(next)
     }
   })
 
@@ -87,7 +87,7 @@ describe('sessionRuntimeStore runtime cleanup', () => {
       expect(useSessionRuntimeStore.getState().selections['session-grok']).toEqual(
         EXPECTED_GROK_SELECTION,
       )
-      expect(JSON.parse(localStorage.getItem('cc-haha-session-runtime')!)).toEqual({
+      expect(JSON.parse(localStorage.getItem('wangmai-session-runtime')!)).toEqual({
         'session-grok': EXPECTED_GROK_SELECTION,
       })
     },
@@ -107,7 +107,7 @@ describe('sessionRuntimeStore runtime cleanup', () => {
   })
 
   it('cleans a retired Grok selection loaded from localStorage', async () => {
-    localStorage.setItem('cc-haha-session-runtime', JSON.stringify({
+    localStorage.setItem('wangmai-session-runtime', JSON.stringify({
       'session-loaded-grok': {
         providerId: 'grok-official',
         modelId: 'grok-build',
@@ -121,13 +121,13 @@ describe('sessionRuntimeStore runtime cleanup', () => {
     expect(loadedStore.getState().selections['session-loaded-grok']).toEqual(
       EXPECTED_GROK_SELECTION,
     )
-    expect(JSON.parse(localStorage.getItem('cc-haha-session-runtime')!)).toEqual({
+    expect(JSON.parse(localStorage.getItem('wangmai-session-runtime')!)).toEqual({
       'session-loaded-grok': EXPECTED_GROK_SELECTION,
     })
   })
 
   it('preserves a custom-provider xhigh selection loaded from localStorage', async () => {
-    localStorage.setItem('cc-haha-session-runtime', JSON.stringify({
+    localStorage.setItem('wangmai-session-runtime', JSON.stringify({
       'session-loaded-kimi': {
         providerId: 'kimi-provider',
         modelId: 'k3',
@@ -146,13 +146,13 @@ describe('sessionRuntimeStore runtime cleanup', () => {
     expect(loadedStore.getState().selections['session-loaded-kimi']).toEqual(
       expectedSelection,
     )
-    expect(JSON.parse(localStorage.getItem('cc-haha-session-runtime')!)).toEqual({
+    expect(JSON.parse(localStorage.getItem('wangmai-session-runtime')!)).toEqual({
       'session-loaded-kimi': expectedSelection,
     })
   })
 
   it('drops only the legacy Claude Official opus[1m] default and preserves the same suffix for third-party providers', async () => {
-    localStorage.setItem('cc-haha-session-runtime', JSON.stringify({
+    localStorage.setItem('wangmai-session-runtime', JSON.stringify({
       'session-loaded-claude': {
         providerId: null,
         modelId: 'opus[1m]',
@@ -174,7 +174,7 @@ describe('sessionRuntimeStore runtime cleanup', () => {
       modelId: 'MiniMax-M3[1m]',
       effortLevel: 'max',
     })
-    expect(JSON.parse(localStorage.getItem('cc-haha-session-runtime')!)).toEqual({
+    expect(JSON.parse(localStorage.getItem('wangmai-session-runtime')!)).toEqual({
       'session-loaded-minimax': {
         providerId: 'provider-minimax',
         modelId: 'MiniMax-M3[1m]',
@@ -184,7 +184,7 @@ describe('sessionRuntimeStore runtime cleanup', () => {
   })
 
   it('migrates legacy selections without Fast to standard mode and strips Fast from non-OAuth providers', async () => {
-    localStorage.setItem('cc-haha-session-runtime', JSON.stringify({
+    localStorage.setItem('wangmai-session-runtime', JSON.stringify({
       legacy: { providerId: 'openai-official', modelId: 'gpt-6-sol', effortLevel: 'high' },
       invalid: { providerId: 'api-provider', modelId: 'gpt-6-sol', effortLevel: 'high', openAIFastMode: true },
       enabled: { providerId: 'openai-official', modelId: 'gpt-6-sol', effortLevel: 'high', openAIFastMode: true },
@@ -194,7 +194,7 @@ describe('sessionRuntimeStore runtime cleanup', () => {
     expect(loadedStore.getState().selections.legacy?.openAIFastMode).toBeUndefined()
     expect(loadedStore.getState().selections.invalid?.openAIFastMode).toBeUndefined()
     expect(loadedStore.getState().selections.enabled?.openAIFastMode).toBe(true)
-    expect(JSON.parse(localStorage.getItem('cc-haha-session-runtime')!).invalid.openAIFastMode).toBeUndefined()
+    expect(JSON.parse(localStorage.getItem('wangmai-session-runtime')!).invalid.openAIFastMode).toBeUndefined()
   })
 
   it('keeps Fast through stale session-list refreshes and accepts an explicit remote disable', () => {

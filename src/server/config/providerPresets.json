@@ -65,7 +65,7 @@
     "needsApiKey": true,
     "websiteUrl": "https://open.bigmodel.cn",
     "apiKeyUrl": "https://www.bigmodel.cn/invite?icode=d41B2qi8Z5xNwTGLNPPF3OZLO2QH3C0EBTSr%2BArzMw4%3D",
-    "promoText": "智谱 GLM 为 cc-haha 用户准备了专属邀请福利，使用此链接注册后可领取新用户权益。",
+    "promoText": "智谱 GLM 为 wangmai 用户准备了专属邀请福利，使用此链接注册后可领取新用户权益。",
     "authStrategy": "auth_token",
     "defaultEnv": {},
     "modelContextWindows": {
@@ -280,7 +280,7 @@
     "needsApiKey": true,
     "websiteUrl": "https://aruhub.com",
     "apiKeyUrl": "https://aruhub.com/sign-up?aff=Z54g",
-    "promoText": "AruHub 为 cc-haha 用户提供专属福利：通过「获取 API Key」链接注册即送 1 美元全模型通用额度，不限模型。支持 GPT、Claude，按量付费，适合持续 AI Coding。",
+    "promoText": "AruHub 为 wangmai 用户提供专属福利：通过「获取 API Key」链接注册即送 1 美元全模型通用额度，不限模型。支持 GPT、Claude，按量付费，适合持续 AI Coding。",
     "featured": true,
     "isNew": true,
     "authStrategy": "api_key",
@@ -303,8 +303,8 @@
     },
     "needsApiKey": true,
     "websiteUrl": "https://modelflare.dev",
-    "apiKeyUrl": "https://modelflare.dev/sign-up?utm_source=github&utm_campaign=cchaha",
-    "promoText": "Modelflare 为 cc-haha 用户提供特惠：单笔充值 US$20 解锁 GPT 0.015 倍分组，US$50 解锁 Claude 0.03 倍分组。通过「获取 API Key」专属链接注册参与。",
+    "apiKeyUrl": "https://modelflare.dev/sign-up?utm_source=github&utm_campaign=wangmai",
+    "promoText": "Modelflare 为 wangmai 用户提供特惠：单笔充值 US$20 解锁 GPT 0.015 倍分组，US$50 解锁 Claude 0.03 倍分组。通过「获取 API Key」专属链接注册参与。",
     "featured": true,
     "isNew": true,
     "authStrategy": "auth_token",
@@ -328,7 +328,7 @@
     },
     "needsApiKey": true,
     "websiteUrl": "https://www.atlascloud.ai",
-    "apiKeyUrl": "https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=cc-haha",
+    "apiKeyUrl": "https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=wangmai",
     "featured": true,
     "authStrategy": "api_key",
     "modelContextWindows": {
@@ -399,7 +399,7 @@
       }
     ],
     "upstreamHeaders": {
-      "User-Agent": "cc-haha/$VERSION",
+      "User-Agent": "wangmai/$VERSION",
       "x-opencode-session": "$SESSION_ID"
     },
     "modelContextWindows": {
@@ -483,10 +483,10 @@
     },
     "needsApiKey": false,
     "websiteUrl": "https://usemagpie.ai",
-    "promoText": "Magpie 是一个本机网关，把它里面配好的服务商、订阅和路由组转给 cc-haha 用，不用填密钥。",
+    "promoText": "Magpie 是一个本机网关，把它里面配好的服务商、订阅和路由组转给 wangmai 用，不用填密钥。",
     "authStrategy": "auth_token_empty_api_key",
     "defaultEnv": {
-      "ANTHROPIC_AUTH_TOKEN": "magpie-cc-haha"
+      "ANTHROPIC_AUTH_TOKEN": "magpie-wangmai"
     }
   },
   {

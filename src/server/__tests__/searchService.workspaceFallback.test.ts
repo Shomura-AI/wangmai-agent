@@ -13,7 +13,7 @@ afterEach(async () => {
 
 describe('SearchService.searchWorkspace without ripgrep', () => {
   it.skipIf(process.platform === 'win32')('looks up grep and finds matches with it', async () => {
-    workDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-search-fallback-'))
+    workDir = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-search-fallback-'))
     await fs.writeFile(path.join(workDir, 'notes.txt'), 'first line\nneedle-1489 here\n')
     const service = new SearchService({
       resolveRipgrepCommand: () => ({ rgPath: '', rgArgs: [] }),

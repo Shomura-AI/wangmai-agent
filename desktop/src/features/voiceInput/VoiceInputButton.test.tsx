@@ -348,7 +348,7 @@ describe('before the model is downloaded, in the desktop app', () => {
 
 describe('recording and transcription', () => {
   it('records with the remembered microphone and the configured limit, then transcribes with the selected provider and language', async () => {
-    localStorage.setItem('cc-haha-voice-input-device', 'usb-1')
+    localStorage.setItem('wangmai-voice-input-device', 'usb-1')
     useVoiceInputStore.setState({ catalog: catalogFixture({ language: 'en' }) })
     render(<Harness />)
 

@@ -39,7 +39,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   test('routes Anthropic providers without nested tool media through the proxy', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-media-compat',
       providers: [{
         id: 'provider-media-compat',
@@ -55,7 +55,7 @@ describe('providerRuntimeEnv', () => {
 
     expect(activeProviderNeedsProxy(tmpDir)).toBe(true)
 
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-media-native',
       providers: [{
         id: 'provider-media-native',
@@ -73,7 +73,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   test('normalizes and preserves Grok Official as the active runtime provider', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'grok-official',
       providers: [],
       providerOrder: ['claude-official', 'openai-official'],
@@ -81,36 +81,36 @@ describe('providerRuntimeEnv', () => {
 
     const env = mergeActiveProviderManagedEnv(
       {
-        CC_HAHA_OPENAI_OAUTH_PROVIDER: '1',
+        WANGMAI_OPENAI_OAUTH_PROVIDER: '1',
         OPENAI_CODEX_OAUTH_FILE: path.join(tmpDir, 'stale-openai-oauth.json'),
         ANTHROPIC_MODEL: 'stale-openai-model',
-        CC_HAHA_IMAGE_PROTOCOL: 'gemini_native',
+        WANGMAI_IMAGE_PROTOCOL: 'gemini_native',
         DISABLE_AUTOUPDATER: '1',
       },
       tmpDir,
     )
 
     expect(env).toMatchObject({
-      CC_HAHA_GROK_OAUTH_PROVIDER: '1',
-      GROK_OAUTH_FILE: path.join(tmpDir, 'cc-haha', 'grok-oauth.json'),
-      CC_HAHA_IMAGE_PROVIDER_KIND: 'grok_oauth',
-      CC_HAHA_IMAGE_PROVIDER_ID: 'grok-official',
-      CC_HAHA_IMAGE_MODEL: 'grok-imagine-image-quality',
+      WANGMAI_GROK_OAUTH_PROVIDER: '1',
+      GROK_OAUTH_FILE: path.join(tmpDir, 'wangmai', 'grok-oauth.json'),
+      WANGMAI_IMAGE_PROVIDER_KIND: 'grok_oauth',
+      WANGMAI_IMAGE_PROVIDER_ID: 'grok-official',
+      WANGMAI_IMAGE_MODEL: 'grok-imagine-image-quality',
       ANTHROPIC_MODEL: 'grok-4.7',
       ANTHROPIC_DEFAULT_HAIKU_MODEL: 'grok-4.7',
       ANTHROPIC_DEFAULT_SONNET_MODEL: 'grok-4.7',
       ANTHROPIC_DEFAULT_OPUS_MODEL: 'grok-4.7',
       DISABLE_AUTOUPDATER: '1',
     })
-    expect(env.CC_HAHA_OPENAI_OAUTH_PROVIDER).toBeUndefined()
+    expect(env.WANGMAI_OPENAI_OAUTH_PROVIDER).toBeUndefined()
     expect(env.OPENAI_CODEX_OAUTH_FILE).toBeUndefined()
     expect(env.ANTHROPIC_API_KEY).toBeUndefined()
     expect(env.ANTHROPIC_AUTH_TOKEN).toBeUndefined()
-    expect(env.CC_HAHA_IMAGE_PROTOCOL).toBeUndefined()
+    expect(env.WANGMAI_IMAGE_PROTOCOL).toBeUndefined()
   })
 
   test('exports DeepSeek Account as a credential-only variant of the DeepSeek API runtime', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'deepseek-account',
       providers: [],
       providerOrder: ['claude-official', 'openai-official', 'grok-official'],
@@ -119,17 +119,17 @@ describe('providerRuntimeEnv', () => {
     const env = mergeActiveProviderManagedEnv(
       {
         ANTHROPIC_AUTH_TOKEN: 'stale-token',
-        CC_HAHA_GROK_OAUTH_PROVIDER: '1',
+        WANGMAI_GROK_OAUTH_PROVIDER: '1',
         GROK_OAUTH_FILE: path.join(tmpDir, 'stale-grok-oauth.json'),
-        CC_HAHA_GROK_MODEL_CATALOG: 'stale-grok-catalog',
+        WANGMAI_GROK_MODEL_CATALOG: 'stale-grok-catalog',
         DISABLE_AUTOUPDATER: '1',
       },
       tmpDir,
     )
 
     expect(env).toMatchObject({
-      CC_HAHA_DEEPSEEK_OAUTH_PROVIDER: '1',
-      DEEPSEEK_OAUTH_FILE: path.join(tmpDir, 'cc-haha', 'deepseek-oauth.json'),
+      WANGMAI_DEEPSEEK_OAUTH_PROVIDER: '1',
+      DEEPSEEK_OAUTH_FILE: path.join(tmpDir, 'wangmai', 'deepseek-oauth.json'),
       ANTHROPIC_BASE_URL: 'https://api.deepseek.com/anthropic',
       ANTHROPIC_API_KEY: 'deepseek-oauth-dummy-key',
       ANTHROPIC_MODEL: 'deepseek-flash[1m]',
@@ -140,9 +140,9 @@ describe('providerRuntimeEnv', () => {
       DISABLE_AUTOUPDATER: '1',
     })
     expect(env.ANTHROPIC_AUTH_TOKEN).toBeUndefined()
-    expect(env.CC_HAHA_GROK_OAUTH_PROVIDER).toBeUndefined()
+    expect(env.WANGMAI_GROK_OAUTH_PROVIDER).toBeUndefined()
     expect(env.GROK_OAUTH_FILE).toBeUndefined()
-    expect(env.CC_HAHA_GROK_MODEL_CATALOG).toBeUndefined()
+    expect(env.WANGMAI_GROK_MODEL_CATALOG).toBeUndefined()
     expect(JSON.parse(env.CLAUDE_CODE_MODEL_CONTEXT_WINDOWS!)).toMatchObject({
       'deepseek-flash': 1000000,
     })
@@ -150,7 +150,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   test('routes custom image generation through its own optional credentials', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-images',
       providers: [{
         id: 'provider-images',
@@ -175,17 +175,17 @@ describe('providerRuntimeEnv', () => {
 
     const env = readActiveProviderManagedEnv(tmpDir)
     expect(env).toMatchObject({
-      CC_HAHA_IMAGE_PROVIDER_KIND: 'openai_images',
-      CC_HAHA_IMAGE_PROVIDER_ID: 'provider-images',
-      CC_HAHA_IMAGE_BASE_URL: 'https://images.example.test/v1',
-      CC_HAHA_IMAGE_API_KEY: 'image-secret',
-      CC_HAHA_IMAGE_MODEL: 'upstream-image-model',
-      CC_HAHA_IMAGE_PROTOCOL: 'openai_images',
+      WANGMAI_IMAGE_PROVIDER_KIND: 'openai_images',
+      WANGMAI_IMAGE_PROVIDER_ID: 'provider-images',
+      WANGMAI_IMAGE_BASE_URL: 'https://images.example.test/v1',
+      WANGMAI_IMAGE_API_KEY: 'image-secret',
+      WANGMAI_IMAGE_MODEL: 'upstream-image-model',
+      WANGMAI_IMAGE_PROTOCOL: 'openai_images',
     })
   })
 
   test.each(['gemini_native', 'xai_images'])('routes the saved image protocol %s independently of chat format', async protocol => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-images',
       providers: [{
         id: 'provider-images', presetId: 'custom', name: 'Images',
@@ -195,15 +195,15 @@ describe('providerRuntimeEnv', () => {
       }],
     })
     expect(readActiveProviderManagedEnv(tmpDir)).toMatchObject({
-      CC_HAHA_IMAGE_PROVIDER_KIND: 'openai_images',
-      CC_HAHA_IMAGE_PROTOCOL: protocol,
-      CC_HAHA_IMAGE_BASE_URL: 'https://images.example.test',
-      CC_HAHA_IMAGE_API_KEY: 'fixture-key',
+      WANGMAI_IMAGE_PROVIDER_KIND: 'openai_images',
+      WANGMAI_IMAGE_PROTOCOL: protocol,
+      WANGMAI_IMAGE_BASE_URL: 'https://images.example.test',
+      WANGMAI_IMAGE_API_KEY: 'fixture-key',
     })
   })
 
   test('clears stale image routing when the next active provider has no image capability', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-chat-only',
       providers: [{
         id: 'provider-chat-only',
@@ -222,24 +222,24 @@ describe('providerRuntimeEnv', () => {
     })
 
     const env = mergeActiveProviderManagedEnv({
-      CC_HAHA_IMAGE_PROVIDER_KIND: 'openai_images',
-      CC_HAHA_IMAGE_PROVIDER_ID: 'stale-provider',
-      CC_HAHA_IMAGE_BASE_URL: 'https://stale.example.test/v1',
-      CC_HAHA_IMAGE_API_KEY: 'stale-secret',
-      CC_HAHA_IMAGE_MODEL: 'stale-model',
-      CC_HAHA_IMAGE_PROTOCOL: 'gemini_native',
+      WANGMAI_IMAGE_PROVIDER_KIND: 'openai_images',
+      WANGMAI_IMAGE_PROVIDER_ID: 'stale-provider',
+      WANGMAI_IMAGE_BASE_URL: 'https://stale.example.test/v1',
+      WANGMAI_IMAGE_API_KEY: 'stale-secret',
+      WANGMAI_IMAGE_MODEL: 'stale-model',
+      WANGMAI_IMAGE_PROTOCOL: 'gemini_native',
     }, tmpDir)
 
-    expect(env.CC_HAHA_IMAGE_PROVIDER_KIND).toBeUndefined()
-    expect(env.CC_HAHA_IMAGE_PROVIDER_ID).toBeUndefined()
-    expect(env.CC_HAHA_IMAGE_BASE_URL).toBeUndefined()
-    expect(env.CC_HAHA_IMAGE_API_KEY).toBeUndefined()
-    expect(env.CC_HAHA_IMAGE_MODEL).toBeUndefined()
-    expect(env.CC_HAHA_IMAGE_PROTOCOL).toBeUndefined()
+    expect(env.WANGMAI_IMAGE_PROVIDER_KIND).toBeUndefined()
+    expect(env.WANGMAI_IMAGE_PROVIDER_ID).toBeUndefined()
+    expect(env.WANGMAI_IMAGE_BASE_URL).toBeUndefined()
+    expect(env.WANGMAI_IMAGE_API_KEY).toBeUndefined()
+    expect(env.WANGMAI_IMAGE_MODEL).toBeUndefined()
+    expect(env.WANGMAI_IMAGE_PROTOCOL).toBeUndefined()
   })
 
   test('keeps Claude Code effort capabilities for an unlisted custom model', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-1',
       providers: [
         {
@@ -315,7 +315,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   test('does not let legacy preset metadata disable compatible model effort', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-xuanshu',
       providers: [
         {
@@ -354,7 +354,7 @@ describe('providerRuntimeEnv', () => {
       sonnet: 'glm-5.3[1m]',
       opus: 'glm-5.3[1m]',
     }
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-zhipu-standard',
       providers: [{
         id: 'provider-zhipu-standard',
@@ -381,7 +381,7 @@ describe('providerRuntimeEnv', () => {
       'glm-5.3-flash[1m]': 1000000,
     })
 
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-zhipu-coding-plan',
       providers: [{
         id: 'provider-zhipu-coding-plan',
@@ -405,7 +405,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   test('active provider env overrides stale proxy settings while preserving unrelated env', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-1',
       providers: [
         {
@@ -452,7 +452,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   test('honors explicitly enabled tool search for native Anthropic providers', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       schemaVersion: PROVIDER_TOOL_SEARCH_OPT_IN_SCHEMA_VERSION,
       activeId: 'provider-1',
       providers: [
@@ -481,7 +481,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   test('honors disabled experimental betas for active providers', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-1',
       providers: [
         {
@@ -509,7 +509,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   test('keeps providers readable when stored tool search values are stringly typed', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-1',
       providers: [
         {
@@ -538,7 +538,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   test('does not write tool search env for OpenAI proxy providers', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-1',
       providers: [
         {
@@ -566,7 +566,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   test('applies updated docs-backed preset env for domestic Anthropic-compatible providers', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-kimi',
       providers: [
         {
@@ -603,7 +603,7 @@ describe('providerRuntimeEnv', () => {
       'kimi-for-coding-highspeed': 262144,
     })
 
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-kimi-legacy',
       providers: [
         {
@@ -635,7 +635,7 @@ describe('providerRuntimeEnv', () => {
         'thinking,required_thinking,effort,xhigh_effort,max_effort',
     })
 
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-zhipu',
       providers: [
         {
@@ -676,7 +676,7 @@ describe('providerRuntimeEnv', () => {
   })
 
   // getManagedEnvKeys() is the erase list used to strip stale provider env out of
-  // cc-haha/settings.json. It is built by unioning every preset's defaultEnv keys, so
+  // wangmai/settings.json. It is built by unioning every preset's defaultEnv keys, so
   // deleting a preset outright would drop keys only that preset declares — they would
   // then never be cleaned and would leak into every provider activated afterwards.
   test('keeps the settings.json erase list covering retired presets env keys', () => {
@@ -693,7 +693,7 @@ describe('providerRuntimeEnv', () => {
   // deleting the entry would silently drop it. Older records may also lack
   // authStrategy / modelContextWindows and fall back to the preset for those too.
   test('keeps resolving preset runtime env for providers saved against a retired preset', async () => {
-    await writeJson(path.join(tmpDir, 'cc-haha', 'providers.json'), {
+    await writeJson(path.join(tmpDir, 'wangmai', 'providers.json'), {
       activeId: 'provider-shengsuanyun',
       providers: [
         {

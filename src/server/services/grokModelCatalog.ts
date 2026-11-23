@@ -1,7 +1,7 @@
 import { getGrokModelCatalog, readCachedGrokModelCatalog } from '../../services/grokAuth/modelCatalog.js'
 import { GROK_MODEL_CATALOG } from '../../services/grokAuth/models.js'
 import { oauthTokenIdentity } from '../../services/oauth/refresh-coordinator.js'
-import { hahaGrokOAuthService } from './hahaGrokOAuthService.js'
+import { wangmaiGrokOAuthService } from './wangmaiGrokOAuthService.js'
 import { getNetworkProxyUrl, loadNetworkSettings } from './networkSettings.js'
 
 /** Share the desktop account and network policy between settings and runtime selection. */
@@ -15,8 +15,8 @@ export async function getDesktopGrokModelCatalog(options?: {
   // models or reporting an upstream error from the previous login.
   const verifyAccount = options?.forceRefresh || options?.waitForInitial
   for (let attempt = 0; attempt < 2; attempt++) {
-    const tokenFile = hahaGrokOAuthService.getOAuthFilePath()
-    const tokens = await hahaGrokOAuthService.ensureFreshTokens().catch(() => null)
+    const tokenFile = wangmaiGrokOAuthService.getOAuthFilePath()
+    const tokens = await wangmaiGrokOAuthService.ensureFreshTokens().catch(() => null)
     const result = await getGrokModelCatalog({
       ...options,
       // Explicit null prevents a logged-out desktop from using CLI credentials.
@@ -24,8 +24,8 @@ export async function getDesktopGrokModelCatalog(options?: {
       resolveProxyUrl: async () => getNetworkProxyUrl(await loadNetworkSettings()),
     }).then(models => ({ models }), (error: unknown) => ({ error }))
     if (verifyAccount && tokens) {
-      const current = await hahaGrokOAuthService.loadTokens().catch(() => null)
-      if (tokenFile !== hahaGrokOAuthService.getOAuthFilePath() ||
+      const current = await wangmaiGrokOAuthService.loadTokens().catch(() => null)
+      if (tokenFile !== wangmaiGrokOAuthService.getOAuthFilePath() ||
         oauthTokenIdentity(tokens) !== oauthTokenIdentity(current)) continue
     }
     if ('models' in result) return result.models
@@ -36,6 +36,6 @@ export async function getDesktopGrokModelCatalog(options?: {
 }
 
 export async function readCachedDesktopGrokModelCatalog() {
-  const tokens = await hahaGrokOAuthService.loadTokens().catch(() => null)
+  const tokens = await wangmaiGrokOAuthService.loadTokens().catch(() => null)
   return readCachedGrokModelCatalog(tokens?.accessToken ?? null)
 }

@@ -50,12 +50,12 @@ describe('electron desktop host', () => {
     const unlisten = vi.fn()
     const subscribe = vi.fn().mockResolvedValue(unlisten)
     const host = createElectronHost({ invoke, subscribe })
-    await host.appMode.migration.prepare('D:\\cc-haha-data')
+    await host.appMode.migration.prepare('D:\\wangmai-data')
     await host.appMode.migration.start('migration-1')
     await host.appMode.migration.status()
     await host.appMode.migration.cancel('migration-1')
     expect(invoke.mock.calls).toEqual([
-      [ELECTRON_IPC_CHANNELS.migrationPrepare, { targetDir: 'D:\\cc-haha-data' }],
+      [ELECTRON_IPC_CHANNELS.migrationPrepare, { targetDir: 'D:\\wangmai-data' }],
       [ELECTRON_IPC_CHANNELS.migrationStart, { id: 'migration-1' }],
       [ELECTRON_IPC_CHANNELS.migrationStatus, undefined],
       [ELECTRON_IPC_CHANNELS.migrationCancel, { id: 'migration-1' }],

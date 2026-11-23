@@ -653,7 +653,7 @@ function readActiveProviderSnapshot(
   options?: { serverPort?: number },
 ): { providerId: string; schemaVersion: number; env: Record<string, string> } | null {
   try {
-    const raw = fs.readFileSync(path.join(configDir, 'cc-haha', 'providers.json'), 'utf-8')
+    const raw = fs.readFileSync(path.join(configDir, 'wangmai', 'providers.json'), 'utf-8')
     const value = JSON.parse(raw)
     const index = normalizeProvidersIndex(value)
     if (!index?.activeId) return null
@@ -709,7 +709,7 @@ export function readSavedProviderRuntime(
   providerId: string,
 ): SavedProviderRuntime | null {
   try {
-    const raw = fs.readFileSync(path.join(configDir, 'cc-haha', 'providers.json'), 'utf-8')
+    const raw = fs.readFileSync(path.join(configDir, 'wangmai', 'providers.json'), 'utf-8')
     const index = normalizeProvidersIndex(JSON.parse(raw))
     const provider = index?.providers.find((entry) => entry.id === providerId)
     if (
@@ -731,7 +731,7 @@ export function readSavedProviderRuntime(
 
 export function activeProviderNeedsProxy(configDir: string): boolean {
   try {
-    const raw = fs.readFileSync(path.join(configDir, 'cc-haha', 'providers.json'), 'utf-8')
+    const raw = fs.readFileSync(path.join(configDir, 'wangmai', 'providers.json'), 'utf-8')
     const index = normalizeProvidersIndex(JSON.parse(raw))
     if (
       !index?.activeId ||
@@ -781,7 +781,7 @@ export function mergeActiveProviderManagedEnv(
     delete cleanedEnv.CLAUDE_CODE_SUBAGENT_MODEL
   }
   // Official desktop OAuth gets its preferences from original user settings,
-  // never the active custom provider's shared Haha env (including preset defaults).
+  // never the active custom provider's shared WangMai env (including preset defaults).
   if (process.env.CLAUDE_CODE_ENTRYPOINT === 'claude-desktop' &&
     !isEnvTruthy(process.env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST)) {
     delete cleanedEnv.CLAUDE_CODE_SUBAGENT_MODEL

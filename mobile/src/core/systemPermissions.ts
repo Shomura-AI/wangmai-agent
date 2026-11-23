@@ -29,7 +29,7 @@ export async function readPhotosStatus(): Promise<MediaPermission> {
   return ImagePicker.getMediaLibraryPermissionsAsync()
 }
 
-/** 打开 cc-haha 的系统通知设置；打不开具体页面时退回到 App 设置首页。 */
+/** 打开 wangmai 的系统通知设置；打不开具体页面时退回到 App 设置首页。 */
 export async function openNotificationSettings() {
   try {
     if (Platform.OS === 'ios') await Linking.openURL('app-settings:notifications')
@@ -37,7 +37,7 @@ export async function openNotificationSettings() {
       await Linking.sendIntent('android.settings.APP_NOTIFICATION_SETTINGS', [
         {
           key: 'android.provider.extra.APP_PACKAGE',
-          value: Constants.expoConfig?.android?.package ?? 'app.cchaha.mobile',
+          value: Constants.expoConfig?.android?.package ?? 'app.wangmai.mobile',
         },
       ])
   } catch {
@@ -62,7 +62,7 @@ export async function openChannelSettings(kind: ChannelKind) {
     await Linking.sendIntent('android.settings.CHANNEL_NOTIFICATION_SETTINGS', [
       {
         key: 'android.provider.extra.APP_PACKAGE',
-        value: Constants.expoConfig?.android?.package ?? 'app.cchaha.mobile',
+        value: Constants.expoConfig?.android?.package ?? 'app.wangmai.mobile',
       },
       { key: 'android.provider.extra.CHANNEL_ID', value: CHANNEL_IDS[kind] },
     ])

@@ -971,8 +971,8 @@ export function hasProxyManagedOnlyUserSettings(settings: UserSettings): boolean
   if (!isProxyManaged) return false
 
   const fallbackKeySet = new Set<string>(
-    Array.isArray(settings.ccHahaFallbackKeys)
-      ? (settings.ccHahaFallbackKeys as unknown[]).filter(
+    Array.isArray(settings.wangmaiFallbackKeys)
+      ? (settings.wangmaiFallbackKeys as unknown[]).filter(
           (key): key is string => typeof key === 'string',
         )
       : [],
@@ -981,7 +981,7 @@ export function hasProxyManagedOnlyUserSettings(settings: UserSettings): boolean
   return Object.entries(settings).every(
     ([key, value]) =>
       value === undefined ||
-      key === 'ccHahaFallbackKeys' ||
+      key === 'wangmaiFallbackKeys' ||
       fallbackKeySet.has(key) ||
       PROXY_TEMPLATE_PASSTHROUGH_KEYS.has(key) ||
       isSyntheticReadDefault(key, value),

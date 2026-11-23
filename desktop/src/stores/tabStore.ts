@@ -9,7 +9,7 @@ import { teamMemberSessionId } from '../types/team'
 import { readTabBehavior } from '../lib/tabBehavior'
 import { useUIStore } from './uiStore'
 
-const TAB_STORAGE_KEY = 'cc-haha-open-tabs'
+const TAB_STORAGE_KEY = 'wangmai-open-tabs'
 const MAX_CLOSED_SESSION_TABS = 10
 // Session ids are never reused, so a deleted one can be kept out of the closed
 // list for the life of the page. Delete flows close the tab after deleting.

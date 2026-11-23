@@ -1,10 +1,10 @@
 import { timingSafeEqual } from 'node:crypto'
 import { isLoopbackHost } from './h5AccessPolicy.js'
 
-export const LOCAL_ACCESS_TOKEN_ENV = 'CC_HAHA_LOCAL_ACCESS_TOKEN'
-export const PET_ACCESS_TOKEN_ENV = 'CC_HAHA_PET_ACCESS_TOKEN'
+export const LOCAL_ACCESS_TOKEN_ENV = 'WANGMAI_LOCAL_ACCESS_TOKEN'
+export const PET_ACCESS_TOKEN_ENV = 'WANGMAI_PET_ACCESS_TOKEN'
 /** Per-launch credential of the desktop's P2P endpoint link (set by Electron). */
-export const P2P_ENDPOINT_TOKEN_ENV = 'CC_HAHA_P2P_ENDPOINT_TOKEN'
+export const P2P_ENDPOINT_TOKEN_ENV = 'WANGMAI_P2P_ENDPOINT_TOKEN'
 
 function configuredAccessToken(envName: string): string | null {
   const token = process.env[envName]?.trim()

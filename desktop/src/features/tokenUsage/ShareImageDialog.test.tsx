@@ -48,7 +48,7 @@ async function settle() {
   })
 }
 
-const dialogProfile = { displayName: 'Ada', subtitle: 'github.com/NanmiCoder/cc-haha' }
+const dialogProfile = { displayName: 'Ada', subtitle: 'github.com/wangmai-ai/wangmai-agent' }
 
 function dialogElement(open: boolean, onClose: () => void, overrides: Partial<Parameters<typeof ShareImageDialog>[0]> = {}) {
   return (
@@ -151,7 +151,7 @@ describe('ShareImageDialog', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Save PNG' }))
 
     expect(clicks).toHaveLength(1)
-    expect(clicks[0]!.download).toMatch(/^cc-haha-token-usage-\d{8}\.png$/)
+    expect(clicks[0]!.download).toMatch(/^wangmai-token-usage-\d{8}\.png$/)
   })
 
   it('copies the image to the clipboard and says so, or says it could not', async () => {

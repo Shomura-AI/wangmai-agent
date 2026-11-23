@@ -54,7 +54,7 @@ export function buildDelivery(
     showCommand: options.liveActivityShowCommand,
   }
 }
-export const pushProofKey = (hostId: string) => `cc-haha.push.${hostId}`
+export const pushProofKey = (hostId: string) => `wangmai.push.${hostId}`
 
 /** This record belongs in SecureStore, never the public host metadata or AsyncStorage. */
 export function migratePushProofs(raw: string | null): PushRegistrationProofs {

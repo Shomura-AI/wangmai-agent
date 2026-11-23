@@ -12,7 +12,7 @@ export const MANAGED_ATTACHMENT_PREFIXES = [
   'uploads',
   'image-cache',
   'im-downloads',
-  'cc-haha/generated-images',
+  'wangmai/generated-images',
 ] as const
 
 export function activeStorageRoot(): string {
@@ -22,7 +22,7 @@ export function activeStorageRoot(): string {
 export function readStorageRelocations(configDir = activeStorageRoot()): StorageRelocations {
   let value: unknown
   try {
-    value = JSON.parse(readFileSync(join(configDir, 'cc-haha', 'storage-relocations.json'), 'utf8'))
+    value = JSON.parse(readFileSync(join(configDir, 'wangmai', 'storage-relocations.json'), 'utf8'))
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') return { version: 1, previousRoots: [] }
     throw new Error('Cannot read storage relocation metadata', { cause: error })

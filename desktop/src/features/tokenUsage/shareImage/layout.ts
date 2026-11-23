@@ -155,7 +155,7 @@ function streakTickCount(streak: NonNullable<ShareImageData['streak']>) {
 
 function header(ops: DrawOp[], theme: ShareTheme, data: ShareImageData, x: number, right: number, y: number) {
   ops.push({ kind: 'image', source: 'icon', x, y, size: 34, round: false, radius: 8 })
-  ops.push({ kind: 'text', x: x + 46, y: y + 17, text: 'cc-haha', size: 24, weight: 600, family: 'body', fill: theme.t1, baseline: 'middle', spacing: -0.01 })
+  ops.push({ kind: 'text', x: x + 46, y: y + 17, text: 'wangmai', size: 24, weight: 600, family: 'body', fill: theme.t1, baseline: 'middle', spacing: -0.01 })
   ops.push({ kind: 'text', x: right, y: y + 17, text: data.dateLabel, size: 20, weight: 400, family: 'mono', fill: theme.t3, align: 'right', baseline: 'middle' })
 }
 

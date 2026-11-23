@@ -20,7 +20,7 @@ import type {
   ImageGenerationRuntimeConfig,
 } from '../../services/imageGeneration/config.js'
 import { createCombinedAbortSignal } from '../../utils/combinedAbortSignal.js'
-import { getCcHahaDir, getClaudeConfigHomeDir } from '../../utils/envUtils.js'
+import { getWangMaiDir, getClaudeConfigHomeDir } from '../../utils/envUtils.js'
 import { getImageStoreDir } from '../../utils/imageStore.js'
 import { getProxyFetchOptions } from '../../utils/proxy.js'
 import { isUserProvidedImage } from '../../utils/userProvidedImages.js'
@@ -678,7 +678,7 @@ function defaultInputRootDirs(): string[] {
     // raw session id, which is what actually got written to disk — rebuilding
     // the path from safeSessionId() here would miss it.
     getImageStoreDir(),
-    join(getCcHahaDir(), 'generated-images', sessionId),
+    join(getWangMaiDir(), 'generated-images', sessionId),
   ]
 }
 
@@ -825,7 +825,7 @@ function detectImage(bytes: Buffer): {
 }
 
 function defaultOutputDir(): string {
-  return join(getCcHahaDir(), 'generated-images', safeSessionId())
+  return join(getWangMaiDir(), 'generated-images', safeSessionId())
 }
 
 function safeSessionId(): string {

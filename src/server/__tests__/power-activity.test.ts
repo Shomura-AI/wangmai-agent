@@ -32,8 +32,8 @@ afterEach(() => {
 
 describe('authoritative power activity snapshot', () => {
   it('transfers a local IM lease only after synchronous session admission owns the work', async () => {
-    const previous = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'power-handoff-fixture'
+    const previous = process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'power-handoff-fixture'
     const leaseId = 'power-handoff:message'
     const url = new URL('http://127.0.0.1/api/sessions/power-activity-lease')
     try {
@@ -57,8 +57,8 @@ describe('authoritative power activity snapshot', () => {
       expect((await snapshot()).busy).toBe(false)
     } finally {
       releasePowerActivityLease(leaseId)
-      if (previous === undefined) delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-      else process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = previous
+      if (previous === undefined) delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+      else process.env.WANGMAI_LOCAL_ACCESS_TOKEN = previous
     }
   })
 
@@ -201,7 +201,7 @@ describe('authoritative power activity snapshot', () => {
 
   it('includes a real standalone scheduled CLI from admission until exit and records its scheduled completion', async () => {
     const directory = await mkdtemp(join(tmpdir(), 'power-cron-'))
-    const saved = { CLAUDE_CONFIG_DIR: process.env.CLAUDE_CONFIG_DIR, CLAUDE_CLI_PATH: process.env.CLAUDE_CLI_PATH, CC_HAHA_LOCAL_INDEX: process.env.CC_HAHA_LOCAL_INDEX }
+    const saved = { CLAUDE_CONFIG_DIR: process.env.CLAUDE_CONFIG_DIR, CLAUDE_CLI_PATH: process.env.CLAUDE_CLI_PATH, WANGMAI_LOCAL_INDEX: process.env.WANGMAI_LOCAL_INDEX }
     const releasePath = join(directory, 'release')
     const readyPath = join(directory, 'ready')
     const cliPath = join(directory, 'fixture-cli.ts')
@@ -209,7 +209,7 @@ describe('authoritative power activity snapshot', () => {
     try {
       process.env.CLAUDE_CONFIG_DIR = directory
       process.env.CLAUDE_CLI_PATH = cliPath
-      process.env.CC_HAHA_LOCAL_INDEX = 'off'
+      process.env.WANGMAI_LOCAL_INDEX = 'off'
       await writeFile(cliPath, `import { existsSync, writeFileSync } from 'node:fs'\nwriteFileSync(${JSON.stringify(readyPath)}, 'ready')\nwhile (!existsSync(${JSON.stringify(releasePath)})) await Bun.sleep(5)\nconsole.log(JSON.stringify({type:'result', subtype:'success', is_error:false, result:'fixture complete'}))\n`)
       spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Public network forbidden in fixture'))
       const task = await new CronService().createTask({ cron: '* * * * *', prompt: 'fixture', folderPath: directory, recurring: true })

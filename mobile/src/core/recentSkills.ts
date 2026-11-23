@@ -11,7 +11,7 @@ export type RecentItem = {
   usedAt: number
 }
 export const RECENT_LIMIT = 8
-export const recentKey = 'cc-haha.mobile.recent-skills'
+export const recentKey = 'wangmai.mobile.recent-skills'
 
 const kinds: RecentKind[] = ['skill', 'plugin', 'command', 'agent', 'workflow']
 

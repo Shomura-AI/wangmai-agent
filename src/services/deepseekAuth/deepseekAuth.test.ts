@@ -30,16 +30,16 @@ beforeEach(() => {
   tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'deepseek-auth-'))
   tokenFile = path.join(tempDir, 'deepseek-oauth.json')
   previousFile = process.env[DEEPSEEK_OAUTH_FILE_ENV_KEY]
-  previousOrigin = process.env.CC_HAHA_DEEPSEEK_PLATFORM_ORIGIN
+  previousOrigin = process.env.WANGMAI_DEEPSEEK_PLATFORM_ORIGIN
   process.env[DEEPSEEK_OAUTH_FILE_ENV_KEY] = tokenFile
-  delete process.env.CC_HAHA_DEEPSEEK_PLATFORM_ORIGIN
+  delete process.env.WANGMAI_DEEPSEEK_PLATFORM_ORIGIN
 })
 
 afterEach(() => {
   if (previousFile === undefined) delete process.env[DEEPSEEK_OAUTH_FILE_ENV_KEY]
   else process.env[DEEPSEEK_OAUTH_FILE_ENV_KEY] = previousFile
-  if (previousOrigin === undefined) delete process.env.CC_HAHA_DEEPSEEK_PLATFORM_ORIGIN
-  else process.env.CC_HAHA_DEEPSEEK_PLATFORM_ORIGIN = previousOrigin
+  if (previousOrigin === undefined) delete process.env.WANGMAI_DEEPSEEK_PLATFORM_ORIGIN
+  else process.env.WANGMAI_DEEPSEEK_PLATFORM_ORIGIN = previousOrigin
   fs.rmSync(tempDir, { recursive: true, force: true })
 })
 
@@ -198,7 +198,7 @@ describe('buildDeepSeekFetch', () => {
   })
 
   test('never sends a grant from an overridden platform origin to the production API', async () => {
-    process.env.CC_HAHA_DEEPSEEK_PLATFORM_ORIGIN = 'http://127.0.0.1:4000'
+    process.env.WANGMAI_DEEPSEEK_PLATFORM_ORIGIN = 'http://127.0.0.1:4000'
     storeGrant('dsh_staging_token', 'http://127.0.0.1:4000')
     // It is a valid sign-in for the overridden platform...
     expect(getDeepSeekOAuthTokens()?.token).toBe('dsh_staging_token')
@@ -211,7 +211,7 @@ describe('buildDeepSeekFetch', () => {
     expect(response.status).toBe(401)
     expect(upstream.calls).toHaveLength(0)
 
-    delete process.env.CC_HAHA_DEEPSEEK_PLATFORM_ORIGIN
+    delete process.env.WANGMAI_DEEPSEEK_PLATFORM_ORIGIN
     storeGrant('dsh_mock_development_token')
     const mock = await buildDeepSeekFetch(upstream.impl)(
       `${DEEPSEEK_INFERENCE_ORIGIN}/anthropic/v1/messages`,
@@ -314,7 +314,7 @@ describe('DeepSeek platform client', () => {
       ['https://platform.example.test/path', DEEPSEEK_PLATFORM_ORIGIN],
       ['not a url', DEEPSEEK_PLATFORM_ORIGIN],
     ] as const) {
-      process.env.CC_HAHA_DEEPSEEK_PLATFORM_ORIGIN = value
+      process.env.WANGMAI_DEEPSEEK_PLATFORM_ORIGIN = value
       expect(getDeepSeekPlatformOrigin()).toBe(expected)
     }
   })

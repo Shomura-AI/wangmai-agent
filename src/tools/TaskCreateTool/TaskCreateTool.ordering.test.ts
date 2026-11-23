@@ -7,7 +7,7 @@ import { createSandboxedTestEnvironment } from '../../../scripts/pr/test-environ
 import type { ToolUseContext } from '../../Tool.js'
 
 const SUBJECTS = ['scaffold', 'data layer', '3d scene', 'glass ui', 'verify', 'polish']
-const childScenario = process.env.CC_HAHA_TASK_CREATE_ORDER_SCENARIO
+const childScenario = process.env.WANGMAI_TASK_CREATE_ORDER_SCENARIO
 
 // Models assign follow-up TaskUpdate calls by the order they issued TaskCreate,
 // so IDs from one parallel batch must follow tool_use order, not lock-race order.
@@ -94,7 +94,7 @@ test('assigns parallel TaskCreate IDs in tool_use order', async () => {
   const child = Bun.spawn([process.execPath, '--no-env-file', 'test', fileURLToPath(import.meta.url)], {
     cwd: root,
     env: createSandboxedTestEnvironment(root, {
-      CC_HAHA_TASK_CREATE_ORDER_SCENARIO: '1',
+      WANGMAI_TASK_CREATE_ORDER_SCENARIO: '1',
       NODE_ENV: 'production',
       CLAUDE_CODE_SIMPLE: '1',
       CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',

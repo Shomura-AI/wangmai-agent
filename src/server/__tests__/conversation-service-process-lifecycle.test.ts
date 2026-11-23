@@ -115,13 +115,13 @@ describe('ConversationService process lifecycle', () => {
   }
 
   beforeEach(async () => {
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-conversation-process-'))
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-conversation-process-'))
     originalConfigDir = process.env.CLAUDE_CONFIG_DIR
     originalHome = process.env.HOME
-    originalDisableTerminalShellEnv = process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV
+    originalDisableTerminalShellEnv = process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV
     process.env.CLAUDE_CONFIG_DIR = path.join(tmpDir, '.claude')
     process.env.HOME = tmpDir
-    process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV = '1'
+    process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV = '1'
   })
 
   afterEach(async () => {
@@ -133,8 +133,8 @@ describe('ConversationService process lifecycle', () => {
     else process.env.CLAUDE_CONFIG_DIR = originalConfigDir
     if (originalHome === undefined) delete process.env.HOME
     else process.env.HOME = originalHome
-    if (originalDisableTerminalShellEnv === undefined) delete process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV
-    else process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV = originalDisableTerminalShellEnv
+    if (originalDisableTerminalShellEnv === undefined) delete process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV
+    else process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV = originalDisableTerminalShellEnv
     await fs.rm(tmpDir, { recursive: true, force: true })
   })
 

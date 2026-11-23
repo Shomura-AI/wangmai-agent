@@ -217,7 +217,7 @@ export async function startCloudflareTunnel(
   if (options.signal?.aborted) throw aborted()
 
   let directory: string
-  try { directory = await mkdtemp(path.join(dependencies.temporaryDirectory ?? os.tmpdir(), 'cc-haha-cloudflared-')) }
+  try { directory = await mkdtemp(path.join(dependencies.temporaryDirectory ?? os.tmpdir(), 'wangmai-cloudflared-')) }
   catch (error) {
     diagnostic({ stage: 'connector_spawn', outcome: 'failed', reason: 'temporary_directory_failed', error, durationMs: Date.now() - startedAt })
     throw error

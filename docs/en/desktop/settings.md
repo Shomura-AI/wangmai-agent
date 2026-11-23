@@ -50,7 +50,7 @@ General covers four areas: appearance and replies, how the agent works, network 
 | Auto-dream | Off by default. After enough sessions have accumulated, it can organize auto-memory in the background, using additional model calls and tokens. |
 | Agent Trace | On by default. New sessions write raw request, response, and status events to a local traces directory. To investigate a failure, open an assistant line in the session's **Trajectory** and switch to its **Raw request** tab; turning it off stops new records, while old ones remain readable. |
 
-To store Agent Trace separately, set `CC_HAHA_TRACE_DIR` to a writable absolute directory before launching the app, such as `D:\HahaTraces` on Windows or `/data/haha-traces` on macOS/Linux, then fully quit and restart the app. JSONL files go directly in that directory; its `cc-haha/db` subdirectory holds the auxiliary index. Other configuration stays in its original location. An empty or unset variable uses the original `cc-haha/traces` under the configuration directory. Switching does not move, merge, or delete existing files, and only records in the current directory appear. Remove the variable and restart to view the default directory again. Invalid paths report an error instead of falling back to writes in the default directory.
+To store Agent Trace separately, set `WANGMAI_TRACE_DIR` to a writable absolute directory before launching the app, such as `D:\WangMaiTraces` on Windows or `/data/wangmai-traces` on macOS/Linux, then fully quit and restart the app. JSONL files go directly in that directory; its `wangmai/db` subdirectory holds the auxiliary index. Other configuration stays in its original location. An empty or unset variable uses the original `wangmai/traces` under the configuration directory. Switching does not move, merge, or delete existing files, and only records in the current directory appear. Remove the variable and restart to view the default directory again. Invalid paths report an error instead of falling back to writes in the default directory.
 
 ### Network, web search, and notifications
 
@@ -77,7 +77,7 @@ Talk to Claude from WeChat, DingTalk, WhatsApp, Telegram, Feishu, WeCom, QQ, or 
 
 ## Terminal
 
-A real host shell embedded in the app, for installing plugins, skills, MCP servers, and anything else that needs a command line. The desktop app bundles `claude-haha`, so anywhere the docs say `claude <args>` you can run `claude-haha <args>`.
+A real host shell embedded in the app, for installing plugins, skills, MCP servers, and anything else that needs a command line. The desktop app bundles `wangmai`, so anywhere the docs say `claude <args>` you can run `wangmai <args>`.
 
 On Windows you can also choose the startup shell (system default, PowerShell 7, Windows PowerShell, Command Prompt, or a custom executable) and set a Bash path — used when a tool calls Unix commands like `grep` or `sed`, usually pointing at Git Bash.
 

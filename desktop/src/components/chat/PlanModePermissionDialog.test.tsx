@@ -24,7 +24,7 @@ import { useSettingsStore } from '../../stores/settingsStore'
 import { useTabStore } from '../../stores/tabStore'
 import { useProviderStore } from '../../stores/providerStore'
 import { useSessionRuntimeStore } from '../../stores/sessionRuntimeStore'
-import { useHahaOAuthStore } from '../../stores/hahaOAuthStore'
+import { useWangMaiOAuthStore } from '../../stores/wangmaiOAuthStore'
 import { PermissionDialog } from './PermissionDialog'
 import { ToolCallBlock } from './ToolCallBlock'
 
@@ -109,7 +109,7 @@ describe('plan mode permission UI', () => {
       fetchProviders: async () => {},
     })
     useSessionRuntimeStore.setState({ selections: {} })
-    useHahaOAuthStore.setState({
+    useWangMaiOAuthStore.setState({
       status: {
         loggedIn: true,
         expiresAt: null,

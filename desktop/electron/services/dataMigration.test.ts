@@ -15,7 +15,7 @@ const roots: string[] = []
 async function fixture() {
   // macOS hands out a temp directory behind the /var -> /private/var link, and
   // migration refuses linked paths. Start from the real path, as Linux CI does.
-  const root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'haha-migration-'))
+  const root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'wangmai-migration-'))
   roots.push(root)
   const home = path.join(root, 'home')
   const source = path.join(home, '.claude')
@@ -23,7 +23,7 @@ async function fixture() {
   const userData = path.join(root, 'profile')
   await fs.mkdir(source, { recursive: true })
   await fs.mkdir(path.join(root, 'install'), { recursive: true })
-  const app: AppModeAppLike = { getPath(name) { return name === 'home' ? home : name === 'userData' ? userData : path.join(root, 'install', 'haha.exe') } }
+  const app: AppModeAppLike = { getPath(name) { return name === 'home' ? home : name === 'userData' ? userData : path.join(root, 'install', 'wangmai.exe') } }
   const hooks: DataMigrationHooks = { preview: vi.fn(async () => ({ activeTasks: 2, externalProcesses: 0 })), quiesce: vi.fn(async () => {}), resume: vi.fn(async () => {}), restart: vi.fn(), progress: vi.fn(), platform: 'win32', permissions: { restrictStaging: vi.fn(async () => {}), preflight: vi.fn(async () => {}), preserve: vi.fn(async () => {}) } }
   const put = async (relative: string, value: string) => {
     const file = path.join(source, relative)
@@ -91,14 +91,14 @@ public static class MigrationFixtureHandle {
 describe('data directory migration', () => {
   it.skipIf(process.platform !== 'win32')('publishes verified data after a real Windows sharing lock releases', async () => {
     const f = await fixture()
-    await f.put('cc-haha/tasks/pending.json', '{"task":"preserved"}')
+    await f.put('wangmai/tasks/pending.json', '{"task":"preserved"}')
     f.hooks.permissions = { restrictStaging: restrictWindowsMigrationStaging, preflight: preflightWindowsMigrationPermissions, preserve: preserveWindowsMigrationPermissions }
     const rename = fs.rename
     let release: (() => Promise<void>) | undefined
     const failures: NodeJS.ErrnoException[] = []
     let attempts = 0
     vi.spyOn(nativeFs, 'rename').mockImplementation(async (source, target) => {
-      if (!String(source).includes('.cc-haha-migration-') || path.basename(String(source)) !== 'cc-haha') return rename(source, target)
+      if (!String(source).includes('.wangmai-migration-') || path.basename(String(source)) !== 'wangmai') return rename(source, target)
       attempts += 1
       if (attempts === 1) release = await lockWindowsEntry(path.join(String(source), 'tasks', 'pending.json'))
       try { return await rename(source, target) } catch (error) {
@@ -114,13 +114,13 @@ describe('data directory migration', () => {
       await f.migration.start(preview.id)
       await f.migration.wait()
       expect(failures).toHaveLength(1)
-      expect(failures[0]).toMatchObject({ code: 'EPERM', syscall: 'rename', path: path.join(f.target, `.cc-haha-migration-${preview.id}`, 'cc-haha'), dest: path.join(f.target, 'cc-haha') })
+      expect(failures[0]).toMatchObject({ code: 'EPERM', syscall: 'rename', path: path.join(f.target, `.wangmai-migration-${preview.id}`, 'wangmai'), dest: path.join(f.target, 'wangmai') })
       expect(f.migration.status?.stage, failures[0]?.message).toBe('restarting')
       expect(attempts).toBe(2)
       expect(f.hooks.restart).toHaveBeenCalledOnce()
       expect(f.hooks.resume).not.toHaveBeenCalled()
-      expect(await fs.readFile(path.join(f.target, 'cc-haha/tasks/pending.json'), 'utf8')).toBe('{"task":"preserved"}')
-      expect(await fs.readFile(path.join(f.source, 'cc-haha/tasks/pending.json'), 'utf8')).toBe('{"task":"preserved"}')
+      expect(await fs.readFile(path.join(f.target, 'wangmai/tasks/pending.json'), 'utf8')).toBe('{"task":"preserved"}')
+      expect(await fs.readFile(path.join(f.source, 'wangmai/tasks/pending.json'), 'utf8')).toBe('{"task":"preserved"}')
       const relaunched = new DataMigration(f.app, f.hooks, {})
       expect(await relaunched.recover()).toBe('validate')
       await relaunched.completeValidation()
@@ -130,7 +130,7 @@ describe('data directory migration', () => {
 
   it.skipIf(process.platform !== 'win32')('bounds retries for a persistent real Windows lock and keeps the original startup pointer', async () => {
     const f = await fixture()
-    await f.put('cc-haha/tasks/pending.json', '{"task":"preserved"}')
+    await f.put('wangmai/tasks/pending.json', '{"task":"preserved"}')
     await fs.mkdir(f.userData)
     const oldMode = '{"mode":"default","portable_dir":null,"unknown":42}'
     await fs.writeFile(path.join(f.userData, 'app-mode.json'), oldMode)
@@ -139,7 +139,7 @@ describe('data directory migration', () => {
     let release: (() => Promise<void>) | undefined
     let attempts = 0
     vi.spyOn(nativeFs, 'rename').mockImplementation(async (source, target) => {
-      if (!String(source).includes('.cc-haha-migration-') || path.basename(String(source)) !== 'cc-haha') return rename(source, target)
+      if (!String(source).includes('.wangmai-migration-') || path.basename(String(source)) !== 'wangmai') return rename(source, target)
       attempts += 1
       if (attempts === 1) release = await lockWindowsEntry(path.join(String(source), 'tasks', 'pending.json'))
       return rename(source, target)
@@ -154,8 +154,8 @@ describe('data directory migration', () => {
       expect(f.hooks.restart).not.toHaveBeenCalled()
       expect(f.hooks.resume).toHaveBeenCalledOnce()
       expect(await fs.readFile(path.join(f.userData, 'app-mode.json'), 'utf8')).toBe(oldMode)
-      expect(await fs.readFile(path.join(f.source, 'cc-haha/tasks/pending.json'), 'utf8')).toBe('{"task":"preserved"}')
-      await expect(fs.stat(path.join(f.target, 'cc-haha'))).rejects.toMatchObject({ code: 'ENOENT' })
+      expect(await fs.readFile(path.join(f.source, 'wangmai/tasks/pending.json'), 'utf8')).toBe('{"task":"preserved"}')
+      await expect(fs.stat(path.join(f.target, 'wangmai'))).rejects.toMatchObject({ code: 'ENOENT' })
     } finally { await release?.() }
   }, 20_000)
 
@@ -164,7 +164,7 @@ describe('data directory migration', () => {
     const rename = fs.rename
     let attempts = 0
     vi.spyOn(nativeFs, 'rename').mockImplementation(async (source, target) => {
-      if (!String(source).includes('.cc-haha-migration-') || path.basename(String(source)) !== 'cc-haha') return rename(source, target)
+      if (!String(source).includes('.wangmai-migration-') || path.basename(String(source)) !== 'wangmai') return rename(source, target)
       attempts += 1
       expect(f.hooks.restart).not.toHaveBeenCalled()
       await expect(fs.stat(path.join(f.userData, 'app-mode.json'))).rejects.toMatchObject({ code: 'ENOENT' })
@@ -187,7 +187,7 @@ describe('data directory migration', () => {
     const rename = fs.rename
     let attempts = 0
     vi.spyOn(nativeFs, 'rename').mockImplementation(async (source, target) => {
-      if (!String(source).includes('.cc-haha-migration-') || path.basename(String(source)) !== 'cc-haha') return rename(source, target)
+      if (!String(source).includes('.wangmai-migration-') || path.basename(String(source)) !== 'wangmai') return rename(source, target)
       attempts += 1
       throw Object.assign(new Error('Permanent publication permission error'), { code: 'EPERM' })
     })
@@ -206,7 +206,7 @@ describe('data directory migration', () => {
     const rename = fs.rename
     let attempts = 0
     vi.spyOn(nativeFs, 'rename').mockImplementation(async (source, target) => {
-      if (!String(source).includes('.cc-haha-migration-') || path.basename(String(source)) !== 'cc-haha') return rename(source, target)
+      if (!String(source).includes('.wangmai-migration-') || path.basename(String(source)) !== 'wangmai') return rename(source, target)
       attempts += 1
       await fs.mkdir(target)
       await fs.writeFile(path.join(String(target), 'keep'), 'independent data')
@@ -218,7 +218,7 @@ describe('data directory migration', () => {
     await f.migration.wait()
     expect(attempts).toBe(1)
     expect(f.migration.status).toMatchObject({ stage: 'failed', error: 'Target directory changed during migration' })
-    expect(await fs.readFile(path.join(f.target, 'cc-haha/keep'), 'utf8')).toBe('independent data')
+    expect(await fs.readFile(path.join(f.target, 'wangmai/keep'), 'utf8')).toBe('independent data')
     expect(f.hooks.restart).not.toHaveBeenCalled()
     expect(f.hooks.resume).toHaveBeenCalledOnce()
   })
@@ -229,7 +229,7 @@ describe('data directory migration', () => {
     let attempts = 0
     let replacement = ''
     vi.spyOn(nativeFs, 'rename').mockImplementation(async (source, target) => {
-      if (!String(source).includes('.cc-haha-migration-') || path.basename(String(source)) !== 'cc-haha') return rename(source, target)
+      if (!String(source).includes('.wangmai-migration-') || path.basename(String(source)) !== 'wangmai') return rename(source, target)
       attempts += 1
       replacement = directory === 'source' ? f.source : directory === 'target' ? f.target : path.dirname(String(source))
       await rename(replacement, `${replacement}-original`)
@@ -251,8 +251,8 @@ describe('data directory migration', () => {
 
   it('previews without stopping work and switches only after a verified complete copy', async () => {
     const f = await fixture()
-    await f.put('cc-haha/db/index-v1.sqlite', 'regenerable')
-    await f.put('cc-haha/db/unknown.sqlite', 'protected unknown database')
+    await f.put('wangmai/db/index-v1.sqlite', 'regenerable')
+    await f.put('wangmai/db/unknown.sqlite', 'protected unknown database')
     await f.put('.runtime/venv/Scripts/pip.exe', 'old absolute-path executable')
     await f.put('.runtime/requirements.sha256', 'old dependency stamp')
     const original = await fs.readFile(path.join(f.source, 'settings.json'))
@@ -268,8 +268,8 @@ describe('data directory migration', () => {
     expect(await fs.readFile(path.join(f.target, 'settings.json'))).toEqual(original)
     expect(await fs.readFile(path.join(f.target, '.claude.json'), 'utf8')).toContain('"unknown":7')
     expect(await fs.readFile(path.join(f.target, 'projects/fixture/session.jsonl'), 'utf8')).toContain('hello')
-    expect(await fs.readFile(path.join(f.target, 'cc-haha/db/unknown.sqlite'), 'utf8')).toBe('protected unknown database')
-    await expect(fs.stat(path.join(f.target, 'cc-haha/db/index-v1.sqlite'))).rejects.toMatchObject({ code: 'ENOENT' })
+    expect(await fs.readFile(path.join(f.target, 'wangmai/db/unknown.sqlite'), 'utf8')).toBe('protected unknown database')
+    await expect(fs.stat(path.join(f.target, 'wangmai/db/index-v1.sqlite'))).rejects.toMatchObject({ code: 'ENOENT' })
     await expect(fs.stat(path.join(f.target, '.runtime/venv'))).rejects.toMatchObject({ code: 'ENOENT' })
     await expect(fs.stat(path.join(f.target, '.runtime/requirements.sha256'))).rejects.toMatchObject({ code: 'ENOENT' })
     expect(JSON.parse(await fs.readFile(path.join(f.userData, 'app-mode.json'), 'utf8'))).toMatchObject({ mode: 'portable', portable_dir: f.target })
@@ -333,7 +333,7 @@ describe('data directory migration', () => {
     const alias = path.join(f.root, 'active-data-alias')
     await fs.symlink(f.source, alias, 'junction')
     await fs.symlink(path.join(f.source, 'uploads'), path.join(f.source, 'internal-link'), 'junction')
-    const migration = new DataMigration(f.app, f.hooks, { CLAUDE_CONFIG_DIR: alias, CC_HAHA_APP_PORTABLE_DIR: '1' })
+    const migration = new DataMigration(f.app, f.hooks, { CLAUDE_CONFIG_DIR: alias, WANGMAI_APP_PORTABLE_DIR: '1' })
     const preview = await migration.prepare(f.target)
     expect(preview.sourceDir).toBe(alias)
     await migration.start(preview.id)
@@ -350,7 +350,7 @@ describe('data directory migration', () => {
     const f = await fixture()
     const rename = fs.rename
     vi.spyOn(nativeFs, 'rename').mockImplementation(async (source, target) => {
-      if (String(source).includes('.cc-haha-migration-')) throw Object.assign(new Error('Target disk is full'), { code: 'ENOSPC' })
+      if (String(source).includes('.wangmai-migration-')) throw Object.assign(new Error('Target disk is full'), { code: 'ENOSPC' })
       return rename(source, target)
     })
     syncBuiltinESMExports()
@@ -415,7 +415,7 @@ describe('data directory migration', () => {
     const f = await fixture()
     const mkdir = fs.mkdir
     vi.spyOn(nativeFs, 'mkdir').mockImplementation((async (directory: string, options: unknown) => {
-      if (String(directory).includes('.cc-haha-migration-')) return Promise.reject(Object.assign(new Error('Copy permission denied'), { code: 'EACCES' }))
+      if (String(directory).includes('.wangmai-migration-')) return Promise.reject(Object.assign(new Error('Copy permission denied'), { code: 'EACCES' }))
       return mkdir(directory, options as never)
     }) as typeof fs.mkdir)
     syncBuiltinESMExports()
@@ -469,7 +469,7 @@ describe('data directory migration', () => {
     await f.migration.start(preview.id)
     await f.migration.wait()
     expect(receipt).toMatchObject({
-      stagingIdentity: { canonical: path.join(f.target, `.cc-haha-migration-${preview.id}`), dev: expect.any(String), ino: expect.any(String) },
+      stagingIdentity: { canonical: path.join(f.target, `.wangmai-migration-${preview.id}`), dev: expect.any(String), ino: expect.any(String) },
       manifest: [],
       status: { stage: 'quiescing', files: 0, bytes: 0 },
     })
@@ -494,7 +494,7 @@ describe('data directory migration', () => {
     await f.migration.wait()
     expect(recoveryError).toBeInstanceOf(Error)
     expect((recoveryError as Error).message).toContain('replaced')
-    expect(await fs.readFile(path.join(f.target, `.cc-haha-migration-${preview.id}`, 'keep'), 'utf8')).toBe('independent replacement data')
+    expect(await fs.readFile(path.join(f.target, `.wangmai-migration-${preview.id}`, 'keep'), 'utf8')).toBe('independent replacement data')
     expect(await fs.readFile(path.join(f.source, 'settings.json'), 'utf8')).toContain('preserve')
     expect(f.hooks.restart).not.toHaveBeenCalled()
     expect(f.hooks.resume).toHaveBeenCalledOnce()
@@ -544,7 +544,7 @@ describe('data directory migration', () => {
     const alias = path.join(f.root, 'source-alias')
     await fs.symlink(f.source, alias, 'junction')
     await fs.symlink(path.join(f.source, 'uploads'), path.join(f.source, 'internal-link'), 'junction')
-    const migration = new DataMigration(f.app, f.hooks, { CLAUDE_CONFIG_DIR: alias, CC_HAHA_APP_PORTABLE_DIR: '1' })
+    const migration = new DataMigration(f.app, f.hooks, { CLAUDE_CONFIG_DIR: alias, WANGMAI_APP_PORTABLE_DIR: '1' })
     const preserve = vi.fn(f.hooks.permissions!.preserve)
     f.hooks.permissions!.preserve = preserve
     let preflightSources: string[] = []
@@ -708,7 +708,7 @@ describe('data directory migration', () => {
     const f = await fixture()
     await fs.mkdir(f.target)
     const id = 'fixture-id'
-    const stagingDir = path.join(f.target, `.cc-haha-migration-${id}`)
+    const stagingDir = path.join(f.target, `.wangmai-migration-${id}`)
     await fs.mkdir(stagingDir)
     await fs.writeFile(path.join(stagingDir, 'partial'), 'partial')
     await fs.writeFile(path.join(f.target, 'unrelated'), 'must survive')
@@ -759,7 +759,7 @@ describe('data directory migration', () => {
       if (status.stage !== 'copying') return
       const sync = require('node:fs') as typeof import('node:fs')
       sync.renameSync(f.target, `${f.target}-original`)
-      replacementStage = path.join(outside, `.cc-haha-migration-${status.id}`)
+      replacementStage = path.join(outside, `.wangmai-migration-${status.id}`)
       sync.mkdirSync(replacementStage)
       sync.writeFileSync(path.join(replacementStage, 'keep'), 'unrelated data')
       sync.symlinkSync(outside, f.target, 'junction')
@@ -769,7 +769,7 @@ describe('data directory migration', () => {
     await f.migration.wait()
     expect(f.migration.status).toMatchObject({ stage: 'failed', error: expect.stringContaining('replaced') })
     expect(await fs.readFile(path.join(replacementStage, 'keep'), 'utf8')).toBe('unrelated data')
-    expect(await fs.readdir(path.join(`${f.target}-original`, `.cc-haha-migration-${preview.id}`))).toEqual([])
+    expect(await fs.readdir(path.join(`${f.target}-original`, `.wangmai-migration-${preview.id}`))).toEqual([])
     expect(await fs.readFile(path.join(f.source, 'settings.json'), 'utf8')).toContain('preserve')
     expect(f.hooks.resume).toHaveBeenCalledOnce()
     expect(f.hooks.restart).not.toHaveBeenCalled()
@@ -786,7 +786,7 @@ describe('data directory migration', () => {
       if (status.stage !== 'verifying') return
       const sync = require('node:fs') as typeof import('node:fs')
       sync.renameSync(parent, `${parent}-original`)
-      replacementStage = path.join(outside, 'data', `.cc-haha-migration-${status.id}`)
+      replacementStage = path.join(outside, 'data', `.wangmai-migration-${status.id}`)
       sync.mkdirSync(replacementStage)
       sync.writeFileSync(path.join(replacementStage, 'keep'), 'external transaction')
       sync.symlinkSync(outside, parent, 'junction')
@@ -817,7 +817,7 @@ describe('data directory migration', () => {
     await fs.mkdir(f.target)
     await fs.mkdir(f.userData)
     const id = 'safe-id'
-    const stagingDir = path.join(f.target, `.cc-haha-migration-${id}`)
+    const stagingDir = path.join(f.target, `.wangmai-migration-${id}`)
     await fs.mkdir(stagingDir)
     await fs.writeFile(path.join(stagingDir, 'keep'), 'protected transaction')
     const journal = { version: 1, status: { id, sourceDir: f.source, targetDir: f.target, stage: 'copying', cancellable: true }, stagingDir, oldMode: '{"mode":"default"}', manifest: [], createdCredentials: [], credentials: [] }
@@ -851,7 +851,7 @@ describe('data directory migration', () => {
     await fs.mkdir(f.userData)
     const id = 'safe-id'
     await fs.writeFile(path.join(f.source, 'keep'), 'source must survive')
-    await fs.writeFile(path.join(f.userData, MIGRATION_JOURNAL_FILE), JSON.stringify({ version: 1, status: { id, sourceDir: f.source, targetDir: f.target, stage: 'copying' }, stagingDir: path.join(f.target, `.cc-haha-migration-${id}`), oldMode: null, manifest: [], credentials: [], createdCredentials: [] }))
+    await fs.writeFile(path.join(f.userData, MIGRATION_JOURNAL_FILE), JSON.stringify({ version: 1, status: { id, sourceDir: f.source, targetDir: f.target, stage: 'copying' }, stagingDir: path.join(f.target, `.wangmai-migration-${id}`), oldMode: null, manifest: [], credentials: [], createdCredentials: [] }))
     await expect(f.migration.recover()).rejects.toThrow('overlap')
     expect(await fs.readFile(path.join(f.source, 'keep'), 'utf8')).toBe('source must survive')
   })

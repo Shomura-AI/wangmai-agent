@@ -68,12 +68,12 @@ sdk.onmessage = async event => {
       if (arg('--agent-name') === 'leader') await new Promise(resolve => setTimeout(resolve, Number(process.env.FIXTURE_LEAD_MODEL_DELAY_MS ?? 0)))
       const url = new URL(process.env.ANTHROPIC_BASE_URL!)
       if (url.hostname !== '127.0.0.1') throw new Error('Fixture refuses non-loopback upstream')
-      const response = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY ?? '', authorization: process.env.ANTHROPIC_AUTH_TOKEN ?? '' }, body: JSON.stringify({ model: arg('--model'), preset: arg('--agents') ? JSON.parse(arg('--agents')!) : null, presetType: process.env.CC_HAHA_TEAM_WORKER_PRESET_TYPE, presetSource: process.env.CC_HAHA_TEAM_WORKER_PRESET_SOURCE, omitClaudeMd: process.env.CC_HAHA_TEAM_WORKER_OMIT_CLAUDE_MD, subagentOverride: process.env.CLAUDE_CODE_SUBAGENT_MODEL, resumed: arg('--resume') ?? null, agent: arg('--agent-name') ?? null, prompt: message.message?.content }) })
+      const response = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY ?? '', authorization: process.env.ANTHROPIC_AUTH_TOKEN ?? '' }, body: JSON.stringify({ model: arg('--model'), preset: arg('--agents') ? JSON.parse(arg('--agents')!) : null, presetType: process.env.WANGMAI_TEAM_WORKER_PRESET_TYPE, presetSource: process.env.WANGMAI_TEAM_WORKER_PRESET_SOURCE, omitClaudeMd: process.env.WANGMAI_TEAM_WORKER_OMIT_CLAUDE_MD, subagentOverride: process.env.CLAUDE_CODE_SUBAGENT_MODEL, resumed: arg('--resume') ?? null, agent: arg('--agent-name') ?? null, prompt: message.message?.content }) })
       const text = await response.text()
       if (!args.includes('--no-session-persistence')) {
         const dir = join(process.env.CLAUDE_CONFIG_DIR!, 'projects', sanitizePath(process.cwd()))
         await mkdir(dir, { recursive: true })
-        await appendFile(join(dir, `${sessionId}.jsonl`), JSON.stringify({ type: 'assistant', uuid: crypto.randomUUID(), timestamp: new Date().toISOString(), sessionId, cwd: process.cwd(), teamName: arg('--team-name'), agentName: arg('--agent-name'), entrypoint: process.env.CC_HAHA_TRANSCRIPT_ENTRYPOINT, message: { role: 'assistant', content: [{ type: 'text', text }], model: arg('--model') } }) + '\n')
+        await appendFile(join(dir, `${sessionId}.jsonl`), JSON.stringify({ type: 'assistant', uuid: crypto.randomUUID(), timestamp: new Date().toISOString(), sessionId, cwd: process.cwd(), teamName: arg('--team-name'), agentName: arg('--agent-name'), entrypoint: process.env.WANGMAI_TRANSCRIPT_ENTRYPOINT, message: { role: 'assistant', content: [{ type: 'text', text }], model: arg('--model') } }) + '\n')
       }
       // The upstream fixture decides how the turn ends, like a real provider.
       if (text.startsWith('FIXTURE_CRASH')) { sdk.close(); setTimeout(() => process.exit(1), 5); continue }

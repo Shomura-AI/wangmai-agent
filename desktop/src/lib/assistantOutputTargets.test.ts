@@ -687,10 +687,10 @@ describe('extractAssistantOutputTargets with changedFiles reconciliation', () =>
 })
 
 describe('explicit output path identity', () => {
-  const root = '/Users/nanmi/workspace/myself_code/cchaha-promo'
-  const content = `\`${root}/out/cc-haha-promo.mp4\`
+  const root = '/Users/nanmi/workspace/myself_code/wangmai-promo'
+  const content = `\`${root}/out/wangmai-promo.mp4\`
 顺带，项目根目录是 \`${root}/\`：
-- \`out/cc-haha-promo.mp4\` — 成片
+- \`out/wangmai-promo.mp4\` — 成片
 - \`public/audio/track.wav\` — 合成音轨
 - \`src/lib/shots.ts\` — 分镜
 - \`README.md\` — 说明`
@@ -698,7 +698,7 @@ describe('explicit output path identity', () => {
   it.each([undefined, [], ['/session/README.md']])('preserves screenshot deliverables with checkpoint %j', (changedFiles) => {
     const targets = extractAssistantOutputTargets(content, { workDir: '/session', changedFiles })
     expect(targets.map((target) => target.href)).toEqual([
-      `${root}/out/cc-haha-promo.mp4`, `${root}/public/audio/track.wav`, `${root}/README.md`,
+      `${root}/out/wangmai-promo.mp4`, `${root}/public/audio/track.wav`, `${root}/README.md`,
       ...(changedFiles?.length ? ['README.md'] : []),
     ])
   })

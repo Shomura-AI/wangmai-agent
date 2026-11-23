@@ -58,9 +58,9 @@ test('serves copied attachments from their historical path after the original ro
   const original = path.join(SANDBOX_ROOTS, 'missing-original')
   const suffix = path.join('uploads', 'session', 'image.png')
   mkdirSync(path.join(current, 'uploads', 'session'), { recursive: true })
-  mkdirSync(path.join(current, 'cc-haha'), { recursive: true })
+  mkdirSync(path.join(current, 'wangmai'), { recursive: true })
   writeFileSync(path.join(current, suffix), VIDEO_BYTES)
-  writeFileSync(path.join(current, 'cc-haha/storage-relocations.json'), JSON.stringify({ version: 1, previousRoots: [original] }))
+  writeFileSync(path.join(current, 'wangmai/storage-relocations.json'), JSON.stringify({ version: 1, previousRoots: [original] }))
   process.env.CLAUDE_CONFIG_DIR = current
   try {
     expect(isAllowedFilesystemPath(current)).toBe(true)

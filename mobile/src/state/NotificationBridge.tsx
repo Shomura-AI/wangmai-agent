@@ -56,7 +56,7 @@ export function NotificationBridge() {
         ),
     })
     void Promise.all([
-      Notifications.setNotificationCategoryAsync('cchahaTool', [
+      Notifications.setNotificationCategoryAsync('wangmaiTool', [
         {
           identifier: 'deny',
           buttonTitle: '拒绝',
@@ -74,14 +74,14 @@ export function NotificationBridge() {
           },
         },
       ]),
-      Notifications.setNotificationCategoryAsync('cchahaDecision', [
+      Notifications.setNotificationCategoryAsync('wangmaiDecision', [
         {
           identifier: 'open',
           buttonTitle: '查看并处理',
           options: { opensAppToForeground: true },
         },
       ]),
-      Notifications.setNotificationCategoryAsync('cchahaResult', [
+      Notifications.setNotificationCategoryAsync('wangmaiResult', [
         {
           identifier: 'open',
           buttonTitle: '查看结果',

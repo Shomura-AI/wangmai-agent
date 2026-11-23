@@ -15,10 +15,10 @@ import { sessionService } from '../services/sessionService.js'
 
 test('validation startup keeps business traffic and index writes disabled until activation', async () => {
   const root = await mkdtemp(join(tmpdir(), 'migration-validation-'))
-  const old = { root: process.env.CLAUDE_CONFIG_DIR, token: process.env.CC_HAHA_LOCAL_ACCESS_TOKEN, validation: process.env.CC_HAHA_MIGRATION_VALIDATION }
+  const old = { root: process.env.CLAUDE_CONFIG_DIR, token: process.env.WANGMAI_LOCAL_ACCESS_TOKEN, validation: process.env.WANGMAI_MIGRATION_VALIDATION }
   process.env.CLAUDE_CONFIG_DIR = root
-  process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'isolated-token'
-  process.env.CC_HAHA_MIGRATION_VALIDATION = '1'
+  process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'isolated-token'
+  process.env.WANGMAI_MIGRATION_VALIDATION = '1'
   let server: ReturnType<typeof startServer> | undefined
   try {
     await mkdir(join(root, 'projects'))
@@ -56,7 +56,7 @@ test('validation startup keeps business traffic and index writes disabled until 
     migrationMaintenance.resetForTests()
     mock.restore()
     getGlobalClaudeFile.cache.clear()
-    for (const [key, value] of [['CLAUDE_CONFIG_DIR', old.root], ['CC_HAHA_LOCAL_ACCESS_TOKEN', old.token], ['CC_HAHA_MIGRATION_VALIDATION', old.validation]]) {
+    for (const [key, value] of [['CLAUDE_CONFIG_DIR', old.root], ['WANGMAI_LOCAL_ACCESS_TOKEN', old.token], ['WANGMAI_MIGRATION_VALIDATION', old.validation]]) {
       if (value === undefined) delete process.env[key!]
       else process.env[key!] = value
     }

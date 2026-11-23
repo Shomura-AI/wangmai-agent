@@ -21,7 +21,7 @@ const originalConfig = process.env.CLAUDE_CONFIG_DIR
 let configDir: string
 
 beforeEach(() => {
-  configDir = mkdtempSync(join(tmpdir(), 'cc-haha-lean-agent-'))
+  configDir = mkdtempSync(join(tmpdir(), 'wangmai-lean-agent-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
   resetSettingsCache()
   setAgentProfile('lean')
@@ -134,7 +134,7 @@ describe('lean Agent contract', () => {
     })
     await expect(stream.next()).rejects.toBe(stop)
     const prompt = JSON.stringify(captured?.systemPrompt)
-    expect(prompt).toContain('You are cc-haha')
+    expect(prompt).toContain('You are wangmai')
     expect(prompt).toContain('You are a subagent completing the assigned task')
     expect(prompt).not.toMatch(/CUSTOM_PROMPT_SENTINEL|OLD_PROMPT_SENTINEL|UNSELECTED_SKILL_SENTINEL/)
     expect(captured?.toolUseContext.options.tools.map(tool => tool.name)).toEqual(['Read', 'Write', 'WebSearch'])

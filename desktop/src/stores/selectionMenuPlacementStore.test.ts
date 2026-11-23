@@ -8,7 +8,7 @@ import {
   useSelectionMenuPlacementStore,
 } from './selectionMenuPlacementStore'
 
-const CHAT_APPEARANCE_KEY = 'cc-haha-chat-appearance'
+const CHAT_APPEARANCE_KEY = 'wangmai-chat-appearance'
 
 describe('selection menu placement preference', () => {
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import { isDeepSeekAccountProviderId, resolveDeepSeekAccountRequestHeaders } from '../../deepseekAccountProvider.js'
-import { hahaOpenAIOAuthService } from '../../hahaOpenAIOAuthService.js'
+import { wangmaiOpenAIOAuthService } from '../../wangmaiOpenAIOAuthService.js'
 import { isOpenAIOfficialProviderId } from '../../openaiOfficialProvider.js'
 import { ProviderService } from '../../providerService.js'
 import type { SavedProvider } from '../../../types/provider.js'
@@ -31,7 +31,7 @@ function toTarget(provider: SavedProvider, modelId: string): ResolvedCorrectionT
 /** Whether the shared text transport could authenticate a request to this provider right now. */
 async function hasUsableCredentials(provider: SavedProvider): Promise<boolean> {
   if (isOpenAIOfficialProviderId(provider.id)) {
-    return Boolean((await hahaOpenAIOAuthService.loadTokens())?.accessToken)
+    return Boolean((await wangmaiOpenAIOAuthService.loadTokens())?.accessToken)
   }
   if (!provider.baseUrl) return false
   if (isDeepSeekAccountProviderId(provider.id)) {

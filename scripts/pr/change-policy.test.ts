@@ -95,12 +95,12 @@ describe('evaluateChangePolicy', () => {
   })
 
   test('lets a CODEOWNER change CLI core without the override label', () => {
-    const owners = codeOwnerLogins('# maintainers\n/src/utils/ @NanmiCoder\n/docs/ @org/docs-team\n')
+    const owners = codeOwnerLogins('# maintainers\n/src/utils/ @wangmai-ai\n/docs/ @org/docs-team\n')
     const result = evaluateChangePolicy(
       ['src/utils/context.ts', 'src/utils/__tests__/context.test.ts'],
       [],
       [],
-      { author: 'nanmicoder', codeOwners: owners },
+      { author: 'wangmai-ai', codeOwners: owners },
     )
 
     expect(result.blocked).toBe(false)
@@ -113,7 +113,7 @@ describe('evaluateChangePolicy', () => {
       ['src/utils/context.ts', 'src/utils/__tests__/context.test.ts'],
       [],
       [],
-      { author: 'drive-by-contributor', codeOwners: ['nanmicoder'] },
+      { author: 'drive-by-contributor', codeOwners: ['wangmai-ai'] },
     )
 
     expect(result.blocked).toBe(true)
@@ -122,7 +122,7 @@ describe('evaluateChangePolicy', () => {
   })
 
   test('never treats a team handle as an individual CODEOWNER', () => {
-    expect(codeOwnerLogins('* @NanmiCoder @org/maintainers user@example.com\n# @commented')).toEqual(['nanmicoder'])
+    expect(codeOwnerLogins('* @wangmai-ai @org/maintainers user@example.com\n# @commented')).toEqual(['wangmai-ai'])
     const result = evaluateChangePolicy(['src/utils/context.ts'], [], [], {
       author: 'org/maintainers',
       codeOwners: codeOwnerLogins('* @org/maintainers'),
@@ -131,7 +131,7 @@ describe('evaluateChangePolicy', () => {
   })
 
   test('requires the label when the PR author is unknown', () => {
-    const result = evaluateChangePolicy(['src/utils/context.ts'], ['allow-missing-tests'], [], { codeOwners: ['nanmicoder'] })
+    const result = evaluateChangePolicy(['src/utils/context.ts'], ['allow-missing-tests'], [], { codeOwners: ['wangmai-ai'] })
 
     expect(result.blocked).toBe(true)
     expect(result.cliCoreOverride).toBeNull()
@@ -472,7 +472,7 @@ describe('change-policy CLI owner exemption', () => {
         writeFileSync(join(dir, 'files.txt'), 'src/utils/context.ts\nsrc/utils/__tests__/context.test.ts\n')
         writeFileSync(join(dir, 'labels.txt'), '')
         writeFileSync(join(dir, 'author.txt'), `${author}\n`)
-        writeFileSync(join(dir, 'CODEOWNERS'), '/src/utils/ @NanmiCoder\n')
+        writeFileSync(join(dir, 'CODEOWNERS'), '/src/utils/ @wangmai-ai\n')
         const proc = Bun.spawn([
           'bun', 'run', 'scripts/pr/change-policy.ts',
           '--files', join(dir, 'files.txt'),
@@ -485,7 +485,7 @@ describe('change-policy CLI owner exemption', () => {
         return readFileSync(outputPath, 'utf8')
       }
 
-      const owner = await run('NanmiCoder')
+      const owner = await run('wangmai-ai')
       expect(owner).toContain('blocked=false')
       expect(owner).toContain('cli_core_override=codeowner-author')
       const outsider = await run('someone-else')

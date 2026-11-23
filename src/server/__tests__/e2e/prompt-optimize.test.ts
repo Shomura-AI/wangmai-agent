@@ -27,7 +27,7 @@ test('prompt optimize HTTP controls work on empty, running, and idle sessions wi
     CLAUDE_CLI_PATH: fileURLToPath(
       new URL('../fixtures/mock-sdk-cli.ts', import.meta.url),
     ),
-    CC_HAHA_DISABLE_TERMINAL_SHELL_ENV: '1',
+    WANGMAI_DISABLE_TERMINAL_SHELL_ENV: '1',
     MOCK_SDK_STREAM_DELAY_MS: '1200',
     DISABLE_TELEMETRY: '1',
     DISABLE_ERROR_REPORTING: '1',

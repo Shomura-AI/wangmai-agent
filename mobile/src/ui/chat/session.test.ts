@@ -18,8 +18,8 @@ const session = (patch: Partial<Session>): Session => ({
   createdAt: '',
   modifiedAt: '',
   messageCount: 0,
-  projectPath: '/Users/me/code/cc-haha',
-  workDir: '/Users/me/code/cc-haha',
+  projectPath: '/Users/me/code/wangmai',
+  workDir: '/Users/me/code/wangmai',
   workDirExists: true,
   ...patch,
 })
@@ -31,16 +31,16 @@ const checkpoint = (index: number, count: number, startedAt?: number): Checkpoin
 
 describe('navigation subtitle', () => {
   test('uses the repository root for worktrees and appends the branch only when known', () => {
-    const worktree = session({ projectRoot: '/Users/me/code/cc-haha', workDir: '/tmp/worktrees/feat-x' })
-    expect(projectName(worktree)).toBe('cc-haha')
-    expect(sessionSubtitle(worktree, 'main')).toBe('cc-haha · main')
-    expect(sessionSubtitle(worktree, null)).toBe('cc-haha')
+    const worktree = session({ projectRoot: '/Users/me/code/wangmai', workDir: '/tmp/worktrees/feat-x' })
+    expect(projectName(worktree)).toBe('wangmai')
+    expect(sessionSubtitle(worktree, 'main')).toBe('wangmai · main')
+    expect(sessionSubtitle(worktree, null)).toBe('wangmai')
     expect(sessionSubtitle(session({ projectRoot: null, workDir: 'C:\\code\\app\\' }), '  ')).toBe('app')
     expect(sessionSubtitle(null, 'main')).toBe('main')
   })
 
   test('abbreviates only a real home directory prefix', () => {
-    expect(displayPath('/Users/me/code/cc-haha')).toBe('~/code/cc-haha')
+    expect(displayPath('/Users/me/code/wangmai')).toBe('~/code/wangmai')
     expect(displayPath('/home/dev')).toBe('~')
     expect(displayPath('/opt/Users/me')).toBe('/opt/Users/me')
     expect(displayPath(null)).toBe('')

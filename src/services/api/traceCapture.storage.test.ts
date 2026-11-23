@@ -15,7 +15,7 @@ import {
   updateTraceCaptureSettings,
 } from './traceCapture.js'
 
-const envKeys = ['CLAUDE_CONFIG_DIR', 'CC_HAHA_TRACE_DIR', 'CC_HAHA_TRACE_API_CALLS', 'CC_HAHA_LOCAL_INDEX'] as const
+const envKeys = ['CLAUDE_CONFIG_DIR', 'WANGMAI_TRACE_DIR', 'WANGMAI_TRACE_API_CALLS', 'WANGMAI_LOCAL_INDEX'] as const
 let savedEnv: Array<string | undefined>
 let root: string
 let config: string
@@ -25,9 +25,9 @@ beforeEach(async () => {
   root = await fs.mkdtemp(join(tmpdir(), 'trace-storage-'))
   config = join(root, 'config')
   process.env.CLAUDE_CONFIG_DIR = config
-  process.env.CC_HAHA_LOCAL_INDEX = 'on'
-  delete process.env.CC_HAHA_TRACE_DIR
-  delete process.env.CC_HAHA_TRACE_API_CALLS
+  process.env.WANGMAI_LOCAL_INDEX = 'on'
+  delete process.env.WANGMAI_TRACE_DIR
+  delete process.env.WANGMAI_TRACE_API_CALLS
   clearTraceCaptureStateForTests()
 })
 
@@ -95,11 +95,11 @@ test.each(['anthropic', 'proxy'] as const)('retains request evidence after a lar
 })
 
 test('preserves legacy settings and the default JSONL and SQLite locations', async () => {
-  const settingsFile = join(config, 'cc-haha', 'settings.json')
-  await fs.mkdir(join(config, 'cc-haha'), { recursive: true })
+  const settingsFile = join(config, 'wangmai', 'settings.json')
+  await fs.mkdir(join(config, 'wangmai'), { recursive: true })
   const legacy = { futureField: 'keep', traceCapture: { enabled: false, unknownField: 7 } }
   await fs.writeFile(settingsFile, JSON.stringify(legacy))
-  const storageDir = join(config, 'cc-haha', 'traces')
+  const storageDir = join(config, 'wangmai', 'traces')
   expect(getTraceStorageDir()).toBe(storageDir)
   expect(await readTraceCaptureSettings()).toEqual({ enabled: false, storageDir })
   expect(await record('disabled')).toBeNull()
@@ -109,12 +109,12 @@ test('preserves legacy settings and the default JSONL and SQLite locations', asy
   })
   await record('default')
   expect(await fs.readFile(join(storageDir, 'shared-session.jsonl'), 'utf8')).toContain('default')
-  expect((await fs.stat(join(config, 'cc-haha', 'db', 'trace-index-v1.sqlite'))).isFile()).toBe(true)
+  expect((await fs.stat(join(config, 'wangmai', 'db', 'trace-index-v1.sqlite'))).isFile()).toBe(true)
 })
 
 test('stores and reads custom traces and their index without moving managed settings', async () => {
   const storageDir = join(root, 'custom traces')
-  process.env.CC_HAHA_TRACE_DIR = storageDir
+  process.env.WANGMAI_TRACE_DIR = storageDir
   expect(getTraceStorageDir()).toBe(storageDir)
   expect(readTraceCaptureSettingsSync()).toEqual({ enabled: true, storageDir })
   expect(await readTraceCaptureSettings()).toEqual({ enabled: true, storageDir })
@@ -123,13 +123,13 @@ test('stores and reads custom traces and their index without moving managed sett
   expect(await traceCaptureService.getSessionTraceFile('shared-session')).toEqual({ path: file })
   expect((await traceCaptureService.getSessionTraceOverview('shared-session')).calls.map(call => call.id)).toEqual(['custom'])
   expect((await traceCaptureService.getSessionTraceCall('shared-session', 'custom'))?.model).toBe('custom')
-  expect((await fs.stat(join(storageDir, 'cc-haha', 'db', 'trace-storage-index-v1.sqlite'))).isFile()).toBe(true)
-  await expect(fs.stat(join(config, 'cc-haha', 'traces'))).rejects.toMatchObject({ code: 'ENOENT' })
-  await expect(fs.stat(join(config, 'cc-haha', 'db'))).rejects.toMatchObject({ code: 'ENOENT' })
+  expect((await fs.stat(join(storageDir, 'wangmai', 'db', 'trace-storage-index-v1.sqlite'))).isFile()).toBe(true)
+  await expect(fs.stat(join(config, 'wangmai', 'traces'))).rejects.toMatchObject({ code: 'ENOENT' })
+  await expect(fs.stat(join(config, 'wangmai', 'db'))).rejects.toMatchObject({ code: 'ENOENT' })
   expect(await updateTraceCaptureSettings({ enabled: false })).toEqual({ enabled: false, storageDir })
   expect(await record('disabled')).toBeNull()
-  expect(JSON.parse(await fs.readFile(join(config, 'cc-haha', 'settings.json'), 'utf8'))).toEqual({ traceCapture: { enabled: false } })
-  await expect(fs.stat(join(storageDir, 'cc-haha', 'settings.json'))).rejects.toMatchObject({ code: 'ENOENT' })
+  expect(JSON.parse(await fs.readFile(join(config, 'wangmai', 'settings.json'), 'utf8'))).toEqual({ traceCapture: { enabled: false } })
+  await expect(fs.stat(join(storageDir, 'wangmai', 'settings.json'))).rejects.toMatchObject({ code: 'ENOENT' })
 })
 
 test('isolates indexes, reads, lists and deletion across storage roots with the same session id', async () => {
@@ -139,11 +139,11 @@ test('isolates indexes, reads, lists and deletion across storage roots with the 
   const first = join(root, 'first')
   const second = join(root, 'second')
   for (const storageDir of [first, second]) {
-    process.env.CC_HAHA_TRACE_DIR = storageDir
+    process.env.WANGMAI_TRACE_DIR = storageDir
     await record(storageDir === first ? 'first' : 'second')
   }
   for (const storageDir of [first, second, first]) {
-    process.env.CC_HAHA_TRACE_DIR = storageDir
+    process.env.WANGMAI_TRACE_DIR = storageDir
     const id = storageDir === first ? 'first' : 'second'
     expect((await traceCaptureService.getSessionTraceOverview('shared-session')).calls.map(call => call.id)).toEqual([id])
     const list = await traceCaptureService.listSessionTraces()
@@ -152,15 +152,15 @@ test('isolates indexes, reads, lists and deletion across storage roots with the 
     expect(list.traces[0]?.summary.models).toEqual([{ model: id, calls: 1 }])
     expect((await traceCaptureService.listSessionTraceFiles()).storageDir).toBe(storageDir)
     // Exercise the canonical cache as well as the SQLite read path.
-    process.env.CC_HAHA_LOCAL_INDEX = 'off'
+    process.env.WANGMAI_LOCAL_INDEX = 'off'
     expect((await traceCaptureService.getSessionTrace('shared-session')).calls.map(call => call.id)).toEqual([id])
-    process.env.CC_HAHA_LOCAL_INDEX = 'on'
+    process.env.WANGMAI_LOCAL_INDEX = 'on'
   }
   expect(await traceCaptureService.deleteSessionTrace('shared-session')).toEqual({ sessionId: 'shared-session', deleted: true })
   expect((await traceCaptureService.getSessionTraceOverview('shared-session')).calls).toEqual([])
-  process.env.CC_HAHA_TRACE_DIR = second
+  process.env.WANGMAI_TRACE_DIR = second
   expect((await traceCaptureService.getSessionTraceOverview('shared-session')).calls[0]?.id).toBe('second')
-  delete process.env.CC_HAHA_TRACE_DIR
+  delete process.env.WANGMAI_TRACE_DIR
   expect(await fs.readFile(defaultFile, 'utf8')).toBe(defaultBytes)
   expect((await traceCaptureService.getSessionTraceOverview('shared-session')).calls[0]?.id).toBe('default')
 })
@@ -168,7 +168,7 @@ test('isolates indexes, reads, lists and deletion across storage roots with the 
 test('keeps an in-flight append and index projection in the captured custom directory', async () => {
   const first = join(root, 'first')
   const second = join(root, 'second')
-  process.env.CC_HAHA_TRACE_DIR = first
+  process.env.WANGMAI_TRACE_DIR = first
   let release!: () => void
   const blocked = new Promise<void>(resolve => { release = resolve })
   let signalStarted!: () => void
@@ -181,13 +181,13 @@ test('keeps an in-flight append and index projection in the captured custom dire
   const pending = record('first')
   try {
     await started
-    process.env.CC_HAHA_TRACE_DIR = second
+    process.env.WANGMAI_TRACE_DIR = second
   } finally {
     release()
     await pending
   }
   await expect(fs.stat(second)).rejects.toMatchObject({ code: 'ENOENT' })
-  process.env.CC_HAHA_TRACE_DIR = first
+  process.env.WANGMAI_TRACE_DIR = first
   expect((await traceCaptureService.listSessionTraces()).traces[0]?.summary.models).toEqual([{ model: 'first', calls: 1 }])
 })
 
@@ -195,14 +195,14 @@ test('keeps the default index isolated when the custom trace directory is the co
   await record('default')
   const defaultFile = join(getTraceStorageDir(), 'shared-session.jsonl')
   const defaultBytes = await fs.readFile(defaultFile, 'utf8')
-  process.env.CC_HAHA_TRACE_DIR = config
+  process.env.WANGMAI_TRACE_DIR = config
   await record('custom')
   await drainTraceCaptureForTests()
   clearTraceCaptureStateForTests()
-  delete process.env.CC_HAHA_TRACE_DIR
+  delete process.env.WANGMAI_TRACE_DIR
   expect((await traceCaptureService.listSessionTraces()).traces[0]?.summary.models).toEqual([{ model: 'default', calls: 1 }])
   expect(await fs.readFile(defaultFile, 'utf8')).toBe(defaultBytes)
-  process.env.CC_HAHA_TRACE_DIR = config
+  process.env.WANGMAI_TRACE_DIR = config
   expect((await traceCaptureService.listSessionTraces()).traces[0]?.summary.models).toEqual([{ model: 'custom', calls: 1 }])
   expect((await traceCaptureService.getSessionTrace('shared-session')).calls.map(call => call.id)).toEqual(['custom'])
 })
@@ -210,19 +210,19 @@ test('keeps the default index isolated when the custom trace directory is the co
 test('keeps list results and settings on the captured root across an asynchronous environment switch', async () => {
   const first = join(root, 'first')
   const second = join(root, 'second')
-  process.env.CC_HAHA_TRACE_DIR = first
+  process.env.WANGMAI_TRACE_DIR = first
   await record('first')
   const readFile = fs.readFile.bind(fs)
   const spy = spyOn(fs, 'readFile').mockImplementation(async (...args) => {
     const result = await readFile(...args)
-    if (args[0] === join(config, 'cc-haha', 'settings.json')) process.env.CC_HAHA_TRACE_DIR = second
+    if (args[0] === join(config, 'wangmai', 'settings.json')) process.env.WANGMAI_TRACE_DIR = second
     return result
   })
   await updateTraceCaptureSettings({ enabled: true })
-  process.env.CC_HAHA_TRACE_DIR = first
+  process.env.WANGMAI_TRACE_DIR = first
   try {
     const list = await traceCaptureService.listSessionTraces()
-    expect(process.env.CC_HAHA_TRACE_DIR).toBe(second)
+    expect(process.env.WANGMAI_TRACE_DIR).toBe(second)
     expect(list.storageDir).toBe(first)
     expect(list.settings.storageDir).toBe(first)
     expect(list.traces[0]?.summary.models).toEqual([{ model: 'first', calls: 1 }])
@@ -234,9 +234,9 @@ test('keeps list results and settings on the captured root across an asynchronou
 test('deletion waits for an in-flight append and stays on its captured custom root', async () => {
   const first = join(root, 'first')
   const second = join(root, 'second')
-  process.env.CC_HAHA_TRACE_DIR = second
+  process.env.WANGMAI_TRACE_DIR = second
   await record('second')
-  process.env.CC_HAHA_TRACE_DIR = first
+  process.env.WANGMAI_TRACE_DIR = first
   let release!: () => void
   const blocked = new Promise<void>(resolve => { release = resolve })
   let signalStarted!: () => void
@@ -256,7 +256,7 @@ test('deletion waits for an in-flight append and stays on its captured custom ro
   try {
     await new Promise<void>(resolve => setImmediate(resolve))
     expect(deleted).toBe(false)
-    process.env.CC_HAHA_TRACE_DIR = second
+    process.env.WANGMAI_TRACE_DIR = second
   } finally {
     release()
     await pending
@@ -264,13 +264,13 @@ test('deletion waits for an in-flight append and stays on its captured custom ro
   expect(await deleting).toEqual({ sessionId: 'shared-session', deleted: true })
   await expect(fs.stat(join(first, 'shared-session.jsonl'))).rejects.toMatchObject({ code: 'ENOENT' })
   expect((await traceCaptureService.getSessionTraceOverview('shared-session')).calls.map(call => call.id)).toEqual(['second'])
-  process.env.CC_HAHA_TRACE_DIR = first
+  process.env.WANGMAI_TRACE_DIR = first
   expect((await traceCaptureService.getSessionTraceOverview('shared-session')).calls).toEqual([])
 })
 
 test('a directory shared with other JSONL files neither lists nor deletes them as traces', async () => {
   const shared = join(root, 'shared')
-  process.env.CC_HAHA_TRACE_DIR = shared
+  process.env.WANGMAI_TRACE_DIR = shared
   await record('mine')
   const history = join(shared, 'history.jsonl')
   await fs.writeFile(history, '{"display":"a user prompt"}\n')
@@ -283,8 +283,8 @@ test('a directory shared with other JSONL files neither lists nor deletes them a
 })
 
 test('rejects relative paths without writing to the default directory', async () => {
-  process.env.CC_HAHA_TRACE_DIR = 'relative-traces'
-  expect(() => getTraceStorageDir()).toThrow('CC_HAHA_TRACE_DIR must be an absolute directory path')
+  process.env.WANGMAI_TRACE_DIR = 'relative-traces'
+  expect(() => getTraceStorageDir()).toThrow('WANGMAI_TRACE_DIR must be an absolute directory path')
   await expect(record('invalid')).rejects.toMatchObject({ code: 'TRACE_INVALID_STORAGE_DIR' })
   await expect(fs.stat(config)).rejects.toMatchObject({ code: 'ENOENT' })
 })
@@ -293,14 +293,14 @@ test('leaves an occupied path and old trace data untouched after a failed write 
   await record('default')
   const file = join(root, 'occupied')
   await fs.writeFile(file, 'do not overwrite')
-  process.env.CC_HAHA_TRACE_DIR = file
+  process.env.WANGMAI_TRACE_DIR = file
   await expect(record('failed')).rejects.toThrow()
   expect(await fs.readFile(file, 'utf8')).toBe('do not overwrite')
-  delete process.env.CC_HAHA_TRACE_DIR
+  delete process.env.WANGMAI_TRACE_DIR
   expect((await traceCaptureService.getSessionTraceOverview('shared-session')).calls.map(call => call.id)).toEqual(['default'])
 })
 
 test('treats an empty directory override as unset', () => {
-  process.env.CC_HAHA_TRACE_DIR = '  '
-  expect(getTraceStorageDir()).toBe(join(config, 'cc-haha', 'traces'))
+  process.env.WANGMAI_TRACE_DIR = '  '
+  expect(getTraceStorageDir()).toBe(join(config, 'wangmai', 'traces'))
 })

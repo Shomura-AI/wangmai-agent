@@ -1,7 +1,7 @@
 export function getSessionBridgeConfig() {
-  const endpoint = process.env.CC_HAHA_DESKTOP_SERVER_URL
-  const token = process.env.CC_HAHA_SESSION_COLLABORATION_TOKEN
-  const sessionId = process.env.CC_HAHA_SESSION_ID
+  const endpoint = process.env.WANGMAI_DESKTOP_SERVER_URL
+  const token = process.env.WANGMAI_SESSION_COLLABORATION_TOKEN
+  const sessionId = process.env.WANGMAI_SESSION_ID
   if (!endpoint || !token || !sessionId) return undefined
   const url = new URL(endpoint)
   if (url.protocol !== 'http:' || !['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname) || url.username || url.password) {

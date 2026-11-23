@@ -1,8 +1,8 @@
 /**
  * Provider Service — preset-based provider configuration
  *
- * Storage: ~/.claude/cc-haha/providers.json (lightweight index)
- * Active provider env vars written to ~/.claude/cc-haha/settings.json
+ * Storage: ~/.claude/wangmai/providers.json (lightweight index)
+ * Active provider env vars written to ~/.claude/wangmai/settings.json
  * (isolated from the original Claude Code's ~/.claude/settings.json)
  */
 
@@ -31,8 +31,8 @@ import {
   isOpenAIOfficialProviderId,
 } from './openaiOfficialProvider.js'
 import { getDesktopOpenAICodexModelCatalog, readCachedDesktopOpenAICodexModelCatalog } from './openaiModelCatalog.js'
-import { hahaOpenAIOAuthService } from './hahaOpenAIOAuthService.js'
-import { hahaOAuthService } from './hahaOAuthService.js'
+import { wangmaiOpenAIOAuthService } from './wangmaiOpenAIOAuthService.js'
+import { wangmaiOAuthService } from './wangmaiOAuthService.js'
 import {
   GROK_MODEL_CATALOG_ENV_KEY,
   GROK_OFFICIAL_PROVIDER,
@@ -44,7 +44,7 @@ import {
   DEEPSEEK_ACCOUNT_PROVIDER,
   isDeepSeekAccountProviderId,
 } from './deepseekAccountProvider.js'
-import { hahaDeepSeekOAuthService } from './hahaDeepSeekOAuthService.js'
+import { wangmaiDeepSeekOAuthService } from './wangmaiDeepSeekOAuthService.js'
 import {
   CLAUDE_OFFICIAL_DEFAULT_MODELS,
 } from './claudeOfficialRuntime.js'
@@ -57,7 +57,7 @@ import {
   type MagpieModel,
   type MagpieStatus,
 } from './magpieGateway.js'
-import { hahaGrokOAuthService } from './hahaGrokOAuthService.js'
+import { wangmaiGrokOAuthService } from './wangmaiGrokOAuthService.js'
 import {
   CURRENT_PROVIDER_INDEX_SCHEMA_VERSION,
   ensurePersistentStorageUpgraded,
@@ -114,7 +114,7 @@ import {
 
 type ProviderAuthStatus = {
   hasAuth: boolean
-  source: 'cc-haha-provider' | 'claude-oauth' | 'openai-oauth' | 'grok-oauth' | 'deepseek-oauth' | 'original-settings' | 'env' | 'none'
+  source: 'wangmai-provider' | 'claude-oauth' | 'openai-oauth' | 'grok-oauth' | 'deepseek-oauth' | 'original-settings' | 'env' | 'none'
   activeProvider?: string
 }
 
@@ -232,12 +232,12 @@ export class ProviderService {
     return process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude')
   }
 
-  private getCcHahaDir(): string {
-    return path.join(this.getConfigDir(), 'cc-haha')
+  private getWangMaiDir(): string {
+    return path.join(this.getConfigDir(), 'wangmai')
   }
 
   private getIndexPath(): string {
-    return path.join(this.getCcHahaDir(), 'providers.json')
+    return path.join(this.getWangMaiDir(), 'providers.json')
   }
 
   /** Serialize index read/modify/write across instances; settings callbacks read without this lock. */
@@ -258,7 +258,7 @@ export class ProviderService {
 
   private async readIndex(): Promise<ProvidersIndex> {
     const migration = await ensurePersistentStorageUpgraded()
-    if (migration.failures.some(failure => failure.startsWith('cc-haha/settings.json:'))) {
+    if (migration.failures.some(failure => failure.startsWith('wangmai/settings.json:'))) {
       throw ApiError.internal('Provider settings upgrade failed. Retry after the settings file is writable.')
     }
     return readRecoverableJsonFile({
@@ -887,7 +887,7 @@ export class ProviderService {
     globalDefault: boolean,
   ): Promise<ProviderAuthStatus> {
     if (id === CLAUDE_OFFICIAL_PROVIDER_ID) {
-      const tokens = await hahaOAuthService.ensureFreshTokens()
+      const tokens = await wangmaiOAuthService.ensureFreshTokens()
       if (tokens?.accessToken) {
         return {
           hasAuth: true,
@@ -898,7 +898,7 @@ export class ProviderService {
       return globalDefault ? this.checkAmbientAuth() : this.checkOriginalSettingsAuth()
     }
     if (isOpenAIOfficialProviderId(id)) {
-      const tokens = await hahaOpenAIOAuthService.ensureFreshTokens()
+      const tokens = await wangmaiOpenAIOAuthService.ensureFreshTokens()
       const hasAuth = !!(tokens?.accessToken && tokens.refreshToken)
       return {
         hasAuth,
@@ -907,7 +907,7 @@ export class ProviderService {
       }
     }
     if (isGrokOfficialProviderId(id)) {
-      const tokens = await hahaGrokOAuthService.ensureFreshTokens()
+      const tokens = await wangmaiGrokOAuthService.ensureFreshTokens()
       const hasAuth = !!(tokens?.accessToken && tokens.refreshToken)
       return {
         hasAuth,
@@ -916,7 +916,7 @@ export class ProviderService {
       }
     }
     if (isDeepSeekAccountProviderId(id)) {
-      const tokens = await hahaDeepSeekOAuthService.loadTokens()
+      const tokens = await wangmaiDeepSeekOAuthService.loadTokens()
       return {
         hasAuth: !!tokens,
         source: tokens ? 'deepseek-oauth' : 'none',
@@ -933,7 +933,7 @@ export class ProviderService {
       )
       const authEnv = buildProviderAuthEnv(provider, presetDefaultEnv, needsProxy)
       if (Object.values(authEnv).some(value => value.length > 0)) {
-        return { hasAuth: true, source: 'cc-haha-provider', activeProvider: provider.name }
+        return { hasAuth: true, source: 'wangmai-provider', activeProvider: provider.name }
       }
     }
     if (globalDefault) return this.checkAmbientAuth()
@@ -1292,7 +1292,7 @@ export class ProviderService {
  */
 function connectivityProbeSessionId(): string {
   const random = globalThis.crypto?.randomUUID?.()
-  return random ? `cc-haha-probe-${random}` : 'cc-haha-probe'
+  return random ? `wangmai-probe-${random}` : 'wangmai-probe'
 }
 
 function buildDirectTestRequest(

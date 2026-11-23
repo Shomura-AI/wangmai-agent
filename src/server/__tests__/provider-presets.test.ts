@@ -22,7 +22,7 @@ test.each(['gemini_native', 'xai_images'] as const)('keeps a preset image protoc
     baseUrl: preset.baseUrl, apiFormat: preset.apiFormat, models: preset.defaultModels,
     imageGeneration: preset.defaultImageGeneration,
   })
-  expect(env.CC_HAHA_IMAGE_PROTOCOL).toBe(protocol)
+  expect(env.WANGMAI_IMAGE_PROTOCOL).toBe(protocol)
 })
 
 beforeEach(async () => {
@@ -130,7 +130,7 @@ describe('provider presets API', () => {
       baseUrl: 'https://modelflare.dev',
       apiFormat: 'anthropic',
       authStrategy: 'auth_token',
-      apiKeyUrl: 'https://modelflare.dev/sign-up?utm_source=github&utm_campaign=cchaha',
+      apiKeyUrl: 'https://modelflare.dev/sign-up?utm_source=github&utm_campaign=wangmai',
       featured: true,
       isNew: true,
       needsApiKey: true,
@@ -214,7 +214,7 @@ describe('provider presets API', () => {
     expect(PROVIDER_PRESETS.some((preset) => preset.id === 'custom')).toBe(true)
   })
 
-  test('Magpie connects straight to its local gateway under cc-haha\'s own key', () => {
+  test('Magpie connects straight to its local gateway under wangmai\'s own key', () => {
     const magpie = PROVIDER_PRESETS.find((preset) => preset.id === 'magpie')
     expect(magpie).toMatchObject({
       baseUrl: 'http://127.0.0.1:3425',
@@ -223,7 +223,7 @@ describe('provider presets API', () => {
       authStrategy: 'auth_token_empty_api_key',
       // Not the bare `magpie` key: with it, Magpie counts our claude-cli
       // requests as Claude Code's and redirects claude-* ids to its tiers.
-      defaultEnv: { ANTHROPIC_AUTH_TOKEN: 'magpie-cc-haha' },
+      defaultEnv: { ANTHROPIC_AUTH_TOKEN: 'magpie-wangmai' },
     })
     expect(magpie?.modelApiFormats).toBeUndefined()
   })
@@ -261,7 +261,7 @@ describe('provider presets API', () => {
     expect(deepseek?.defaultModels.haiku).toBe('deepseek-flash[1m]')
     expect(deepseek?.defaultModels.sonnet).toBe('deepseek-flash[1m]')
     expect(deepseek?.defaultModels.opus).toBe('deepseek-flash[1m]')
-    expect(deepseek?.defaultEnv?.CC_HAHA_SEND_DISABLED_THINKING).toBeUndefined()
+    expect(deepseek?.defaultEnv?.WANGMAI_SEND_DISABLED_THINKING).toBeUndefined()
     expect(deepseek?.defaultEnv).toEqual({})
     expect(zhipu?.baseUrl).toBe('https://open.bigmodel.cn/api/anthropic')
     expect(zhipu?.regionalEndpoints).toEqual([
@@ -283,7 +283,7 @@ describe('provider presets API', () => {
     expect(kimi?.regionalEndpoints).toBeUndefined()
     expect(kimi?.authStrategy).toBe('api_key')
     expect(kimi?.defaultModels.main).toBe('k3')
-    expect(kimi?.defaultEnv?.CC_HAHA_SEND_DISABLED_THINKING).toBeUndefined()
+    expect(kimi?.defaultEnv?.WANGMAI_SEND_DISABLED_THINKING).toBeUndefined()
     expect(kimi?.defaultEnv).toEqual({})
     expect(minimax?.baseUrl).toBe('https://api.minimaxi.com/anthropic')
     expect(minimax?.regionalEndpoints).toEqual([
@@ -371,8 +371,8 @@ describe('provider presets API', () => {
     expect(deepseek?.modelContextWindows?.['deepseek-v4-pro']).toBe(1000000)
     expect(deepseek?.modelContextWindows?.['deepseek-v4-flash']).toBe(1000000)
     expect(zhipu?.apiKeyUrl).toBe('https://www.bigmodel.cn/invite?icode=d41B2qi8Z5xNwTGLNPPF3OZLO2QH3C0EBTSr%2BArzMw4%3D')
-    expect(zhipu?.promoText).toContain('cc-haha')
-    expect(zhipu?.defaultEnv?.CC_HAHA_SEND_DISABLED_THINKING).toBeUndefined()
+    expect(zhipu?.promoText).toContain('wangmai')
+    expect(zhipu?.defaultEnv?.WANGMAI_SEND_DISABLED_THINKING).toBeUndefined()
     expect(zhipu?.modelContextWindows?.['glm-5.3']).toBe(1000000)
     expect(zhipu?.modelContextWindows?.['glm-5.3-flash']).toBe(1000000)
     expect(zhipu?.modelContextWindows?.['glm-5.2']).toBe(1000000)
@@ -412,7 +412,7 @@ describe('provider presets API', () => {
     expect(qiniuai?.modelContextWindows?.['z-ai/glm-5.2']).toBe(1000000)
     expect(qiniuai?.modelContextWindows?.['moonshotai/kimi-k3']).toBe(262144)
     expect(atlascloud?.apiKeyUrl).toBe(
-      'https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=cc-haha',
+      'https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=wangmai',
     )
     expect(atlascloud?.featured).toBe(true)
     expect(custom?.promoText).toBeUndefined()
@@ -420,16 +420,16 @@ describe('provider presets API', () => {
     expect(custom?.defaultEnv).toBeUndefined()
   })
 
-  test('GET and PUT /api/providers/settings read and write cc-haha settings.json', async () => {
+  test('GET and PUT /api/providers/settings read and write wangmai settings.json', async () => {
     const initial = {
       env: {
         ANTHROPIC_MODEL: 'glm-5.1',
       },
       model: 'glm-5.1',
     }
-    await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+    await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
     await fs.writeFile(
-      path.join(tmpDir, 'cc-haha', 'settings.json'),
+      path.join(tmpDir, 'wangmai', 'settings.json'),
       JSON.stringify(initial, null, 2),
       'utf-8',
     )
@@ -449,7 +449,7 @@ describe('provider presets API', () => {
     const putRes = await handleProvidersApi(putReq.req, putReq.url, putReq.segments)
     expect(putRes.status).toBe(200)
 
-    const updatedRaw = await fs.readFile(path.join(tmpDir, 'cc-haha', 'settings.json'), 'utf-8')
+    const updatedRaw = await fs.readFile(path.join(tmpDir, 'wangmai', 'settings.json'), 'utf-8')
     expect(JSON.parse(updatedRaw)).toEqual(updateBody)
   })
 
@@ -545,12 +545,12 @@ describe('provider presets API', () => {
 
     test('sends the session id the gateway requires plus a client-identifying user agent', () => {
       expect(opencodeGo.upstreamHeaders).toEqual({
-        'User-Agent': 'cc-haha/$VERSION',
+        'User-Agent': 'wangmai/$VERSION',
         'x-opencode-session': '$SESSION_ID',
       })
       const resolved = resolveUpstreamHeaders(opencodeGo.upstreamHeaders, { sessionId: 's-1' })
       expect(resolved['x-opencode-session']).toBe('s-1')
-      expect(resolved['User-Agent']).toMatch(/^cc-haha\//)
+      expect(resolved['User-Agent']).toMatch(/^wangmai\//)
     })
 
     test('publishes a context window for every model it offers as a default', () => {

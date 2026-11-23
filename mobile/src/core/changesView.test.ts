@@ -107,8 +107,8 @@ describe('paths and sizes', () => {
   })
 
   test('breadcrumbs make every level addressable', () => {
-    expect(breadcrumbs('cc-haha', 'mobile/src/core')).toEqual([
-      { label: 'cc-haha', path: '' },
+    expect(breadcrumbs('wangmai', 'mobile/src/core')).toEqual([
+      { label: 'wangmai', path: '' },
       { label: 'mobile', path: 'mobile' },
       { label: 'src', path: 'mobile/src' },
       { label: 'core', path: 'mobile/src/core' },
@@ -130,7 +130,7 @@ describe('paths and sizes', () => {
     expect(isImagePath('docs/pairing-flow.PNG')).toBe(true)
     expect(isImagePath('a.ts')).toBe(false)
     expect(isImagePath('Makefile')).toBe(false)
-    expect(projectName({ repoName: 'cc-haha', workDir: '/x/y' })).toBe('cc-haha')
+    expect(projectName({ repoName: 'wangmai', workDir: '/x/y' })).toBe('wangmai')
     expect(projectName({ repoName: null, workDir: '/Users/me/demo/' })).toBe('demo')
     expect(projectName(null)).toBe('')
   })

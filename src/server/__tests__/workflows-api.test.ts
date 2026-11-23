@@ -523,7 +523,7 @@ describe('Workflows API', () => {
       status: 'completed' | 'failed' | 'stopped',
       timestamp: string,
     ) => ({
-      type: 'cc-haha-task-notification',
+      type: 'wangmai-task-notification',
       isMeta: true,
       timestamp,
       taskNotification: {
@@ -639,7 +639,7 @@ describe('Workflows API', () => {
           },
         },
         {
-          type: 'cc-haha-task-notification',
+          type: 'wangmai-task-notification',
           isMeta: true,
           timestamp: '2026-01-01T00:00:02.000Z',
           taskNotification: {

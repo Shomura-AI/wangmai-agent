@@ -31,10 +31,10 @@ import { isValidHttpProxyUrl } from '../settings/shared'
  * `./shared`, since the General panel needs it too.
  */
 
-const GITHUB_REPO = 'https://github.com/NanmiCoder/cc-haha'
+const GITHUB_REPO = 'https://github.com/wangmai-ai/wangmai-agent'
 const GITHUB_ISSUES = `${GITHUB_REPO}/issues`
 const GITHUB_RELEASES = `${GITHUB_REPO}/releases`
-const AUTHOR_GITHUB = 'https://github.com/NanmiCoder'
+const AUTHOR_GITHUB = 'https://github.com/wangmai-ai'
 const SOCIAL_LINKS = [
   { name: 'Bilibili', icon: '/icons/bilibili.svg', url: 'https://space.bilibili.com/434377496', label: '程序员阿江-Relakkes' },
   { name: 'Douyin', icon: '/icons/douyin.svg', url: 'https://www.douyin.com/user/MS4wLjABAAAATJPY7LAlaa5X-c8uNdWkvz0jUGgpw4eeXIwu_8BhvqE', label: '程序员阿江-Relakkes' },
@@ -188,7 +188,7 @@ export function AboutSettings() {
         <SettingsBlock className="flex items-center gap-4 py-4">
           <BrandSeal size="lg" />
           <div className="min-w-0 flex-1">
-            <div className="text-[15px] font-semibold text-[var(--color-text-primary)]">Claude Code Haha</div>
+            <div className="text-[15px] font-semibold text-[var(--color-text-primary)]">网脉智能体</div>
             {version && (
               <div className="mt-0.5 flex items-center gap-2 text-xs tabular-nums text-[var(--color-text-tertiary)]">
                 <span>{t('settings.about.version')} {version}</span>
@@ -206,7 +206,7 @@ export function AboutSettings() {
         </SettingsBlock>
         <LinkRow
           icon={<img src={publicAssetPath('icons/github.svg')} alt="GitHub" className="h-4 w-4 opacity-70" />}
-          title="NanmiCoder/cc-haha"
+          title="wangmai-ai/wangmai-agent"
           description={t('settings.about.starHint')}
           onClick={() => openUrl(GITHUB_REPO)}
           external

@@ -9,20 +9,20 @@ order: 1
 
 Install and go. You don't need Node.js, Python, or Claude Code — the CLI engine and the ripgrep binary used for file search are both bundled inside the installer.
 
-The product is now called **cc-haha**. Existing packages, installed apps, and system processes may still use the legacy name `Claude Code Haha`; filenames and commands below match those published packages.
+The product is now called **WangMai Agent**. Older packages, installed apps, and system processes may still use the legacy name `wangmai`; filenames and commands below match those published packages.
 
 ## Pick the right package
 
-Everything lives on [GitHub Releases](https://github.com/NanmiCoder/cc-haha/releases/latest). Choose by operating system and CPU architecture:
+Everything lives on [GitHub Releases](https://github.com/wangmai-ai/wangmai-agent/releases/latest). Choose by operating system and CPU architecture:
 
 | Your system | Download |
 |---|---|
-| macOS, Apple Silicon (M series) | `Claude-Code-Haha-<version>-macOS-Apple-Silicon.dmg` |
-| macOS, Intel | `Claude-Code-Haha-<version>-macOS-Intel.dmg` |
-| Windows x64 | `Claude-Code-Haha-<version>-Windows-x64-Setup.exe` |
-| Windows ARM64 | `Claude-Code-Haha-<version>-Windows-arm64-Setup.exe` |
-| Linux x64 | `Claude-Code-Haha-<version>-Linux-x64.AppImage`, `.deb` or `.rpm` |
-| Linux ARM64 | `Claude-Code-Haha-<version>-Linux-arm64.AppImage`, `.deb` or `.rpm` |
+| macOS, Apple Silicon (M series) | `WangMai-Agent-<version>-macOS-Apple-Silicon.dmg` |
+| macOS, Intel | `WangMai-Agent-<version>-macOS-Intel.dmg` |
+| Windows x64 | `WangMai-Agent-<version>-Windows-x64-Setup.exe` |
+| Windows ARM64 | `WangMai-Agent-<version>-Windows-arm64-Setup.exe` |
+| Linux x64 | `WangMai-Agent-<version>-Linux-x64.AppImage`, `.deb` or `.rpm` |
+| Linux ARM64 | `WangMai-Agent-<version>-Linux-arm64.AppImage`, `.deb` or `.rpm` |
 
 Not sure which architecture you have? On macOS check the chip listed in "About This Mac"; on Windows check the system type under Settings → System → About. Don't guess from the brand of the machine.
 
@@ -31,7 +31,7 @@ Files ending in `-update.zip` and the `latest*.yml` files are used by the app's 
 ## macOS
 
 1. Open the DMG.
-2. Drag cc-haha into Applications.
+2. Drag WangMai Agent into Applications.
 3. Launch it from Applications.
 
 ### If macOS says the app is damaged
@@ -54,7 +54,7 @@ The script picks the DMG matching your architecture, mounts it, installs the app
 If the app is already in Applications:
 
 ```bash
-xattr -dr com.apple.quarantine "/Applications/Claude Code Haha.app"
+xattr -dr com.apple.quarantine "/Applications/网脉智能体.app"
 ```
 
 Only do this for packages you have confirmed came from this repository's Releases. Never bypass Gatekeeper for software of unknown origin.
@@ -74,8 +74,8 @@ When upgrading in place, the installer inspects user data in the old install dir
 **AppImage** (no installation, just run it):
 
 ```bash
-chmod +x Claude-Code-Haha-<version>-Linux-x64.AppImage
-./Claude-Code-Haha-<version>-Linux-x64.AppImage
+chmod +x WangMai-Agent-<version>-Linux-x64.AppImage
+./WangMai-Agent-<version>-Linux-x64.AppImage
 ```
 
 If it fails with a FUSE-related error, install the runtime: `sudo apt install libfuse2` on Ubuntu 22.04 and earlier, `libfuse2t64` on 24.04 and later.
@@ -83,13 +83,13 @@ If it fails with a FUSE-related error, install the runtime: `sudo apt install li
 **deb** (Ubuntu, Debian and similar; installs into your application menu):
 
 ```bash
-sudo apt install ./Claude-Code-Haha-<version>-Linux-x64.deb
+sudo apt install ./WangMai-Agent-<version>-Linux-x64.deb
 ```
 
 **rpm** (Fedora, openSUSE and similar):
 
 ```bash
-sudo dnf install ./Claude-Code-Haha-<version>-Linux-x64.rpm
+sudo dnf install ./WangMai-Agent-<version>-Linux-x64.rpm
 ```
 
 On ARM64 machines, use the corresponding `Linux-arm64` file.
@@ -99,11 +99,11 @@ On ARM64 machines, use the corresponding `Linux-arm64` file.
 If you want to modify the code, debug the engine, or just use the CLI in a terminal:
 
 ```bash
-git clone https://github.com/NanmiCoder/cc-haha.git
-cd cc-haha
+git clone https://github.com/wangmai-ai/wangmai-agent.git
+cd wangmai-agent
 bun install
 cp .env.example .env
-./bin/claude-haha
+./bin/wangmai
 ```
 
 Requires [Bun](https://bun.sh) and Git. This runs the CLI only; for building the desktop app and configuring the local server, see [Command line](../cli/index.md).

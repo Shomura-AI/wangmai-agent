@@ -1,5 +1,5 @@
 import XCTest
-@testable import cc_haha_computer_use
+@testable import wangmai_computer_use
 
 final class AXTreeDiffTests: XCTestCase {
     private typealias DisplayKey = AXTreeDisplayIdentity<String, String>

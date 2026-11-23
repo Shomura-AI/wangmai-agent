@@ -57,7 +57,7 @@ export const initialVoiceDictationState = (): VoiceDictationState => ({
 export function voiceIssue(error: unknown): VoiceIssue {
   const code = error && typeof error === 'object' && 'code' in error ? String(error.code) : 'failed'
   const messages: Record<string, string> = {
-    permission: '请在系统设置中允许 cc-haha 使用麦克风。',
+    permission: '请在系统设置中允许 wangmai 使用麦克风。',
     unavailable: '当前环境无法录音，请更新手机 App 后重试。',
     interrupted: '录音已中断，请重新录制。',
     'no-device': '没有找到可用的麦克风。',

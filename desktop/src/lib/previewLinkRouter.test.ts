@@ -106,9 +106,9 @@ describe('classifyPreviewLink', () => {
     expect(classifyPreviewLink('scripts/windows-installer-smoke.ps1:14').kind).toBe('file-preview')
   })
   it('routes a path whose folders hold spaces, as Windows output paths often do (#1556)', () => {
-    expect(classifyPreviewLink('D:/cchaha/cchaha d/全局档案重写/全局记忆-2026-10-14.md')).toMatchObject({
+    expect(classifyPreviewLink('D:/wangmai/wangmai d/全局档案重写/全局记忆-2026-10-14.md')).toMatchObject({
       kind: 'file-preview',
-      path: 'D:/cchaha/cchaha d/全局档案重写/全局记忆-2026-10-14.md',
+      path: 'D:/wangmai/wangmai d/全局档案重写/全局记忆-2026-10-14.md',
     })
     expect(classifyPreviewLink('D:\\My Docs\\报告 (1).docx')).toMatchObject({ kind: 'file-preview', path: 'D:\\My Docs\\报告 (1).docx' })
     expect(classifyPreviewLink('/Users/me/My Site/index.html')).toMatchObject({ kind: 'browser-file', path: '/Users/me/My Site/index.html' })
@@ -117,8 +117,8 @@ describe('classifyPreviewLink', () => {
   })
   it('decodes a percent-encoded link destination to the file on disk (#1556)', () => {
     expect(classifyPreviewLink('docs/My%20Notes.md')).toMatchObject({ kind: 'file-preview', path: 'docs/My Notes.md' })
-    expect(classifyPreviewLink('D:/cchaha/cchaha%20d/%E8%AE%B0%E5%BF%86.md:3')).toMatchObject({
-      path: 'D:/cchaha/cchaha d/记忆.md',
+    expect(classifyPreviewLink('D:/wangmai/wangmai%20d/%E8%AE%B0%E5%BF%86.md:3')).toMatchObject({
+      path: 'D:/wangmai/wangmai d/记忆.md',
       line: 3,
     })
     expect(classifyPreviewLink('site/My%20Page.html')).toMatchObject({ kind: 'browser-file', path: 'site/My Page.html' })

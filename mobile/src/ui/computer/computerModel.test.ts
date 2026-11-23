@@ -19,7 +19,7 @@ import {
 } from './computerModel'
 
 const lan = { auth: 'lan' as const, url: 'http://192.168.1.8:3600' }
-const remote = { auth: 'remote' as const, url: 'https://haha.example.com' }
+const remote = { auth: 'remote' as const, url: 'https://wangmai.example.com' }
 
 test('permission default is editable on LAN and read-only over public access', () => {
   expect(permissionAccess(lan)).toEqual({ editable: true })
@@ -40,7 +40,7 @@ test('connection rows name the method and show host:port', () => {
   expect(connectionMethod(lan)).toBe('局域网直连')
   expect(connectionMethod(remote)).toBe('公网访问')
   expect(connectionAddress(lan)).toBe('192.168.1.8:3600')
-  expect(connectionAddress(remote)).toBe('haha.example.com')
+  expect(connectionAddress(remote)).toBe('wangmai.example.com')
   expect(connectionAddress({ url: 'not a url' })).toBe('not a url')
 })
 
@@ -70,7 +70,7 @@ test('background activity never claims idle when some sessions were unreadable',
 
 test('desktop-only footnote keeps the shared list and points to the desktop', () => {
   expect(desktopOnlyText).toContain(desktopOnly)
-  expect(desktopOnlyText).toContain('在电脑上打开 cc-haha')
+  expect(desktopOnlyText).toContain('在电脑上打开 wangmai')
 })
 
 test('removing a computer quotes its name in the confirmation', () => {

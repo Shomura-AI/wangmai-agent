@@ -14,8 +14,8 @@ test.each(['settings', 'environment'])('mobile native %s API-key schedule reache
     import { mock, spyOn } from 'bun:test'
     const root = ${JSON.stringify(join(import.meta.dir, '..', '..', '..'))}
     for (const [file, name] of [
-      ['hahaOAuthService', 'hahaOAuthService'], ['hahaOpenAIOAuthService', 'hahaOpenAIOAuthService'],
-      ['hahaGrokOAuthService', 'hahaGrokOAuthService'], ['hahaDeepSeekOAuthService', 'hahaDeepSeekOAuthService'],
+      ['wangmaiOAuthService', 'wangmaiOAuthService'], ['wangmaiOpenAIOAuthService', 'wangmaiOpenAIOAuthService'],
+      ['wangmaiGrokOAuthService', 'wangmaiGrokOAuthService'], ['wangmaiDeepSeekOAuthService', 'wangmaiDeepSeekOAuthService'],
     ]) {
       const service = (await import(root + '/src/server/services/' + file + '.ts'))[name]
       spyOn(service, 'loadTokens').mockResolvedValue(null)

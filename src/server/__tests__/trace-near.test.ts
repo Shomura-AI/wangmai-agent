@@ -20,14 +20,14 @@ import type { TraceCallsNear } from '../services/trajectoryTypes.js'
 
 let tmpDir: string
 const saved: Record<string, string | undefined> = {}
-const ENV_KEYS = ['CLAUDE_CONFIG_DIR', 'CC_HAHA_LOCAL_INDEX', 'CC_HAHA_TRACE_API_CALLS'] as const
+const ENV_KEYS = ['CLAUDE_CONFIG_DIR', 'WANGMAI_LOCAL_INDEX', 'WANGMAI_TRACE_API_CALLS'] as const
 
 beforeEach(async () => {
   tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'trace-near-'))
   for (const key of ENV_KEYS) saved[key] = process.env[key]
   process.env.CLAUDE_CONFIG_DIR = tmpDir
-  process.env.CC_HAHA_LOCAL_INDEX = 'on'
-  process.env.CC_HAHA_TRACE_API_CALLS = '1'
+  process.env.WANGMAI_LOCAL_INDEX = 'on'
+  process.env.WANGMAI_TRACE_API_CALLS = '1'
   clearTraceCaptureStateForTests()
 })
 
@@ -94,7 +94,7 @@ describe('GET /api/sessions/:id/trace/near', () => {
   test('falls back to the bounded scan when the index is off with the same answer', async () => {
     await recordCalls('near-scan', [5, 3, 4, 10, 1])
     const indexed = await near('near-scan', at(3), at(5))
-    process.env.CC_HAHA_LOCAL_INDEX = 'off'
+    process.env.WANGMAI_LOCAL_INDEX = 'off'
     clearTraceCaptureStateForTests()
     const scanned = await near('near-scan', at(3), at(5))
     expect(scanned.calls.map(call => call.id)).toEqual(indexed.calls.map(call => call.id))
@@ -105,7 +105,7 @@ describe('GET /api/sessions/:id/trace/near', () => {
 
   test('reaches calls beyond the indexed overview window and hydrates them through the locator', async () => {
     const sessionId = 'near-large'
-    const tracePath = path.join(tmpDir, 'cc-haha', 'traces', `${sessionId}.jsonl`)
+    const tracePath = path.join(tmpDir, 'wangmai', 'traces', `${sessionId}.jsonl`)
     await fs.mkdir(path.dirname(tracePath), { recursive: true })
     const total = TRACE_WINDOW_RECORD_LIMIT + 500
     const base = Date.UTC(2026, 9, 4, 0, 0, 0)

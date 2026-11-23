@@ -1,15 +1,15 @@
 {
-  "name": "claude-code-local",
+  "name": "wangmai-agent",
   "version": "999.0.0-local",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.4.3",
   "bin": {
-    "claude-haha": "./bin/claude-haha"
+    "wangmai": "./bin/wangmai"
   },
   "scripts": {
-    "claude-haha": "bun --no-env-file run ./bin/claude-haha",
-    "start": "bun --no-env-file run ./bin/claude-haha",
+    "wangmai": "bun --no-env-file run ./bin/wangmai",
+    "start": "bun --no-env-file run ./bin/wangmai",
     "issue-router": "bun --no-env-file run scripts/issue-router/cli.ts",
     "check:issue-router": "bun --no-env-file test ./scripts/issue-router/",
     "perf:local-index": "bun run scripts/perf/local-index-benchmark.ts",

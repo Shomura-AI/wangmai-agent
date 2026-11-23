@@ -15,7 +15,7 @@ describe('settings API fastMode persistence and live sync', () => {
   let savedConfigDir: string | undefined
 
   beforeEach(() => {
-    tempDir = mkdtempSync(join(tmpdir(), 'cc-haha-settings-fastmode-'))
+    tempDir = mkdtempSync(join(tmpdir(), 'wangmai-settings-fastmode-'))
     savedConfigDir = process.env.CLAUDE_CONFIG_DIR
     process.env.CLAUDE_CONFIG_DIR = tempDir
   })

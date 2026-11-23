@@ -12,7 +12,7 @@ import type { TunnelGateway } from './p2p/mux.js'
 import { remoteAccessDiagnosticContext, type RemoteAccessDiagnosticContext } from './services/remoteAccessConnectivity.js'
 
 const PREFIX = '/api/public-access'
-const COOKIE = '__Host-haha-remote'
+const COOKIE = '__Host-wangmai-remote'
 const NATIVE_TOKEN_PREFIX = 'native_'
 const PAIR_TTL = 5 * 60_000
 const SESSION_TTL = 30 * 24 * 60 * 60_000
@@ -195,7 +195,7 @@ export class PublicAccessServer {
 
   constructor(private deps: Dependencies) {
     this.now = deps.now ?? Date.now
-    this.storePath = deps.storePath ?? path.join(process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude'), 'cc-haha', 'public-access-devices.json')
+    this.storePath = deps.storePath ?? path.join(process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude'), 'wangmai', 'public-access-devices.json')
   }
 
   private load() {
@@ -313,7 +313,7 @@ export class PublicAccessServer {
         url: announced, previous,
         sign: deviceId => {
           const device = this.stored.devices.find(d => d.id === deviceId && d.expiresAt > this.now())
-          return device && deviceMac(device.tokenHash, `cc-haha-host-url\n${announced}`)
+          return device && deviceMac(device.tokenHash, `wangmai-host-url\n${announced}`)
         },
       })
     } catch { /* announcing is best-effort; the gateway is up either way */ }
@@ -508,7 +508,7 @@ export class PublicAccessServer {
       const publicUrl = this.publicUrl
       const device = this.stored.devices.find(d => d.expiresAt > this.now() && hash(d.tokenHash) === id)
       if (!device || !publicUrl) return json({ error: 'Not found' }, 404)
-      return json({ url: publicUrl, mac: deviceMac(device.tokenHash, `cc-haha-locate\n${nonce}\n${publicUrl}`) })
+      return json({ url: publicUrl, mac: deviceMac(device.tokenHash, `wangmai-locate\n${nonce}\n${publicUrl}`) })
     } catch { return json({ error: 'Invalid request' }, 400) }
   }
 
@@ -591,7 +591,7 @@ export class PublicAccessServer {
         const response = await this.deps.handleApiRequest(request, url, { remoteBrowser: true, remoteDeviceId: device.id, remoteDeviceExpiresAt: device.expiresAt })
         if (route === 'api/providers/auth-status' && response.ok) {
           const status = await response.json() as Record<string, unknown>
-          const sources = ['cc-haha-provider', 'claude-oauth', 'openai-oauth', 'grok-oauth', 'deepseek-oauth', 'original-settings', 'env', 'none']
+          const sources = ['wangmai-provider', 'claude-oauth', 'openai-oauth', 'grok-oauth', 'deepseek-oauth', 'original-settings', 'env', 'none']
           return json({
             hasAuth: status.hasAuth === true,
             source: typeof status.source === 'string' && sources.includes(status.source) ? status.source : 'none',

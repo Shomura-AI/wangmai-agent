@@ -4,7 +4,7 @@ import path from 'node:path'
 import { generateDocsManifest, paths } from './generate-docs-manifest.mjs'
 
 const distDir = path.join(paths.siteDir, 'dist')
-const expectedCustomDomain = 'cchaha.ai'
+const expectedCustomDomain = 'wangmai.example.com'
 
 async function pathExists(targetPath) {
   return fs.access(targetPath).then(() => true, () => false)
@@ -236,7 +236,7 @@ async function main() {
       alternate: alternateFor(record, records),
       description: record.description,
       path: record.path,
-      title: `${record.title} · cc-haha`
+      title: `${record.title} · 网脉智能体`
     })
   }
 
@@ -244,7 +244,7 @@ async function main() {
     alternate: '/',
     description: 'Parallel sessions, Agent Teams, Computer Use, and any model you like. Pair your phone to approve and start tasks away from your desk.',
     path: '/en',
-    title: 'cc-haha — Claude Code on your desktop and in your pocket'
+    title: '网脉智能体 · WangMai Agent — Claude Code on your desktop and in your pocket'
   })
 
   for (const legacy of legacyRoutes) {

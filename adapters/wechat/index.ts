@@ -62,7 +62,7 @@ const configRoot = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.cl
 const bindingKey = wechatBindingKey(accountId, botToken)
 let delivery: WechatDeliveryRuntime | undefined
 const pollController = new AbortController()
-const reporter = new WechatRuntimeReporter({ serverUrl: config.serverUrl, token: process.env.CC_HAHA_LOCAL_ACCESS_TOKEN,
+const reporter = new WechatRuntimeReporter({ serverUrl: config.serverUrl, token: process.env.WANGMAI_LOCAL_ACCESS_TOKEN,
   onSuperseded: () => {
     stopped = true
     pollController.abort()

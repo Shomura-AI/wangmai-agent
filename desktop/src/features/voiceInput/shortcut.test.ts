@@ -33,7 +33,7 @@ describe('defaults', () => {
 
 describe('classifyVoiceShortcut', () => {
   it.each<[string, VoiceShortcut, ShortcutPlatform, ShortcutVerdict]>([
-    // cc-haha's own keys, including the ones only the workspace and zoom matchers know.
+    // wangmai's own keys, including the ones only the workspace and zoom matchers know.
     ['⌘K global search', chord(['meta'], 'KeyK'), 'mac', { level: 'blocked', reason: 'app' }],
     ['Ctrl+K global search', chord(['ctrl'], 'KeyK'), 'windows', { level: 'blocked', reason: 'app' }],
     ['⌘P quick open (workspace matcher)', chord(['meta'], 'KeyP'), 'mac', { level: 'blocked', reason: 'app' }],

@@ -31,7 +31,7 @@ export async function transcodeWechatVideo(buffer: Buffer, options: WechatVideoO
   let directory: string
   try {
     await fs.mkdir(parent, { recursive: true })
-    directory = await fs.mkdtemp(path.join(parent, 'cc-haha-wechat-transcode-'))
+    directory = await fs.mkdtemp(path.join(parent, 'wangmai-wechat-transcode-'))
   } catch (error) { activeTranscode = false; throw error }
   const source = path.join(directory, 'input.media')
   const outputPath = path.join(directory, 'converted.mp4')

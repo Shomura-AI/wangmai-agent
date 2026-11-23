@@ -1,18 +1,15 @@
 {
-  "name": "claude-code-desktop",
+  "name": "wangmai-desktop",
   "private": true,
   "version": "0.7.9",
-  "description": "Desktop coding agent workbench for Claude Code Haha.",
-  "homepage": "https://github.com/NanmiCoder/cc-haha",
-  "author": {
-    "name": "NanmiCoder",
-    "email": "relakkes@gmail.com"
-  },
+  "description": "网脉智能体 · 本地优先的跨平台 AI Agent 桌面工作台",
+  "homepage": "https://github.com/wangmai-ai/wangmai-agent",
+  "author": "网脉科技 <dev@wangmai.example.com>",
   "type": "module",
   "main": "electron-dist/main.cjs",
   "build": {
-    "appId": "com.claude-code-haha.desktop",
-    "productName": "Claude Code Haha",
+    "appId": "com.wangmai.agent",
+    "productName": "网脉智能体",
     "asar": true,
     "asarUnpack": [
       "dist/**",
@@ -54,27 +51,31 @@
       "signIgnore": [
         "/Contents/Frameworks/.+\\.(?:pak|bin|dat|nib)$",
         "/Contents/Resources/.+\\.(?:asar|pak|bin|dat|icns|png|jpg|jpeg|gif|svg|ttf|woff|woff2)$",
-        "cc-haha-computer-use\\.app",
-        "claude-sidecar-[^/]+$"
+        "wangmai-computer-use\\.app",
+        "wangmai-sidecar-[^/]+$"
       ],
       "notarize": true,
-      "artifactName": "Claude-Code-Haha-${version}-macOS-${arch}-update.${ext}"
+      "artifactName": "WangMai-Agent-${version}-macOS-${arch}-update.${ext}"
     },
     "dmg": {
-      "artifactName": "Claude-Code-Haha-${version}-macOS-${arch}.${ext}"
+      "artifactName": "WangMai-Agent-${version}-macOS-${arch}.${ext}"
     },
     "win": {
       "target": "nsis",
       "icon": "src-tauri/icons/icon.ico",
       "extraResources": [
-        { "from": "src-tauri/icons/icon.ico", "to": "app-icon.ico" }
+        {
+          "from": "src-tauri/icons/icon.ico",
+          "to": "app-icon.ico"
+        }
       ]
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "include": "build/installer.nsh",
-      "artifactName": "Claude-Code-Haha-${version}-Windows-${arch}-Setup.${ext}"
+      "artifactName": "WangMai-Agent-${version}-Windows-${arch}-Setup.${ext}",
+      "shortcutName": "网脉智能体"
     },
     "linux": {
       "target": [
@@ -83,16 +84,17 @@
       ],
       "icon": "src-tauri/icons",
       "category": "Development",
-      "maintainer": "NanmiCoder <relakkes@gmail.com>",
-      "artifactName": "Claude-Code-Haha-${version}-Linux-${arch}.${ext}"
+      "maintainer": "网脉科技 <dev@wangmai.example.com>",
+      "artifactName": "WangMai-Agent-${version}-Linux-${arch}.${ext}"
     },
     "publish": [
       {
         "provider": "github",
-        "owner": "NanmiCoder",
-        "repo": "cc-haha"
+        "owner": "wangmai-ai",
+        "repo": "wangmai-agent"
       }
-    ]
+    ],
+    "executableName": "wangmai-desktop"
   },
   "scripts": {
     "dev": "vite",
@@ -104,7 +106,7 @@
     "prepare:ripgrep": "bun run ./scripts/prepare-ripgrep.ts",
     "prepare:cloudflared": "bun run ./scripts/prepare-cloudflared.ts",
     "build:sidecars": "bun run ./scripts/build-sidecars.ts",
-    "test:compiled-sidecar-smoke": "CC_HAHA_RUN_COMPILED_SIDECAR_SMOKE=1 bun run test -- --run scripts/build-sidecars.test.ts scripts/image-processor-packaging.test.ts scripts/prepare-cloudflared.test.ts",
+    "test:compiled-sidecar-smoke": "WANGMAI_RUN_COMPILED_SIDECAR_SMOKE=1 bun run test -- --run scripts/build-sidecars.test.ts scripts/image-processor-packaging.test.ts scripts/prepare-cloudflared.test.ts",
     "clean:electron-output": "bun run ./scripts/clean-electron-output.ts",
     "build:macos-arm64": "bash ./scripts/build-macos-arm64.sh",
     "build:windows-x64": "powershell -ExecutionPolicy Bypass -File ./scripts/build-windows-x64.ps1",

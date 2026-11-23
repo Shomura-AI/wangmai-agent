@@ -12,7 +12,7 @@ type Dependencies = RemoteAccessDiagnosticContext & {
 
 /** The authenticated control API accepts only a correlation id, never arbitrary log text. */
 export function remoteAccessDiagnosticContext(request: Request): RemoteAccessDiagnosticContext {
-  const attemptId = request.headers.get('X-CC-Haha-Connection-Attempt')
+  const attemptId = request.headers.get('X-WangMai-Connection-Attempt')
   return attemptId && /^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(attemptId) ? { attemptId } : {}
 }
 

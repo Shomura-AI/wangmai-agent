@@ -17,7 +17,7 @@ import type { ConnectorDefinition, ConnectorInstallation } from './types.js'
 
 import { nativeConnectorRecipes as recipes, renderNativeConnectorSkill } from './nativeConnectorSkill.js'
 
-const MARKETPLACE = 'haha-connectors'
+const MARKETPLACE = 'wangmai-connectors'
 
 
 // All three connectors share one local marketplace and user settings entry.
@@ -96,7 +96,7 @@ async function writeAtomic(file: string, content: string | Uint8Array) {
 async function assertMarketplaceOwnership(root: string) {
   const existing = (await loadKnownMarketplacesConfig())[MARKETPLACE]
   if (existing && (existing.source.source !== 'directory' || resolve(existing.source.path) !== resolve(root))) {
-    throw new Error('The haha-connectors marketplace name is already used by another source')
+    throw new Error('The wangmai-connectors marketplace name is already used by another source')
   }
 }
 
@@ -150,7 +150,7 @@ export function installConnectorPlugin(definition: ConnectorDefinition, installa
     const entry = { name, source: `./plugins/${name}`, version, strict: true }
     await writeAtomic(marketFile, JSON.stringify({
       name: MARKETPLACE,
-      owner: { name: 'Claude Code Haha' },
+      owner: { name: '网脉智能体' },
       plugins: [...entries.filter(item => item.name !== name), entry],
     }, null, 2))
     clearMarketplacesCache()

@@ -304,7 +304,7 @@ describe('updateStore', () => {
     useUpdateStore.getState().dismissPrompt()
 
     expect(useUpdateStore.getState().shouldPrompt).toBe(false)
-    expect(window.localStorage.getItem('cc-haha-dismissed-update-version')).toBe('0.2.0')
+    expect(window.localStorage.getItem('wangmai-dismissed-update-version')).toBe('0.2.0')
 
     await useUpdateStore.getState().checkForUpdates({ silent: true })
 
@@ -318,7 +318,7 @@ describe('updateStore', () => {
     vi.useFakeTimers()
     try {
       // Existing releases already persist this string; no new schema is needed.
-      window.localStorage.setItem('cc-haha-dismissed-update-version', '0.2.0')
+      window.localStorage.setItem('wangmai-dismissed-update-version', '0.2.0')
       const download = vi.fn().mockResolvedValue(undefined)
       const install = vi.fn().mockResolvedValue(undefined)
       check.mockResolvedValue({ version: '0.2.0', download, install, close: vi.fn() })
@@ -343,7 +343,7 @@ describe('updateStore', () => {
       expect(download).toHaveBeenCalledTimes(1)
       expect(install).toHaveBeenCalledTimes(1)
       expect(relaunch).toHaveBeenCalledTimes(1)
-      expect(window.localStorage.getItem('cc-haha-dismissed-update-version')).toBeNull()
+      expect(window.localStorage.getItem('wangmai-dismissed-update-version')).toBeNull()
     } finally {
       vi.clearAllTimers()
       vi.useRealTimers()

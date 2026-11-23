@@ -25,7 +25,7 @@ export type PreferencesPatch = Omit<
   notifications?: Partial<Preferences['notifications']>
   quietHours?: Partial<Preferences['quietHours']>
 }
-export const preferencesKey = 'cc-haha.mobile.preferences'
+export const preferencesKey = 'wangmai.mobile.preferences'
 export function migratePreferences(raw: string | null): Preferences {
   const value = raw ? JSON.parse(raw) : {}
   if (!value || typeof value !== 'object' || Array.isArray(value))

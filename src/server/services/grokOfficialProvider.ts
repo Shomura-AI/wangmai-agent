@@ -23,11 +23,11 @@ import {
   GROK_OFFICIAL_PROVIDER_ID,
   type SavedProvider,
 } from '../types/provider.js'
-import { getHahaGrokOAuthFilePath } from './hahaGrokOAuthService.js'
+import { getWangMaiGrokOAuthFilePath } from './wangmaiGrokOAuthService.js'
 
 export { GROK_OFFICIAL_PROVIDER_ID, GROK_OAUTH_FILE_ENV_KEY, GROK_MODEL_CATALOG_ENV_KEY }
 export const GROK_OFFICIAL_PROVIDER_NAME = 'Grok Official'
-export const GROK_OAUTH_PROVIDER_ENV_KEY = 'CC_HAHA_GROK_OAUTH_PROVIDER'
+export const GROK_OAUTH_PROVIDER_ENV_KEY = 'WANGMAI_GROK_OAUTH_PROVIDER'
 
 export function isGrokOfficialProviderId(id: string | null | undefined): boolean {
   return id === GROK_OFFICIAL_PROVIDER_ID
@@ -85,7 +85,7 @@ export function buildGrokOfficialRuntimeEnv(
   }
   return {
     [GROK_OAUTH_PROVIDER_ENV_KEY]: '1',
-    [GROK_OAUTH_FILE_ENV_KEY]: getHahaGrokOAuthFilePath(),
+    [GROK_OAUTH_FILE_ENV_KEY]: getWangMaiGrokOAuthFilePath(),
     [GROK_MODEL_CATALOG_ENV_KEY]: JSON.stringify(catalog),
     [IMAGE_GENERATION_PROVIDER_KIND_ENV_KEY]: 'grok_oauth',
     [IMAGE_GENERATION_PROVIDER_ID_ENV_KEY]: GROK_OFFICIAL_PROVIDER_ID,

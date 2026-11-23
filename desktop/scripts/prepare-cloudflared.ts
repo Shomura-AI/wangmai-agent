@@ -155,7 +155,7 @@ async function download(url: string): Promise<Uint8Array> {
       if (!retryable || attempt === DOWNLOAD_ATTEMPTS) {
         throw new Error(`[prepare-cloudflared] ${reason} after ${attempt} attempt${attempt === 1 ? '' : 's'}. Official asset: ${url}\n` +
           'Build commands use the terminal HTTPS_PROXY / https_proxy, not the desktop app proxy settings. ' +
-          'Set your HTTP proxy in this terminal, or download this asset separately and set CC_HAHA_CLOUDFLARED_ARCHIVE to its local path. SHA256 verification remains required.')
+          'Set your HTTP proxy in this terminal, or download this asset separately and set WANGMAI_CLOUDFLARED_ARCHIVE to its local path. SHA256 verification remains required.')
       }
       console.warn(`[prepare-cloudflared] ${reason}; retrying (${attempt}/${DOWNLOAD_ATTEMPTS})`)
       await new Promise(resolve => setTimeout(resolve, attempt * 1000))
@@ -179,7 +179,7 @@ export async function prepareCloudflared(
       return binary
     } catch { /* Explicit preparation can repair its regenerable cache. */ }
   }
-  const temporaryDirectory = await mkdtemp(path.join(tmpdir(), 'cc-haha-prepare-cloudflared-'))
+  const temporaryDirectory = await mkdtemp(path.join(tmpdir(), 'wangmai-prepare-cloudflared-'))
   let stagedBinary: string | undefined
   let stagedManifest: string | undefined
   try {
@@ -232,5 +232,5 @@ if (import.meta.main) {
   const targetTriple = targetIndex >= 0 ? args[targetIndex + 1] :
     process.env.SIDECAR_TARGET_TRIPLE ?? process.env.TAURI_ENV_TARGET_TRIPLE ?? process.env.CARGO_BUILD_TARGET ?? resolveHostTriple()
   if (!targetTriple) throw new Error('[prepare-cloudflared] --target-triple needs a value')
-  await prepareCloudflared({ targetTriple, archivePath: process.env.CC_HAHA_CLOUDFLARED_ARCHIVE })
+  await prepareCloudflared({ targetTriple, archivePath: process.env.WANGMAI_CLOUDFLARED_ARCHIVE })
 }

@@ -22,7 +22,7 @@ import {
 
 describe('coverage gate helpers', () => {
   test('collects isolated root coverage with the transcript classifier and an explicit target-root preload', () => {
-    const root = join(tmpdir(), 'cc-haha-coverage-command-fixture')
+    const root = join(tmpdir(), 'wangmai-coverage-command-fixture')
     expect(buildRootCoverageCommand('/tmp/coverage', ['src/example.test.ts'], root)).toEqual([
       'bun',
       '--no-env-file',
@@ -465,7 +465,7 @@ describe('coverage gate helpers', () => {
   })
 
   test('collects non-quarantined server tests when review windows have expired', () => {
-    const root = mkdtempSync(join(tmpdir(), 'cc-haha-coverage-'))
+    const root = mkdtempSync(join(tmpdir(), 'wangmai-coverage-'))
     try {
       mkdirSync(join(root, 'src/server/__tests__'), { recursive: true })
       mkdirSync(join(root, 'src/services'), { recursive: true })
@@ -534,7 +534,7 @@ describe('coverage gate helpers', () => {
 
 describe('coverage subprocess output', () => {
   test.each(['root', 'adapters'])('isolates %s globals and module caches while retaining coverage from every test file', async suite => {
-    const root = mkdtempSync(join(tmpdir(), 'cc-haha-coverage-isolation-'))
+    const root = mkdtempSync(join(tmpdir(), 'wangmai-coverage-isolation-'))
     const outputDir = join(root, 'coverage')
     try {
       mkdirSync(join(root, 'src'))
@@ -603,7 +603,7 @@ describe('coverage subprocess output', () => {
   })
 
   test('initializes macros in the real coverage subprocess when bunfig only configures run preloads', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'cc-haha-coverage-preload-'))
+    const root = mkdtempSync(join(tmpdir(), 'wangmai-coverage-preload-'))
     const outputDir = join(root, 'coverage')
     try {
       mkdirSync(join(root, 'src'))
@@ -618,7 +618,7 @@ describe('coverage subprocess output', () => {
         import { version } from './version'
         test('coverage macro startup contract', () => {
           expect(version()).toBe('coverage-fixture')
-          expect(process.env.HOME).toContain('cc-haha-coverage-test-')
+          expect(process.env.HOME).toContain('wangmai-coverage-test-')
           expect(process.env.CLAUDE_CONFIG_DIR).toBe(join(process.env.HOME!, '.claude'))
         })
       `)
@@ -641,7 +641,7 @@ describe('coverage subprocess output', () => {
   })
 
   test('preserves output when the reporter replaces its destination directory', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'cc-haha-coverage-cleanup-'))
+    const root = mkdtempSync(join(tmpdir(), 'wangmai-coverage-cleanup-'))
     const script = join(root, 'reporter.ts')
     const logPath = join(root, 'reports', 'coverage.log')
     try {
@@ -666,7 +666,7 @@ describe('coverage subprocess output', () => {
   })
 
   test('captures large synchronous reports to regular files without losing artifacts or exit status', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'cc-haha-coverage-output-'))
+    const root = mkdtempSync(join(tmpdir(), 'wangmai-coverage-output-'))
     const script = join(root, 'reporter.ts')
     const logPath = join(root, 'logs', 'coverage.log')
     const summary = '\nRan 1 test across 1 file. [1.00ms]\n'
@@ -714,7 +714,7 @@ describe('coverage subprocess output', () => {
 
   // Root ignores directory permissions, so only a non-root POSIX run proves the retry.
   test.skipIf(process.platform === 'win32' || process.getuid?.() === 0)('removes a sandbox whose tests left read-only directories behind', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'cc-haha-coverage-readonly-'))
+    const root = mkdtempSync(join(tmpdir(), 'wangmai-coverage-readonly-'))
     const script = join(root, 'leaves-readonly.ts')
     const logPath = join(root, 'logs', 'coverage.log')
     try {
@@ -740,7 +740,7 @@ describe('coverage subprocess output', () => {
         console.warn = originalWarn
       }
       expect(result.exitCode).toBe(0)
-      expect(result.output).toContain('cc-haha-coverage-test-')
+      expect(result.output).toContain('wangmai-coverage-test-')
       expect(existsSync(result.output)).toBe(false)
       expect(warnings).toEqual([])
     } finally {
@@ -750,7 +750,7 @@ describe('coverage subprocess output', () => {
 
   test('reports a sandbox it cannot remove instead of failing the finished run', () => {
     const warnings: string[] = []
-    expect(() => removeSandboxHome(join(tmpdir(), 'cc-haha-coverage-missing-\0-sandbox'), message => warnings.push(message))).not.toThrow()
+    expect(() => removeSandboxHome(join(tmpdir(), 'wangmai-coverage-missing-\0-sandbox'), message => warnings.push(message))).not.toThrow()
     expect(warnings).toHaveLength(1)
     expect(warnings[0]).toContain('could not remove test sandbox')
   })

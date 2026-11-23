@@ -29,7 +29,7 @@ async function runBuildFixture(options: {
   macTargets?: string
   failSmoke?: boolean
 } = {}) {
-  const fixtureRoot = await mkdtemp(path.join(tmpdir(), 'cc-haha-macos-build-'))
+  const fixtureRoot = await mkdtemp(path.join(tmpdir(), 'wangmai-macos-build-'))
   const desktopDir = path.join(fixtureRoot, 'desktop')
   const adaptersDir = path.join(fixtureRoot, 'adapters')
   // `bun run build` exports the phone H5 from mobile/ into dist/m.
@@ -77,7 +77,7 @@ if [[ "\${*}" == *"build:sidecars"* ]]; then
   for package_dir in "\${TEST_REPO_ROOT}" "\${TEST_REPO_ROOT}/desktop" "\${TEST_REPO_ROOT}/adapters" "\${TEST_REPO_ROOT}/mobile"; do
     [[ -d "\${package_dir}/node_modules" ]] || exit 42
   done
-  printf '%s\\n' "\${CC_HAHA_SIGN_IDENTITY:-}" "\${CSC_NAME:-}" "\${CC_HAHA_LOCAL_UNSIGNED_BUILD:-}" > "\${TEST_REPO_ROOT}/sidecar-env.txt"
+  printf '%s\\n' "\${WANGMAI_SIGN_IDENTITY:-}" "\${CSC_NAME:-}" "\${WANGMAI_LOCAL_UNSIGNED_BUILD:-}" > "\${TEST_REPO_ROOT}/sidecar-env.txt"
   /bin/bash -c 'source "$1"; resolve_identity' helper-signing-test "\${TEST_NATIVE_BUILD_SCRIPT}"
   [[ "\${TEST_COPY_OUTPUT}" == 1 ]] || exit 86
 fi
@@ -92,9 +92,9 @@ exit 0
     await writeExecutable(path.join(fakeBinDir, 'node'), `#!/bin/bash
 set -euo pipefail
 output="\${TEST_REPO_ROOT}/desktop/build-artifacts/electron"
-mkdir -p "\${output}/mac-arm64/Claude Code Haha.app/Contents"
-printf '%s\\n' 'app fixture' > "\${output}/mac-arm64/Claude Code Haha.app/Contents/Info.plist"
-printf '%s\\n' 'zip fixture' > "\${output}/Claude Code Haha.zip"
+mkdir -p "\${output}/mac-arm64/网脉智能体.app/Contents"
+printf '%s\\n' 'app fixture' > "\${output}/mac-arm64/网脉智能体.app/Contents/Info.plist"
+printf '%s\\n' 'zip fixture' > "\${output}/网脉智能体.zip"
 `)
     await writeExecutable(path.join(fakeBinDir, 'cp'), `#!/bin/bash
 set -euo pipefail
@@ -140,8 +140,8 @@ fi
         TEST_FAKE_BIN_DIR: fakeBinDir,
         MAC_TARGETS: options.macTargets ?? 'zip',
         SIGN_BUILD: options.signBuild ?? '',
-        CC_HAHA_SIGN_IDENTITY: options.signIdentity ?? '',
-        CC_HAHA_LOCAL_UNSIGNED_BUILD: options.localUnsignedBuild ?? '',
+        WANGMAI_SIGN_IDENTITY: options.signIdentity ?? '',
+        WANGMAI_LOCAL_UNSIGNED_BUILD: options.localUnsignedBuild ?? '',
         CSC_NAME: '',
         TEST_REPO_ROOT: fixtureRoot,
         TEST_NATIVE_BUILD_SCRIPT: path.resolve(import.meta.dirname, '../../native/cu-helper/build.sh'),
@@ -170,8 +170,8 @@ fi
       smokeArgs,
       securityQueried: await exists(path.join(fixtureRoot, 'security-queried')),
       canonicalOutputExists: await exists(canonicalOutput),
-      canonicalApp: await exists(path.join(canonicalOutput, 'Claude Code Haha.app', 'Contents', 'Info.plist')),
-      canonicalZip: await exists(path.join(canonicalOutput, 'Claude Code Haha.zip')),
+      canonicalApp: await exists(path.join(canonicalOutput, '网脉智能体.app', 'Contents', 'Info.plist')),
+      canonicalZip: await exists(path.join(canonicalOutput, '网脉智能体.zip')),
       canonicalBuildInfo: await exists(path.join(canonicalOutput, 'BUILD_INFO.txt')),
     }
   } finally {
@@ -208,7 +208,7 @@ describe('macOS arm64 build output', () => {
     expect(fixture.smokeArgs.slice(-4, -2)).toEqual(['--package-kind', 'release'])
   })
 
-  it.each(['Claude Code Haha.app', 'Claude Code Haha.zip'])('leaves no canonical output after copying %s fails', async failCopyOf => {
+  it.each(['网脉智能体.app', '网脉智能体.zip'])('leaves no canonical output after copying %s fails', async failCopyOf => {
     const fixture = await runBuildFixture({ signBuild: '0', copyOutput: true, failCopyOf })
     expect(fixture.result.stderr).toContain('No space left on device')
     expect(fixture.result.status).toBe(73)

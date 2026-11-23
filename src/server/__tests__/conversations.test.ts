@@ -33,7 +33,7 @@ import { HISTORY_SEMANTIC_RECORD_BYTES } from '../services/boundedSessionHistory
 import { createRepositoryBranch } from '../services/repositoryLaunchService.js'
 import { ProviderService } from '../services/providerService.js'
 import { SettingsService } from '../services/settingsService.js'
-import { hahaOAuthService } from '../services/hahaOAuthService.js'
+import { wangmaiOAuthService } from '../services/wangmaiOAuthService.js'
 import { resetTerminalShellEnvironmentCacheForTests } from '../../utils/terminalShellEnvironment.js'
 import * as openAIModelCatalog from '../../services/openaiAuth/modelCatalog.js'
 import * as titleService from '../services/titleService.js'
@@ -1350,7 +1350,7 @@ describe('ConversationService', () => {
       expect(found).not.toBeNull()
 
       const encryptedReasoning =
-        `cc-haha:openai-reasoning:v1:${JSON.stringify({
+        `wangmai:openai-reasoning:v1:${JSON.stringify({
           summary: [],
           encrypted_content: 'x'.repeat(400_000),
         })}`
@@ -2691,7 +2691,7 @@ describe('WebSocket Chat Integration', () => {
   })
 
   it('refreshes the first-turn AI title from the completed assistant transcript', async () => {
-    const providerConfigPath = path.join(tmpDir, 'cc-haha', 'providers.json')
+    const providerConfigPath = path.join(tmpDir, 'wangmai', 'providers.json')
     const originalProviderConfig = await fs.readFile(providerConfigPath, 'utf-8').catch(() => null)
     const upstreamInputs: string[] = []
     const titleModelServer = Bun.serve({
@@ -3404,7 +3404,7 @@ describe('WebSocket Chat Integration', () => {
   })
 
   it('should keep a long desktop session alive in a /tmp project across engineering turns', async () => {
-    const projectDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-issue247-project-'))
+    const projectDir = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-issue247-project-'))
     let sessionId: string | undefined
 
     try {
@@ -3783,7 +3783,7 @@ describe('WebSocket Chat Integration', () => {
   it('should migrate a persisted opus[1m] Claude OAuth Pro session before starting the CLI', async () => {
     const providerService = new ProviderService()
     await providerService.activateOfficial()
-    await hahaOAuthService.saveTokens({
+    await wangmaiOAuthService.saveTokens({
       accessToken: 'persisted-pro-access',
       refreshToken: 'persisted-pro-refresh',
       expiresAt: Date.now() + 60 * 60_000,
@@ -3791,7 +3791,7 @@ describe('WebSocket Chat Integration', () => {
       subscriptionType: 'pro',
     })
     // Starting the CLI looks the account up through the profile endpoint.
-    hahaOAuthService.setFetchAccountUuidFn(async () => 'account-uuid-from-profile')
+    wangmaiOAuthService.setFetchAccountUuidFn(async () => 'account-uuid-from-profile')
     const settingsService = new SettingsService()
     const previousSettings = await settingsService.getUserSettings()
     await settingsService.updateUserSettings({ model: 'opus[1m]' })
@@ -3842,8 +3842,8 @@ describe('WebSocket Chat Integration', () => {
     } finally {
       conversationService.startSession = originalStartSession
       conversationService.stopSession(sessionId)
-      await hahaOAuthService.deleteTokens()
-      hahaOAuthService.setFetchAccountUuidFn()
+      await wangmaiOAuthService.deleteTokens()
+      wangmaiOAuthService.setFetchAccountUuidFn()
       await fs.writeFile(
         path.join(tmpDir, 'settings.json'),
         JSON.stringify(previousSettings, null, 2),
@@ -4446,7 +4446,7 @@ describe('WebSocket Chat Integration', () => {
       startCalls.push({
         providerId: options?.providerId,
         model: options?.model,
-        imageProviderKind: env.CC_HAHA_IMAGE_PROVIDER_KIND,
+        imageProviderKind: env.WANGMAI_IMAGE_PROVIDER_KIND,
       })
       return originalStartSession(sid, workDir, sdkUrl, options)
     }) as typeof conversationService.startSession

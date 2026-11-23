@@ -333,15 +333,15 @@ const traceCaptureDiagnostics = {
 }
 
 export function shouldCaptureApiTrace(): boolean {
-  if (isEnvDefinedFalsy(process.env.CC_HAHA_TRACE_API_CALLS)) return false
-  if (isEnvTruthy(process.env.CC_HAHA_TRACE_API_CALLS)) return true
+  if (isEnvDefinedFalsy(process.env.WANGMAI_TRACE_API_CALLS)) return false
+  if (isEnvTruthy(process.env.WANGMAI_TRACE_API_CALLS)) return true
   return readTraceCaptureSettingsSync().enabled &&
     process.env.CLAUDE_CODE_ENTRYPOINT === 'claude-desktop'
 }
 
 export function isTraceCaptureEnabled(): boolean {
-  if (isEnvDefinedFalsy(process.env.CC_HAHA_TRACE_API_CALLS)) return false
-  if (isEnvTruthy(process.env.CC_HAHA_TRACE_API_CALLS)) return true
+  if (isEnvDefinedFalsy(process.env.WANGMAI_TRACE_API_CALLS)) return false
+  if (isEnvTruthy(process.env.WANGMAI_TRACE_API_CALLS)) return true
   return readTraceCaptureSettingsSync().enabled
 }
 
@@ -351,11 +351,11 @@ export function getTraceStorageDir(): string {
 
 function currentTraceScopeContext(): TraceScopeContext {
   const scope = getClaudeConfigHomeDir()
-  const configuredDir = process.env.CC_HAHA_TRACE_DIR?.trim()
+  const configuredDir = process.env.WANGMAI_TRACE_DIR?.trim()
   if (configuredDir && (!isAbsolute(configuredDir) || configuredDir.includes('\0'))) {
-    throw traceResourceError('TRACE_INVALID_STORAGE_DIR', 'CC_HAHA_TRACE_DIR must be an absolute directory path')
+    throw traceResourceError('TRACE_INVALID_STORAGE_DIR', 'WANGMAI_TRACE_DIR must be an absolute directory path')
   }
-  const storageDir = configuredDir ? resolve(configuredDir) : join(scope, 'cc-haha', 'traces')
+  const storageDir = configuredDir ? resolve(configuredDir) : join(scope, 'wangmai', 'traces')
   // Keep the managed settings scope separate from the trace storage scope.
   // A custom directory gets its own disposable index under the existing
   // managed-path boundary, rather than sharing an index with another root.
@@ -366,7 +366,7 @@ function currentTraceScopeContext(): TraceScopeContext {
     target: {
       // The storage root may equal the config root, whose legacy index describes
       // a different JSONL directory. Never share that index with custom storage.
-      path: join(indexScope, 'cc-haha', 'db', configuredDir ? 'trace-storage-index-v1.sqlite' : 'trace-index-v1.sqlite'),
+      path: join(indexScope, 'wangmai', 'db', configuredDir ? 'trace-storage-index-v1.sqlite' : 'trace-index-v1.sqlite'),
       scope: indexScope,
       customStorage: Boolean(configuredDir),
     },
@@ -3451,7 +3451,7 @@ function sanitizeTraceFileName(sessionId: string): string {
 }
 
 function getManagedSettingsPath(scope = getClaudeConfigHomeDir()): string {
-  return join(scope, 'cc-haha', 'settings.json')
+  return join(scope, 'wangmai', 'settings.json')
 }
 
 function defaultTraceCaptureSettings(

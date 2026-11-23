@@ -26,8 +26,8 @@ import { teamWatcher } from './services/teamWatcher.js'
 import { cronScheduler } from './services/cronScheduler.js'
 import { handleProxyRequest } from './proxy/handler.js'
 import { ProviderService } from './services/providerService.js'
-import { handleHahaOAuthCallback } from './api/haha-oauth.js'
-import { handleHahaOpenAIOAuthCallback } from './api/haha-openai-oauth.js'
+import { handleWangMaiOAuthCallback } from './api/wangmai-oauth.js'
+import { handleWangMaiOpenAIOAuthCallback } from './api/wangmai-openai-oauth.js'
 import { handlePreviewFs } from './api/previewFs.js'
 import { handleLocalFile } from './api/localFile.js'
 import { sessionService } from './services/sessionService.js'
@@ -247,9 +247,9 @@ export function startServer(port = PORT, host = HOST) {
   // the sidecar "never started listening", this line splits that time from
   // the work below that still runs before Bun.serve binds (#1746).
   console.log(`[Server] modules loaded ${Math.round(performance.now())} ms after process start; binding ${host}:${port}`)
-  if (process.env.CC_HAHA_MIGRATION_VALIDATION === '1') migrationMaintenance.beginValidation()
+  if (process.env.WANGMAI_MIGRATION_VALIDATION === '1') migrationMaintenance.beginValidation()
   if (!migrationMaintenance.isActive) enableConfigs()
-  const trustedRendererOrigin = resolveTrustedRendererOrigin(process.env.CC_HAHA_TRUSTED_RENDERER_ORIGIN)
+  const trustedRendererOrigin = resolveTrustedRendererOrigin(process.env.WANGMAI_TRUSTED_RENDERER_ORIGIN)
   // Warm the synchronous disconnect-grace cache from managed settings so the
   // first client disconnect honors the configured value (issue #764).
   if (!migrationMaintenance.isActive) void refreshDisconnectGraceMs()
@@ -357,7 +357,7 @@ export function startServer(port = PORT, host = HOST) {
             recover: quiesceServerRuntimeForRecovery,
             activate: async () => {
               migrationMaintenance.activateValidation()
-              delete process.env.CC_HAHA_MIGRATION_VALIDATION
+              delete process.env.WANGMAI_MIGRATION_VALIDATION
               enableConfigs()
               void refreshDisconnectGraceMs()
               if (process.env.NODE_ENV !== 'test') {
@@ -588,14 +588,14 @@ export function startServer(port = PORT, host = HOST) {
         }
 
         if (url.pathname === '/callback') {
-          return handleHahaOAuthCallback(url)
+          return handleWangMaiOAuthCallback(url)
         }
 
         if (
           url.pathname === OPENAI_CODEX_REDIRECT_PATH ||
           url.pathname === '/callback/openai'
         ) {
-          return handleHahaOpenAIOAuthCallback(url)
+          return handleWangMaiOpenAIOAuthCallback(url)
         }
 
         // Preview filesystem — serve sandboxed workspace files for a session.

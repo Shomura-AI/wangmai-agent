@@ -34,7 +34,7 @@ describe('Windows window and pinned taskbar identity', () => {
     const root = mkdtempSync(path.join(tmpdir(), 'electron-app-identity-'))
     const desktopRoot = path.join(root, 'resources', 'app.asar')
     const resourcesPath = path.join(root, 'resources')
-    const executablePath = path.join(root, 'Claude Code Haha.exe')
+    const executablePath = path.join(root, '网脉智能体.exe')
     const externalIcon = path.join(resourcesPath, 'app-icon.ico')
     const bundledIcon = path.join(desktopRoot, 'src-tauri', 'icons', 'icon.ico')
     const write = (file: string) => {
@@ -57,7 +57,7 @@ describe('Windows window and pinned taskbar identity', () => {
         appIconPath: f.externalIcon,
         appIconIndex: 0,
         relaunchCommand: `"${f.executablePath}"`,
-        relaunchDisplayName: 'Claude Code Haha',
+        relaunchDisplayName: '网脉智能体',
       })
     } finally {
       rmSync(f.root, { recursive: true, force: true })

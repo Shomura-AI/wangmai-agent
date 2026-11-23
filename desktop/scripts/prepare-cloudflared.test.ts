@@ -243,7 +243,7 @@ describe('build-time release downloads', () => {
     expect(result.error).toBeInstanceOf(Error)
     expect(String(result.error)).toContain(getCloudflaredDownloadUrl(f.options.targetTriple))
     expect(String(result.error)).toContain('HTTPS_PROXY')
-    expect(String(result.error)).toContain('CC_HAHA_CLOUDFLARED_ARCHIVE')
+    expect(String(result.error)).toContain('WANGMAI_CLOUDFLARED_ARCHIVE')
     const diagnostics = [inspect(result.error), ...log.mock.calls.flat(), ...warn.mock.calls.flat()].join('\n')
     for (const secret of ['build-user', 'build-secret', 'proxy.invalid', 'upstream-secret']) {
       expect(diagnostics).not.toContain(secret)

@@ -7,7 +7,7 @@ import { createSandboxedTestEnvironment } from '../../scripts/pr/test-environmen
 const buildScript = path.resolve(import.meta.dirname, 'build.sh')
 const productIcon = path.resolve(import.meta.dirname, '../../desktop/src-tauri/icons/icon.icns')
 const fixtureDirectories: string[] = []
-const resourceBundleName = 'cu-helper_cc-haha-computer-use.bundle'
+const resourceBundleName = 'cu-helper_wangmai-computer-use.bundle'
 
 function runFixtureCommand(command: string[], options: { cwd?: string, env?: Record<string, string | undefined> } = {}) {
   // File-backed output also works on Bun versions where test subprocesses
@@ -82,9 +82,9 @@ source "$1"
 TEST_BUNDLE_DIR="$2"
 BUILD_DIR="$TEST_BUNDLE_DIR/build"
 BIN_PATH="$TEST_BUNDLE_DIR/fixture-binary"
-RESOURCE_BUNDLE_PATH="$TEST_BUNDLE_DIR/cu-helper_cc-haha-computer-use.bundle"
-APP_PATH="$TEST_BUNDLE_DIR/cc-haha-computer-use.app"
-BUNDLE_ID="dev.cchaha.cu-helper"
+RESOURCE_BUNDLE_PATH="$TEST_BUNDLE_DIR/cu-helper_wangmai-computer-use.bundle"
+APP_PATH="$TEST_BUNDLE_DIR/wangmai-computer-use.app"
+BUNDLE_ID="dev.wangmai.cu-helper"
 SIGN_IDENTITY="fixture-only"
 RESOLVED_TIMESTAMP_MODE="none"
 if [ "$3" = "missing" ]; then
@@ -106,7 +106,7 @@ wrap_app
 
   return {
     directory,
-    contents: path.join(directory, 'cc-haha-computer-use.app', 'Contents'),
+    contents: path.join(directory, 'wangmai-computer-use.app', 'Contents'),
     exitCode: result.exitCode,
     stderr: result.stderr.toString(),
   }
@@ -116,7 +116,7 @@ function probeFixtureApp(mode: 'packaged' | 'build-path' | 'external-symlink' | 
   const directory = mkdtempSync(path.join(tmpdir(), 'cu-helper-resource-probe-'))
   fixtureDirectories.push(directory)
   const app = path.join(directory, 'source.app')
-  const binary = path.join(app, 'Contents', 'MacOS', 'cc-haha-computer-use')
+  const binary = path.join(app, 'Contents', 'MacOS', 'wangmai-computer-use')
   mkdirSync(path.dirname(binary), { recursive: true })
   mkdirSync(path.join(app, 'Contents', 'Resources', resourceBundleName, 'LensSequence'), { recursive: true })
   writeFileSync(path.join(app, 'Contents', 'Resources', resourceBundleName, 'LensSequence', 'README.md'), 'optional frames fixture')
@@ -156,7 +156,7 @@ verify_relocated_cursor_resources
   return {
     exitCode: result.exitCode,
     stderr: result.stderr.toString(),
-    leftovers: readdirSync(directory).filter(name => name.startsWith('cc-haha-cursor-probe.')),
+    leftovers: readdirSync(directory).filter(name => name.startsWith('wangmai-cursor-probe.')),
   }
 }
 
@@ -212,7 +212,7 @@ function localSigningFixture(environment: Record<string, string> = {}, fullBuild
   const binDir = path.join(directory, 'build', 'arm64', 'release')
   mkdirSync(path.join(binDir, resourceBundleName, 'LensSequence'), { recursive: true })
   writeFileSync(path.join(binDir, resourceBundleName, 'LensSequence', 'README.md'), 'optional frames fixture')
-  const binary = path.join(binDir, 'cc-haha-computer-use')
+  const binary = path.join(binDir, 'wangmai-computer-use')
   writeFileSync(binary, `#!/bin/bash
 [ "$1" = "--probe-cursor-resources" ] || exit 40
 resources="$(cd "$(dirname "$0")/../Resources/${resourceBundleName}/LensSequence" && pwd -P)"
@@ -240,8 +240,8 @@ otool() { printf '(__TEXT,__info_plist) section\\n'; }
 codesign() {
   printf '%s\\n' "$*" >> "$TEST_SIGNING_LOG"
   if [ "$1" = '-dv' ]; then
-    printf 'Identifier=dev.cchaha.cu-helper\\n' >&2
-    case "\${CC_HAHA_SIGN_IDENTITY:-}" in
+    printf 'Identifier=dev.wangmai.cu-helper\\n' >&2
+    case "\${WANGMAI_SIGN_IDENTITY:-}" in
       'Developer ID Application:'*) printf 'Timestamp=fixture secure timestamp\\n' >&2 ;;
     esac
   fi
@@ -268,7 +268,7 @@ fi
     stdout: result.stdout.toString(),
     stderr: result.stderr.toString(),
     signingCalls: existsSync(signingLog) ? readFileSync(signingLog, 'utf8').trim().split('\n') : [],
-    appPath: path.join(binDir, 'cc-haha-computer-use.app'),
+    appPath: path.join(binDir, 'wangmai-computer-use.app'),
   }
 }
 
@@ -300,11 +300,11 @@ describe('cu-helper build signing identity', () => {
 
   test.each([
     {},
-    { CC_HAHA_SIGN_IDENTITY: '-' },
+    { WANGMAI_SIGN_IDENTITY: '-' },
     { CU_HELPER_IDENTITY: '-' },
-    { CC_HAHA_LOCAL_UNSIGNED_BUILD: '1' },
-    { CC_HAHA_SIGN_IDENTITY: '-', CC_HAHA_LOCAL_UNSIGNED_BUILD: '1', GITHUB_ACTIONS: 'true' },
-    { CC_HAHA_SIGN_IDENTITY: '-', CC_HAHA_LOCAL_UNSIGNED_BUILD: '1', CI: 'true' },
+    { WANGMAI_LOCAL_UNSIGNED_BUILD: '1' },
+    { WANGMAI_SIGN_IDENTITY: '-', WANGMAI_LOCAL_UNSIGNED_BUILD: '1', GITHUB_ACTIONS: 'true' },
+    { WANGMAI_SIGN_IDENTITY: '-', WANGMAI_LOCAL_UNSIGNED_BUILD: '1', CI: 'true' },
   ])('refuses ad-hoc signing outside explicitly selected local packaging: %j', environment => {
     const result = localSigningFixture(environment)
     expect(result.exitCode).not.toBe(0)
@@ -313,7 +313,7 @@ describe('cu-helper build signing identity', () => {
 
   test('accepts the explicit local unsigned packaging identity', () => {
     const result = localSigningFixture({
-      CC_HAHA_SIGN_IDENTITY: '-', CC_HAHA_LOCAL_UNSIGNED_BUILD: '1',
+      WANGMAI_SIGN_IDENTITY: '-', WANGMAI_LOCAL_UNSIGNED_BUILD: '1',
     })
     expect(result.exitCode).toBe(0)
     expect(result.stdout).toBe('-')
@@ -323,7 +323,7 @@ describe('cu-helper build signing identity', () => {
   test('keeps a real build-wide signing identity even with a stale local unsigned flag', () => {
     const identity = 'Developer ID Application: Example Corp (TEAM123456)'
     const result = localSigningFixture({
-      CC_HAHA_SIGN_IDENTITY: identity, CC_HAHA_LOCAL_UNSIGNED_BUILD: '1', GITHUB_ACTIONS: 'true',
+      WANGMAI_SIGN_IDENTITY: identity, WANGMAI_LOCAL_UNSIGNED_BUILD: '1', GITHUB_ACTIONS: 'true',
     })
     expect(result.exitCode).toBe(0)
     expect(result.stdout).toBe(identity)
@@ -333,13 +333,13 @@ describe('cu-helper build signing identity', () => {
 describe.skipIf(process.platform !== 'darwin')('cu-helper local unsigned packaging', () => {
   test('signs, verifies, wraps and probes the helper with ad-hoc signatures', () => {
     const result = localSigningFixture({
-      CC_HAHA_SIGN_IDENTITY: '-', CC_HAHA_LOCAL_UNSIGNED_BUILD: '1',
+      WANGMAI_SIGN_IDENTITY: '-', WANGMAI_LOCAL_UNSIGNED_BUILD: '1',
     }, true)
     expect(result.exitCode, result.stderr).toBe(0)
     expect(result.stdout.trim()).toBe(`built: ${result.appPath}`)
     expect(result.signingCalls.filter(line => line.startsWith('--force'))).toEqual([
-      expect.stringContaining('--timestamp=none --identifier dev.cchaha.cu-helper --sign - '),
-      expect.stringContaining('--timestamp=none --identifier dev.cchaha.cu-helper --sign - '),
+      expect.stringContaining('--timestamp=none --identifier dev.wangmai.cu-helper --sign - '),
+      expect.stringContaining('--timestamp=none --identifier dev.wangmai.cu-helper --sign - '),
     ])
     expect(result.signingCalls.filter(line => line.startsWith('--verify'))).toHaveLength(2)
     expect(result.stderr).toContain('verified: relocated cursor resources')
@@ -350,12 +350,12 @@ describe.skipIf(process.platform !== 'darwin')('cu-helper local unsigned packagi
     ['Developer ID Application: Example Corp (TEAM123456)', '--timestamp'],
     ['Apple Development: Developer (TEAM123456)', '--timestamp=none'],
   ])('preserves signed helper packaging for %s', (identity, timestamp) => {
-    const result = localSigningFixture({ CC_HAHA_SIGN_IDENTITY: identity }, true)
+    const result = localSigningFixture({ WANGMAI_SIGN_IDENTITY: identity }, true)
     expect(result.exitCode, result.stderr).toBe(0)
     expect(result.stdout.trim()).toBe(`built: ${result.appPath}`)
     expect(result.signingCalls.filter(line => line.startsWith('--force'))).toEqual([
-      expect.stringContaining(`${timestamp} --identifier dev.cchaha.cu-helper --sign ${identity} `),
-      expect.stringContaining(`${timestamp} --identifier dev.cchaha.cu-helper --sign ${identity} `),
+      expect.stringContaining(`${timestamp} --identifier dev.wangmai.cu-helper --sign ${identity} `),
+      expect.stringContaining(`${timestamp} --identifier dev.wangmai.cu-helper --sign ${identity} `),
     ])
   })
 })
@@ -368,9 +368,9 @@ describe('cu-helper architecture-specific build output', () => {
       expect(result.exitCode).toBe(0)
       expect(result.lines).toEqual([
         result.binDir,
-        path.join(result.binDir, 'cc-haha-computer-use'),
-        path.join(result.binDir, 'cc-haha-computer-use.app'),
-        path.join(result.binDir, 'cu-helper_cc-haha-computer-use.bundle'),
+        path.join(result.binDir, 'wangmai-computer-use'),
+        path.join(result.binDir, 'wangmai-computer-use.app'),
+        path.join(result.binDir, 'cu-helper_wangmai-computer-use.bundle'),
       ])
     },
   )
@@ -394,8 +394,8 @@ describe.skipIf(process.platform !== 'darwin')('cu-helper permission-list app ic
     ])
     expect(plist.exitCode).toBe(0)
     const info = JSON.parse(plist.stdout.toString())
-    expect(info.CFBundleIdentifier).toBe('dev.cchaha.cu-helper')
-    expect(info.CFBundleExecutable).toBe('cc-haha-computer-use')
+    expect(info.CFBundleIdentifier).toBe('dev.wangmai.cu-helper')
+    expect(info.CFBundleExecutable).toBe('wangmai-computer-use')
     expect(info.CFBundleIconFile).toBe('icon.icns')
 
     const expectedIcon = readFileSync(productIcon)

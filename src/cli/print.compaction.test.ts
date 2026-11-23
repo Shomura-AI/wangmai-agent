@@ -12,7 +12,7 @@ type RecordedRequest = { compaction: boolean; prompt: string }
 
 const COMPACTION_MARKER = 'CRITICAL: Respond with TEXT ONLY'
 const SESSION_ID = '5f0c2d0e-6a51-4b7e-9d0c-3c7b8b1f2a10'
-const CLI = join(process.cwd(), 'bin', 'claude-haha')
+const CLI = join(process.cwd(), 'bin', 'wangmai')
 const encoder = new TextEncoder()
 let sandbox: string | null = null
 
@@ -154,7 +154,7 @@ async function runCli(port: number, args: string[], env: Record<string, string> 
       HOME: sandbox!,
       NODE_ENV: 'production',
       CI: '1',
-      CC_HAHA_SKIP_DOTENV: '1',
+      WANGMAI_SKIP_DOTENV: '1',
       CLAUDE_CONFIG_DIR: join(sandbox!, 'config'),
       CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',
       CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK: '1',
@@ -168,7 +168,7 @@ async function runCli(port: number, args: string[], env: Record<string, string> 
       CLAUDE_CODE_USE_VERTEX: undefined,
       CLAUDE_CODE_USE_FOUNDRY: undefined,
       CLAUDE_CODE_USE_OPENAI: undefined,
-      CC_HAHA_OPENAI_OAUTH_PROVIDER: undefined,
+      WANGMAI_OPENAI_OAUTH_PROVIDER: undefined,
       ANTHROPIC_AUTH_TOKEN: undefined,
       CLAUDE_CODE_CURRIED_TRINKET: undefined,
       ...env,
@@ -195,7 +195,7 @@ async function compactSeededSession(
   compactionReply: (index: number) => Response,
   env: Record<string, string> = {},
 ) {
-  sandbox = await mkdtemp(join(tmpdir(), 'cc-haha-print-compaction-'))
+  sandbox = await mkdtemp(join(tmpdir(), 'wangmai-print-compaction-'))
   await mkdir(join(sandbox, 'project'))
   const { server, requests } = startUpstream(compactionReply)
   try {

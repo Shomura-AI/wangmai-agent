@@ -11,7 +11,7 @@ import {
 const tempDirs: string[] = []
 
 async function createTempDir(): Promise<string> {
-  const directory = await mkdtemp(join(tmpdir(), 'cc-haha-reconciliation-watcher-'))
+  const directory = await mkdtemp(join(tmpdir(), 'wangmai-reconciliation-watcher-'))
   tempDirs.push(directory)
   return directory
 }
@@ -648,7 +648,7 @@ describe('local index reconciliation watcher', () => {
       // must not sweep `~/.claude/projects`.
       listeners.get(scope)?.('change', 'history.jsonl')
       listeners.get(scope)?.('rename', 'settings.json')
-      listeners.get(scope)?.('change', 'cc-haha')
+      listeners.get(scope)?.('change', 'wangmai')
       // Non-transcript artifacts inside a project directory must not trigger full sweeps.
       listeners.get(projectDir)?.('change', join('session-1', 'subagents', 'agent-a.meta.json'))
       listeners.get(projectDir)?.('rename', join('session-1', 'subagents', 'agent-a.meta.json'))

@@ -33,44 +33,44 @@ describe('Windows installer recovery prerequisites', () => {
   test('skips PowerShell only for a proven default per-user installation', () => {
     const installerHook = readFileSync('desktop/build/installer.nsh', 'utf8')
     const fastPathStart = installerHook.indexOf(
-      'Function CcHahaCanSkipLegacyRecovery',
+      'Function WangMaiCanSkipLegacyRecovery',
     )
     const recoveryCall = installerHook.indexOf(
-      'UAC_AsUser_Call Function CcHahaRecoverLegacy',
+      'UAC_AsUser_Call Function WangMaiRecoverLegacy',
     )
 
     expect(fastPathStart).toBeGreaterThan(-1)
     expect(fastPathStart).toBeLessThan(recoveryCall)
     expect(installerHook).toMatch(
-      /Function CcHahaCanSkipLegacyRecovery[\s\S]*\$8 != "trusted-user"/,
+      /Function WangMaiCanSkipLegacyRecovery[\s\S]*\$8 != "trusted-user"/,
     )
     expect(installerHook).toMatch(
-      /StrCpy \$8 "trusted-user"[\s\S]*UAC_IsAdmin[\s\S]*StrCpy \$8 "untrusted-elevated"[\s\S]*UAC_IsInnerInstance[\s\S]*StrCpy \$8 "trusted-uac-outer"[\s\S]*Call CcHahaCanSkipLegacyRecovery/,
+      /StrCpy \$8 "trusted-user"[\s\S]*UAC_IsAdmin[\s\S]*StrCpy \$8 "untrusted-elevated"[\s\S]*UAC_IsInnerInstance[\s\S]*StrCpy \$8 "trusted-uac-outer"[\s\S]*Call WangMaiCanSkipLegacyRecovery/,
     )
     expect(installerHook).toContain(
-      '$ccHahaPerUserInstallLocation == ""',
+      '$wangmaiPerUserInstallLocation == ""',
     )
     expect(installerHook).toContain(
-      '$ccHahaPerMachineInstallLocation != ""',
+      '$wangmaiPerMachineInstallLocation != ""',
     )
     expect(installerHook).toContain(
-      '$ccHahaPerMachineUninstallString != ""',
+      '$wangmaiPerMachineUninstallString != ""',
     )
     expect(installerHook).toContain(
-      'StrCmp $ccHahaPerUserInstallLocation $INSTDIR',
+      'StrCmp $wangmaiPerUserInstallLocation $INSTDIR',
     )
     expect(installerHook).toContain('ReadEnvStr $R0 CLAUDE_CONFIG_DIR')
     expect(installerHook).toContain(
-      'IfFileExists "$ccHahaPerUserInstallLocation\\CLAUDE_CONFIG_DIR\\*.*"',
+      'IfFileExists "$wangmaiPerUserInstallLocation\\CLAUDE_CONFIG_DIR\\*.*"',
     )
     expect(installerHook).toContain(
-      'FileOpen $R2 "$R1\\Claude Code Haha\\app-mode.json" r',
+      'FileOpen $R2 "$R1\\网脉智能体\\app-mode.json" r',
     )
     expect(installerHook).toContain('StrCmp $R3 \'  "mode": "default",$\\n\'')
     expect(installerHook).toContain('StrCmp $R3 \'  "portable_dir": null$\\n\'')
     expect(installerHook).toContain('FileClose $R2')
     expect(installerHook).toMatch(
-      /Call CcHahaCanSkipLegacyRecovery[\s\S]*No legacy data candidates found for the registered per-user installation[\s\S]*UAC_AsUser_Call Function CcHahaRecoverLegacy/,
+      /Call WangMaiCanSkipLegacyRecovery[\s\S]*No legacy data candidates found for the registered per-user installation[\s\S]*UAC_AsUser_Call Function WangMaiRecoverLegacy/,
     )
   })
 

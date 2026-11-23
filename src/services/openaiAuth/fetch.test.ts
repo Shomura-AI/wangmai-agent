@@ -29,10 +29,10 @@ describe('buildOpenAICodexFetch', () => {
   beforeEach(async () => {
     tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'openai-codex-fetch-'))
     originalTokenFile = process.env.OPENAI_CODEX_OAUTH_FILE
-    originalCompression = process.env.CC_HAHA_OPENAI_REQUEST_COMPRESSION
-    originalFastMode = process.env.CC_HAHA_OPENAI_FAST_MODE
-    delete process.env.CC_HAHA_OPENAI_FAST_MODE
-    delete process.env.CC_HAHA_OPENAI_REQUEST_COMPRESSION
+    originalCompression = process.env.WANGMAI_OPENAI_REQUEST_COMPRESSION
+    originalFastMode = process.env.WANGMAI_OPENAI_FAST_MODE
+    delete process.env.WANGMAI_OPENAI_FAST_MODE
+    delete process.env.WANGMAI_OPENAI_REQUEST_COMPRESSION
     originalReasoningEffort = process.env[OPENAI_CODEX_REASONING_EFFORT_ENV_KEY]
     delete process.env[OPENAI_CODEX_REASONING_EFFORT_ENV_KEY]
     process.env.OPENAI_CODEX_OAUTH_FILE = path.join(tmpDir, 'openai-oauth.json')
@@ -51,10 +51,10 @@ describe('buildOpenAICodexFetch', () => {
   })
 
   afterEach(async () => {
-    if (originalFastMode === undefined) delete process.env.CC_HAHA_OPENAI_FAST_MODE
-    else process.env.CC_HAHA_OPENAI_FAST_MODE = originalFastMode
-    if (originalCompression === undefined) delete process.env.CC_HAHA_OPENAI_REQUEST_COMPRESSION
-    else process.env.CC_HAHA_OPENAI_REQUEST_COMPRESSION = originalCompression
+    if (originalFastMode === undefined) delete process.env.WANGMAI_OPENAI_FAST_MODE
+    else process.env.WANGMAI_OPENAI_FAST_MODE = originalFastMode
+    if (originalCompression === undefined) delete process.env.WANGMAI_OPENAI_REQUEST_COMPRESSION
+    else process.env.WANGMAI_OPENAI_REQUEST_COMPRESSION = originalCompression
     if (originalTokenFile === undefined) {
       delete process.env.OPENAI_CODEX_OAUTH_FILE
     } else {
@@ -80,9 +80,9 @@ describe('buildOpenAICodexFetch', () => {
       body: JSON.stringify({ model: 'future-codex-model', max_tokens: 64, messages: [{ role: 'user', content: 'Hi' }] }),
     })
     await request()
-    process.env.CC_HAHA_OPENAI_FAST_MODE = '1'
+    process.env.WANGMAI_OPENAI_FAST_MODE = '1'
     await request()
-    process.env.CC_HAHA_OPENAI_FAST_MODE = '0'
+    process.env.WANGMAI_OPENAI_FAST_MODE = '0'
     await request()
     expect(bodies.map(body => body.service_tier)).toEqual([undefined, 'priority', undefined])
     expect(bodies.map(body => body.model)).toEqual(['future-codex-model', 'future-codex-model', 'future-codex-model'])
@@ -438,7 +438,7 @@ describe('buildOpenAICodexFetch', () => {
 
   test('threads routing state through the actual SDK client factory across tool continuations', async () => {
     const { getAnthropicClient } = await import('../api/client.js')
-    const overrides = { CC_HAHA_OPENAI_OAUTH_PROVIDER: '1', CC_HAHA_GROK_OAUTH_PROVIDER: '', CLAUDE_CONFIG_DIR: tmpDir, CLAUDE_CODE_SIMPLE: '1' }
+    const overrides = { WANGMAI_OPENAI_OAUTH_PROVIDER: '1', WANGMAI_GROK_OAUTH_PROVIDER: '', CLAUDE_CONFIG_DIR: tmpDir, CLAUDE_CODE_SIMPLE: '1' }
     const previous = Object.fromEntries(Object.keys(overrides).map(key => [key, process.env[key]]))
     Object.assign(process.env, overrides)
     using state = new OpenAICodexTurnState(new AbortController().signal)
@@ -509,7 +509,7 @@ describe('buildOpenAICodexFetch', () => {
 
   test('forwards explicit agent identity through recreated SDK clients and SDK retries', async () => {
     const { getAnthropicClient } = await import('../api/client.js')
-    const overrides = { CC_HAHA_OPENAI_OAUTH_PROVIDER: '1', CC_HAHA_GROK_OAUTH_PROVIDER: '', CLAUDE_CONFIG_DIR: tmpDir, CLAUDE_CODE_SIMPLE: '1' }
+    const overrides = { WANGMAI_OPENAI_OAUTH_PROVIDER: '1', WANGMAI_GROK_OAUTH_PROVIDER: '', CLAUDE_CONFIG_DIR: tmpDir, CLAUDE_CODE_SIMPLE: '1' }
     const previous = Object.fromEntries(Object.keys(overrides).map(key => [key, process.env[key]]))
     Object.assign(process.env, overrides)
     const sent: Array<[string | null, string | null]> = []
@@ -543,7 +543,7 @@ describe('buildOpenAICodexFetch', () => {
   })
 
   test('retains branch identity through the non-streaming fallback client factory', async () => {
-    const overrides = { CC_HAHA_OPENAI_OAUTH_PROVIDER: '1', CC_HAHA_GROK_OAUTH_PROVIDER: '', CLAUDE_CONFIG_DIR: tmpDir, CLAUDE_CODE_SIMPLE: '1' }
+    const overrides = { WANGMAI_OPENAI_OAUTH_PROVIDER: '1', WANGMAI_GROK_OAUTH_PROVIDER: '', CLAUDE_CONFIG_DIR: tmpDir, CLAUDE_CODE_SIMPLE: '1' }
     const previous = Object.fromEntries(Object.keys(overrides).map(key => [key, process.env[key]]))
     Object.assign(process.env, overrides)
     const sent: Array<[string | null, string | null]> = []
@@ -701,7 +701,7 @@ describe('buildOpenAICodexFetch', () => {
     })
     const body = await response.text()
 
-    expect(response.headers.get('x-cc-haha-openai-codex-stream')).toBe('1')
+    expect(response.headers.get('x-wangmai-openai-codex-stream')).toBe('1')
     expect(upstreamBodies[0].include).toEqual(['reasoning.encrypted_content'])
     expect(body).toContain('redacted_thinking')
     expect(body).toContain('opaque')

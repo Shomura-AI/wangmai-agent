@@ -9,7 +9,7 @@ order: 4
 
 按你看到的现象往下找。每条都是「现象 → 为什么 → 怎么办」。
 
-先确认一件事：你用的是 [GitHub Releases](https://github.com/NanmiCoder/cc-haha/releases/latest) 上的最新正式版。旧版本上的问题很多已经修掉了。
+先确认一件事：你用的是 [GitHub Releases](https://github.com/wangmai-ai/wangmai-agent/releases/latest) 上的最新正式版。旧版本上的问题很多已经修掉了。
 
 ## 装不上
 
@@ -17,7 +17,7 @@ order: 4
 
 **为什么** — 文件没坏。macOS 会给从网上下载的包打一个隔离标记，遇到没有 Apple 签名的应用就拒绝启动，而报错文案写成了「已损坏」，非常有误导性。
 
-**怎么办** — Releases 里的正式版本已经签名和公证，遇到这个提示多半是装了未签名的开发构建。把构建附带的 `install-macos-unsigned.sh` 放到和 DMG 同一个文件夹，执行 `bash install-macos-unsigned.sh`；或者应用已经在「应用程序」里的话，直接执行 `xattr -dr com.apple.quarantine "/Applications/Claude Code Haha.app"`。完整说明见 [下载与安装](./install.md)。
+**怎么办** — Releases 里的正式版本已经签名和公证，遇到这个提示多半是装了未签名的开发构建。把构建附带的 `install-macos-unsigned.sh` 放到和 DMG 同一个文件夹，执行 `bash install-macos-unsigned.sh`；或者应用已经在「应用程序」里的话，直接执行 `xattr -dr com.apple.quarantine "/Applications/网脉智能体.app"`。完整说明见 [下载与安装](./install.md)。
 
 ### Windows 弹出 SmartScreen 蓝屏
 
@@ -33,7 +33,7 @@ order: 4
 
 1. 退出主窗口，检查系统托盘里的图标也一并退出。
 2. 等几秒让后台进程结束。
-3. 还不行就去任务管理器里找 cc-haha 相关进程手动结束；已安装版本的进程可能仍显示旧名称 `Claude Code Haha`。
+3. 还不行就去任务管理器里找网脉智能体相关进程手动结束；已安装版本的进程可能仍显示旧名称 `wangmai`。
 4. 重新双击安装器。**不要**选「以管理员身份运行」，也**不要**先手动删掉旧安装目录里的数据。
 
 ### Linux AppImage 双击没反应
@@ -58,7 +58,7 @@ order: 4
 
 1. 完全退出应用（不是关窗口），重新打开。
 2. 还白就重装同一个版本的安装包覆盖一次。会话和配置存在 `~/.claude` 下，不在应用目录里，覆盖安装不会丢。
-3. 仍然白屏，说明卡在启动阶段。带上系统版本、CPU 架构、安装包文件名去 [GitHub Issues](https://github.com/NanmiCoder/cc-haha/issues) 提一条。
+3. 仍然白屏，说明卡在启动阶段。带上系统版本、CPU 架构、安装包文件名去 [GitHub Issues](https://github.com/wangmai-ai/wangmai-agent/issues) 提一条。
 
 :::warning
 任何情况下都不要为了排错去删 `~/.claude`。你的会话、服务商配置、技能、Agent、记忆全在那里，删了找不回来。
@@ -202,7 +202,7 @@ order: 4
 2. 页面显示的是原生运行组件还是 Python 兼容运行组件？macOS 14.4 及以上优先使用原生组件，提示缺失时更新或重装应用；显示 Python 检查时，再安装 Python 3 或指定已有解释器。
 3. 仅在页面显示虚拟环境与依赖包检查时，确认它们是「已就绪 / 已安装」；否则点「安装环境」。
 4. macOS 上还要「辅助功能权限」和「屏幕录制权限」两项都显示「已授权」——去「系统设置 → 隐私与安全性」里开。
-5. **授权之后必须重启 cc-haha**，系统权限对已经在跑的进程不生效。
+5. **授权之后必须重启网脉智能体**，系统权限对已经在跑的进程不生效。
 6. 第一次在应用中确认 Computer Use 的统一授权弹窗了吗？确认后所有应用共用这一次授权；还要确保目标应用正在运行、没有被系统权限拦住。
 
 完整说明见 [Computer Use](../desktop/computer-use.md)。
@@ -212,7 +212,7 @@ order: 4
 去「设置 → 诊断」：
 
 1. 点「复制 Issue 报告」，先拿到一份结构化的现场信息。
-2. 到 [GitHub Issues](https://github.com/NanmiCoder/cc-haha/issues) 搜一下有没有人报过同样的问题，没有再新建。
+2. 到 [GitHub Issues](https://github.com/wangmai-ai/wangmai-agent/issues) 搜一下有没有人报过同样的问题，没有再新建。
 3. 光靠报告定位不了的话，再点「导出诊断包」附上。
 
 一并提供这些能大幅提高解决速度：应用版本、操作系统和 CPU 架构、安装包文件名、用的哪类服务商（**不要贴 API 密钥**）、最短复现步骤、完整错误文字、问题出在桌面端还是手机端还是 CLI。

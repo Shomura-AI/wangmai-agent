@@ -65,7 +65,7 @@ describe('uiStore theme handling', () => {
   })
 
   it('hydrates and applies the pure white theme as a light color scheme', async () => {
-    window.localStorage.setItem('cc-haha-theme', 'white')
+    window.localStorage.setItem('wangmai-theme', 'white')
 
     const { initializeTheme, useUIStore } = await import('./uiStore')
 
@@ -131,7 +131,7 @@ describe('uiStore theme handling', () => {
     const first = await import('./uiStore')
     first.useUIStore.getState().setFollowSystemTheme(false)
     first.useUIStore.getState().setTheme('neutral-dark')
-    expect(window.localStorage.getItem('cc-haha-theme')).toBe('neutral-dark')
+    expect(window.localStorage.getItem('wangmai-theme')).toBe('neutral-dark')
     first.teardownTheme()
 
     vi.resetModules()
@@ -223,7 +223,7 @@ describe('uiStore following the system appearance', () => {
   })
 
   it('leaves an existing install on its fixed theme', async () => {
-    window.localStorage.setItem('cc-haha-theme', 'white')
+    window.localStorage.setItem('wangmai-theme', 'white')
     stubMatchMedia(true)
 
     const { useUIStore } = await import('./uiStore')
@@ -272,8 +272,8 @@ describe('uiStore following the system appearance', () => {
 
     useUIStore.getState().setFollowSystemTheme(false)
     expect(useUIStore.getState().theme).toBe('neutral-dark')
-    expect(window.localStorage.getItem('cc-haha-theme')).toBe('neutral-dark')
-    expect(window.localStorage.getItem('cc-haha-follow-system-theme')).toBe('0')
+    expect(window.localStorage.getItem('wangmai-theme')).toBe('neutral-dark')
+    expect(window.localStorage.getItem('wangmai-follow-system-theme')).toBe('0')
     teardownTheme()
   })
 
@@ -289,7 +289,7 @@ describe('uiStore following the system appearance', () => {
     // classic rather than pure white.
     expect(useUIStore.getState().theme).toBe('neutral-dark')
     expect(useUIStore.getState().lightTheme).toBe('warm-classic')
-    expect(window.localStorage.getItem('cc-haha-light-theme')).toBe('warm-classic')
+    expect(window.localStorage.getItem('wangmai-light-theme')).toBe('warm-classic')
     teardownTheme()
   })
 
@@ -304,7 +304,7 @@ describe('uiStore following the system appearance', () => {
 
     expect(useUIStore.getState().theme).toBe('white')
     expect(useUIStore.getState().darkTheme).toBe('ink-blue')
-    expect(window.localStorage.getItem('cc-haha-dark-theme')).toBe('ink-blue')
+    expect(window.localStorage.getItem('wangmai-dark-theme')).toBe('ink-blue')
     teardownTheme()
   })
 
@@ -328,7 +328,7 @@ describe('uiStore following the system appearance', () => {
     first.useUIStore.getState().setTheme('celadon')
     first.useUIStore.getState().setTheme('neutral-dark')
     expect(first.useUIStore.getState().theme).toBe('celadon')
-    expect(window.localStorage.getItem('cc-haha-dark-theme')).toBe('neutral-dark')
+    expect(window.localStorage.getItem('wangmai-dark-theme')).toBe('neutral-dark')
 
     media.emit(true)
     expect(first.useUIStore.getState().theme).toBe('neutral-dark')
@@ -403,11 +403,11 @@ describe('uiStore following the system appearance', () => {
     expect(useUIStore.getState().followSystemTheme).toBe(true)
 
     // Another window opted out; only storage reflects it.
-    window.localStorage.setItem('cc-haha-follow-system-theme', '0')
+    window.localStorage.setItem('wangmai-follow-system-theme', '0')
 
     media.emit(true)
 
-    expect(window.localStorage.getItem('cc-haha-follow-system-theme')).toBe('0')
+    expect(window.localStorage.getItem('wangmai-follow-system-theme')).toBe('0')
     expect(useUIStore.getState().theme).toBe('white')
     teardownTheme()
   })
@@ -419,8 +419,8 @@ describe('uiStore following the system appearance', () => {
     initializeTheme()
     expect(useUIStore.getState().theme).toBe('neutral-dark')
 
-    window.localStorage.setItem('cc-haha-light-theme', 'celadon')
-    window.localStorage.setItem('cc-haha-dark-theme', 'ink-blue')
+    window.localStorage.setItem('wangmai-light-theme', 'celadon')
+    window.localStorage.setItem('wangmai-dark-theme', 'ink-blue')
 
     media.emit(false)
     expect(useUIStore.getState().theme).toBe('celadon')
@@ -441,9 +441,9 @@ describe('uiStore following the system appearance', () => {
 
     // A storage event is what the browser delivers to the windows that did
     // not perform the write.
-    window.localStorage.setItem('cc-haha-theme', 'celadon')
-    window.localStorage.setItem('cc-haha-light-theme', 'celadon')
-    window.dispatchEvent(new StorageEvent('storage', { key: 'cc-haha-light-theme' }))
+    window.localStorage.setItem('wangmai-theme', 'celadon')
+    window.localStorage.setItem('wangmai-light-theme', 'celadon')
+    window.dispatchEvent(new StorageEvent('storage', { key: 'wangmai-light-theme' }))
 
     expect(useUIStore.getState().theme).toBe('celadon')
     expect(useUIStore.getState().lightTheme).toBe('celadon')
@@ -460,8 +460,8 @@ describe('uiStore following the system appearance', () => {
     const { initializeTheme, useUIStore, teardownTheme } = await import('./uiStore')
     initializeTheme()
 
-    window.localStorage.setItem('cc-haha-theme', 'celadon')
-    window.dispatchEvent(new StorageEvent('storage', { key: 'cc-haha-open-tabs' }))
+    window.localStorage.setItem('wangmai-theme', 'celadon')
+    window.dispatchEvent(new StorageEvent('storage', { key: 'wangmai-open-tabs' }))
 
     expect(useUIStore.getState().theme).toBe('white')
     teardownTheme()
@@ -479,7 +479,7 @@ describe('uiStore settings tab persistence', () => {
 
     first.useUIStore.getState().setActiveSettingsTab('general')
 
-    expect(window.localStorage.getItem('cc-haha-active-settings-tab')).toBe('general')
+    expect(window.localStorage.getItem('wangmai-active-settings-tab')).toBe('general')
 
     vi.resetModules()
     const recreated = await import('./uiStore')
@@ -492,7 +492,7 @@ describe('uiStore settings tab persistence', () => {
 
     first.useUIStore.getState().setActiveSettingsTab('pets')
 
-    expect(window.localStorage.getItem('cc-haha-active-settings-tab')).toBe('pets')
+    expect(window.localStorage.getItem('wangmai-active-settings-tab')).toBe('pets')
 
     vi.resetModules()
     const recreated = await import('./uiStore')
@@ -501,7 +501,7 @@ describe('uiStore settings tab persistence', () => {
   })
 
   it('ignores an invalid persisted Settings tab', async () => {
-    window.localStorage.setItem('cc-haha-active-settings-tab', 'not-a-settings-tab')
+    window.localStorage.setItem('wangmai-active-settings-tab', 'not-a-settings-tab')
 
     const { useUIStore } = await import('./uiStore')
 
@@ -509,7 +509,7 @@ describe('uiStore settings tab persistence', () => {
   })
 
   it('lands a stale persisted Trace entry on General, where the capture toggle moved', async () => {
-    window.localStorage.setItem('cc-haha-active-settings-tab', 'trace')
+    window.localStorage.setItem('wangmai-active-settings-tab', 'trace')
 
     const { useUIStore } = await import('./uiStore')
 

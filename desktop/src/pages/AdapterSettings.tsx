@@ -33,7 +33,7 @@ type AdapterUnbindTarget =
   | 'slackApp'
 
 const FEISHU_CREATE_BOT_URL = 'https://open.feishu.cn/page/openclaw?form=multiAgent'
-const IM_CONFIG_DOCS_URL = 'https://cchaha.ai/im/'
+const IM_CONFIG_DOCS_URL = 'https://wangmai.example.com/im/'
 
 // Section heads inside the IM card use the settings-row type: 13 medium title
 // over a 12 tertiary line, matching `SettingsRow`.

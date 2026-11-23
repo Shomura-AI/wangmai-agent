@@ -448,7 +448,7 @@ export async function executeAgentFlowAgainstProvider(
 
   const port = await getPort()
   const baseUrl = `http://127.0.0.1:${port}`
-  const workRoot = await mkdtemp(join(tmpdir(), `cc-haha-${options.label}-`))
+  const workRoot = await mkdtemp(join(tmpdir(), `wangmai-${options.label}-`))
   cpSync(join(rootDir, FIXTURE), workRoot, { recursive: true })
 
   // Every write the run makes lands in the throwaway dir. CLAUDE_CLI_PATH is
@@ -458,7 +458,7 @@ export async function executeAgentFlowAgainstProvider(
     seedProviders: options.seedProviders,
     source: options.sandboxSource,
     envOverrides: {
-      CC_HAHA_DISABLE_TERMINAL_SHELL_ENV: '1',
+      WANGMAI_DISABLE_TERMINAL_SHELL_ENV: '1',
       // This lane stands in for a desktop user's machine, which has no CI flag. With
       // CI set, the CLI insists on ANTHROPIC_API_KEY (src/utils/auth.ts) and exits at
       // startup on the desktop provider path, which hands credentials over differently.

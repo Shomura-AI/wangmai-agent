@@ -37,8 +37,8 @@ export async function runComputerUseAgentDesktopScenario(rootDir: string, artifa
   const platform = process.platform === 'win32' ? 'win32' : 'linux'
   mkdirSync(workDir, { recursive: true })
   mkdirSync(binaries, { recursive: true })
-  mkdirSync(join(sandbox.configDir, 'cc-haha'), { recursive: true })
-  writeFileSync(join(sandbox.configDir, 'cc-haha', 'computer-use-config.json'), JSON.stringify({ enabled: true }))
+  mkdirSync(join(sandbox.configDir, 'wangmai'), { recursive: true })
+  writeFileSync(join(sandbox.configDir, 'wangmai', 'computer-use-config.json'), JSON.stringify({ enabled: true }))
   const executable = join(binaries, platform === 'win32' ? 'agent-desktop.exe' : 'agent-desktop')
   try {
     const build = await Bun.build({
@@ -114,7 +114,7 @@ export async function runComputerUseAgentDesktopScenario(rootDir: string, artifa
     '--permission-mode', 'bypassPermissions', '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose',
   ], {
     cwd: workDir, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe',
-    env: { ...sandbox.env, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1', CLAUDE_APP_ROOT: appRoot,
+    env: { ...sandbox.env, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1', CLAUDE_APP_ROOT: appRoot,
       ANTHROPIC_BASE_URL: upstream.url, ANTHROPIC_API_KEY: 'mock-api-key',
       MOCK_AGENT_DESKTOP_PLATFORM: platform, MOCK_AGENT_DESKTOP_LOG: log,
       MOCK_AGENT_DESKTOP_CWD: workDir,

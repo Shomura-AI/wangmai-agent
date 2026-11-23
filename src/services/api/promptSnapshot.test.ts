@@ -14,7 +14,7 @@ type SnapshotRecord = Record<string, unknown> & { t: string }
 
 const ENV_KEYS = [
   'CLAUDE_CODE_ENTRYPOINT',
-  'CC_HAHA_PROMPT_SNAPSHOT',
+  'WANGMAI_PROMPT_SNAPSHOT',
   'CLAUDE_CONFIG_DIR',
 ] as const
 
@@ -58,7 +58,7 @@ beforeEach(() => {
   tempDir = mkdtempSync(join(tmpdir(), 'prompt-snapshot-test-'))
   process.env.CLAUDE_CONFIG_DIR = join(tempDir, 'config')
   process.env.CLAUDE_CODE_ENTRYPOINT = 'claude-desktop'
-  delete process.env.CC_HAHA_PROMPT_SNAPSHOT
+  delete process.env.WANGMAI_PROMPT_SNAPSHOT
   snapshotPath = join(tempDir, 'project', 'session-1', 'prompt-snapshots.jsonl')
   resetPromptSnapshotStateForTests({ resolvePath: () => snapshotPath })
 })
@@ -83,9 +83,9 @@ describe('promptSnapshot gating', () => {
   })
 
   test.each(['0', 'false', 'OFF'])(
-    'escape hatch CC_HAHA_PROMPT_SNAPSHOT=%s writes nothing',
+    'escape hatch WANGMAI_PROMPT_SNAPSHOT=%s writes nothing',
     async value => {
-      process.env.CC_HAHA_PROMPT_SNAPSHOT = value
+      process.env.WANGMAI_PROMPT_SNAPSHOT = value
       recordPromptSnapshot(baseArgs())
       recordUserContextSnapshot({ userContext: { currentDate: 'today' } })
       await flushPromptSnapshotWritesForTests()

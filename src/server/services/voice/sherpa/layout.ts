@@ -1,10 +1,10 @@
 import { join } from 'node:path'
-import { getCcHahaDir } from '../../../../utils/envUtils.js'
+import { getWangMaiDir } from '../../../../utils/envUtils.js'
 import { SHERPA_VERSION, type InstallItem } from './assets.js'
 
-/** `<CLAUDE_CONFIG_DIR>/cc-haha/voice`, resolved lazily so tests can redirect the config dir. */
+/** `<CLAUDE_CONFIG_DIR>/wangmai/voice`, resolved lazily so tests can redirect the config dir. */
 export function defaultVoiceDataRoot(): string {
-  return join(getCcHahaDir(), 'voice')
+  return join(getWangMaiDir(), 'voice')
 }
 
 export interface ModelLayout {

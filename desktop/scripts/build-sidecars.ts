@@ -28,8 +28,8 @@ const binariesDir = path.join(desktopRoot, 'src-tauri', 'binaries')
 // `await buildCuHelper()` below) so it is initialized when that runs — a
 // `const` placed after the call site hits the temporal dead zone (ReferenceError).
 // SwiftPM names the resource bundle `${PackageName}_${TargetName}.bundle`.
-// Package stays `cu-helper`; the executable target is now `cc-haha-computer-use`.
-const CU_HELPER_RESOURCE_BUNDLE = 'cu-helper_cc-haha-computer-use.bundle'
+// Package stays `cu-helper`; the executable target is now `wangmai-computer-use`.
+const CU_HELPER_RESOURCE_BUNDLE = 'cu-helper_wangmai-computer-use.bundle'
 
 const targetTriple =
   process.env.SIDECAR_TARGET_TRIPLE ||
@@ -58,14 +58,18 @@ if (scanExit !== 0) {
 await mkdir(binariesDir, { recursive: true })
 await stageRipgrepLicenses(binariesDir)
 await stageHostRipgrepForOfflineBuild()
-await buildNativeAgentDesktop({ repoRoot, binariesDir, targetTriple })
+if (process.env.WANGMAI_SKIP_NATIVE_AGENT_DESKTOP === '1') {
+  console.warn('[build-sidecars] skipping native agent-desktop (WANGMAI_SKIP_NATIVE_AGENT_DESKTOP=1)')
+} else {
+  await buildNativeAgentDesktop({ repoRoot, binariesDir, targetTriple })
+}
 
 // 单一合并 sidecar：server / cli 共享一份 bun runtime + 共享依赖代码。
 // 调用方（Electron sidecar manager / legacy Tauri host / conversationService）
-// 通过第一个 positional 参数选择 'server' 或 'cli' 模式，详见 desktop/sidecars/claude-sidecar.ts。
+// 通过第一个 positional 参数选择 'server' 或 'cli' 模式，详见 desktop/sidecars/wangmai-sidecar.ts。
 await compileExecutable({
-  entrypoint: path.join(desktopRoot, 'sidecars/claude-sidecar.ts'),
-  outfileBase: path.join(binariesDir, `claude-sidecar-${targetTriple}`),
+  entrypoint: path.join(desktopRoot, 'sidecars/wangmai-sidecar.ts'),
+  outfileBase: path.join(binariesDir, `wangmai-sidecar-${targetTriple}`),
   productName: 'Claude Code Sidecar',
   bunTarget,
 })
@@ -284,8 +288,8 @@ async function compileExecutable({
  *
  * The identifier is the reason this is not just `codesign -s -`. Ad-hoc signing
  * derives the identifier from the file name plus a content hash
- * (`claude-sidecar-aarch64-apple-darwin-5555…`), which never matches
- * `com.claude-code-haha.desktop.sidecar`. `ClientAttestation.swift` compares
+ * (`wangmai-sidecar-aarch64-apple-darwin-5555…`), which never matches
+ * `com.wangmai.agent.sidecar`. `ClientAttestation.swift` compares
  * that identifier exactly, so a hash-suffixed one makes every Computer Use call
  * fail closed with `unauthorized_client`.
  *
@@ -294,7 +298,7 @@ async function compileExecutable({
  * the policy, which is inherent to having no certificate.
  *
  * electron-builder must not overwrite this signature; `mac.signIgnore` in
- * package.json excludes `claude-sidecar-…` for exactly that reason. That also
+ * package.json excludes `wangmai-sidecar-…` for exactly that reason. That also
  * means entitlements are OUR job here — electron-builder's `entitlementsInherit`
  * never reaches a file it does not sign.
  */
@@ -349,7 +353,7 @@ async function signMacBinary(outputPath: string) {
  * `desktop/src-tauri/binaries/` so electron-builder packs them (the existing
  * `src-tauri/binaries/**` glob already covers both).
  *
- * The copy is byte-preserving (`cp -R`) so cu-helper's stable `dev.cchaha.cu-helper`
+ * The copy is byte-preserving (`cp -R`) so cu-helper's stable `dev.wangmai.cu-helper`
  * Mach-O signature is left intact — we never strip or re-sign it here.
  */
 async function buildCuHelper(arch: CuHelperArch) {
@@ -382,15 +386,15 @@ async function buildCuHelper(arch: CuHelperArch) {
   // build.sh now emits the .app BUNDLE path (Screen Recording only works for a
   // real .app bundle subject, not a bare Mach-O). Copy the WHOLE bundle — the
   // resource bundle lives inside it at Contents/Resources/, and the spawnable
-  // executable is at Contents/MacOS/cc-haha-computer-use (see cuHelperBridge.ts).
-  const destApp = path.join(binariesDir, 'cc-haha-computer-use.app')
+  // executable is at Contents/MacOS/wangmai-computer-use (see cuHelperBridge.ts).
+  const destApp = path.join(binariesDir, 'wangmai-computer-use.app')
 
   // Remove any stale copies first (incl. ALL legacy bare-binary / bundle / old
   // -name artifacts) so `cp -R` does not nest into an existing dir.
   await Bun.spawn(
     ['rm', '-rf',
      destApp,
-     path.join(binariesDir, 'cc-haha-computer-use'),         // legacy bare binary
+     path.join(binariesDir, 'wangmai-computer-use'),         // legacy bare binary
      path.join(binariesDir, 'cu-helper'),                    // legacy old-name binary
      path.join(binariesDir, CU_HELPER_RESOURCE_BUNDLE),      // legacy sibling bundle
      path.join(binariesDir, 'cu-helper_cu-helper.bundle')],

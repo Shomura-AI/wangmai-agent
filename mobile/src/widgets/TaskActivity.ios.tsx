@@ -288,6 +288,6 @@ const TaskActivity = (
   }
 }
 export default createLiveActivity<TaskActivityProps>(
-  'CCHahaTaskActivity',
+  'CCWangMaiTaskActivity',
   TaskActivity
 )

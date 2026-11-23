@@ -5,13 +5,13 @@ import {
   normalizeExplicitClaudeOfficialModelId,
   resolveClaudeOfficialRuntimeModel,
 } from './claudeOfficialRuntime.js'
-import { hahaOAuthService } from './hahaOAuthService.js'
+import { wangmaiOAuthService } from './wangmaiOAuthService.js'
 
 describe('Claude official runtime model selection', () => {
-  let tokenSpy: ReturnType<typeof spyOn<typeof hahaOAuthService, 'ensureFreshTokens'>>
+  let tokenSpy: ReturnType<typeof spyOn<typeof wangmaiOAuthService, 'ensureFreshTokens'>>
 
   beforeEach(() => {
-    tokenSpy = spyOn(hahaOAuthService, 'ensureFreshTokens')
+    tokenSpy = spyOn(wangmaiOAuthService, 'ensureFreshTokens')
   })
 
   afterEach(() => {

@@ -9,8 +9,8 @@ const { logoutMock, planUsageMock, startMock, statusMock } = vi.hoisted(() => ({
   statusMock: vi.fn(),
 }))
 
-vi.mock('../../api/hahaOAuth', () => ({
-  hahaOAuthApi: {
+vi.mock('../../api/wangmaiOAuth', () => ({
+  wangmaiOAuthApi: {
     start: startMock,
     status: statusMock,
     logout: logoutMock,
@@ -19,11 +19,11 @@ vi.mock('../../api/hahaOAuth', () => ({
 }))
 
 import { ClaudeOfficialLogin } from './ClaudeOfficialLogin'
-import { useHahaOAuthStore } from '../../stores/hahaOAuthStore'
+import { useWangMaiOAuthStore } from '../../stores/wangmaiOAuthStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { browserHost } from '../../lib/desktopHost/browserHost'
 
-const initialOAuthState = useHahaOAuthStore.getState()
+const initialOAuthState = useWangMaiOAuthStore.getState()
 const authorizeUrl = 'https://claude.ai/oauth/authorize?state=claude-state'
 
 describe('ClaudeOfficialLogin', () => {
@@ -35,7 +35,7 @@ describe('ClaudeOfficialLogin', () => {
     statusMock.mockResolvedValue({ loggedIn: false })
     startMock.mockResolvedValue({ authorizeUrl, state: 'claude-state' })
     useSettingsStore.setState({ locale: 'en' })
-    useHahaOAuthStore.setState({
+    useWangMaiOAuthStore.setState({
       ...initialOAuthState,
       status: null,
       isPolling: false,
@@ -46,8 +46,8 @@ describe('ClaudeOfficialLogin', () => {
 
   afterEach(() => {
     act(() => {
-      useHahaOAuthStore.getState().stopPolling()
-      useHahaOAuthStore.setState(initialOAuthState)
+      useWangMaiOAuthStore.getState().stopPolling()
+      useWangMaiOAuthStore.setState(initialOAuthState)
     })
     Reflect.deleteProperty(window, 'desktopHost')
     cleanup()
@@ -87,7 +87,7 @@ describe('ClaudeOfficialLogin', () => {
     expect(startMock).toHaveBeenCalledTimes(1)
     expect(open).toHaveBeenCalledWith(authorizeUrl)
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-    expect(useHahaOAuthStore.getState().isPolling).toBe(true)
+    expect(useWangMaiOAuthStore.getState().isPolling).toBe(true)
   })
 
   it('does not start the OAuth flow when the risk dialog is cancelled', async () => {
@@ -106,7 +106,7 @@ describe('ClaudeOfficialLogin', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(startMock).not.toHaveBeenCalled()
     expect(open).not.toHaveBeenCalled()
-    expect(useHahaOAuthStore.getState().isPolling).toBe(false)
+    expect(useWangMaiOAuthStore.getState().isPolling).toBe(false)
     expect(screen.getByRole('button', { name: 'Sign in to Claude' })).toBeInTheDocument()
   })
 

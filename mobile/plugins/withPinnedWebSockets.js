@@ -2,15 +2,15 @@ const { withMainApplication } = require('expo/config-plugins')
 
 // In order; missing ones go before the first one already present.
 const imports = [
-  'import app.cchaha.network.CloudflareEdge',
+  'import app.wangmai.network.CloudflareEdge',
   'import com.facebook.react.modules.websocket.WebSocketModule',
 ]
-const startMarker = '// cc-haha: native network policy (begin)'
-const endMarker = '// cc-haha: native network policy (end)'
+const startMarker = '// wangmai: native network policy (begin)'
+const endMarker = '// wangmai: native network policy (end)'
 // The block generated before the Cloudflare edge fallback. `expo prebuild`
 // without --clean edits the existing MainApplication, so it is upgraded in place.
-const legacyStartMarker = '// cc-haha: pinned WebSocket origin (begin)'
-const legacyEndMarker = '// cc-haha: pinned WebSocket origin (end)'
+const legacyStartMarker = '// wangmai: pinned WebSocket origin (begin)'
+const legacyEndMarker = '// wangmai: pinned WebSocket origin (end)'
 const failure = (detail) =>
   new Error(
     `withPinnedWebSockets: ${detail}. Refusing to generate Android with redirectable WebSockets or without the Cloudflare edge fallback.`
@@ -20,7 +20,7 @@ const count = (source, text) => source.split(text).length - 1
 /**
  * Before React starts: pin Android's native WebSocket to its requested
  * endpoint, and route React Native's HTTP and WebSocket clients through the
- * Cloudflare edge fallback in `modules/cchaha-network`.
+ * Cloudflare edge fallback in `modules/wangmai-network`.
  */
 function pinWebSockets(source, language) {
   if (language !== 'kt')

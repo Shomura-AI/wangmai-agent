@@ -24,7 +24,7 @@ import type {
 } from '../src/core/operations'
 
 export const FIXTURE_TOKEN = 'mobile-fixture'
-const FIXTURE_ROOT = '/fixture/cc-haha-demo'
+const FIXTURE_ROOT = '/fixture/wangmai-demo'
 const MODES = [
   'default',
   'acceptEdits',
@@ -54,7 +54,7 @@ const MODELS = [
 ]
 const FILES: Record<string, string> = {
   'README.md':
-    '# cc-haha mobile fixture\n\n本目录不存在于磁盘。这是内存中的测试文件。\n',
+    '# wangmai mobile fixture\n\n本目录不存在于磁盘。这是内存中的测试文件。\n',
   'src/index.ts': 'export const message = "Hello from the mobile fixture"\n',
   'src/session.ts': 'export const sessionStatus = "ready"\n',
 }
@@ -944,7 +944,7 @@ export function startFixtureServer({
       state: 'ok',
       workDir,
       repoRoot: FIXTURE_ROOT,
-      repoName: 'claude-code-haha',
+      repoName: 'wangmai-agent',
       currentBranch: 'main',
       defaultBranch: 'main',
       headCommit: '0000000000000000000000000000000000000001',
@@ -1311,7 +1311,7 @@ export function startFixtureServer({
       }
       const headers: Record<string, string> = {
         'Cache-Control': 'no-store',
-        'X-CC-Haha-Fixture': 'true',
+        'X-WangMai-Fixture': 'true',
       }
       if (allowedOrigin && origin)
         Object.assign(headers, {
@@ -1412,7 +1412,7 @@ export function startFixtureServer({
       if (path === '/api/filesystem/browse' && method === 'GET') {
         const currentPath = url.searchParams.get('path') || '/fixture'
         const tree: Record<string, string[]> = {
-          '/fixture': ['cc-haha-demo', '中文项目', 'empty'],
+          '/fixture': ['wangmai-demo', '中文项目', 'empty'],
           [FIXTURE_ROOT]: ['src', 'mobile'],
           [`${FIXTURE_ROOT}/src`]: [],
           [`${FIXTURE_ROOT}/mobile`]: [],
@@ -1437,15 +1437,15 @@ export function startFixtureServer({
           { kind: 'skill', id: 'review', name: 'review', displayName: '代码审查', description: '检查当前改动（本地 fixture）', source: 'fixture', modelText: 'Use the Skill tool with skill: "review" for this request.' },
           { kind: 'skill', id: 'explain', name: 'explain', displayName: '解释代码', description: '解释代码与调用关系（本地 fixture）', source: 'fixture', modelText: 'Use the Skill tool with skill: "explain" for this request.' },
         ], plugins: [
-          { kind: 'plugin', id: 'github@haha-connectors', name: 'github', displayName: 'GitHub', description: '检索仓库代码、Issue 和 Pull Request（本地 fixture）', source: 'fixture', modelText: 'Use the GitHub connector for this request.', mcpServerNames: ['github'] },
+          { kind: 'plugin', id: 'github@wangmai-connectors', name: 'github', displayName: 'GitHub', description: '检索仓库代码、Issue 和 Pull Request（本地 fixture）', source: 'fixture', modelText: 'Use the GitHub connector for this request.', mcpServerNames: ['github'] },
         ] })
       // Same shape the desktop sends a paired phone: no auth links, error text or local paths.
       if (path === '/api/connectors' && method === 'GET')
         return json({ items: [
-          { id: 'github', displayName: 'GitHub', description: '检索仓库代码、Issue 和 Pull Request。', category: 'development', transport: 'mcp', collection: 'services', pluginId: 'github@haha-connectors', supported: true, installed: true, enabled: true, connection: 'connected', status: 'ready', accountLabel: 'fixture-user' },
-          { id: 'feishu', displayName: '飞书', description: '消息、日历与文档。', category: 'office', transport: 'cli', collection: 'services', pluginId: 'office-feishu@haha-connectors', supported: true, installed: true, enabled: true, connection: 'needs-auth', status: 'needs-auth' },
-          { id: 'notion', displayName: 'Notion', description: '搜索工作区资料，整理页面与项目知识。', category: 'office', transport: 'mcp', collection: 'services', pluginId: 'notion@haha-connectors', supported: true, installed: false, enabled: false, connection: 'disconnected', status: 'not-installed' },
-          { id: 'context7', displayName: 'Context7', description: '查阅软件库的最新文档与用法示例。', category: 'development', transport: 'mcp', collection: 'services', pluginId: 'context7@haha-connectors', supported: true, installed: false, enabled: false, connection: 'disconnected', status: 'not-installed' },
+          { id: 'github', displayName: 'GitHub', description: '检索仓库代码、Issue 和 Pull Request。', category: 'development', transport: 'mcp', collection: 'services', pluginId: 'github@wangmai-connectors', supported: true, installed: true, enabled: true, connection: 'connected', status: 'ready', accountLabel: 'fixture-user' },
+          { id: 'feishu', displayName: '飞书', description: '消息、日历与文档。', category: 'office', transport: 'cli', collection: 'services', pluginId: 'office-feishu@wangmai-connectors', supported: true, installed: true, enabled: true, connection: 'needs-auth', status: 'needs-auth' },
+          { id: 'notion', displayName: 'Notion', description: '搜索工作区资料，整理页面与项目知识。', category: 'office', transport: 'mcp', collection: 'services', pluginId: 'notion@wangmai-connectors', supported: true, installed: false, enabled: false, connection: 'disconnected', status: 'not-installed' },
+          { id: 'context7', displayName: 'Context7', description: '查阅软件库的最新文档与用法示例。', category: 'development', transport: 'mcp', collection: 'services', pluginId: 'context7@wangmai-connectors', supported: true, installed: false, enabled: false, connection: 'disconnected', status: 'not-installed' },
         ] })
       if (path === '/api/agents' && method === 'GET')
         return json({ activeAgents: [
@@ -1545,7 +1545,7 @@ export function startFixtureServer({
       if (path === '/api/providers/auth-status')
         return json({
           hasAuth: true,
-          source: 'cc-haha-provider',
+          source: 'wangmai-provider',
           activeProvider: 'Fixture API',
         })
       if (path === '/api/providers/presets')
@@ -1791,9 +1791,9 @@ export function startFixtureServer({
             {
               projectPath: FIXTURE_ROOT,
               realPath: FIXTURE_ROOT,
-              projectName: 'cc-haha-demo · Fixture',
+              projectName: 'wangmai-demo · Fixture',
               isGit: true,
-              repoName: 'cc-haha-demo',
+              repoName: 'wangmai-demo',
               branch: 'main',
               modifiedAt: new Date().toISOString(),
               sessionCount: sessions.size,
@@ -1885,7 +1885,7 @@ export function startFixtureServer({
         if (action === 'git-info' && method === 'GET')
           return json({
             branch: session.branch,
-            repoName: 'claude-code-haha',
+            repoName: 'wangmai-agent',
             workDir: session.summary.workDir,
             changedFiles: 3,
             worktree: null,
@@ -2145,7 +2145,7 @@ export function startFixtureServer({
           return json({
             state: 'ok',
             workDir: FIXTURE_ROOT,
-            repoName: 'cc-haha-demo',
+            repoName: 'wangmai-demo',
             branch: 'main',
             isGitRepo: true,
             changedFiles: [

@@ -486,7 +486,7 @@ export const SettingsSchema = lazySchema(() =>
       agentTeamsEnabled: z
         .boolean()
         .optional()
-        .describe('Enable Agent Teams for new cc-haha managed sessions. Overrides the legacy team environment setting.'),
+        .describe('Enable Agent Teams for new wangmai managed sessions. Overrides the legacy team environment setting.'),
       workflowKeywordTriggerEnabled: z
         .boolean()
         .optional()
@@ -844,7 +844,7 @@ export const SettingsSchema = lazySchema(() =>
               // Any non-empty string, matching the Markdown `model` frontmatter
               // parser — third-party model IDs are not aliases.
               model: z.string().trim().min(1).optional().catch(undefined),
-              // Saved cc-haha provider id that serves `model` for this agent.
+              // Saved wangmai provider id that serves `model` for this agent.
               provider: z.string().trim().min(1).optional().catch(undefined),
               // Agent-level effort takes the full level set, unlike the
               // session-level `effortLevel` above. Levels are inlined rather

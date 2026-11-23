@@ -28,7 +28,7 @@ describe('parseVocabularyAliases', () => {
 describe('parseBulkVocabulary', () => {
   it('reads the design example: new terms, one already present, one repeated line', () => {
     const text = [
-      'cc-haha = CC杠哈哈, 西西哈哈',
+      'wangmai = CC杠哈哈, 西西哈哈',
       'Agent Browser = agent brother',
       'ego lite = eagle net, go net',
       'MediaCrawler = media crawl',
@@ -38,14 +38,14 @@ describe('parseBulkVocabulary', () => {
       'Seedance',
       'SenseNova',
       'Eigenflux',
-      'cc-haha',
+      'wangmai',
     ].join('\n')
 
     const preview = parseBulkVocabulary(text, existing)
 
     expect(preview).toMatchObject({ added: 9, merged: 1, duplicates: 1, invalid: 0 })
     expect(preview.entries).toHaveLength(10)
-    expect(preview.entries[0]).toEqual({ term: 'cc-haha', aliases: ['CC杠哈哈', '西西哈哈'] })
+    expect(preview.entries[0]).toEqual({ term: 'wangmai', aliases: ['CC杠哈哈', '西西哈哈'] })
     expect(preview.entries.find(entry => entry.term === 'JSVMP')).toEqual({ term: 'JSVMP', aliases: ['GSVMP'] })
   })
 

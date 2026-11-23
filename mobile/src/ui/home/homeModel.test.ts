@@ -38,7 +38,7 @@ test('a local credential read failure does not offer re-pairing as authorization
 
 const session = (
   id: string,
-  workDir: string | null = '/Users/me/cc-haha',
+  workDir: string | null = '/Users/me/wangmai',
   extra: Partial<Session> = {}
 ): Session => ({
   id,
@@ -65,11 +65,11 @@ test('projects group worktree sessions under their repository and keep recency o
   const rows = [
     row(session('a', '/Users/me/porthole/')),
     row(
-      session('b', '/Users/me/cc-haha/.claude/worktrees/fix-ws', {
-        projectRoot: '/Users/me/cc-haha',
+      session('b', '/Users/me/wangmai/.claude/worktrees/fix-ws', {
+        projectRoot: '/Users/me/wangmai',
       })
     ),
-    row(session('c', '/Users/me/cc-haha')),
+    row(session('c', '/Users/me/wangmai')),
     row(session('d', null)),
   ]
   expect(projectOf(rows[0]!.session)).toEqual({
@@ -80,10 +80,10 @@ test('projects group worktree sessions under their repository and keep recency o
   expect(projectOf(rows[3]!.session)).toBeNull()
   expect(projectsOf(rows).map((p) => [p.name, p.count])).toEqual([
     ['porthole', 1],
-    ['cc-haha', 2],
+    ['wangmai', 2],
   ])
-  expect(inProject(rows[1]!, '/Users/me/cc-haha')).toBe(true)
-  expect(inProject(rows[0]!, '/Users/me/cc-haha')).toBe(false)
+  expect(inProject(rows[1]!, '/Users/me/wangmai')).toBe(true)
+  expect(inProject(rows[0]!, '/Users/me/wangmai')).toBe(false)
   expect(inProject(rows[3]!, null)).toBe(true)
 })
 
@@ -149,7 +149,7 @@ test('settled rows separate completion, failure, stop, review and unknown histor
     settledOutcome({ id: 'x', activityState: 'idle', terminalOutcome: 'stopped' })
   ).toBe('stopped')
   expect(settledOutcome({ id: 'x', activityState: 'review' })).toBe('review')
-  expect(outcomeLine('done', 'cc-haha')).toBe('cc-haha · 已完成')
+  expect(outcomeLine('done', 'wangmai')).toBe('wangmai · 已完成')
   expect(outcomeLine('failed', 'desktop')).toBe('出错停下 · desktop')
   expect(outcomeLine('stopped', 'porthole')).toBe('你停止了 · porthole')
   expect(outcomeLine('review', 'porthole')).toBe('porthole · 已完成 · 未查看')
@@ -308,8 +308,8 @@ test('schedule summary uses explicit one-time and server-projected occurrences',
 })
 
 test('search also matches the full working directory, like the previous home', () => {
-  const r = row(session('整理发版说明', '/Users/me/code/cc-haha/mobile'))
-  expect(matchesQuery(r, 'code/cc-haha')).toBe(true)
+  const r = row(session('整理发版说明', '/Users/me/code/wangmai/mobile'))
+  expect(matchesQuery(r, 'code/wangmai')).toBe(true)
   expect(matchesQuery(r, 'mobile')).toBe(true)
   expect(matchesQuery(r, '不相关')).toBe(false)
 })

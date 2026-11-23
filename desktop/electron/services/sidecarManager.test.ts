@@ -77,19 +77,19 @@ function close(server: http.Server): Promise<void> {
 
 describe('Electron sidecar manager', () => {
   it('places the Electron host log in the active server diagnostics directory', () => {
-    const portableDir = path.join(tmpdir(), 'cc-haha-portable-diagnostics')
+    const portableDir = path.join(tmpdir(), 'wangmai-portable-diagnostics')
 
     expect(electronHostDiagnosticsFile(
       { CLAUDE_CONFIG_DIR: portableDir },
       path.join(tmpdir(), 'unused-home'),
-    )).toBe(path.join(portableDir, 'cc-haha', 'diagnostics', 'electron-host.log'))
+    )).toBe(path.join(portableDir, 'wangmai', 'diagnostics', 'electron-host.log'))
   })
 
   it('resolves the default Electron host log without consulting real user state', () => {
-    const isolatedHome = path.resolve(path.sep, '__cc_haha_injected_test_home__')
+    const isolatedHome = path.resolve(path.sep, '__wangmai_injected_test_home__')
 
     expect(electronHostDiagnosticsFile({}, isolatedHome)).toBe(
-      path.join(isolatedHome, '.claude', 'cc-haha', 'diagnostics', 'electron-host.log'),
+      path.join(isolatedHome, '.claude', 'wangmai', 'diagnostics', 'electron-host.log'),
     )
   })
 
@@ -136,13 +136,13 @@ describe('Electron sidecar manager', () => {
       env: {},
     })
 
-    expect(plan.command).toContain(path.join(desktopRoot, 'src-tauri', 'binaries', 'claude-sidecar-'))
+    expect(plan.command).toContain(path.join(desktopRoot, 'src-tauri', 'binaries', 'wangmai-sidecar-'))
     expect(plan.args).toContain(appRoot)
     expect(plan.env.CLAUDE_H5_DIST_DIR).toBe(h5DistDir)
   })
 
   it('passes the packaged ripgrep path to the server and its CLI children', () => {
-    const desktopRoot = mkdtempSync(path.join(tmpdir(), 'cc-haha-ripgrep-plan-'))
+    const desktopRoot = mkdtempSync(path.join(tmpdir(), 'wangmai-ripgrep-plan-'))
     try {
       const bundledRipgrep = resolveBundledRipgrepExecutable(desktopRoot)
       mkdirSync(path.dirname(bundledRipgrep), { recursive: true })
@@ -176,7 +176,7 @@ describe('Electron sidecar manager', () => {
   })
 
   it('preserves an explicit ripgrep override', () => {
-    const customDir = mkdtempSync(path.join(tmpdir(), 'cc-haha-custom-ripgrep-'))
+    const customDir = mkdtempSync(path.join(tmpdir(), 'wangmai-custom-ripgrep-'))
     try {
       const customRipgrep = path.join(customDir, 'rg')
       writeFileSync(customRipgrep, 'fixture')
@@ -195,7 +195,7 @@ describe('Electron sidecar manager', () => {
   })
 
   it('passes portable config and adapter server URL through the sidecar env', () => {
-    const configDir = mkdtempSync(path.join(tmpdir(), 'cc-haha-config-'))
+    const configDir = mkdtempSync(path.join(tmpdir(), 'wangmai-config-'))
     try {
       const env = buildSidecarEnv({ CLAUDE_CONFIG_DIR: configDir }, '/app/dist')
       expect(env.CLAUDE_CONFIG_DIR).toBe(configDir)
@@ -357,7 +357,7 @@ describe('Electron sidecar manager', () => {
   })
 
   it('appends only a bounded sanitized Electron host-log tail', () => {
-    const dir = mkdtempSync(path.join(tmpdir(), 'cc-haha-electron-host-'))
+    const dir = mkdtempSync(path.join(tmpdir(), 'wangmai-electron-host-'))
     const logPath = path.join(dir, 'electron-host.log')
     const homeDir = path.join(dir, 'private-home')
     try {
@@ -397,7 +397,7 @@ describe('Electron sidecar manager', () => {
   })
 
   it('redacts JSON and escaped multiline adapter credentials before writing the host log', () => {
-    const dir = mkdtempSync(path.join(tmpdir(), 'cc-haha-feishu-host-'))
+    const dir = mkdtempSync(path.join(tmpdir(), 'wangmai-feishu-host-'))
     const logPath = path.join(dir, 'electron-host.log')
     const credentials = {
       app_id: 'fixture-app-id', AppSecret: 'fixture-app-secret',
@@ -422,8 +422,8 @@ describe('Electron sidecar manager', () => {
 
   it('creates the Electron diagnostics directory with private permissions', () => {
     if (process.platform === 'win32') return
-    const dir = mkdtempSync(path.join(tmpdir(), 'cc-haha-electron-host-mode-'))
-    const diagnosticsDir = path.join(dir, 'cc-haha', 'diagnostics')
+    const dir = mkdtempSync(path.join(tmpdir(), 'wangmai-electron-host-mode-'))
+    const diagnosticsDir = path.join(dir, 'wangmai', 'diagnostics')
     const logPath = path.join(diagnosticsDir, 'electron-host.log')
     try {
       appendHostDiagnostic(logPath, 'private mode probe')
@@ -437,8 +437,8 @@ describe('Electron sidecar manager', () => {
 
   it('rejects a symlinked Electron diagnostics directory without changing its target', () => {
     if (process.platform === 'win32') return
-    const dir = mkdtempSync(path.join(tmpdir(), 'cc-haha-electron-host-symlink-dir-'))
-    const diagnosticsDir = path.join(dir, 'cc-haha', 'diagnostics')
+    const dir = mkdtempSync(path.join(tmpdir(), 'wangmai-electron-host-symlink-dir-'))
+    const diagnosticsDir = path.join(dir, 'wangmai', 'diagnostics')
     const unrelatedDir = path.join(dir, 'unrelated')
     const unrelatedLog = path.join(unrelatedDir, 'electron-host.log')
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
@@ -462,16 +462,16 @@ describe('Electron sidecar manager', () => {
 
   it('rejects an ancestor symlink before creating Electron diagnostics outside the config root', () => {
     if (process.platform === 'win32') return
-    const dir = mkdtempSync(path.join(tmpdir(), 'cc-haha-electron-host-symlink-parent-'))
+    const dir = mkdtempSync(path.join(tmpdir(), 'wangmai-electron-host-symlink-parent-'))
     const configDir = path.join(dir, 'config')
     const unrelatedDir = path.join(dir, 'unrelated')
-    const diagnosticsDir = path.join(configDir, 'cc-haha', 'diagnostics')
+    const diagnosticsDir = path.join(configDir, 'wangmai', 'diagnostics')
     const unrelatedDiagnosticsDir = path.join(unrelatedDir, 'diagnostics')
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
     try {
       mkdirSync(configDir)
       mkdirSync(unrelatedDiagnosticsDir, { recursive: true, mode: 0o755 })
-      symlinkSync(unrelatedDir, path.join(configDir, 'cc-haha'), 'dir')
+      symlinkSync(unrelatedDir, path.join(configDir, 'wangmai'), 'dir')
 
       appendHostDiagnostic(path.join(diagnosticsDir, 'electron-host.log'), 'must not escape')
 
@@ -486,8 +486,8 @@ describe('Electron sidecar manager', () => {
 
   it('rejects a symlinked Electron diagnostics file without copying its target', () => {
     if (process.platform === 'win32') return
-    const dir = mkdtempSync(path.join(tmpdir(), 'cc-haha-electron-host-symlink-file-'))
-    const diagnosticsDir = path.join(dir, 'cc-haha', 'diagnostics')
+    const dir = mkdtempSync(path.join(tmpdir(), 'wangmai-electron-host-symlink-file-'))
+    const diagnosticsDir = path.join(dir, 'wangmai', 'diagnostics')
     const logPath = path.join(diagnosticsDir, 'electron-host.log')
     const unrelatedLog = path.join(dir, 'unrelated.log')
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
@@ -510,7 +510,7 @@ describe('Electron sidecar manager', () => {
   })
 
   it('bounds and re-sanitizes an oversized pre-existing host diagnostics file', () => {
-    const dir = mkdtempSync(path.join(tmpdir(), 'cc-haha-electron-host-existing-'))
+    const dir = mkdtempSync(path.join(tmpdir(), 'wangmai-electron-host-existing-'))
     const logPath = path.join(dir, 'electron-host.log')
     const homeDir = path.join(dir, 'private-home')
     try {
@@ -535,7 +535,7 @@ describe('Electron sidecar manager', () => {
   })
 
   it('does not crash Electron when the host diagnostics destination cannot be written', () => {
-    const dir = mkdtempSync(path.join(tmpdir(), 'cc-haha-electron-host-failure-'))
+    const dir = mkdtempSync(path.join(tmpdir(), 'wangmai-electron-host-failure-'))
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
     try {
       expect(() => appendHostDiagnostic(dir, 'sidecar failed')).not.toThrow()
@@ -654,7 +654,7 @@ describe('Electron sidecar manager', () => {
     const spawnFn = vi.fn(() => spawned)
     const existsSyncFn = vi.fn(() => true)
     const plan = {
-      command: '/app/desktop/src-tauri/binaries/claude-sidecar-x86_64-pc-windows-msvc.exe',
+      command: '/app/desktop/src-tauri/binaries/wangmai-sidecar-x86_64-pc-windows-msvc.exe',
       args: ['server', '--port', '49321'],
       env: { CLAUDE_H5_AUTO_PUBLIC_URL: '1' },
     }
@@ -670,7 +670,7 @@ describe('Electron sidecar manager', () => {
 
   it.each(['EFTYPE', 'UNKNOWN'])('explains a sidecar that exists but cannot be executed after a broken install (%s)', code => {
     const plan = {
-      command: 'C:\\Program Files\\Claude Code Haha\\resources\\claude-sidecar-x86_64-pc-windows-msvc.exe',
+      command: 'C:\\Program Files\\网脉智能体\\resources\\wangmai-sidecar-x86_64-pc-windows-msvc.exe',
       args: ['server', '--port', '49321'],
       env: {},
     }
@@ -687,13 +687,13 @@ describe('Electron sidecar manager', () => {
     expect(thrown).toBeInstanceOf(Error)
     expect((thrown as Error).message).toContain(`Electron sidecar could not be executed (${code})`)
     expect((thrown as Error).message).toContain(plan.command)
-    expect((thrown as Error).message).toContain('Reinstall Claude Code Haha with the full installer')
+    expect((thrown as Error).message).toContain('Reinstall 网脉智能体 with the full installer')
     expect((thrown as Error).cause).toBe(badExe)
     expect(formatStartupError((thrown as Error).message, [])).not.toContain('timeout')
   })
 
   it('rethrows unrelated sidecar spawn failures unchanged', () => {
-    const plan = { command: '/app/claude-sidecar', args: ['server'], env: {} }
+    const plan = { command: '/app/wangmai-sidecar', args: ['server'], env: {} }
     const failure = Object.assign(new Error('spawn ENOMEM'), { code: 'ENOMEM' })
 
     expect(() => spawnSidecar(plan, {
@@ -755,9 +755,9 @@ describe('Electron sidecar manager', () => {
       expect(preferredServerPorts(env)).toEqual([50123])
 
       // An explicit fixed port wins over the sticky port.
-      mkdirSync(path.join(configDir, 'cc-haha'), { recursive: true })
+      mkdirSync(path.join(configDir, 'wangmai'), { recursive: true })
       writeFileSync(
-        path.join(configDir, 'cc-haha', 'settings.json'),
+        path.join(configDir, 'wangmai', 'settings.json'),
         JSON.stringify({ h5Access: { fixedPort: 28670 } }),
         'utf-8',
       )
@@ -896,7 +896,7 @@ describe('adapter flag parity across the launch path', () => {
     source.includes(`'${flag}'`) || source.includes(`"${flag}"`)
 
   it.each([
-    ['the sidecar launcher table', 'desktop/sidecars/claude-sidecar.ts'],
+    ['the sidecar launcher table', 'desktop/sidecars/wangmai-sidecar.ts'],
     ['the Tauri shell spawn list', 'desktop/src-tauri/src/lib.rs'],
     ['the Electron spawn loop', 'desktop/electron/services/serverRuntime.ts'],
   ])('lists every adapter flag in %s', (_label, relativePath) => {

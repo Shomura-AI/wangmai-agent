@@ -50,7 +50,7 @@ order: 6
 | 自动做梦 | 默认关闭。会话积累足够后，可在后台整理 auto-memory；会产生额外模型调用和 token 消耗。 |
 | Agent Trace | 默认开启。新会话的原始请求、响应与状态事件写入本机 traces 目录，出错时在会话「轨迹」里点开助手行，看「原始请求」页；关闭后不再产生新记录，旧记录仍可查看。 |
 
-需要单独存放 Agent Trace 时，在启动应用前设置 `CC_HAHA_TRACE_DIR` 为可写的绝对目录，例如 Windows 的 `D:\HahaTraces` 或 macOS/Linux 的 `/data/haha-traces`，然后完全退出并重新启动应用。JSONL 文件直接写入该目录，辅助索引写入其 `cc-haha/db` 子目录；其他配置仍使用原位置。变量为空或未设置时使用原来的配置目录下的 `cc-haha/traces`。切换不会搬移、合并或删除旧文件，只有当前目录的记录会显示；移除变量并重启即可重新查看默认目录。无效路径会报错，不会自动改回默认目录写入。
+需要单独存放 Agent Trace 时，在启动应用前设置 `WANGMAI_TRACE_DIR` 为可写的绝对目录，例如 Windows 的 `D:\WangMaiTraces` 或 macOS/Linux 的 `/data/wangmai-traces`，然后完全退出并重新启动应用。JSONL 文件直接写入该目录，辅助索引写入其 `wangmai/db` 子目录；其他配置仍使用原位置。变量为空或未设置时使用原来的配置目录下的 `wangmai/traces`。切换不会搬移、合并或删除旧文件，只有当前目录的记录会显示；移除变量并重启即可重新查看默认目录。无效路径会报错，不会自动改回默认目录写入。
 
 ### 网络、联网搜索和提醒
 
@@ -77,7 +77,7 @@ order: 6
 
 ## 终端
 
-内嵌一个真实的宿主机 Shell，用来装插件、技能、MCP 这类需要命令行的东西。桌面端已经内置 `claude-haha` 命令，文档里写 `claude <参数>` 的地方都可以换成 `claude-haha <参数>`。
+内嵌一个真实的宿主机 Shell，用来装插件、技能、MCP 这类需要命令行的东西。桌面端已经内置 `wangmai` 命令，文档里写 `claude <参数>` 的地方都可以换成 `wangmai <参数>`。
 
 Windows 用户可以在这里指定启动 Shell（系统默认 / PowerShell 7 / Windows PowerShell / 命令提示符 / 自定义可执行文件），以及一个 Bash 路径——工具调用 `grep`、`sed` 这类 Unix 命令时会用到，通常指向 Git Bash。
 

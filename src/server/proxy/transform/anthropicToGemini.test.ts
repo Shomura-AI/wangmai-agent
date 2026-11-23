@@ -140,7 +140,7 @@ describe('anthropicToGemini', () => {
           role: 'assistant',
           content: [
             { type: 'thinking', thinking: 'other model', signature: 'anthropic-signature' },
-            { type: 'redacted_thinking', data: 'cc-haha:openai-reasoning:v1:{}' },
+            { type: 'redacted_thinking', data: 'wangmai:openai-reasoning:v1:{}' },
             { type: 'tool_use', id: 'call_1', name: 'Bash', input: { command: 'ls' } },
           ],
         },

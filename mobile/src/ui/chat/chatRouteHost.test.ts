@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process'
 import { expect, test } from 'bun:test'
 
 /**
- * 冷启动直接进聊天页时首页快照还是 null。不带 host 的链接（cchaha://chat/<id>）曾让页面拿
+ * 冷启动直接进聊天页时首页快照还是 null。不带 host 的链接（wangmai://chat/<id>）曾让页面拿
  * undefined 当 hostId，`dashboard?.hostId === hostId` 成立后读 null.activity 闪退。
  */
 function renderHostlessChat(selectedId: string | undefined) {

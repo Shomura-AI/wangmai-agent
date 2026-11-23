@@ -115,7 +115,7 @@ describe('reversible session archive', () => {
       } finally { permission.mockRestore() }
       expect(stop).not.toHaveBeenCalled()
       expect((await (await request()).json()).total).toBe(1)
-      await expect(fs.access(path.join(configDir, 'cc-haha', 'session-archives.json'))).rejects.toThrow()
+      await expect(fs.access(path.join(configDir, 'wangmai', 'session-archives.json'))).rejects.toThrow()
     } finally { stop.mockRestore() }
   })
 
@@ -221,7 +221,7 @@ describe('reversible session archive', () => {
 
   it('preserves unsupported or corrupt archive files instead of overwriting them', async () => {
     await seed(0)
-    const archivePath = path.join(configDir, 'cc-haha', 'session-archives.json')
+    const archivePath = path.join(configDir, 'wangmai', 'session-archives.json')
     await fs.mkdir(path.dirname(archivePath))
     const unsupported = JSON.stringify({ schemaVersion: 2, sessions: { [idFor(0)]: { archived: true } }, future: 'keep' })
     for (const fixture of [unsupported, '{broken']) {
@@ -285,7 +285,7 @@ describe('reversible session archive', () => {
   it('migrates unversioned archive metadata, preserving unknown fields and old transcript fixtures', async () => {
     const transcript = await seed(0)
     const original = await fs.readFile(transcript, 'utf8')
-    const archivePath = path.join(configDir, 'cc-haha', 'session-archives.json')
+    const archivePath = path.join(configDir, 'wangmai', 'session-archives.json')
     await fs.mkdir(path.dirname(archivePath))
     await fs.writeFile(archivePath, JSON.stringify({ future: { keep: true }, sessions: { [idFor(0)]: { archived: true, futureRecord: 'keep' } } }))
     expect((await (await request()).json()).total).toBe(0)

@@ -15,7 +15,7 @@ const prefs = migratePreferences(null)
 // Direct APNs shape observed in the real plan notification. Expo 58 iOS maps
 // userInfo.body to content.data and preserves the entire userInfo in trigger.payload.
 const planPayload = {
-  aps: { alert: { title: '测试任务', body: '需要确认计划' }, category: 'cchahaDecision' },
+  aps: { alert: { title: '测试任务', body: '需要确认计划' }, category: 'wangmaiDecision' },
   hostId: 'known-host',
   sessionId: 'plan-session',
   requestId: 'pending-plan',
@@ -163,7 +163,7 @@ test('only new real waiting requests alert, questions never get tool allow actio
   }
   expect(
     notificationEvents(null, [request], prefs, new Date())[0].category
-  ).toBe('cchahaDecision')
+  ).toBe('wangmaiDecision')
   expect(notificationEvents([request], [request], prefs, new Date())).toEqual(
     []
   )
@@ -174,7 +174,7 @@ test('only new real waiting requests alert, questions never get tool allow actio
       prefs,
       new Date()
     )[0].category
-  ).toBe('cchahaTool')
+  ).toBe('wangmaiTool')
 })
 test('hiding the command on the lock screen also hides the Bash command in local fallback banners', () => {
   const bash = {
@@ -323,22 +323,22 @@ test('decision notifications share one voice and only quote previews the server 
     )[0]
   expect(event('Bash', 'bun test src/core')).toMatchObject({
     preview: '想运行 bun test src/core',
-    category: 'cchahaTool',
+    category: 'wangmaiTool',
   })
   expect(event('AskUserQuestion', '旧字段怎么处理？')).toMatchObject({
     preview: '在问你：旧字段怎么处理？',
-    category: 'cchahaDecision',
+    category: 'wangmaiDecision',
   })
   expect(event('ExitPlanMode', '计划等待确认')).toMatchObject({
     preview: '计划写好了，等你确认',
-    category: 'cchahaDecision',
+    category: 'wangmaiDecision',
   })
   // Non-Bash previews are generic server placeholders and are not quoted.
   expect(event('Edit', '等待工具权限确认').preview).toBe('想修改文件，等你确认')
   expect(event('PowerShell', '等待工具权限确认').preview).toBe('想运行命令，等你确认')
   expect(event('ComputerUse', '等待电脑操作权限确认')).toMatchObject({
     preview: '想操作电脑，等你允许',
-    category: 'cchahaDecision',
+    category: 'wangmaiDecision',
   })
   expect(event(undefined).preview).toBe('需要你做决定')
   expect(event('Bash', '  ').preview).toBe('想运行命令')

@@ -12,12 +12,12 @@ import type { SidebarProjectPreferences } from '../../api/desktopUiPreferences'
 export type SidebarProjectOrganization = 'project' | 'recentProject' | 'time'
 export type SidebarProjectSortBy = 'createdAt' | 'updatedAt'
 
-const PROJECT_ORDER_STORAGE_KEY = 'cc-haha-sidebar-project-order'
-const PROJECT_PINNED_STORAGE_KEY = 'cc-haha-sidebar-pinned-projects'
-const PROJECT_HIDDEN_STORAGE_KEY = 'cc-haha-sidebar-hidden-projects'
-const PROJECT_COLLAPSED_STORAGE_KEY = 'cc-haha-sidebar-collapsed-projects'
-const PROJECT_ORGANIZATION_STORAGE_KEY = 'cc-haha-sidebar-project-organization'
-const PROJECT_SORT_STORAGE_KEY = 'cc-haha-sidebar-project-sort'
+const PROJECT_ORDER_STORAGE_KEY = 'wangmai-sidebar-project-order'
+const PROJECT_PINNED_STORAGE_KEY = 'wangmai-sidebar-pinned-projects'
+const PROJECT_HIDDEN_STORAGE_KEY = 'wangmai-sidebar-hidden-projects'
+const PROJECT_COLLAPSED_STORAGE_KEY = 'wangmai-sidebar-collapsed-projects'
+const PROJECT_ORGANIZATION_STORAGE_KEY = 'wangmai-sidebar-project-organization'
+const PROJECT_SORT_STORAGE_KEY = 'wangmai-sidebar-project-sort'
 
 export function readStoredProjectOrder(): string[] {
   if (typeof localStorage === 'undefined') return []

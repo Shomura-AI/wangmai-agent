@@ -50,9 +50,9 @@ function runCase(body: string, options: { mutates?: boolean } = {}) {
     mock.module(${JSON.stringify(import.meta.resolve('react-native'))}, () => ({ Platform: { OS: 'ios' }, AppState }))
     const hostA = { id: 'fixture-a', name: 'Fixture A', url: 'https://a.fixture.invalid', auth: 'remote' }
     const hostB = { id: 'fixture-b', name: 'Fixture B', url: 'http://127.0.0.1:3456', auth: 'lan' }
-    const metadata = new Map([['cc-haha.hosts', JSON.stringify({ version: 1, hosts: [hostA, hostB], selectedId: hostA.id })]])
-    const secrets = new Map([['cc-haha.host.fixture-a', 'native_fake-a'], ['cc-haha.host.fixture-b', 'fake-lan-b']])
-    const originalMetadata = metadata.get('cc-haha.hosts')
+    const metadata = new Map([['wangmai.hosts', JSON.stringify({ version: 1, hosts: [hostA, hostB], selectedId: hostA.id })]])
+    const secrets = new Map([['wangmai.host.fixture-a', 'native_fake-a'], ['wangmai.host.fixture-b', 'fake-lan-b']])
+    const originalMetadata = metadata.get('wangmai.hosts')
     const reads = [], writes = []
     let read = async key => secrets.get(key) ?? null
     mock.module(${JSON.stringify(import.meta.resolve('@react-native-async-storage/async-storage'))}, () => ({ default: {
@@ -66,7 +66,7 @@ function runCase(body: string, options: { mutates?: boolean } = {}) {
       deleteItemAsync: async key => { writes.push(['secret-remove', key]); secrets.delete(key) },
     }))
     mock.module(${JSON.stringify(import.meta.resolve('expo-crypto'))}, () => ({ getRandomBytes: () => new Uint8Array(16) }))
-    mock.module(${JSON.stringify(import.meta.resolve('../../modules/cchaha-duty'))}, () => ({ default: null }))
+    mock.module(${JSON.stringify(import.meta.resolve('../../modules/wangmai-duty'))}, () => ({ default: null }))
     mock.module(${JSON.stringify(import.meta.resolve('./pushRegistrations'))}, () => ({ PushRegistrationCoordinator: class {} }))
     mock.module(${JSON.stringify(import.meta.resolve('./pushProvider'))}, () => ({ PushTokens: class {} }))
     mock.module(${JSON.stringify(import.meta.resolve('./backgroundDuty'))}, () => ({ BackgroundDuty: class { setAppActive() {} retain() {} } }))
@@ -107,7 +107,7 @@ function runCase(body: string, options: { mutates?: boolean } = {}) {
     assert.equal(timers.size, 0, 'unmount cancels retry timers')
     if (!${JSON.stringify(!!options.mutates)}) {
       assert.equal(writes.length, 0, 'recovery must not mutate metadata or secrets')
-      assert.equal(metadata.get('cc-haha.hosts'), originalMetadata)
+      assert.equal(metadata.get('wangmai.hosts'), originalMetadata)
     }
   `
   try {
@@ -283,9 +283,9 @@ test('a moved computer drops its cached link before the new address is published
     assert.equal(connection.host.url, NEW)
     assert.equal(connection.client.host.url, NEW)
     assert.equal(connection.client.credential, 'native_fake-a')
-    const stored = JSON.parse(metadata.get('cc-haha.hosts'))
+    const stored = JSON.parse(metadata.get('wangmai.hosts'))
     assert.deepEqual(stored, { version: 1, hosts: [{ ...hostA, url: NEW }, hostB], selectedId: hostA.id })
-    assert.deepEqual(writes, [['metadata-set', 'cc-haha.hosts']], 'credentials are not touched')
+    assert.deepEqual(writes, [['metadata-set', 'wangmai.hosts']], 'credentials are not touched')
     // The same address again changes nothing.
     await context.value.relocate(hostA.id, NEW)
     assert.equal(writes.length, 1)

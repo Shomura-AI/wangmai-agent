@@ -5,14 +5,14 @@
  * GET    /api/providers/presets           — list available presets
  * GET    /api/providers/auth-status       — check whether any usable auth exists
  *                                           (?providerId=<id>: only that provider's own auth)
- * GET    /api/providers/settings          — read cc-haha managed settings.json
+ * GET    /api/providers/settings          — read wangmai managed settings.json
  * GET    /api/providers/cc-switch/scan    — scan a local cc-switch install
  * GET    /api/providers/magpie            — the local Magpie gateway's state and catalog
  * POST   /api/providers/magpie/open       — open the Magpie app (macOS)
  * POST   /api/providers                  — add a provider
  * POST   /api/providers/cc-switch/import  — import scanned cc-switch providers
  * POST   /api/providers/models            — list upstream models for a config
- * PUT    /api/providers/settings          — update cc-haha managed settings.json
+ * PUT    /api/providers/settings          — update wangmai managed settings.json
  * PUT    /api/providers/:id              — update a provider
  * DELETE /api/providers/:id              — delete a provider
  * POST   /api/providers/:id/activate     — activate a saved provider

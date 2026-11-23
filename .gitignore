@@ -85,3 +85,5 @@ graphify-out/
 
 # Computer Use native helper build output (SwiftPM)
 native/cu-helper/.build/
+.bun-cache/
+desktop/.bun-cache/

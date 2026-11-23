@@ -53,7 +53,7 @@ function isDesktopHostSession(): boolean {
   return (
     getClientType() === 'claude-desktop' ||
     process.env.CLAUDE_CODE_ENTRYPOINT === 'claude-desktop' ||
-    process.env.CC_HAHA_TRANSCRIPT_ENTRYPOINT === 'claude-desktop'
+    process.env.WANGMAI_TRANSCRIPT_ENTRYPOINT === 'claude-desktop'
   )
 }
 

@@ -58,7 +58,7 @@ async function runPrint(lines: string[]) {
     return new Response(completion(['已经修好了。', '要我跑一下测试吗？']), { headers: { 'content-type': 'text/event-stream' } })
   } })
   const env = createSandboxedTestEnvironment(home, {
-    NODE_ENV: 'production', CI: '1', CC_HAHA_SKIP_DOTENV: '1',
+    NODE_ENV: 'production', CI: '1', WANGMAI_SKIP_DOTENV: '1',
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',
     DISABLE_AUTOUPDATER: '1', DISABLE_TELEMETRY: '1', DISABLE_ERROR_REPORTING: '1',
     ANTHROPIC_API_KEY: 'fixture-key', ANTHROPIC_BASE_URL: server.url.origin,
@@ -66,7 +66,7 @@ async function runPrint(lines: string[]) {
   })
   try {
     const child = spawnWithInput(
-      ['./bin/claude-haha', '--bare', '-p', '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose'],
+      ['./bin/wangmai', '--bare', '-p', '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose'],
       env,
       lines.join('\n') + '\n',
     )
@@ -160,14 +160,14 @@ async function startLiveCli(
   const home = await mkdtemp(join(tmpdir(), 'prompt-suggestion-live-'))
   const server = Bun.serve({ hostname: '127.0.0.1', port: 0, fetch })
   const env = createSandboxedTestEnvironment(home, {
-    NODE_ENV: 'production', CI: '1', CC_HAHA_SKIP_DOTENV: '1',
+    NODE_ENV: 'production', CI: '1', WANGMAI_SKIP_DOTENV: '1',
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',
     DISABLE_AUTOUPDATER: '1', DISABLE_TELEMETRY: '1', DISABLE_ERROR_REPORTING: '1',
     ANTHROPIC_API_KEY: 'fixture-key', ANTHROPIC_BASE_URL: server.url.origin,
     ANTHROPIC_MODEL: 'claude-sonnet-4-5',
   })
   const child = Bun.spawn(
-    ['./bin/claude-haha', '-p', '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose', ...extraArgs],
+    ['./bin/wangmai', '-p', '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose', ...extraArgs],
     { env, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe' },
   )
   const events: any[] = []

@@ -706,7 +706,7 @@ function addMacosCursorResourceCheck(
   helperApp: string,
   options: InspectOptions,
 ) {
-  const sequenceRelative = 'Contents/Resources/cu-helper_cc-haha-computer-use.bundle/LensSequence'
+  const sequenceRelative = 'Contents/Resources/cu-helper_wangmai-computer-use.bundle/LensSequence'
   const sourceDirectory = join(helperApp, sequenceRelative)
   const structureLabel = 'macOS cu-helper cursor resource directory'
   const executionLabel = 'macOS relocated cu-helper cursor resource execution'
@@ -733,14 +733,14 @@ function addMacosCursorResourceCheck(
     return
   }
   try {
-    const inner = 'Contents/MacOS/cc-haha-computer-use'
+    const inner = 'Contents/MacOS/wangmai-computer-use'
     const architectures = parseMachOArchitectures(readFileSync(join(helperApp, inner)))
     if (!architectures.includes(hostMachOArch as MachOArch)) {
       if (architectures.length === 0) throw new Error('helper has no recognized Mach-O architecture')
       report.notes.push(`SKIPPED: ${executionLabel}; binary ${architectures.join(',')}, host ${hostMachOArch}. Only package structure was checked.`)
       return
     }
-    probeRoot = mkdtempSync(join(tmpdir(), 'cc-haha-packaged-cursor-'))
+    probeRoot = mkdtempSync(join(tmpdir(), 'wangmai-packaged-cursor-'))
     const app = join(probeRoot, 'Relocated Helper.app')
     cpSync(helperApp, app, { recursive: true, verbatimSymlinks: true })
     assertCursorResourcesContained(app, join(app, sequenceRelative))
@@ -853,9 +853,9 @@ function addMacosComputerUseAttestationCheck(
   }
 
   const targets = [
-    { name: 'host', path: appBundle, identifier: 'com.claude-code-haha.desktop', deep: true },
-    { name: 'sidecar', path: sidecar, identifier: 'com.claude-code-haha.desktop.sidecar', deep: false },
-    { name: 'helper', path: helperApp, identifier: 'dev.cchaha.cu-helper', deep: true },
+    { name: 'host', path: appBundle, identifier: 'com.wangmai.agent', deep: true },
+    { name: 'sidecar', path: sidecar, identifier: 'com.wangmai.agent.sidecar', deep: false },
+    { name: 'helper', path: helperApp, identifier: 'dev.wangmai.cu-helper', deep: true },
   ] as const
   const metadata: CodesignMetadata[] = []
   for (const target of targets) {
@@ -1041,9 +1041,9 @@ function inspectMacosArtifacts(rootDir: string, report: PackageSmokeReport, opti
   const nodePtyDir = join(unpackedDir, 'node_modules', 'node-pty')
   const prebuildsDir = join(nodePtyDir, 'prebuilds')
   const sidecarDir = join(unpackedDir, 'src-tauri', 'binaries')
-  const helperApp = join(sidecarDir, 'cc-haha-computer-use.app')
+  const helperApp = join(sidecarDir, 'wangmai-computer-use.app')
   const helperInfoPlist = join(helperApp, 'Contents', 'Info.plist')
-  const helperExecutable = join(helperApp, 'Contents', 'MacOS', 'cc-haha-computer-use')
+  const helperExecutable = join(helperApp, 'Contents', 'MacOS', 'wangmai-computer-use')
   const hostExecutable = join(contentsDir, 'MacOS', report.productName)
 
   addPresenceCheck(report, rootDir, 'macOS Info.plist', join(contentsDir, 'Info.plist'))
@@ -1096,7 +1096,7 @@ function inspectMacosArtifacts(rootDir: string, report: PackageSmokeReport, opti
       ? 'aarch64-apple-darwin'
       : 'x86_64-apple-darwin'
     const nodePtyArch = report.arch === 'arm64' ? 'darwin-arm64' : 'darwin-x64'
-    const sidecar = join(sidecarDir, `claude-sidecar-${targetTriple}`)
+    const sidecar = join(sidecarDir, `wangmai-sidecar-${targetTriple}`)
     const pty = join(prebuildsDir, nodePtyArch, 'pty.node')
     const spawnHelper = join(prebuildsDir, nodePtyArch, 'spawn-helper')
     addPresenceCheck(report, rootDir, `macOS ${report.arch} unpacked sidecar binary`, sidecar)
@@ -1127,7 +1127,7 @@ function inspectMacosArtifacts(rootDir: string, report: PackageSmokeReport, opti
       report,
       rootDir,
       'macOS unpacked sidecar binary',
-      findMatches(sidecarDir, (candidate) => normalizePath(candidate).includes('/claude-sidecar-')),
+      findMatches(sidecarDir, (candidate) => normalizePath(candidate).includes('/wangmai-sidecar-')),
       sidecarDir,
     )
     addMatchCheck(
@@ -1157,7 +1157,7 @@ function inspectMacosArtifacts(rootDir: string, report: PackageSmokeReport, opti
       report,
       rootDir,
       appBundle,
-      join(sidecarDir, `claude-sidecar-${targetTriple}`),
+      join(sidecarDir, `wangmai-sidecar-${targetTriple}`),
       helperApp,
       options.commandRunner ?? defaultCommandRunner,
     )
@@ -1226,7 +1226,7 @@ function inspectWindowsArtifacts(rootDir: string, report: PackageSmokeReport, op
       if (!existsSync(executable)) throw new Error('The Windows app executable is missing')
       // Desktop packaging installs the builder's PE parser; the root-only
       // policy lane must not import desktop dependencies while checking Linux.
-      iconProbeRoot = mkdtempSync(join(tmpdir(), 'cc-haha-windows-icon-'))
+      iconProbeRoot = mkdtempSync(join(tmpdir(), 'wangmai-windows-icon-'))
       const result = (options.commandRunner ?? defaultCommandRunner)('bun', [
         'run', join(rootDir, 'desktop', 'scripts', 'assert-windows-icon.ts'), executable, expectedIconPath,
       ], {
@@ -1247,10 +1247,10 @@ function inspectWindowsArtifacts(rootDir: string, report: PackageSmokeReport, op
     const nodePtyDir = join(unpackedResourcesDir, 'node_modules', 'node-pty')
     const sidecarDir = join(unpackedResourcesDir, 'src-tauri', 'binaries')
     const sidecarNeedle = report.arch === 'arm64'
-      ? '/claude-sidecar-aarch64-pc-windows-msvc.exe'
+      ? '/wangmai-sidecar-aarch64-pc-windows-msvc.exe'
       : report.arch === 'x64'
-        ? '/claude-sidecar-x86_64-pc-windows-msvc.exe'
-        : '/claude-sidecar-'
+        ? '/wangmai-sidecar-x86_64-pc-windows-msvc.exe'
+        : '/wangmai-sidecar-'
     const nodePtyNeedle = report.arch === 'arm64'
       ? '/win32-arm64/'
       : report.arch === 'x64'
@@ -1457,7 +1457,7 @@ function inspectLinuxArtifacts(rootDir: string, report: PackageSmokeReport, opti
       report,
       rootDir,
       'Linux unpacked sidecar binary',
-      findMatches(sidecarDir, (candidate) => normalizePath(candidate).includes('/claude-sidecar-')),
+      findMatches(sidecarDir, (candidate) => normalizePath(candidate).includes('/wangmai-sidecar-')),
       sidecarDir,
     )
     addBundledRipgrepLicenseChecks(report, rootDir, sidecarDir, 'Linux')

@@ -10,7 +10,7 @@ const cache = new Map<string, Snapshot>()
 const mutationQueues = new Map<string, Promise<void>>()
 
 function statePath(configDir: string): string {
-  return join(configDir, 'cc-haha', 'session-archives.json')
+  return join(configDir, 'wangmai', 'session-archives.json')
 }
 
 /** Cleanup and archive mutations share this lock, including across CLI/server

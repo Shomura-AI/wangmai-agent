@@ -24,8 +24,8 @@ function fixture(
   sockets: Pick<ConstructorParameters<typeof PublicAccessServer>[0], 'websocket' | 'terminateDeviceStreams'> = {} as never,
 ) {
   const dir = mkdtempSync(path.join(os.tmpdir(), 'remote-access-test-'))
-  const oldToken = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-  process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'fixture-process-credential'
+  const oldToken = process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+  process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'fixture-process-credential'
   let clock = 1000
   const messages: unknown[] = []
   const storePath = path.join(dir, 'devices.json')
@@ -41,8 +41,8 @@ function fixture(
   const base = `http://127.0.0.1:${service.status().port}`
   cleanups.push(() => {
     service.disable()
-    if (oldToken === undefined) delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-    else process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = oldToken
+    if (oldToken === undefined) delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+    else process.env.WANGMAI_LOCAL_ACCESS_TOKEN = oldToken
     rmSync(dir, { recursive: true, force: true })
   })
   const control = async (route: string, body: unknown = {}, method = 'POST', authorized = true) => service.control(new Request(`http://localhost/api/public-access/${route}`, {
@@ -168,7 +168,7 @@ describe('public transport boundary', () => {
     })
     const attemptId = '81d5559c-a61e-4871-a185-4e7aaf02c693'
     for (const [route, method, attempt] of [['network', 'GET', attemptId], ['verify', 'POST', attemptId], ['network', 'GET', 'not-a-valid-id;password=private-secret']]) {
-      const response = await f.service.control(new Request(`http://localhost/api/public-access/${route}`, { method, headers: { Authorization: 'Bearer fixture-process-credential', 'X-CC-Haha-Connection-Attempt': attempt } }))
+      const response = await f.service.control(new Request(`http://localhost/api/public-access/${route}`, { method, headers: { Authorization: 'Bearer fixture-process-credential', 'X-WangMai-Connection-Attempt': attempt } }))
       expect(response.ok).toBe(true)
     }
     expect(calls).toEqual([['network', { attemptId }], ['verify', { attemptId }], ['network', {}]])
@@ -257,7 +257,7 @@ describe('public transport boundary', () => {
     const f = fixture(async (_request, url) => {
       requested.push(`${url.pathname}${url.search}`)
       return Response.json({
-        hasAuth: true, source: 'cc-haha-provider', activeProvider: 'Fixture provider',
+        hasAuth: true, source: 'wangmai-provider', activeProvider: 'Fixture provider',
         apiKey: 'fake-provider-secret', env: { ANTHROPIC_API_KEY: 'fake-provider-secret' },
       })
     })
@@ -265,7 +265,7 @@ describe('public transport boundary', () => {
     const response = await f.remote('/api/providers/auth-status?providerId=fixture-provider', undefined, cookie)
     expect(response.status).toBe(200)
     const text = await response.text()
-    expect(JSON.parse(text)).toEqual({ hasAuth: true, source: 'cc-haha-provider', activeProvider: 'Fixture provider' })
+    expect(JSON.parse(text)).toEqual({ hasAuth: true, source: 'wangmai-provider', activeProvider: 'Fixture provider' })
     expect(text).not.toContain('fake-provider-secret')
     expect(requested).toEqual(['/api/providers/auth-status?providerId=fixture-provider'])
   })
@@ -384,7 +384,7 @@ describe('public transport boundary', () => {
       const socketResponse = await f.service.fetch(new Request(`${f.base}/ws/fixture`, { headers: { Origin: 'https://fixture.trycloudflare.com', Authorization: `Bearer ${token}` } }), { upgrade: () => { throw new Error('Must not upgrade') } } as never)
       expect(socketResponse?.status).toBe(401)
     }
-    expect((await f.remote('/api/sessions', undefined, `__Host-haha-remote=${claim.token}`)).status).toBe(401)
+    expect((await f.remote('/api/sessions', undefined, `__Host-wangmai-remote=${claim.token}`)).status).toBe(401)
     expect((await f.remote(`/api/sessions?token=${encodeURIComponent(claim.token)}`)).status).toBe(401)
     expect((await f.native('/api/sessions', 'invalid', { headers: { Cookie: cookie } })).status).toBe(401)
     expect((await f.remote('/api/sessions', undefined, cookie)).status).toBe(200)
@@ -641,7 +641,7 @@ test('paired phones can configure global computer-use consent and read composer 
 
 const fixtureConnector = {
   id: 'feishu', displayName: 'Feishu', description: 'Docs and calendar', category: 'office', transport: 'cli',
-  collection: 'services', pluginId: 'office-feishu@haha-connectors', supported: true, installed: true, enabled: true,
+  collection: 'services', pluginId: 'office-feishu@wangmai-connectors', supported: true, installed: true, enabled: true,
   connection: 'needs-auth', status: 'needs-auth', accountLabel: 'fixture-user',
   packageName: '@larksuite/cli', version: '1.0.95', homepage: 'https://example.test/feishu', credentialMode: 'shared', platforms: ['darwin-arm64'],
   setupFields: [{ key: 'appSecret', label: 'Secret', secret: true }], runtime: 'ready',
@@ -697,7 +697,7 @@ test('paired phones get connector, workflow and agent lists without credentials,
   const read = async (route: string) => (await f.native(route, claim.token)).json()
   expect(await read('/api/connectors')).toEqual({ items: [{
     id: 'feishu', displayName: 'Feishu', description: 'Docs and calendar', category: 'office', transport: 'cli',
-    collection: 'services', pluginId: 'office-feishu@haha-connectors', supported: true, installed: true, enabled: true,
+    collection: 'services', pluginId: 'office-feishu@wangmai-connectors', supported: true, installed: true, enabled: true,
     connection: 'needs-auth', status: 'needs-auth', accountLabel: 'fixture-user',
     operation: { kind: 'authenticate', phase: 'waiting-for-browser' },
   }] })
@@ -1088,7 +1088,7 @@ describe('a changed public address reaches paired phones', () => {
     const located = await fetch(`${lan}/api/public-access/locate?id=${id}&nonce=${nonce}`)
     expect(located.status).toBe(200)
     const body = await located.json() as { url: string, mac: string }
-    expect(body).toEqual({ url: 'https://fixture.trycloudflare.com', mac: macFor(claim.token, `cc-haha-locate\n${nonce}\nhttps://fixture.trycloudflare.com`) })
+    expect(body).toEqual({ url: 'https://fixture.trycloudflare.com', mac: macFor(claim.token, `wangmai-locate\n${nonce}\nhttps://fixture.trycloudflare.com`) })
     expect((await fetch(`${lan}/api/public-access/locate?id=${'0'.repeat(64)}&nonce=${nonce}`)).status).toBe(404)
     expect((await fetch(`${lan}/api/public-access/locate?id=${id}&nonce=short`)).status).toBe(400)
     // The credential opens nothing else from the LAN.
@@ -1111,7 +1111,7 @@ describe('a changed public address reaches paired phones', () => {
     await remote.control('origin', { publicUrl: 'https://second-name.trycloudflare.com' }, 'PUT')
     await remote.control('origin', { publicUrl: 'https://second-name.trycloudflare.com' }, 'PUT')
     expect(changes.map(({ url, previous }) => ({ url, previous }))).toEqual([{ url: 'https://second-name.trycloudflare.com', previous: 'https://first-name.trycloudflare.com' }])
-    expect(changes[0]!.sign(claim.deviceId)).toBe(macFor(claim.token, 'cc-haha-host-url\nhttps://second-name.trycloudflare.com'))
+    expect(changes[0]!.sign(claim.deviceId)).toBe(macFor(claim.token, 'wangmai-host-url\nhttps://second-name.trycloudflare.com'))
     expect(changes[0]!.sign('not-a-device')).toBeUndefined()
 
     const restarted = bareServer(remote.storePath, change => { changes.push(change) })

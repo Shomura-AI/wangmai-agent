@@ -365,7 +365,7 @@
   {"source": "clawhub", "slug": "adhd-daily-planner", "owner": "mikecourt", "category": "life", "summary": "为注意力困难人群设计的日常计划与执行支持", "tags": ["日程规划", "ADHD"]},
   {"source": "clawhub", "slug": "baidu-ai-map", "owner": "baidu-maps", "category": "life", "summary": "百度地图地点检索、路线规划、地理编码和天气查询", "tags": ["地图", "百度"]},
   {"source": "clawhub", "slug": "daily-review-ritual", "owner": "itsflow", "category": "life", "summary": "每日收尾复盘：记录进展与心得并规划明天", "tags": ["每日复盘", "计划"]},
-  {"source": "clawhub", "slug": "google-weather", "owner": "shaharsha", "category": "life", "summary": "调用Google天气API获取实时天气与预报", "tags": ["天气", "预报"]},
+  {"source": "clawhub", "slug": "google-weather", "owner": "swangmairsha", "category": "life", "summary": "调用Google天气API获取实时天气与预报", "tags": ["天气", "预报"]},
   {"source": "clawhub", "slug": "habit-tracker", "owner": "jhillin8", "category": "life", "summary": "通过打卡、提醒与进度展示帮助养成习惯", "tags": ["习惯养成", "打卡"]},
   {"source": "clawhub", "slug": "openhue", "owner": "steipete", "category": "life", "summary": "通过命令行控制飞利浦Hue灯光与场景", "tags": ["智能家居", "灯光"]},
   {"source": "clawhub", "slug": "pc-builder-assistant", "owner": "gongyu0918-debug", "category": "life", "summary": "按预算规划台式电脑装机和升级配置", "tags": ["装机", "电脑硬件"]},

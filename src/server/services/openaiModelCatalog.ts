@@ -1,7 +1,7 @@
 import { getOpenAICodexModelCatalog, readCachedOpenAICodexModelCatalog } from '../../services/openaiAuth/modelCatalog.js'
 import { OPENAI_CODEX_MODEL_CATALOG } from '../../services/openaiAuth/models.js'
 import { oauthTokenIdentity } from '../../services/oauth/refresh-coordinator.js'
-import { hahaOpenAIOAuthService } from './hahaOpenAIOAuthService.js'
+import { wangmaiOpenAIOAuthService } from './wangmaiOpenAIOAuthService.js'
 import { getNetworkProxyUrl, loadNetworkSettings } from './networkSettings.js'
 
 /** Desktop discovery must use the same account as its official provider runtime. */
@@ -15,16 +15,16 @@ export async function getDesktopOpenAICodexModelCatalog(options?: {
   // models or reporting an upstream error from the previous login.
   const verifyAccount = options?.forceRefresh || options?.waitForInitial
   for (let attempt = 0; attempt < 2; attempt++) {
-    const tokenFile = hahaOpenAIOAuthService.getOAuthFilePath()
-    const tokens = await hahaOpenAIOAuthService.ensureFreshTokens().catch(() => null)
+    const tokenFile = wangmaiOpenAIOAuthService.getOAuthFilePath()
+    const tokens = await wangmaiOpenAIOAuthService.ensureFreshTokens().catch(() => null)
     const result = await getOpenAICodexModelCatalog({
       ...options,
       tokens,
       resolveProxyUrl: async () => getNetworkProxyUrl(await loadNetworkSettings()),
     }).then(models => ({ models }), (error: unknown) => ({ error }))
     if (verifyAccount && tokens) {
-      const current = await hahaOpenAIOAuthService.loadTokens().catch(() => null)
-      if (tokenFile !== hahaOpenAIOAuthService.getOAuthFilePath() ||
+      const current = await wangmaiOpenAIOAuthService.loadTokens().catch(() => null)
+      if (tokenFile !== wangmaiOpenAIOAuthService.getOAuthFilePath() ||
         oauthTokenIdentity(tokens) !== oauthTokenIdentity(current)) continue
     }
     if ('models' in result) return result.models
@@ -35,6 +35,6 @@ export async function getDesktopOpenAICodexModelCatalog(options?: {
 }
 
 export async function readCachedDesktopOpenAICodexModelCatalog() {
-  const tokens = await hahaOpenAIOAuthService.loadTokens().catch(() => null)
+  const tokens = await wangmaiOpenAIOAuthService.loadTokens().catch(() => null)
   return readCachedOpenAICodexModelCatalog(tokens)
 }

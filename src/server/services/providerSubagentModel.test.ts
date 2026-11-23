@@ -112,7 +112,7 @@ test.each(['fixture-subagent', '  fixture-subagent  ', 'inherit', '  InHeRiT  ',
 
 test('a manually edited managed env reaches a host-managed new session', async () => {
   const { providers, provider } = await fixture()
-  const file = join(process.env.CLAUDE_CONFIG_DIR!, 'cc-haha', 'settings.json')
+  const file = join(process.env.CLAUDE_CONFIG_DIR!, 'wangmai', 'settings.json')
   const settings = await providers.getManagedSettings()
   settings.env = { ...(settings.env as Record<string, string>), CLAUDE_CODE_SUBAGENT_MODEL: 'fixture-subagent' }
   await writeFile(file, JSON.stringify(settings))
@@ -179,7 +179,7 @@ test('Official OAuth keeps the original user subagent preference', async () => {
 
 test('legacy provider settings upgrade ownership with a backup and preserve the original user file', async () => {
   const configDir = process.env.CLAUDE_CONFIG_DIR!
-  const managedDir = join(configDir, 'cc-haha')
+  const managedDir = join(configDir, 'wangmai')
   await mkdir(managedDir, { recursive: true })
   const index = {
     schemaVersion: 9, activeId: 'legacy-provider', futureIndex: { keep: true },
@@ -255,7 +255,7 @@ test('a failed Official switch cannot reload the previous provider subagent mode
 })
 
 test.each(['missing key', 'missing file', 'malformed file', 'null file', 'array file', 'scalar file'])('a legacy %s can be manually configured after upgrading without reactivation', async (state) => {
-  const dir = join(process.env.CLAUDE_CONFIG_DIR!, 'cc-haha')
+  const dir = join(process.env.CLAUDE_CONFIG_DIR!, 'wangmai')
   await mkdir(dir, { recursive: true })
   const provider = { id: 'legacy', presetId: 'custom', name: 'Legacy', apiKey: 'fake', baseUrl: 'https://fixture.invalid',
     models: { main: 'fixture-main', haiku: 'small', sonnet: 'medium', opus: 'large' } }
@@ -330,7 +330,7 @@ test.each(['provider sync', 'Official clear'])('a late %s cannot erase the newly
 })
 
 test.each(['settings write', 'provider read'])('a failed ownership migration at %s keeps legacy data usable and retries before provider mutation', async (phase) => {
-  const dir = join(process.env.CLAUDE_CONFIG_DIR!, 'cc-haha')
+  const dir = join(process.env.CLAUDE_CONFIG_DIR!, 'wangmai')
   await mkdir(dir, { recursive: true })
   const provider = { id: 'legacy', presetId: 'custom', name: 'Legacy', apiKey: 'fake', baseUrl: 'https://fixture.invalid',
     models: { main: 'fixture-main', haiku: 'small', sonnet: 'medium', opus: 'large' } }

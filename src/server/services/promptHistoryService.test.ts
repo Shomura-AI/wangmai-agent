@@ -10,7 +10,7 @@ const originalSkipHistory = process.env.CLAUDE_CODE_SKIP_PROMPT_HISTORY
 let tempConfigDir: string | null = null
 
 beforeEach(async () => {
-  tempConfigDir = await mkdtemp(path.join(tmpdir(), 'cc-haha-prompt-history-'))
+  tempConfigDir = await mkdtemp(path.join(tmpdir(), 'wangmai-prompt-history-'))
   process.env.CLAUDE_CONFIG_DIR = tempConfigDir
   delete process.env.CLAUDE_CODE_SKIP_PROMPT_HISTORY
 })

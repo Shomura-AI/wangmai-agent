@@ -493,7 +493,7 @@ export function parseFilePathRef(value: string): FilePathRef | null {
  * a markdown link, an output card or the address bar.
  *
  * Nothing here can bleed into a sentence or a command, so a segment is anything
- * a filename may hold: `D:/cchaha/cchaha d/记忆.md` and `报告 (1).docx` are real
+ * a filename may hold: `D:/wangmai/wangmai d/记忆.md` and `报告 (1).docx` are real
  * paths a turn writes, and with FULLREF's set their cards and "Open with" menus
  * did nothing when clicked (#1556). Code spans keep {@link parseFilePathRef}:
  * there a space still means `bun test a.test.ts` is a command.

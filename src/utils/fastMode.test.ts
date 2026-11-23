@@ -32,7 +32,7 @@ const SAVED_ENV_KEYS = [
   'CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS',
   'CLAUDE_CODE_SKIP_FAST_MODE_ORG_CHECK',
   'CLAUDE_CODE_ENTRYPOINT',
-  'CC_HAHA_TRANSCRIPT_ENTRYPOINT',
+  'WANGMAI_TRANSCRIPT_ENTRYPOINT',
   'CLAUDE_CODE_USE_BEDROCK',
   'CLAUDE_CODE_USE_VERTEX',
   'CLAUDE_CODE_USE_FOUNDRY',
@@ -47,7 +47,7 @@ describe('fastMode runtime & pricing', () => {
   let savedClientType: string
 
   beforeEach(() => {
-    tempDir = mkdtempSync(join(tmpdir(), 'cc-haha-fastmode-test-'))
+    tempDir = mkdtempSync(join(tmpdir(), 'wangmai-fastmode-test-'))
     savedEnv = {}
     for (const key of SAVED_ENV_KEYS) {
       savedEnv[key] = process.env[key]

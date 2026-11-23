@@ -1,0 +1,26 @@
+{
+  "$comment": "网脉智能体 OEM 品牌配置：改这里就够了，rebrand.mjs 会据此生成全部替换规则",
+  "brand": {
+    "nameZh": "网脉智能体",
+    "nameEn": "WangMai Agent",
+    "slug": "wangmai",
+    "packageKebab": "wangmai-agent",
+    "packageSnake": "wangmai_agent",
+    "desktopPackage": "wangmai-desktop",
+    "desktopSnake": "wangmai_desktop",
+    "artifactBase": "WangMai-Agent",
+    "sidecarName": "wangmai-sidecar",
+    "cuName": "wangmai-computer-use",
+    "appId": "com.wangmai.agent",
+    "envPrefix": "WANGMAI",
+    "domain": "wangmai.example.com",
+    "iosBundleId": "com.wangmai.agent.mobile",
+    "androidPackage": "app.wangmai.mobile",
+    "repoOwner": "wangmai-ai",
+    "repoName": "wangmai-agent",
+    "company": "网脉科技",
+    "email": "dev@wangmai.example.com",
+    "updaterEndpoint": "https://github.com/wangmai-ai/wangmai-agent/releases/latest/download/latest.json",
+    "packageDescription": "网脉智能体 · 本地优先的跨平台 AI Agent 桌面工作台"
+  }
+}

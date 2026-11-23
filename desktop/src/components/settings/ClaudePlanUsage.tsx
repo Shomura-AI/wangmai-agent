@@ -11,10 +11,10 @@ import { Button } from '@/components/ui/Button'
 import { Progress } from '@/components/ui/Progress'
 import { useTranslation, type TranslationKey } from '@/i18n'
 import {
-  hahaOAuthApi,
+  wangmaiOAuthApi,
   type ClaudePlanUsage as PlanUsage,
   type ClaudePlanUsageResult,
-} from '@/api/hahaOAuth'
+} from '@/api/wangmaiOAuth'
 
 const WINDOWS: ReadonlyArray<{ key: 'five_hour' | 'seven_day' | 'seven_day_oauth_apps' | 'seven_day_opus' | 'seven_day_sonnet'; label: TranslationKey }> = [
   { key: 'five_hour', label: 'settings.claudeOfficialLogin.usageFiveHour' },
@@ -64,7 +64,7 @@ export function ClaudePlanUsage() {
   const refresh = useCallback(async () => {
     setLoading(true)
     try {
-      setResult(await hahaOAuthApi.planUsage())
+      setResult(await wangmaiOAuthApi.planUsage())
       setRequestFailed(false)
     } catch {
       setRequestFailed(true)

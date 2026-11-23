@@ -3,7 +3,7 @@ import { registerScheduleDesktopSkill } from './scheduleDesktop.js'
 import { getBundledSkills } from '../bundledSkills.js'
 import { setAgentProfile, getAgentProfile } from '../../utils/agentProfile.js'
 
-const keys = ['CC_HAHA_DESKTOP_SERVER_URL', 'CC_HAHA_SESSION_COLLABORATION_TOKEN', 'CC_HAHA_SESSION_ID'] as const
+const keys = ['WANGMAI_DESKTOP_SERVER_URL', 'WANGMAI_SESSION_COLLABORATION_TOKEN', 'WANGMAI_SESSION_ID'] as const
 const originals = keys.map(key => process.env[key])
 const profile = getAgentProfile()
 afterEach(() => {
@@ -12,9 +12,9 @@ afterEach(() => {
 })
 
 test('the local schedule skill resolves task and result requests through the desktop tool and respects availability', async () => {
-  process.env.CC_HAHA_DESKTOP_SERVER_URL = 'http://127.0.0.1:12345'
-  process.env.CC_HAHA_SESSION_COLLABORATION_TOKEN = 'fixture-token'
-  process.env.CC_HAHA_SESSION_ID = 'fixture-session'
+  process.env.WANGMAI_DESKTOP_SERVER_URL = 'http://127.0.0.1:12345'
+  process.env.WANGMAI_SESSION_COLLABORATION_TOKEN = 'fixture-token'
+  process.env.WANGMAI_SESSION_ID = 'fixture-session'
   setAgentProfile('standard')
   registerScheduleDesktopSkill()
   const skill = getBundledSkills().find(command => command.name === 'schedule')!

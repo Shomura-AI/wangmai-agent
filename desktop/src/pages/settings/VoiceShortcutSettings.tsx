@@ -40,11 +40,11 @@ const KEYCAP_CLASS = 'inline-flex h-[22px] min-w-[22px] items-center justify-cen
 type Rejection = { text: string; reason: ShortcutConflictReason }
 
 /**
- * Settings → Voice input → Keyboard shortcut. Works only while the cc-haha
+ * Settings → Voice input → Keyboard shortcut. Works only while the wangmai
  * window is in front: a tap starts dictation and the next press ends it, a hold
  * records until release.
  *
- * Recording a new shortcut refuses cc-haha's own and the system's keys, and
+ * Recording a new shortcut refuses wangmai's own and the system's keys, and
  * keeps keys that input methods or common tools may take with a warning.
  */
 export function VoiceShortcutSettings() {

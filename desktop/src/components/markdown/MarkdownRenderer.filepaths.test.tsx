@@ -99,7 +99,7 @@ describe('MarkdownRenderer file references', () => {
   })
 
   it('never re-links a path that is already inside a URL', () => {
-    const container = renderMarkdown('见 https://github.com/NanmiCoder/cc-haha/blob/main/src/app.ts')
+    const container = renderMarkdown('见 https://github.com/wangmai-ai/wangmai-agent/blob/main/src/app.ts')
     expect(fileLinks(container)).toHaveLength(0)
     expect(container.querySelector('a[href^="https://"]')).not.toBeNull()
   })
@@ -110,7 +110,7 @@ describe('MarkdownRenderer file references', () => {
   })
 
   it('leaves prose that only looks like a path as text', () => {
-    expect(fileLinks(renderMarkdown('用 console.log 打印，版本 v0.5.0，域名 cchaha.ai'))).toHaveLength(0)
+    expect(fileLinks(renderMarkdown('用 console.log 打印，版本 v0.5.0，域名 wangmai.example.com'))).toHaveLength(0)
   })
 
   it('hands the click a reference classifyPreviewLink can parse', () => {
@@ -121,12 +121,12 @@ describe('MarkdownRenderer file references', () => {
   })
 
   it.each([
-    ['file:///tmp/cc-haha-qa-checklist-v0.6.6.html', { path: '/tmp/cc-haha-qa-checklist-v0.6.6.html' }],
+    ['file:///tmp/wangmai-qa-checklist-v0.6.6.html', { path: '/tmp/wangmai-qa-checklist-v0.6.6.html' }],
     ['file:///tmp/%E6%B8%85%E5%8D%95.html', { path: '/tmp/清单.html' }],
     ['/tmp/app.ts:42', { path: '/tmp/app.ts', line: 42 }],
     // #1556: CommonMark's two spellings of a space reach the opener as the file on disk.
     ['docs/My%20Notes.md', { path: 'docs/My Notes.md' }],
-    ['<D:/cchaha/cchaha d/记忆.md>', { path: 'D:/cchaha/cchaha d/记忆.md' }],
+    ['<D:/wangmai/wangmai d/记忆.md>', { path: 'D:/wangmai/wangmai d/记忆.md' }],
   ])('preserves explicit local Markdown destination %s through sanitization', (href, expected) => {
     const onLinkClick = vi.fn().mockReturnValue(true)
     const container = renderMarkdown(`[打开文件](${href})`, { onLinkClick })
@@ -153,10 +153,10 @@ describe('MarkdownRenderer file references', () => {
   it('links owner/repo#123 to GitHub', () => {
     // The second half of the prompt contract (prompts.ts:438), which also had no
     // implementation. Unlike a file link this is a real URL, so it keeps its href.
-    const container = renderMarkdown('见 NanmiCoder/cc-haha#1146')
+    const container = renderMarkdown('见 wangmai-ai/wangmai-agent#1146')
     const link = container.querySelector<HTMLAnchorElement>('a[href^="https://github.com"]')
-    expect(link?.getAttribute('href')).toBe('https://github.com/NanmiCoder/cc-haha/issues/1146')
-    expect(link?.textContent).toBe('NanmiCoder/cc-haha#1146')
+    expect(link?.getAttribute('href')).toBe('https://github.com/wangmai-ai/wangmai-agent/issues/1146')
+    expect(link?.textContent).toBe('wangmai-ai/wangmai-agent#1146')
     expect(fileLinks(container)).toHaveLength(0)
   })
 

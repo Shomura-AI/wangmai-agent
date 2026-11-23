@@ -11,7 +11,7 @@ const originalFetch = globalThis.fetch
 
 describe('analyzeContextUsage', () => {
   beforeAll(async () => {
-    configDir = await mkdtemp(join(tmpdir(), 'cc-haha-analyze-context-'))
+    configDir = await mkdtemp(join(tmpdir(), 'wangmai-analyze-context-'))
     const fixtureEnv = createSandboxedTestEnvironment(configDir, {
       ANTHROPIC_BASE_URL: 'http://127.0.0.1:9',
       ANTHROPIC_API_KEY: 'sk-ant-test-fake',
@@ -206,7 +206,7 @@ describe('analyzeContextUsage', () => {
           content: [
             {
               type: 'redacted_thinking',
-              data: `cc-haha:openai-reasoning:v1:${JSON.stringify({
+              data: `wangmai:openai-reasoning:v1:${JSON.stringify({
                 id: 'rs_test',
                 summary: [],
                 encrypted_content: 'x'.repeat(400_000),

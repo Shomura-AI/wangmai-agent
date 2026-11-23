@@ -19,17 +19,17 @@ import { isOpenAIResponsesModel } from '../../services/openaiAuth/models.js'
 
 const ENV_KEYS = [
   'CLAUDE_CONFIG_DIR', 'ANTHROPIC_BASE_URL', 'ANTHROPIC_API_KEY', 'ANTHROPIC_MODEL',
-  'CLAUDE_CODE_PROVIDER_MAX_OUTPUT_TOKENS', 'CC_HAHA_OPENAI_OAUTH_PROVIDER',
+  'CLAUDE_CODE_PROVIDER_MAX_OUTPUT_TOKENS', 'WANGMAI_OPENAI_OAUTH_PROVIDER',
   'ANTHROPIC_DEFAULT_OPUS_MODEL', 'ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES',
-  'CLAUDE_CODE_MODEL_CONTEXT_WINDOWS', 'CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST', 'CC_HAHA_DESKTOP_SERVER_URL',
-  'HTTPS_PROXY', 'https_proxy', 'HTTP_PROXY', 'http_proxy', 'CC_HAHA_SYSTEM_PROXY_URL', 'CC_HAHA_SYSTEM_PROXY_ERROR',
+  'CLAUDE_CODE_MODEL_CONTEXT_WINDOWS', 'CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST', 'WANGMAI_DESKTOP_SERVER_URL',
+  'HTTPS_PROXY', 'https_proxy', 'HTTP_PROXY', 'http_proxy', 'WANGMAI_SYSTEM_PROXY_URL', 'WANGMAI_SYSTEM_PROXY_ERROR',
 ] as const
 let savedEnv: Array<string | undefined>
 let configDir: string
 
 function writeProviders(providers: unknown[]) {
-  mkdirSync(join(configDir, 'cc-haha'), { recursive: true })
-  writeFileSync(join(configDir, 'cc-haha', 'providers.json'), JSON.stringify({
+  mkdirSync(join(configDir, 'wangmai'), { recursive: true })
+  writeFileSync(join(configDir, 'wangmai', 'providers.json'), JSON.stringify({
     schemaVersion: 4, activeId: null, providers,
   }))
 }
@@ -84,7 +84,7 @@ describe('resolveAgentProviderRoute', () => {
     expect(route.env.ANTHROPIC_BASE_URL).toBe('https://api.deepseek.example/anthropic')
     expect(route.env.ANTHROPIC_MODEL).toBe('deepseek-v4-flash')
     expect([route.env.ANTHROPIC_API_KEY, route.env.ANTHROPIC_AUTH_TOKEN]).toContain('fake-deepseek-key')
-    expect(route.env.CC_HAHA_TRACE_PROVIDER_ID).toBe('deepseek-direct')
+    expect(route.env.WANGMAI_TRACE_PROVIDER_ID).toBe('deepseek-direct')
     expect((await resolveAgentProviderRoute({ agentType: 'reviewer', providerId: 'deepseek-direct' })).model).toBe('deepseek-v4-pro')
     expect((await resolveAgentProviderRoute({ agentType: 'reviewer', providerId: 'deepseek-direct', model: 'exact-model' })).model).toBe('exact-model')
   })
@@ -123,7 +123,7 @@ describe('resolveAgentProviderRoute', () => {
   test('reaches a format-translating provider through the desktop proxy for that provider', async () => {
     writeProviders([openAiCompatible])
     process.env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST = '1'
-    process.env.CC_HAHA_DESKTOP_SERVER_URL = 'http://127.0.0.1:41234'
+    process.env.WANGMAI_DESKTOP_SERVER_URL = 'http://127.0.0.1:41234'
 
     const route = await resolveAgentProviderRoute({ agentType: 'reviewer', providerId: 'chat-gateway', model: 'gpt-gateway-mini' })
 
@@ -202,7 +202,7 @@ describe('provider route scope', () => {
     // Session: a ChatGPT-account runtime with a 128k output cap, connecting directly.
     Object.assign(process.env, {
       CLAUDE_CODE_PROVIDER_MAX_OUTPUT_TOKENS: '128000',
-      CC_HAHA_OPENAI_OAUTH_PROVIDER: '1',
+      WANGMAI_OPENAI_OAUTH_PROVIDER: '1',
       ANTHROPIC_MODEL: 'opusplan',
     })
     const proxied: ProviderRoute = {
@@ -231,7 +231,7 @@ describe('provider route scope', () => {
 
     expect(seen).toEqual([{
       budget: 8192,
-      budgetHeader: { 'x-cc-haha-output-budget-source': 'explicit' },
+      budgetHeader: { 'x-wangmai-output-budget-source': 'explicit' },
       openAITransport: false,
       planModel: 'deepseek-v4-pro',
     }])

@@ -58,7 +58,7 @@ describe('mobile release planning', () => {
     expect(planDelivery(input)).toMatchObject({ build: false, carry: false, previous: delivery })
   })
   test('an unchanged Android APK is carried to the new release, but never re-attached on a retry of the same tag', () => {
-    const apk = { ...delivery, platform: 'android' as const, destination: 'github-release' as const, asset: 'cc-haha-mobile-0.1.0-test.apk', sha256: fingerprint }
+    const apk = { ...delivery, platform: 'android' as const, destination: 'github-release' as const, asset: 'wangmai-mobile-0.1.0-test.apk', sha256: fingerprint }
     expect(planDelivery({ ...input, platform: 'android', deliveries: [apk] })).toMatchObject({ build: false, carry: true, previous: apk })
     expect(planDelivery({ ...input, platform: 'android', tag: apk.tag, commit, deliveries: [apk] }).carry).toBeFalsy()
   })
@@ -87,12 +87,12 @@ describe('mobile release planning', () => {
     const context = { platform: 'ios' as const, projectId: buildId, owner: 'test', packageManager: 'bun@1.4.3' }
     const base = `100644 blob ${commit}\tmobile/app.json\0`
     const hash = fingerprintInputs(base, context, () => '')
-    for (const path of ['desktop/src/App.tsx', 'mobile/src/core/example.test.ts', 'mobile/README.md', 'mobile/scripts/fixture-server.ts', 'mobile/.env', 'mobile/credentials.json', 'mobile/android/build.gradle', 'mobile/ios/Podfile', 'mobile/modules/cchaha-duty/node_modules/x/index.js']) {
+    for (const path of ['desktop/src/App.tsx', 'mobile/src/core/example.test.ts', 'mobile/README.md', 'mobile/scripts/fixture-server.ts', 'mobile/.env', 'mobile/credentials.json', 'mobile/android/build.gradle', 'mobile/ios/Podfile', 'mobile/modules/wangmai-duty/node_modules/x/index.js']) {
       expect(isBuildInput(path)).toBe(false)
       expect(fingerprintInputs(`${base}100644 blob ${commit}\t${path}\0`, context, () => '')).toBe(hash)
     }
     // A local Expo module's own native sources ship in the binary, unlike the generated projects.
-    for (const path of ['mobile/src/app/index.tsx', 'mobile/plugins/withPinnedWebSockets.js', 'mobile/bun.lock', 'mobile/eas.json', 'mobile/modules/cchaha-duty/android/src/main/java/app/cchaha/duty/DutyService.kt', 'mobile/modules/cchaha-duty/android/src/main/AndroidManifest.xml']) {
+    for (const path of ['mobile/src/app/index.tsx', 'mobile/plugins/withPinnedWebSockets.js', 'mobile/bun.lock', 'mobile/eas.json', 'mobile/modules/wangmai-duty/android/src/main/java/app/wangmai/duty/DutyService.kt', 'mobile/modules/wangmai-duty/android/src/main/AndroidManifest.xml']) {
       expect(isBuildInput(path)).toBe(true)
       expect(fingerprintInputs(`${base}100644 blob ${commit}\t${path}\0`, context, () => '')).not.toBe(hash)
     }
@@ -158,13 +158,13 @@ describe('mobile delivery outcomes', () => {
     const calls: string[] = []
     await deliverBuild('android', { ...build, platform: 'ANDROID' }, {
       submit: async () => { throw new Error('must not submit Android') },
-      uploadApk: async () => { calls.push('apk'); return { asset: 'cc-haha-mobile-test.apk', sha256: fingerprint } },
+      uploadApk: async () => { calls.push('apk'); return { asset: 'wangmai-mobile-test.apk', sha256: fingerprint } },
       record: async item => { expect(item.sha256).toBe(fingerprint); calls.push('record') },
     })
     expect(calls).toEqual(['apk', 'record'])
   })
   test('carrying an APK forward re-uses the recorded build and refuses a file that no longer matches its checksum', async () => {
-    const apk: Delivery = { ...delivery, platform: 'android', destination: 'github-release', asset: 'cc-haha-mobile-0.1.0-test.apk', sha256: fingerprint }
+    const apk: Delivery = { ...delivery, platform: 'android', destination: 'github-release', asset: 'wangmai-mobile-0.1.0-test.apk', sha256: fingerprint }
     const calls: string[] = []
     const effects = (sha256: string) => ({
       download: async (previous: Delivery) => { calls.push(`download:${previous.tag}`); return { path: '/tmp/apk', sha256 } },
@@ -238,7 +238,7 @@ test('real runner dry-run never builds or mutates EAS config; draft releases fai
 })
 
 test('a desktop release without mobile changes re-attaches the verified APK and its manifest without touching EAS', () => {
-  const apkName = `cc-haha-mobile-0.1.0-${buildId}.apk`
+  const apkName = `wangmai-mobile-0.1.0-${buildId}.apk`
   const gh = String.raw`#!/usr/bin/env bun
 import { appendFileSync, copyFileSync, readFileSync } from 'node:fs'
 import { basename, join } from 'node:path'

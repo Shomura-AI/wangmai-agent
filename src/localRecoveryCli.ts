@@ -9,7 +9,7 @@ type RecoveryInput = NodeJS.ReadableStream & { isTTY?: boolean }
 function printHelp(): void {
   process.stdout.write(
     [
-      'Usage: claude-haha [options] [prompt]',
+      'Usage: wangmai [options] [prompt]',
       '',
       'Local recovery mode for this leaked source tree.',
       '',
@@ -255,7 +255,7 @@ async function runInteractive(parsed: {
   }
 
   process.stdout.write(
-    `Claude Haha local interactive mode\nmodel: ${model}\ncommands: /exit, /clear\n\n`,
+    `Claude WangMai local interactive mode\nmodel: ${model}\ncommands: /exit, /clear\n\n`,
   )
   prompt()
 

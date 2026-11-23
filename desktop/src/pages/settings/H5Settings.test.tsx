@@ -141,7 +141,7 @@ it.each(['ink-blue', 'neutral-dark'])('changes browser appearance to %s without 
   fireEvent.change(screen.getByLabelText('Appearance'), { target: { value: theme } })
   expect(useUIStore.getState().theme).toBe(theme)
   expect(useUIStore.getState().followSystemTheme).toBe(false)
-  expect(window.localStorage.getItem('cc-haha-theme')).toBe(theme)
+  expect(window.localStorage.getItem('wangmai-theme')).toBe(theme)
   expect(document.documentElement.style.colorScheme).toBe('dark')
   expect(update).not.toHaveBeenCalled()
 })

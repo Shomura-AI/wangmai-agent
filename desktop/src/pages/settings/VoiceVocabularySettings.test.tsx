@@ -79,7 +79,7 @@ describe('VoiceVocabularySettings', () => {
     expect(title()).toHaveTextContent('Personal vocabulary · 0')
     expect(title()).toHaveTextContent('Takes effect once AI correction is on')
     expect(screen.getByText('No words yet')).toBeInTheDocument()
-    expect(screen.getByText(/such as a project name like cc-haha/)).toBeInTheDocument()
+    expect(screen.getByText(/such as a project name like wangmai/)).toBeInTheDocument()
     // The actions stay available before correction is on.
     expect(screen.getByRole('button', { name: 'Add' })).toBeEnabled()
     expect(screen.getByRole('button', { name: 'Paste list' })).toBeEnabled()
@@ -87,18 +87,18 @@ describe('VoiceVocabularySettings', () => {
   })
 
   it('does not show the note once correction is on', async () => {
-    await renderSection(vocabulary({ terms: [entry('cc-haha')] }))
+    await renderSection(vocabulary({ terms: [entry('wangmai')] }))
     expect(title()).not.toHaveTextContent('Takes effect once AI correction is on')
   })
 
   it('lists words with what they are heard as, the first rows first, and expands', async () => {
     const terms = Array.from({ length: VOCABULARY_VISIBLE_ROWS + 2 }, (_, index) => entry(`term-${index}`))
-    terms[0] = entry('cc-haha', ['CC杠哈哈', '西西哈哈'])
+    terms[0] = entry('wangmai', ['CC杠哈哈', '西西哈哈'])
     await renderSection(vocabulary({ terms }))
 
     expect(title()).toHaveTextContent(`Personal vocabulary · ${terms.length}`)
     expect(rows()).toHaveLength(VOCABULARY_VISIBLE_ROWS)
-    expect(rows()[0]).toHaveTextContent('cc-haha')
+    expect(rows()[0]).toHaveTextContent('wangmai')
     expect(rows()[0]).toHaveTextContent('CC杠哈哈、西西哈哈')
     expect(rows()[1]).toHaveTextContent('—')
     expect(screen.getByText(`Showing ${VOCABULARY_VISIBLE_ROWS} of ${terms.length}`)).toBeInTheDocument()
@@ -110,7 +110,7 @@ describe('VoiceVocabularySettings', () => {
   })
 
   it('searches terms and what they are heard as', async () => {
-    await renderSection(vocabulary({ terms: [entry('cc-haha', ['西西哈哈']), entry('Agent Browser', ['agent brother']), entry('JSVMP')] }))
+    await renderSection(vocabulary({ terms: [entry('wangmai', ['西西哈哈']), entry('Agent Browser', ['agent brother']), entry('JSVMP')] }))
 
     fireEvent.change(screen.getByRole('searchbox', { name: 'Search vocabulary' }), { target: { value: 'BROTHER' } })
     expect(rows().map(row => row.textContent)).toEqual([expect.stringContaining('Agent Browser')])
@@ -207,7 +207,7 @@ describe('VoiceVocabularySettings', () => {
 
   it('says when words were last added from history and offers to analyze again', async () => {
     api.historySources.mockResolvedValue({ sources: [], days: 14 })
-    await renderSection(vocabulary({ terms: [entry('cc-haha')], history: { lastRunAt: '2026-11-01T08:00:00.000Z', addedCount: 91 } }))
+    await renderSection(vocabulary({ terms: [entry('wangmai')], history: { lastRunAt: '2026-11-01T08:00:00.000Z', addedCount: 91 } }))
 
     expect(screen.getByTestId('voice-vocabulary-history')).toHaveTextContent(/Added 91 words from chat history on November 1\./)
     fireEvent.click(screen.getByRole('button', { name: 'Analyze again' }))
@@ -216,7 +216,7 @@ describe('VoiceVocabularySettings', () => {
 
   it('does not claim "added 0 words" after an analysis the user closed without adding anything', async () => {
     api.historySources.mockResolvedValue({ sources: [], days: 14 })
-    await renderSection(vocabulary({ terms: [entry('cc-haha')], history: { lastRunAt: '2026-11-01T08:00:00.000Z', addedCount: 0 } }))
+    await renderSection(vocabulary({ terms: [entry('wangmai')], history: { lastRunAt: '2026-11-01T08:00:00.000Z', addedCount: 0 } }))
 
     const footer = screen.getByTestId('voice-vocabulary-history')
     expect(footer).toHaveTextContent(/Chat history last analyzed on November 1; no words were added\./)
@@ -242,7 +242,7 @@ describe('VoiceVocabularyBulkDialog', () => {
     expect(within(dialog).getByRole('button', { name: 'Add 0' })).toBeDisabled()
 
     fireEvent.change(within(dialog).getByRole('textbox', { name: 'Vocabulary list' }), {
-      target: { value: 'cc-haha = CC杠哈哈, 西西哈哈\nJSVMP ＝ GSVMP\nModelDial\ncc-haha' },
+      target: { value: 'wangmai = CC杠哈哈, 西西哈哈\nJSVMP ＝ GSVMP\nModelDial\nwangmai' },
     })
 
     expect(screen.getByTestId('voice-vocabulary-bulk-summary')).toHaveTextContent(
@@ -252,7 +252,7 @@ describe('VoiceVocabularyBulkDialog', () => {
     fireEvent.click(within(dialog).getByRole('button', { name: 'Add 2' }))
 
     await waitFor(() => expect(api.addVocabulary).toHaveBeenCalledWith([
-      { term: 'cc-haha', aliases: ['CC杠哈哈', '西西哈哈'] },
+      { term: 'wangmai', aliases: ['CC杠哈哈', '西西哈哈'] },
       { term: 'JSVMP', aliases: ['GSVMP'] },
       { term: 'ModelDial', aliases: [] },
     ], { source: 'manual' }))

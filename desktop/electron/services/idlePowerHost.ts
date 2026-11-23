@@ -45,13 +45,13 @@ export async function createIdlePowerHost(options: {
     onChange: options.onChange,
     notifyCountdown: (countdown, seconds, cancel) => sendDesktopNotification({
       NotificationClass: options.NotificationClass,
-      options: { title: 'cc-haha', body: translate('power.countdown', { action: actionName(countdown.action), seconds }) },
+      options: { title: 'wangmai', body: translate('power.countdown', { action: actionName(countdown.action), seconds }) },
       onAction: () => cancel(),
       onLifecycle: event => { if (event === 'failed') cancel('unavailable') },
     }),
     notifyNotice: notice => {
       sendDesktopNotification({ NotificationClass: options.NotificationClass,
-        options: { title: 'cc-haha', body: translate(`power.cancelled.${notice}`) }, onAction: () => {} })
+        options: { title: 'wangmai', body: translate(`power.cancelled.${notice}`) }, onAction: () => {} })
     },
   })
   service.start()

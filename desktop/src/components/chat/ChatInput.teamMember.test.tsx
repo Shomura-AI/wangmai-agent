@@ -93,10 +93,10 @@ import { clearComposerPromptHistoryCacheForTesting } from '@/hooks/useComposerPr
 import { getComposerElement, getComposerText, setComposerText, stubRangeGeometry } from './composerTestUtils'
 import { useChatStore } from '../../stores/chatStore'
 import { useContextUsageStore } from '../../stores/contextUsageStore'
-import { useHahaDeepSeekOAuthStore } from '../../stores/hahaDeepSeekOAuthStore'
-import { useHahaGrokOAuthStore } from '../../stores/hahaGrokOAuthStore'
-import { useHahaOAuthStore } from '../../stores/hahaOAuthStore'
-import { useHahaOpenAIOAuthStore } from '../../stores/hahaOpenAIOAuthStore'
+import { useWangMaiDeepSeekOAuthStore } from '../../stores/wangmaiDeepSeekOAuthStore'
+import { useWangMaiGrokOAuthStore } from '../../stores/wangmaiGrokOAuthStore'
+import { useWangMaiOAuthStore } from '../../stores/wangmaiOAuthStore'
+import { useWangMaiOpenAIOAuthStore } from '../../stores/wangmaiOpenAIOAuthStore'
 import { useProviderStore } from '../../stores/providerStore'
 import { useSessionRuntimeStore } from '../../stores/sessionRuntimeStore'
 import { useSettingsStore } from '../../stores/settingsStore'
@@ -206,10 +206,10 @@ describe('ChatInput in a team member conversation', () => {
     useContextUsageStore.setState({ bySession: {} })
     useTeamStore.getState().clearTeam()
     useProviderStore.setState({ hasLoadedProviders: true, isLoading: false, providers: [zhipu], activeId: null })
-    useHahaOAuthStore.setState({ fetchStatus: async () => {} })
-    useHahaOpenAIOAuthStore.setState({ fetchStatus: async () => {} })
-    useHahaGrokOAuthStore.setState({ fetchStatus: async () => {} })
-    useHahaDeepSeekOAuthStore.setState({ fetchStatus: async () => {} })
+    useWangMaiOAuthStore.setState({ fetchStatus: async () => {} })
+    useWangMaiOpenAIOAuthStore.setState({ fetchStatus: async () => {} })
+    useWangMaiGrokOAuthStore.setState({ fetchStatus: async () => {} })
+    useWangMaiDeepSeekOAuthStore.setState({ fetchStatus: async () => {} })
     mocks.getMemberTranscript.mockResolvedValue({
       messages: [{
         id: 'member-reply',

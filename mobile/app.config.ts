@@ -5,7 +5,7 @@ import type { ConfigContext, ExpoConfig } from 'expo/config'
 /** Build-time Firebase client metadata; service-account private keys belong on the desktop. */
 export function withGoogleServicesFile(
   config: Partial<ExpoConfig>,
-  file = process.env.CC_HAHA_GOOGLE_SERVICES_FILE
+  file = process.env.WANGMAI_GOOGLE_SERVICES_FILE
 ): Partial<ExpoConfig> {
   if (!file) return config
   const path = resolve(file)
@@ -18,7 +18,7 @@ export function withGoogleServicesFile(
     services = JSON.parse(readFileSync(path, 'utf8'))
   } catch {
     throw new Error(
-      'CC_HAHA_GOOGLE_SERVICES_FILE 必须指向可读取的 Firebase Android 客户端 JSON'
+      'WANGMAI_GOOGLE_SERVICES_FILE 必须指向可读取的 Firebase Android 客户端 JSON'
     )
   }
   if (
@@ -64,21 +64,21 @@ export const H5_BASE_PATH = '/m'
 
 /**
  * The H5 build: the same app, served by the desktop to phone browsers under
- * {@link H5_BASE_PATH}. Expo also inlines `EXPO_PUBLIC_CC_HAHA_H5` into the
+ * {@link H5_BASE_PATH}. Expo also inlines `EXPO_PUBLIC_WANGMAI_H5` into the
  * bundle, which is how the app knows to treat the page's own computer as its
  * only one (see `src/state/h5.ts`).
  */
 export function withH5Build(
   config: Partial<ExpoConfig>,
-  environment: { EXPO_PUBLIC_CC_HAHA_H5?: string } = {
-    EXPO_PUBLIC_CC_HAHA_H5: process.env.EXPO_PUBLIC_CC_HAHA_H5,
+  environment: { EXPO_PUBLIC_WANGMAI_H5?: string } = {
+    EXPO_PUBLIC_WANGMAI_H5: process.env.EXPO_PUBLIC_WANGMAI_H5,
   }
 ): Partial<ExpoConfig> {
-  if (environment.EXPO_PUBLIC_CC_HAHA_H5 !== '1') return config
+  if (environment.EXPO_PUBLIC_WANGMAI_H5 !== '1') return config
   return {
     ...config,
     experiments: { ...config.experiments, baseUrl: H5_BASE_PATH },
-    web: { ...config.web, lang: 'zh-CN', name: 'cc-haha', themeColor: '#F4F3F0' },
+    web: { ...config.web, lang: 'zh-CN', name: 'wangmai', themeColor: '#F4F3F0' },
   }
 }
 

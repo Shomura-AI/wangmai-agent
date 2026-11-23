@@ -61,7 +61,7 @@ function stallUntilAborted({ signal }: { signal?: AbortSignal } = {}) {
 const goalHook = {
   type: 'prompt',
   prompt: [
-    '<cc-haha-goal-hook>',
+    '<wangmai-goal-hook>',
     '<goal-objective>',
     'ship the goal',
     '</goal-objective>',
@@ -97,7 +97,7 @@ describe('execPromptHook goal failures', () => {
 
     expect(result.outcome).toBe('blocking')
     expect(result.preventContinuation).toBe(true)
-    expect(result.blockingError?.command).toContain('<cc-haha-goal-hook>')
+    expect(result.blockingError?.command).toContain('<wangmai-goal-hook>')
     expect(result.blockingError?.blockingError).toContain('response was not valid JSON')
     expect(result.blockingError?.blockingError).toContain('continue working toward it')
   })
@@ -154,7 +154,7 @@ describe('execPromptHook goal failures', () => {
 
     expect(result.outcome).toBe('blocking')
     expect(result.preventContinuation).toBe(true)
-    expect(result.blockingError?.command).toContain('<cc-haha-goal-hook>')
+    expect(result.blockingError?.command).toContain('<wangmai-goal-hook>')
     expect(result.blockingError?.blockingError).toContain('evaluation timed out')
   })
 })
@@ -192,7 +192,7 @@ describe('executeStopHooks explicit prompt hook timeout', () => {
     }
 
     const blocking = results.find(result => result.blockingError)
-    expect(blocking?.blockingError?.command).toContain('<cc-haha-goal-hook>')
+    expect(blocking?.blockingError?.command).toContain('<wangmai-goal-hook>')
     expect(blocking?.blockingError?.blockingError).toContain('evaluation timed out')
     expect(blocking?.blockingError?.blockingError).toContain('continue working toward it')
   })

@@ -21,7 +21,7 @@ beforeEach(async () => {
   originalFetch = globalThis.fetch
   tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'provider-text-completion-'))
   process.env.CLAUDE_CONFIG_DIR = tmpDir
-  await fs.mkdir(path.join(tmpDir, 'cc-haha', 'traces'), { recursive: true })
+  await fs.mkdir(path.join(tmpDir, 'wangmai', 'traces'), { recursive: true })
 })
 
 afterEach(async () => {

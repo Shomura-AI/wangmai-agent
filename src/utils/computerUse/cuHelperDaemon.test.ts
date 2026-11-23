@@ -66,7 +66,7 @@ afterEach(() => {
   __resetDaemonClientForTests()
   __resetCuHelperCache()
   __resetInstalledHelperCache()
-  delete process.env.CC_HAHA_CU_HELPER_PATH
+  delete process.env.WANGMAI_CU_HELPER_PATH
 })
 
 describe('cu-helper daemon system commands', () => {
@@ -117,7 +117,7 @@ describe('cu-helper daemon system commands', () => {
     expect(
       __daemonProcessCommandsForTests(
         [101, 202],
-        '/Applications/cc-haha-computer-use.app',
+        '/Applications/wangmai-computer-use.app',
         '/tmp/cu-helper.sock',
       ),
     ).toEqual({
@@ -129,7 +129,7 @@ describe('cu-helper daemon system commands', () => {
         command: '/usr/bin/open',
         args: [
           '-n',
-          '/Applications/cc-haha-computer-use.app',
+          '/Applications/wangmai-computer-use.app',
           '--args',
           'daemon',
           '--socket',
@@ -140,7 +140,7 @@ describe('cu-helper daemon system commands', () => {
   })
 
   test('creates a private runtime directory before the native daemon binds', () => {
-    const root = mkdtempSync(path.join(tmpdir(), 'cc-haha-cu-runtime-test-'))
+    const root = mkdtempSync(path.join(tmpdir(), 'wangmai-cu-runtime-test-'))
     try {
       const runtimeDir = path.join(root, '.runtime')
       __prepareDaemonSocketDirectoryForTests(
@@ -156,7 +156,7 @@ describe('cu-helper daemon system commands', () => {
   })
 
   test('refuses a symlinked runtime directory for the owner-only socket', () => {
-    const root = mkdtempSync(path.join(tmpdir(), 'cc-haha-cu-runtime-test-'))
+    const root = mkdtempSync(path.join(tmpdir(), 'wangmai-cu-runtime-test-'))
     try {
       const actual = path.join(root, 'actual')
       const runtimeDir = path.join(root, '.runtime')
@@ -204,7 +204,7 @@ describe('cu-helper daemon failure classification', () => {
     // A bare executable can satisfy the availability probe but cannot be
     // launched as the helper .app daemon. The bridge must be allowed to use the
     // native one-shot CLI for this pre-dispatch failure.
-    process.env.CC_HAHA_CU_HELPER_PATH = '/bin/echo'
+    process.env.WANGMAI_CU_HELPER_PATH = '/bin/echo'
     __resetCuHelperCache()
     __resetInstalledHelperCache()
 

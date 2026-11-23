@@ -386,7 +386,7 @@ describe('model context window resolution', () => {
           model: 'gpt-5.6-terra',
           content: [{
             type: 'redacted_thinking',
-            data: `cc-haha:openai-reasoning:v1:${JSON.stringify({
+            data: `wangmai:openai-reasoning:v1:${JSON.stringify({
               summary: [],
               encrypted_content: 'x'.repeat(400_000),
             })}`,

@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { SessionService } from './sessionService.js'
 
 const sessionId = '90662085-722d-42b3-b9c1-4342ca05ff66'
-const environmentKeys = ['CLAUDE_CONFIG_DIR', 'CC_HAHA_LOCAL_INDEX', 'HOME', 'USERPROFILE'] as const
+const environmentKeys = ['CLAUDE_CONFIG_DIR', 'WANGMAI_LOCAL_INDEX', 'HOME', 'USERPROFILE'] as const
 let directory: string
 let transcript: string
 let service: SessionService
@@ -15,7 +15,7 @@ beforeEach(async () => {
   directory = await mkdtemp(join(tmpdir(), 'session-message-identity-'))
   previous = Object.fromEntries(environmentKeys.map(key => [key, process.env[key]]))
   process.env.CLAUDE_CONFIG_DIR = directory
-  process.env.CC_HAHA_LOCAL_INDEX = 'off'
+  process.env.WANGMAI_LOCAL_INDEX = 'off'
   process.env.HOME = directory
   process.env.USERPROFILE = directory
   const project = join(directory, 'projects', 'fixture')

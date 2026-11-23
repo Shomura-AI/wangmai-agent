@@ -25,18 +25,18 @@ describe('print mode partial output', () => {
           })
         },
       })
-      configDir = await mkdtemp(join(tmpdir(), 'cc-haha-print-partial-'))
+      configDir = await mkdtemp(join(tmpdir(), 'wangmai-print-partial-'))
 
       try {
         const child = Bun.spawn(
-          ['./bin/claude-haha', '--bare', '-p', 'Reply briefly'],
+          ['./bin/wangmai', '--bare', '-p', 'Reply briefly'],
           {
             cwd: process.cwd(),
             env: {
               ...process.env,
               NODE_ENV: 'production',
               CI: '1',
-              CC_HAHA_SKIP_DOTENV: '1',
+              WANGMAI_SKIP_DOTENV: '1',
               CLAUDE_CONFIG_DIR: configDir,
               CLAUDE_CODE_SKIP_PROMPT_HISTORY: '1',
               CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',
@@ -102,18 +102,18 @@ describe('print mode partial output', () => {
           data() {},
         },
       })
-      configDir = await mkdtemp(join(tmpdir(), 'cc-haha-print-transport-'))
+      configDir = await mkdtemp(join(tmpdir(), 'wangmai-print-transport-'))
 
       try {
         const child = Bun.spawn(
-          ['./bin/claude-haha', '--bare', '-p', 'Reply briefly'],
+          ['./bin/wangmai', '--bare', '-p', 'Reply briefly'],
           {
             cwd: process.cwd(),
             env: {
               ...process.env,
               NODE_ENV: 'production',
               CI: '1',
-              CC_HAHA_SKIP_DOTENV: '1',
+              WANGMAI_SKIP_DOTENV: '1',
               CLAUDE_CONFIG_DIR: configDir,
               CLAUDE_CODE_SKIP_PROMPT_HISTORY: '1',
               CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',

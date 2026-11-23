@@ -74,9 +74,9 @@ function isLocalProviderProxyUrl(value: string): boolean {
 }
 
 function getTraceProviderFromEnv(): TraceProviderInfo | undefined {
-  const id = readProviderEnv('CC_HAHA_TRACE_PROVIDER_ID')?.trim()
-  const name = readProviderEnv('CC_HAHA_TRACE_PROVIDER_NAME')?.trim()
-  const format = readProviderEnv('CC_HAHA_TRACE_PROVIDER_FORMAT')?.trim()
+  const id = readProviderEnv('WANGMAI_TRACE_PROVIDER_ID')?.trim()
+  const name = readProviderEnv('WANGMAI_TRACE_PROVIDER_NAME')?.trim()
+  const format = readProviderEnv('WANGMAI_TRACE_PROVIDER_FORMAT')?.trim()
   if (!id && !name && !format) return undefined
 
   return {

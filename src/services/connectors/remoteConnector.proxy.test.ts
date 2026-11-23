@@ -68,7 +68,7 @@ test('a connector check reaches its HTTPS endpoint through the host proxy (#1864
   disposeResolver = setMcpHostProxyResolver(async targetUrl => getProxyFetchOptions({ proxyUrl, targetUrl }))
   const recipe: RemoteConnectorRecipe = {
     id: 'proxy-fixture',
-    pluginId: 'office-proxy-fixture@haha-connectors',
+    pluginId: 'office-proxy-fixture@wangmai-connectors',
     version: '1.0.0',
     endpoint: `https://${UNREACHABLE_MCP_HOST}/mcp`,
     transport: 'http',
@@ -91,7 +91,7 @@ for (const transport of ['http', 'sse'] as const) {
       const proxyUrl = proxy.url
       disposeResolver = setMcpHostProxyResolver(async targetUrl => getProxyFetchOptions({ proxyUrl, targetUrl }))
       const bridge = createRemoteConnectorBridge({
-        id: 'proxy-fixture', pluginId: 'office-proxy-fixture@haha-connectors', version: '1.0.0',
+        id: 'proxy-fixture', pluginId: 'office-proxy-fixture@wangmai-connectors', version: '1.0.0',
         endpoint: `https://${UNREACHABLE_MCP_HOST}/${transport === 'sse' ? 'sse' : 'mcp'}`,
         transport, auth: { type: 'none' },
       })

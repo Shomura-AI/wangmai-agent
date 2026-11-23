@@ -13,16 +13,16 @@ let oldIndex: string | undefined
 beforeEach(async () => {
   dir = await mkdtemp(join(tmpdir(), 'session-tool-duration-'))
   oldConfig = process.env.CLAUDE_CONFIG_DIR
-  oldIndex = process.env.CC_HAHA_LOCAL_INDEX
+  oldIndex = process.env.WANGMAI_LOCAL_INDEX
   process.env.CLAUDE_CONFIG_DIR = dir
-  process.env.CC_HAHA_LOCAL_INDEX = 'off'
+  process.env.WANGMAI_LOCAL_INDEX = 'off'
 })
 
 afterEach(async () => {
   if (oldConfig === undefined) delete process.env.CLAUDE_CONFIG_DIR
   else process.env.CLAUDE_CONFIG_DIR = oldConfig
-  if (oldIndex === undefined) delete process.env.CC_HAHA_LOCAL_INDEX
-  else process.env.CC_HAHA_LOCAL_INDEX = oldIndex
+  if (oldIndex === undefined) delete process.env.WANGMAI_LOCAL_INDEX
+  else process.env.WANGMAI_LOCAL_INDEX = oldIndex
   await rm(dir, { recursive: true, force: true })
 })
 

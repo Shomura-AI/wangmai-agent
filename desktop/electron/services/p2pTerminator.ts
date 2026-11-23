@@ -2,7 +2,7 @@ import type { BrowserWindowConstructorOptions, Session } from 'electron'
 import type { DesktopPublicAccessStatus } from '../../src/lib/desktopHost/types'
 
 /** The host window's own in-memory session; nothing else uses it. */
-export const P2P_PARTITION = 'cc-haha-p2p'
+export const P2P_PARTITION = 'wangmai-p2p'
 /** How long a stopping host may take to close its peer connections before its window is destroyed. */
 export const GRACEFUL_STOP_MS = 200
 /** Quick start failures in a row before the host waits for the next update or server restart. */

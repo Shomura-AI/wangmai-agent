@@ -358,7 +358,7 @@ async function captureQueryRequest({
       })
     },
   })
-  const configDir = await mkdtemp(join(tmpdir(), 'cc-haha-required-thinking-'))
+  const configDir = await mkdtemp(join(tmpdir(), 'wangmai-required-thinking-'))
   const managedEnv = provider
     ? buildProviderManagedEnv({
         ...provider,
@@ -952,21 +952,21 @@ test('marks model defaults separately from explicit proxy output budgets', async
     env: { CLAUDE_CODE_PROVIDER_MAX_OUTPUT_TOKENS: undefined, CLAUDE_CODE_MAX_OUTPUT_TOKENS: undefined },
   })
   expect(defaults.requests[0]?.max_tokens).toBe(32_000)
-  expect(defaults.requestHeaders[0]?.get('x-cc-haha-output-budget-source')).toBe('default')
+  expect(defaults.requestHeaders[0]?.get('x-wangmai-output-budget-source')).toBe('default')
 
   const configured = await captureQueryRequest({ model: 'fixture-output-model', localProxy: true,
     configureCapabilityOverrides: false,
     env: { CLAUDE_CODE_PROVIDER_MAX_OUTPUT_TOKENS: '131072', CLAUDE_CODE_MAX_OUTPUT_TOKENS: undefined },
   })
   expect(configured.requests[0]?.max_tokens).toBe(131_072)
-  expect(configured.requestHeaders[0]?.get('x-cc-haha-output-budget-source')).toBe('explicit')
+  expect(configured.requestHeaders[0]?.get('x-wangmai-output-budget-source')).toBe('explicit')
 }, 10_000)
 
 test('does not attach internal budget provenance to direct provider requests', async () => {
   const { requestHeaders } = await captureQueryRequest({ model: 'fixture-output-model',
     configureCapabilityOverrides: false,
   })
-  expect(requestHeaders[0]?.has('x-cc-haha-output-budget-source')).toBe(false)
+  expect(requestHeaders[0]?.has('x-wangmai-output-budget-source')).toBe(false)
 }, 10_000)
 
 test('honors explicit provider output budget on direct requests without leaking provenance', async () => {
@@ -975,7 +975,7 @@ test('honors explicit provider output budget on direct requests without leaking 
     env: { CLAUDE_CODE_PROVIDER_MAX_OUTPUT_TOKENS: '131072', CLAUDE_CODE_MAX_OUTPUT_TOKENS: undefined },
   })
   expect(requests[0]?.max_tokens).toBe(131_072)
-  expect(requestHeaders[0]?.has('x-cc-haha-output-budget-source')).toBe(false)
+  expect(requestHeaders[0]?.has('x-wangmai-output-budget-source')).toBe(false)
 }, 10_000)
 
 test('invalid global output overrides fall back to the configured provider budget', async () => {
@@ -985,7 +985,7 @@ test('invalid global output overrides fall back to the configured provider budge
       env: { CLAUDE_CODE_PROVIDER_MAX_OUTPUT_TOKENS: '96000', CLAUDE_CODE_MAX_OUTPUT_TOKENS: globalBudget },
     })
     expect(result.requests[0]?.max_tokens).toBe(globalBudget === '64' ? 64 : 96_000)
-    expect(result.requestHeaders[0]?.get('x-cc-haha-output-budget-source')).toBe('explicit')
+    expect(result.requestHeaders[0]?.get('x-wangmai-output-budget-source')).toBe('explicit')
   }
 }, 10_000)
 
@@ -1243,7 +1243,7 @@ for (const budget of [1, 100, 1000, 1024, 1025, 4096]) {
       ? { type: 'disabled' }
       : { type: 'enabled', budget_tokens: Math.min(2048, budget - 1) })
     expect(requests[0]?.temperature).toBe(budget <= 1024 ? 1 : undefined)
-    expect(requestHeaders[0]?.has('x-cc-haha-output-budget-source')).toBe(false)
+    expect(requestHeaders[0]?.has('x-wangmai-output-budget-source')).toBe(false)
   })
 }
 

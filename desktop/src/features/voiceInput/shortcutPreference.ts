@@ -12,7 +12,7 @@ import {
  * Kept on this device only, like the microphone choice: the right key depends
  * on the keyboard, layout and input method in front of the user.
  */
-export const VOICE_SHORTCUT_STORAGE_KEY = 'cc-haha-voice-input-shortcut'
+export const VOICE_SHORTCUT_STORAGE_KEY = 'wangmai-voice-input-shortcut'
 
 type StoredPreference = {
   enabled: boolean

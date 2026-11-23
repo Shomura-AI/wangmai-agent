@@ -35,7 +35,7 @@ describe('withRetry invalid saved provider key', () => {
       CLAUDE_CODE_USE_VERTEX: mode === 'vertex' ? '1' : '',
     })
     const error = new APIError(401, { error: { message: 'Invalid credential' } }, undefined,
-      new Headers({ 'x-cc-haha-invalid-provider-key': 'true', 'x-should-retry': 'false' }))
+      new Headers({ 'x-wangmai-invalid-provider-key': 'true', 'x-should-retry': 'false' }))
     let attempts = 0
     const generator = withRetry(async () => ({} as Anthropic), async () => { attempts++; throw error },
       { model: 'fixture', thinkingConfig: { type: 'disabled' }, maxRetries: 1 })
@@ -53,7 +53,7 @@ describe('withRetry invalid saved provider key', () => {
 
   test('uses the current Agent route when recognizing a marked proxy error', async () => {
     const error = new APIError(401, { error: { message: 'Invalid credential' } }, undefined,
-      new Headers({ 'x-cc-haha-invalid-provider-key': 'true', 'x-should-retry': 'false' }))
+      new Headers({ 'x-wangmai-invalid-provider-key': 'true', 'x-should-retry': 'false' }))
     let attempts = 0
     const route = {
       providerId: 'fixture', providerName: 'Fixture', model: 'fixture-model',
@@ -84,7 +84,7 @@ describe('withRetry invalid saved provider key', () => {
     const previous = keys.map(key => process.env[key])
     Object.assign(process.env, { ANTHROPIC_BASE_URL: baseUrl, ANTHROPIC_API_KEY: apiKey, CLAUDE_CODE_REMOTE: '', CLAUDE_CODE_USE_VERTEX: '', CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST: managed })
     const generator = withRetry(async () => ({} as Anthropic), async () => {
-      throw new APIError(401, { error: { message: 'token expired' } }, undefined, new Headers({ 'x-cc-haha-invalid-provider-key': 'true' }))
+      throw new APIError(401, { error: { message: 'token expired' } }, undefined, new Headers({ 'x-wangmai-invalid-provider-key': 'true' }))
     }, { model: 'fixture', thinkingConfig: { type: 'disabled' }, maxRetries: 1 })
     try {
       expect((await generator.next()).done).toBe(false)
@@ -104,7 +104,7 @@ describe('withRetry invalid saved provider key', () => {
     let clients = 0
     const generator = withRetry(async () => { clients++; return {} as Anthropic }, async () => {
       if (++attempts === 1) throw new APIError(401, { error: { message: 'token expired' } }, undefined,
-        new Headers({ 'x-cc-haha-invalid-provider-key': 'true', 'retry-after': '0' }))
+        new Headers({ 'x-wangmai-invalid-provider-key': 'true', 'retry-after': '0' }))
       return 'refreshed'
     }, { model: 'fixture', thinkingConfig: { type: 'disabled' }, maxRetries: 1 })
     try {

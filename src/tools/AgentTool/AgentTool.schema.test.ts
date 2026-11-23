@@ -30,7 +30,7 @@ const originalConfigDir = process.env.CLAUDE_CONFIG_DIR
 let configDir = ''
 
 beforeEach(async () => {
-  configDir = await mkdtemp(join(tmpdir(), 'cc-haha-agent-team-preflight-'))
+  configDir = await mkdtemp(join(tmpdir(), 'wangmai-agent-team-preflight-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
 })
 
@@ -281,7 +281,7 @@ describe('AgentTool worktree isolation', () => {
   beforeEach(async () => {
     savedCwdState = getCwdState()
     savedOriginalCwd = getOriginalCwd()
-    workspaceRoot = await mkdtemp(join(tmpdir(), 'cc-haha-agent-isolation-'))
+    workspaceRoot = await mkdtemp(join(tmpdir(), 'wangmai-agent-isolation-'))
     resetSettingsCache()
     resetGitFileWatcher()
   })

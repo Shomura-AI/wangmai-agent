@@ -14,7 +14,7 @@ import { CHAT_APPEARANCE_STORAGE_KEY, migrateChatAppearance } from './chatAppear
 import { PREVENT_SLEEP_STORAGE_KEY } from './preventSleepPreference'
 
 export const CURRENT_DESKTOP_PERSISTENCE_SCHEMA_VERSION = 7
-export const DESKTOP_PERSISTENCE_VERSION_KEY = 'cc-haha.persistence.schemaVersion'
+export const DESKTOP_PERSISTENCE_VERSION_KEY = 'wangmai.persistence.schemaVersion'
 
 type DesktopMigrationReport = {
   migratedKeys: string[]
@@ -22,14 +22,14 @@ type DesktopMigrationReport = {
 
 type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
 
-const TAB_STORAGE_KEY = 'cc-haha-open-tabs'
-const SESSION_RUNTIME_STORAGE_KEY = 'cc-haha-session-runtime'
-const THEME_STORAGE_KEY = 'cc-haha-theme'
-const FOLLOW_SYSTEM_THEME_STORAGE_KEY = 'cc-haha-follow-system-theme'
-const LIGHT_THEME_STORAGE_KEY = 'cc-haha-light-theme'
-const DARK_THEME_STORAGE_KEY = 'cc-haha-dark-theme'
-const LOCALE_STORAGE_KEY = 'cc-haha-locale'
-const ACTIVE_SETTINGS_TAB_STORAGE_KEY = 'cc-haha-active-settings-tab'
+const TAB_STORAGE_KEY = 'wangmai-open-tabs'
+const SESSION_RUNTIME_STORAGE_KEY = 'wangmai-session-runtime'
+const THEME_STORAGE_KEY = 'wangmai-theme'
+const FOLLOW_SYSTEM_THEME_STORAGE_KEY = 'wangmai-follow-system-theme'
+const LIGHT_THEME_STORAGE_KEY = 'wangmai-light-theme'
+const DARK_THEME_STORAGE_KEY = 'wangmai-dark-theme'
+const LOCALE_STORAGE_KEY = 'wangmai-locale'
+const ACTIVE_SETTINGS_TAB_STORAGE_KEY = 'wangmai-active-settings-tab'
 // Schema 6 retired the standalone Trace page: its list tab, its per-session
 // tabs and its Settings rail entry. Per-session traces now live in the chat's
 // 轨迹 view, so a trace tab reopens as that session's chat tab.

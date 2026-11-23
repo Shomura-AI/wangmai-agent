@@ -21,7 +21,7 @@ afterEach(async () => {
 
 describe('plugin skill display names', () => {
   test('keeps the plugin prefix when frontmatter overrides the skill name', async () => {
-    pluginDir = await mkdtemp(join(tmpdir(), 'cc-haha-plugin-skill-'))
+    pluginDir = await mkdtemp(join(tmpdir(), 'wangmai-plugin-skill-'))
     await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true })
     await mkdir(join(pluginDir, 'skills', 'review'), { recursive: true })
     await writeFile(
@@ -56,7 +56,7 @@ describe('plugin skill display names', () => {
   })
 
   test('keeps the complete prefix when the plugin name contains a colon', async () => {
-    pluginDir = await mkdtemp(join(tmpdir(), 'cc-haha-plugin-skill-'))
+    pluginDir = await mkdtemp(join(tmpdir(), 'wangmai-plugin-skill-'))
     await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true })
     await mkdir(join(pluginDir, 'skills', 'review'), { recursive: true })
     await writeFile(
@@ -164,7 +164,7 @@ describe('plugin command discovery, namespaces, and path safety', () => {
     const { createPluginFromPath } = await import('./pluginLoader.js')
     const { loadPluginCommandsFromEnabledPlugins } = await import('./loadPluginCommands.js')
 
-    pluginDir = await mkdtemp(join(tmpdir(), 'cc-haha-plugin-fork-'))
+    pluginDir = await mkdtemp(join(tmpdir(), 'wangmai-plugin-fork-'))
     await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true })
     await mkdir(join(pluginDir, '.claude', 'commands'), { recursive: true })
     await writeFile(
@@ -199,7 +199,7 @@ describe('plugin command discovery, namespaces, and path safety', () => {
     const { createPluginFromPath } = await import('./pluginLoader.js')
     const { loadPluginCommandsFromEnabledPlugins } = await import('./loadPluginCommands.js')
 
-    const parentDir = await mkdtemp(join(tmpdir(), 'cc-haha-plugin-escape-'))
+    const parentDir = await mkdtemp(join(tmpdir(), 'wangmai-plugin-escape-'))
     pluginDir = parentDir
     const safePluginDir = join(parentDir, 'plugin')
     const outsideCommandsDir = join(parentDir, 'outside-commands')
@@ -227,7 +227,7 @@ describe('plugin command discovery, namespaces, and path safety', () => {
     const { createPluginFromPath } = await import('./pluginLoader.js')
     const { loadPluginCommandsFromEnabledPlugins } = await import('./loadPluginCommands.js')
 
-    pluginDir = await mkdtemp(join(tmpdir(), 'cc-haha-plugin-arghint-'))
+    pluginDir = await mkdtemp(join(tmpdir(), 'wangmai-plugin-arghint-'))
     await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true })
     await mkdir(join(pluginDir, 'commands'), { recursive: true })
     await writeFile(
@@ -267,7 +267,7 @@ describe('plugin command discovery, namespaces, and path safety', () => {
     const { clearInstalledPluginsCache } = await import('./installedPluginsManager.js')
     const { resetSettingsCache } = await import('../settings/settingsCache.js')
 
-    const sandbox = await mkdtemp(join(tmpdir(), 'cc-haha-market-escape-'))
+    const sandbox = await mkdtemp(join(tmpdir(), 'wangmai-market-escape-'))
     pluginDir = sandbox
     const prevHome = process.env.HOME
     const prevUserProfile = process.env.USERPROFILE

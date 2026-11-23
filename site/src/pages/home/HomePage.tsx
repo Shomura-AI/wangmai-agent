@@ -29,7 +29,7 @@ import './home.css'
 
 const VIDEO = 'https://pollen-batch-41236914.figma.site/_components/v2/f0ee2dae7671c170c34f12e31c4cb41418976c98/769c564298c132f7919405cd9f17c1b1231f341d.769c5642.mp4'
 // The film is hosted on the CDN; versioned keys keep cached copies from going stale.
-const FILM = 'https://cdn.zizhi1.com/cc-haha/site/cchaha-film-1080p-v2.mp4'
+const FILM = 'https://cdn.zizhi1.com/wangmai/site/wangmai-film-1080p-v2.mp4'
 const featureIcons: Record<FeatureId, LucideIcon> = { teams: UsersRound, 'computer-use': MousePointer2, models: Layers, workbench: PanelsTopLeft, skills: Store }
 // Real captures from the desktop app and the Android app; both locales share the Chinese interface.
 const featureImages: Record<FeatureId, string> = { teams: teamsShot, 'computer-use': computerUseShot, models: modelsShot, workbench: workbenchShot, skills: skillsShot }
@@ -82,7 +82,7 @@ function TaskPreview({ task, locale, onClose }: { task: Preview; locale: Landing
     }
   }
   return <dialog ref={ref} className="wander-dialog" aria-labelledby="task-preview-title" onCancel={onClose} onClick={event => { if (event.target === event.currentTarget) onClose() }}>
-    <div className="wander-dialog__head"><span className="wander-eyebrow">cc-haha / {en ? 'YOUR NEXT TASK' : '你的下一件事'}</span><button className="wander-icon" onClick={onClose} aria-label={en ? 'Close preview' : '关闭预览'}><X size={20} /></button></div>
+    <div className="wander-dialog__head"><span className="wander-eyebrow">wangmai / {en ? 'YOUR NEXT TASK' : '你的下一件事'}</span><button className="wander-icon" onClick={onClose} aria-label={en ? 'Close preview' : '关闭预览'}><X size={20} /></button></div>
     <h2 id="task-preview-title">{en ? 'A little plan. A real beginning.' : '把想法，变成下一步。'}</h2>
     <p className="wander-dialog__note">{en ? 'This is a workflow preview. Run your task in the desktop app with your own model.' : '这里预览工作流程。实际任务将在桌面端连接你的模型后执行。'}</p>
     <blockquote>{task.text}</blockquote>
@@ -104,7 +104,7 @@ function Nav({ locale }: { locale: LandingLocale }) {
     return () => window.removeEventListener('keydown', close)
   }, [open])
   return <header className="wander-header">
-    <a className="wander-wordmark" href={toSiteHref(en ? '/en' : '/')} aria-label="cc-haha">cc-haha</a>
+    <a className="wander-wordmark" href={toSiteHref(en ? '/en' : '/')} aria-label="wangmai">wangmai</a>
     <nav aria-label={en ? 'Main navigation' : '主导航'} id="wander-nav" className="wander-nav" data-open={open}>
       <a href="#mobile" onClick={() => setOpen(false)}>{en ? 'Phone app' : '手机 App'}</a>
       <a href="#discover" onClick={() => setOpen(false)}>{en ? 'Discover' : '发现可能'}</a>
@@ -187,16 +187,16 @@ function Film({ locale }: { locale: LandingLocale }) {
   const [started, setStarted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   useEffect(() => { if (started) videoRef.current?.focus() }, [started])
-  const posterAlt = en ? 'Frame from the cc-haha film: an Agent Team with every task finished' : 'cc-haha 宣传片画面：Agent Teams 四项任务全部完成'
+  const posterAlt = en ? 'Frame from the wangmai film: an Agent Team with every task finished' : 'wangmai 宣传片画面：Agent Teams 四项任务全部完成'
   return <section className="wander-film wander-section" id="film" aria-labelledby="film-title">
     <div className="wander-film__teaser" data-playing={started}>
       <div className="wander-film__media">
         {started
-          ? <video ref={videoRef} src={FILM} poster={filmPoster} controls autoPlay playsInline preload="metadata" aria-label={en ? 'cc-haha film' : 'cc-haha 宣传片'} />
+          ? <video ref={videoRef} src={FILM} poster={filmPoster} controls autoPlay playsInline preload="metadata" aria-label={en ? 'wangmai film' : 'wangmai 宣传片'} />
           : <button className="wander-film__start" onClick={() => setStarted(true)} aria-label={en ? 'Play the 62-second film' : '播放 62 秒宣传片'}><img src={filmPoster} alt={posterAlt} width={1600} height={900} loading="lazy" /><span className="wander-film__play"><Play size={18} /></span></button>}
       </div>
       <div className="wander-film__copy">
-        <span className="wander-eyebrow">cc-haha / {en ? 'THE FILM · 1:02' : '62 秒短片'}</span>
+        <span className="wander-eyebrow">wangmai / {en ? 'THE FILM · 1:02' : '62 秒短片'}</span>
         <h2 id="film-title">{en ? 'Want to see it move?' : '想看它动起来？'}</h2>
         <p>{en ? 'A team splits the work, you mark up the page, it works on its own cursor, and every session keeps moving.' : '组队分工、边看边批注、用自己的光标操作应用，多个会话同时推进。'}</p>
         <p className="wander-film__note">{en ? 'No narration; music and sound effects only. Demo data; on-screen times are staged.' : '无旁白，有配乐。片中为演示数据，画面中的时间为演示设定。'}</p>
@@ -217,7 +217,7 @@ function Journey({ locale }: { locale: LandingLocale }) {
     <div className="wander-journey__inner"><div className="wander-section__heading"><span className="wander-eyebrow">03 / {en ? 'THE FIRST SMALL STEP' : '从这里出发'}</span><h2 id="journey-title">{en ? <>New companion.<br />Familiar rhythm.</> : <>新搭档，<br />你的老习惯。</>}</h2><p>{en ? 'Four small steps. Then, back to the things you love.' : '只需要四小步，然后，把时间还给你喜欢的事。'}</p></div>
       <div className="wander-route"><div className="wander-route__steps" aria-label={en ? 'Getting started steps' : '上手步骤'}>{c.workflowSteps.map((item, index) => <button key={item.route} aria-pressed={index === active} onClick={() => setActive(index)}><span>0{index + 1}</span><strong>{item.title}</strong><ArrowUpRight size={17} /></button>)}</div><div className="wander-route__detail" aria-live="polite"><div className="wander-route__stamp"><Symbol size={34} strokeWidth={1.2} /></div><span className="wander-eyebrow">STEP 0{active + 1} / 04</span><h3>{step.title}</h3><p>{descriptions[active]}</p><a className="wander-primary" href={toSiteHref(step.route)}>{en ? 'Show me how' : '带我开始'}<ArrowUpRight size={17} /></a></div></div>
     </div>
-    <div className="wander-journey__caption"><span>{en ? 'LESS FRICTION. MORE FREEDOM.' : '少一点阻力，多一点自由。'}</span><span>cc-haha field notes / 02</span></div>
+    <div className="wander-journey__caption"><span>{en ? 'LESS FRICTION. MORE FREEDOM.' : '少一点阻力，多一点自由。'}</span><span>wangmai field notes / 02</span></div>
   </section>
 }
 
@@ -238,9 +238,9 @@ function Closing({ locale }: { locale: LandingLocale }) {
   const c = landingContent[locale]
   const [platform, setPlatform] = useState(() => currentDesktopPlatform() || 'macOS')
   return <footer className="wander-closing" id="download"><img className="wander-landscape" src={landscape} alt="" loading="lazy" /><div className="wander-closing__content"><span className="wander-eyebrow">{en ? 'YOUR TIME. YOUR POSSIBILITIES.' : '你的时间，你的可能。'}</span><h2>{en ? <>Your next idea<br />starts <em>here.</em></> : <>下一件想做的事，<br /><em>从这里开始。</em></>}</h2><p>{c.closing.body}</p><div className="wander-closing__groups">
-      <div className="wander-closing__group" role="group" aria-labelledby="closing-desktop"><span className="wander-closing__label" id="closing-desktop"><Laptop size={14} />{en ? 'Desktop app' : '桌面端'}</span><div className="wander-platforms" aria-label={en ? 'Choose your operating system' : '选择你的操作系统'}>{['macOS', 'Windows', 'Linux'].map((name, index) => { const Symbol = [Command, Monitor, Laptop][index]; return <button key={name} aria-pressed={platform === name} onClick={() => setPlatform(name)}><Symbol size={15} />{name}</button> })}</div><a className="wander-primary wander-download" href={DOWNLOAD_URL}><Download size={18} />{en ? `Get cc-haha for ${platform}` : `下载 ${platform} 版`}<ArrowUpRight size={18} /></a><span className="wander-closing__hint">{en ? 'Choose your architecture on GitHub Releases · Free & open source' : '前往 GitHub Releases 选择对应架构 · 免费开源'}</span></div>
+      <div className="wander-closing__group" role="group" aria-labelledby="closing-desktop"><span className="wander-closing__label" id="closing-desktop"><Laptop size={14} />{en ? 'Desktop app' : '桌面端'}</span><div className="wander-platforms" aria-label={en ? 'Choose your operating system' : '选择你的操作系统'}>{['macOS', 'Windows', 'Linux'].map((name, index) => { const Symbol = [Command, Monitor, Laptop][index]; return <button key={name} aria-pressed={platform === name} onClick={() => setPlatform(name)}><Symbol size={15} />{name}</button> })}</div><a className="wander-primary wander-download" href={DOWNLOAD_URL}><Download size={18} />{en ? `Get wangmai for ${platform}` : `下载 ${platform} 版`}<ArrowUpRight size={18} /></a><span className="wander-closing__hint">{en ? 'Choose your architecture on GitHub Releases · Free & open source' : '前往 GitHub Releases 选择对应架构 · 免费开源'}</span></div>
       <div className="wander-closing__group" role="group" aria-labelledby="closing-phone"><span className="wander-closing__label" id="closing-phone"><Smartphone size={14} />{en ? 'Phone app' : '手机 App'}</span><a className="wander-secondary wander-download" href={MOBILE_LINKS.android} aria-label={c.downloads.androidLabel}><Download size={18} />{c.downloads.android}<ArrowUpRight size={18} /></a><a className="wander-secondary wander-download" href={MOBILE_LINKS.testFlight} aria-label={c.downloads.iphoneLabel}><Smartphone size={18} />{c.downloads.iphone}<ArrowUpRight size={18} /></a><span className="wander-closing__hint">{c.downloads.requirement}</span></div>
-    </div></div><div className="wander-footer"><a className="wander-wordmark" href="#wander-title">cc-haha</a><span>{en ? 'A little more room for life.' : '给生活，多留一点空间。'}</span><nav aria-label={en ? 'Footer navigation' : '页脚导航'}><a href={toSiteHref(en ? '/en/start' : '/start')}>{en ? 'Docs' : '文档'}</a><a href={GITHUB_URL} target="_blank" rel="noreferrer"><Code2 size={14} />GitHub</a><a href={toSiteHref(en ? '/en/start/privacy' : '/start/privacy')}>{en ? 'Privacy' : '隐私'}</a><a href={toSiteHref(en ? '/' : '/en')} onClick={() => rememberLocale(en ? 'zh' : 'en')}>{en ? '中文' : 'English'}</a></nav></div></footer>
+    </div></div><div className="wander-footer"><a className="wander-wordmark" href="#wander-title">wangmai</a><span>{en ? 'A little more room for life.' : '给生活，多留一点空间。'}</span><nav aria-label={en ? 'Footer navigation' : '页脚导航'}><a href={toSiteHref(en ? '/en/start' : '/start')}>{en ? 'Docs' : '文档'}</a><a href={GITHUB_URL} target="_blank" rel="noreferrer"><Code2 size={14} />GitHub</a><a href={toSiteHref(en ? '/en/start/privacy' : '/start/privacy')}>{en ? 'Privacy' : '隐私'}</a><a href={toSiteHref(en ? '/' : '/en')} onClick={() => rememberLocale(en ? 'zh' : 'en')}>{en ? '中文' : 'English'}</a></nav></div></footer>
 }
 
 export default function HomePage({ locale = 'en' }: { locale?: LandingLocale }) {
@@ -248,7 +248,7 @@ export default function HomePage({ locale = 'en' }: { locale?: LandingLocale }) 
   const [preview, setPreview] = useState<Preview | null>(null)
   const [enlargedImage, setEnlargedImage] = useState<EnlargedImage | null>(null)
   useEffect(() => {
-    setPageMeta({ alternate: locale === 'en' ? '/' : '/en', canonical: locale === 'en' ? '/en' : '/', description: landingContent[locale].hero.description.join(locale === 'en' ? ' ' : ''), lang: locale === 'en' ? 'en' : 'zh-CN', title: locale === 'en' ? 'cc-haha — Claude Code on your desktop and in your pocket' : 'cc-haha — 把 Claude Code 装进桌面，也装进口袋' })
+    setPageMeta({ alternate: locale === 'en' ? '/' : '/en', canonical: locale === 'en' ? '/en' : '/', description: landingContent[locale].hero.description.join(locale === 'en' ? ' ' : ''), lang: locale === 'en' ? 'en' : 'zh-CN', title: locale === 'en' ? '网脉智能体 · WangMai Agent — Claude Code on your desktop and in your pocket' : '网脉智能体 · WangMai Agent — 把 Claude Code 装进桌面，也装进口袋' })
   }, [locale])
   return <div className="wander-page font-sans"><a className="u-skip" href="#main">{locale === 'en' ? 'Skip to content' : '跳到正文'}</a><main id="main" tabIndex={-1}><Hero locale={locale} paused={paused} setPaused={setPaused} /><Mobile locale={locale} onEnlarge={setEnlargedImage} /><Discover locale={locale} onEnlarge={setEnlargedImage} /><Film locale={locale} /><Journey locale={locale} /><Possibilities locale={locale} onPreview={setPreview} /><Faq locale={locale} /></main><Closing locale={locale} />{preview && <TaskPreview task={preview} locale={locale} onClose={() => setPreview(null)} />}{enlargedImage && <ImageViewer image={enlargedImage} locale={locale} onClose={() => setEnlargedImage(null)} />}</div>
 }

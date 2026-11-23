@@ -180,7 +180,7 @@ describe('release desktop workflow', () => {
         "if: matrix.smoke_platform == 'windows' && matrix.arch == 'x64'",
       )
       expect(smokeStep, workflowPath).toContain('working-directory: desktop')
-      expect(smokeStep, workflowPath).toContain("CC_HAHA_COMPILED_SIDECAR_SMOKE_STARTS: '20'")
+      expect(smokeStep, workflowPath).toContain("WANGMAI_COMPILED_SIDECAR_SMOKE_STARTS: '20'")
       expect(smokeStep, workflowPath).toContain('bun run test:compiled-sidecar-smoke')
       expect(workflow.indexOf('Build sidecars'), workflowPath).toBeLessThan(
         workflow.indexOf('Verify compiled Windows sidecar startup'),
@@ -288,7 +288,7 @@ describe('release desktop workflow', () => {
     const signedBuild = step(devSteps, 'Build signed macOS Electron app')
     expect(signedBuild.if).toBe("matrix.smoke_platform == 'macos'")
     expect(signedBuild.env).toBeUndefined()
-    expect(signedBuild.run).toContain('export CSC_KEYCHAIN="${CC_HAHA_CI_KEYCHAIN:?macOS signing keychain was not prepared}"')
+    expect(signedBuild.run).toContain('export CSC_KEYCHAIN="${WANGMAI_CI_KEYCHAIN:?macOS signing keychain was not prepared}"')
     expect(signedBuild.run).toContain(`${electronBuilderCli} -c.mac.notarize=false`)
 
     const unsignedBuild = step(devSteps, 'Build Electron app')
@@ -300,8 +300,8 @@ describe('release desktop workflow', () => {
 
     const cleanup = step(devSteps, 'Remove temporary macOS signing keychain')
     expect(cleanup.if).toBe("always() && matrix.smoke_platform == 'macos'")
-    expect(cleanup.run).toContain('security delete-keychain "$CC_HAHA_CI_KEYCHAIN"')
-    expect(cleanup.run).toContain('rm -f "$CC_HAHA_CI_CERTIFICATE"')
+    expect(cleanup.run).toContain('security delete-keychain "$WANGMAI_CI_KEYCHAIN"')
+    expect(cleanup.run).toContain('rm -f "$WANGMAI_CI_CERTIFICATE"')
     expect(indexOf('Remove temporary macOS signing keychain'))
       .toBeGreaterThan(indexOf('Verify packaged app structure'))
     expect(indexOf('Remove temporary macOS signing keychain'))
@@ -324,10 +324,10 @@ describe('release desktop workflow', () => {
     }
 
     expect(desktopPackage.description).toBeTruthy()
-    expect(desktopPackage.homepage).toBe('https://github.com/NanmiCoder/cc-haha')
-    expect(desktopPackage.author?.name).toBe('NanmiCoder')
-    expect(desktopPackage.author?.email).toBe('relakkes@gmail.com')
-    expect(desktopPackage.build?.linux?.maintainer).toBe('NanmiCoder <relakkes@gmail.com>')
+    expect(desktopPackage.homepage).toBe('https://github.com/wangmai-ai/wangmai-agent')
+    expect(desktopPackage.author?.name).toBe('wangmai-ai')
+    expect(desktopPackage.author?.email).toBe('dev@wangmai.example.com')
+    expect(desktopPackage.build?.linux?.maintainer).toBe('wangmai-ai <dev@wangmai.example.com>')
   })
 
   test('release workflow requires macOS Gatekeeper launch approval for signed builds', () => {
@@ -389,7 +389,7 @@ describe('release desktop workflow', () => {
     expect(signedBuildStep).toContain('xcrun stapler staple "$app_path"')
     expect(signedBuildStep).toContain('xcrun stapler validate "$app_path"')
     expect(signedBuildStep).toContain('spctl -a -vv -t execute "$app_path"')
-    expect(signedBuildStep).toContain('app_path="build-artifacts/electron/${{ matrix.app_bundle_dir }}/Claude Code Haha.app"')
+    expect(signedBuildStep).toContain('app_path="build-artifacts/electron/${{ matrix.app_bundle_dir }}/网脉智能体.app"')
     expect(signedBuildStep).toContain('package_args=( ${{ matrix.builder_args }} --prepackaged "$app_path" --publish never -c.mac.notarize=false )')
     expect(signedBuildStep).toContain('find build-artifacts/electron -maxdepth 1 -type f -delete')
     expect(signedBuildStep).toContain('Signed electron-builder timed out')
@@ -426,11 +426,11 @@ describe('release desktop workflow', () => {
     const signedBuildStep = extractStep(workflow, 'Build signed macOS Electron release artifacts')
     const cleanupStep = extractStep(workflow, 'Remove temporary macOS signing keychain')
 
-    expect(importIdentityStep).toContain('echo "CC_HAHA_CI_KEYCHAIN=$keychain_path" >> "$GITHUB_ENV"')
-    expect(signedBuildStep).toContain('export CSC_KEYCHAIN="${CC_HAHA_CI_KEYCHAIN:?macOS signing keychain was not prepared}"')
+    expect(importIdentityStep).toContain('echo "WANGMAI_CI_KEYCHAIN=$keychain_path" >> "$GITHUB_ENV"')
+    expect(signedBuildStep).toContain('export CSC_KEYCHAIN="${WANGMAI_CI_KEYCHAIN:?macOS signing keychain was not prepared}"')
     expect(signedBuildStep).not.toContain('CSC_LINK:')
     expect(signedBuildStep).not.toContain('CSC_KEY_PASSWORD:')
-    expect(cleanupStep).toContain('security delete-keychain "$CC_HAHA_CI_KEYCHAIN"')
+    expect(cleanupStep).toContain('security delete-keychain "$WANGMAI_CI_KEYCHAIN"')
     expect(workflow.indexOf('Import macOS signing identity for native runtimes')).toBeLessThan(
       workflow.indexOf('Build signed macOS Electron release artifacts'),
     )
@@ -610,8 +610,8 @@ describe('release desktop workflow', () => {
     expect(workflow.indexOf('Verify Windows updater config before SignPath')).toBeLessThan(
       workflow.indexOf('Stage project-owned Windows application executables'),
     )
-    expect(stageApplicationStep).toContain('Claude Code Haha.exe')
-    expect(stageApplicationStep).toContain('claude-sidecar-${{ matrix.target_triple }}.exe')
+    expect(stageApplicationStep).toContain('网脉智能体.exe')
+    expect(stageApplicationStep).toContain('wangmai-sidecar-${{ matrix.target_triple }}.exe')
     expect(stageApplicationStep).toContain('agent-desktop.exe')
     expect(stageApplicationStep).toContain('Copy-Item -LiteralPath $agentDesktopExecutable')
     expect(stageApplicationStep).not.toContain('rg.exe')
@@ -632,13 +632,13 @@ describe('release desktop workflow', () => {
     expect(restoreInstallerStep).toContain('A trusted production signature is required')
     expect(refreshMetadataStep).toContain('scripts/refresh-windows-update-metadata.ts')
     expect(refreshMetadataStep).toContain('desktop/build-artifacts/electron/latest.yml')
-    expect(applicationConfiguration).toContain('<pe-file path="Claude Code Haha.exe">')
-    expect(applicationConfiguration).toContain('<pe-file path="claude-sidecar-*.exe">')
+    expect(applicationConfiguration).toContain('<pe-file path="网脉智能体.exe">')
+    expect(applicationConfiguration).toContain('<pe-file path="wangmai-sidecar-*.exe">')
     expect(applicationConfiguration).toContain('<pe-file path="agent-desktop.exe">')
     expect(applicationConfiguration).not.toContain('rg.exe')
-    expect(installerConfiguration).toContain('<pe-file path="Claude-Code-Haha-*-Windows-*-Setup.exe">')
+    expect(installerConfiguration).toContain('<pe-file path="WangMai-Agent-*-Windows-*-Setup.exe">')
     expect(extractStep(workflow, 'Stage unsigned Windows installer')).toContain(
-      '$installerName = "Claude-Code-Haha-${{ steps.version.outputs.value }}-Windows-${{ matrix.arch }}-Setup.exe"',
+      '$installerName = "WangMai-Agent-${{ steps.version.outputs.value }}-Windows-${{ matrix.arch }}-Setup.exe"',
     )
     expect(workflow).not.toContain('WINDOWS_CERTIFICATE')
     expect(workflow).not.toContain('WINDOWS_CERTIFICATE_PASSWORD')
@@ -670,7 +670,7 @@ describe('release desktop workflow', () => {
     expect(buildJob).toContain('builder_args: --win nsis --arm64')
     expect(buildJob).toContain('builder_args: --linux AppImage deb rpm --x64')
     expect(buildJob).toContain('builder_args: --linux AppImage deb rpm --arm64')
-    expect(buildJob).toContain('Claude-Code-Haha-${APP_VERSION}-Windows-arm64-Setup.exe')
+    expect(buildJob).toContain('WangMai-Agent-${APP_VERSION}-Windows-arm64-Setup.exe')
     expect(buildJob).toContain('Upload release artifacts for final publish')
     // Blockmaps stay on the runner for package-smoke; differential updates are disabled.
     expect(extractStep(buildJob ?? '', 'Upload release artifacts for final publish')).not.toContain('*.blockmap')
@@ -731,14 +731,14 @@ describe('release desktop workflow', () => {
           env: {
             PATH: `${fakeBin}:${process.env.PATH}`,
             HOME: directory,
-            GITHUB_REPOSITORY: 'NanmiCoder/cc-haha',
+            GITHUB_REPOSITORY: 'wangmai-ai/wangmai-agent',
             FAKE_GH_MODE: scenario.mode,
             FAKE_GH_LOG: log,
           },
         })
         const output = `${result.stdout.toString()}${result.stderr.toString()}`
         expect(result.exitCode, `${scenario.mode}: ${output}`).toBe(scenario.code)
-        expect(readFileSync(log, 'utf8')).toBe("api repos/NanmiCoder/cc-haha/releases/tags/v0.7.7 --jq .draft\n")
+        expect(readFileSync(log, 'utf8')).toBe("api repos/wangmai-ai/wangmai-agent/releases/tags/v0.7.7 --jq .draft\n")
         if (scenario.mode === 'published') {
           expect(output).toContain('::error::Refusing to overwrite published release v0.7.7')
         }
@@ -820,18 +820,18 @@ describe('release desktop workflow', () => {
     }
 
     expect(releaseAssets.sort()).toEqual([
-      `Claude-Code-Haha-${version}-Linux-arm64.AppImage`,
-      `Claude-Code-Haha-${version}-Linux-arm64.deb`,
-      `Claude-Code-Haha-${version}-Linux-arm64.rpm`,
-      `Claude-Code-Haha-${version}-Linux-x64.AppImage`,
-      `Claude-Code-Haha-${version}-Linux-x64.deb`,
-      `Claude-Code-Haha-${version}-Linux-x64.rpm`,
-      `Claude-Code-Haha-${version}-Windows-arm64-Setup.exe`,
-      `Claude-Code-Haha-${version}-Windows-x64-Setup.exe`,
-      `Claude-Code-Haha-${version}-macOS-Apple-Silicon.dmg`,
-      `Claude-Code-Haha-${version}-macOS-Intel.dmg`,
-      `Claude-Code-Haha-${version}-macOS-arm64-update.zip`,
-      `Claude-Code-Haha-${version}-macOS-x64-update.zip`,
+      `WangMai-Agent-${version}-Linux-arm64.AppImage`,
+      `WangMai-Agent-${version}-Linux-arm64.deb`,
+      `WangMai-Agent-${version}-Linux-arm64.rpm`,
+      `WangMai-Agent-${version}-Linux-x64.AppImage`,
+      `WangMai-Agent-${version}-Linux-x64.deb`,
+      `WangMai-Agent-${version}-Linux-x64.rpm`,
+      `WangMai-Agent-${version}-Windows-arm64-Setup.exe`,
+      `WangMai-Agent-${version}-Windows-x64-Setup.exe`,
+      `WangMai-Agent-${version}-macOS-Apple-Silicon.dmg`,
+      `WangMai-Agent-${version}-macOS-Intel.dmg`,
+      `WangMai-Agent-${version}-macOS-arm64-update.zip`,
+      `WangMai-Agent-${version}-macOS-x64-update.zip`,
     ].sort())
     expect(listed(publishStep.match(/expected=\(([\s\S]*?)\)/)?.[1]).sort()).toEqual([...releaseAssets].sort())
 
@@ -918,8 +918,8 @@ describe('release desktop workflow', () => {
     expect(desktopPackage.build.publish).toEqual([
       {
         provider: 'github',
-        owner: 'NanmiCoder',
-        repo: 'cc-haha',
+        owner: 'wangmai-ai',
+        repo: 'wangmai',
       },
     ])
     expect(desktopPackage.build.mac?.publish).toBeUndefined()
@@ -947,7 +947,7 @@ describe('release desktop workflow', () => {
     expect(desktopPackage.build.mac?.entitlements).toBe('build/entitlements.mac.plist')
     expect(desktopPackage.build.mac?.entitlementsInherit).toBe('build/entitlements.mac.inherit.plist')
     // The Computer Use helper is excluded on purpose. `native/cu-helper/build.sh`
-    // already signed it under the stable identity `dev.cchaha.cu-helper`, and
+    // already signed it under the stable identity `dev.wangmai.cu-helper`, and
     // macOS ties the user's Accessibility and Screen Recording grants to that
     // signing identity — re-signing it here would rotate the identity and
     // silently drop both permissions on every update.
@@ -957,8 +957,8 @@ describe('release desktop workflow', () => {
     expect(desktopPackage.build.mac?.signIgnore).toEqual([
       '/Contents/Frameworks/.+\\.(?:pak|bin|dat|nib)$',
       '/Contents/Resources/.+\\.(?:asar|pak|bin|dat|icns|png|jpg|jpeg|gif|svg|ttf|woff|woff2)$',
-      'cc-haha-computer-use\\.app',
-      'claude-sidecar-[^/]+$',
+      'wangmai-computer-use\\.app',
+      'wangmai-sidecar-[^/]+$',
     ])
   })
 
@@ -968,11 +968,11 @@ describe('release desktop workflow', () => {
   // `unauthorized_client` — the settings page just said "checking…" forever.
   //
   // The causal chain: `build-sidecars.ts` signs the sidecar with an explicit
-  // `--identifier com.claude-code-haha.desktop.sidecar`, because
+  // `--identifier com.wangmai.agent.sidecar`, because
   // `ClientAttestation.swift` compares that identifier EXACTLY when it walks the
   // helper -> sidecar -> desktop process chain. If electron-builder re-signs the
   // sidecar it drops that flag, and codesign falls back to deriving the
-  // identifier from the file name (`claude-sidecar-aarch64-apple-darwin`), which
+  // identifier from the file name (`wangmai-sidecar-aarch64-apple-darwin`), which
   // never matches. So this test asserts the behaviour (real sidecar file names
   // are excluded) rather than the spelling of one array element.
   test('macOS signIgnore keeps electron-builder off the attested sidecar', () => {
@@ -986,8 +986,8 @@ describe('release desktop workflow', () => {
     // Both architectures ship under these names; ClientAttestation.swift accepts
     // exactly these two, so both must survive electron-builder's signing pass.
     for (const sidecar of [
-      '/Contents/Resources/app.asar.unpacked/src-tauri/binaries/claude-sidecar-aarch64-apple-darwin',
-      '/Contents/Resources/app.asar.unpacked/src-tauri/binaries/claude-sidecar-x86_64-apple-darwin',
+      '/Contents/Resources/app.asar.unpacked/src-tauri/binaries/wangmai-sidecar-aarch64-apple-darwin',
+      '/Contents/Resources/app.asar.unpacked/src-tauri/binaries/wangmai-sidecar-x86_64-apple-darwin',
     ]) {
       expect(
         patterns.some(p => p.test(sidecar)),
@@ -1000,10 +1000,10 @@ describe('release desktop workflow', () => {
     // ClientAttestation.swift's `sidecarIdentifier` has to move with it.
     expect(
       readFileSync('desktop/scripts/sign-identity.ts', 'utf8'),
-    ).toContain("SIDECAR_SIGNING_IDENTIFIER = 'com.claude-code-haha.desktop.sidecar'")
+    ).toContain("SIDECAR_SIGNING_IDENTIFIER = 'com.wangmai.agent.sidecar'")
     expect(
       readFileSync('native/cu-helper/Sources/cu-helper/ClientAttestation.swift', 'utf8'),
-    ).toContain('sidecarIdentifier = "com.claude-code-haha.desktop.sidecar"')
+    ).toContain('sidecarIdentifier = "com.wangmai.agent.sidecar"')
   })
 
   test('Windows NSIS installer lets users choose the install directory', () => {
@@ -1039,24 +1039,24 @@ describe('release desktop workflow', () => {
     expect(installerHook).toContain('!macro customInit')
     expect(installerHook).toContain('!macro customCheckAppRunning')
     expect(installerHook).toContain('!macro customPageAfterChangeDir')
-    expect(installerHook).toContain('UAC_AsUser_Call Function CcHahaRecoverLegacy')
+    expect(installerHook).toContain('UAC_AsUser_Call Function WangMaiRecoverLegacy')
     expect(installerHook).toContain('${UAC_IsInnerInstance}')
     expect(installerHook).toContain('recover-legacy-install-data.ps1')
     expect(installerHook).toContain('ReadRegStr $4 HKCU "${INSTALL_REGISTRY_KEY}" InstallLocation')
     expect(installerHook).toContain('ReadRegStr $5 HKLM "${INSTALL_REGISTRY_KEY}" InstallLocation')
-    expect(installerHook).toContain('Function CcHahaUninstallerParent')
-    expect(installerHook).toContain('Function CcHahaFinalInstallDir')
+    expect(installerHook).toContain('Function WangMaiUninstallerParent')
+    expect(installerHook).toContain('Function WangMaiFinalInstallDir')
     expect(installerHook).toContain('HKCU "${UNINSTALL_REGISTRY_KEY}" UninstallString')
     expect(installerHook).toContain('HKLM "${UNINSTALL_REGISTRY_KEY}" UninstallString')
     expect(installerHook).toContain('UNINSTALL_REGISTRY_KEY_2')
     expect(installerHook).toContain('ReadEnvStr $2 APPDATA')
     expect(installerHook).toContain('ReadEnvStr $3 USERPROFILE')
     expect(installerHook).toContain('ReadEnvStr $6 CLAUDE_CONFIG_DIR')
-    expect(installerHook).toContain('ReadEnvStr $7 CC_HAHA_APP_PORTABLE_DIR')
+    expect(installerHook).toContain('ReadEnvStr $7 WANGMAI_APP_PORTABLE_DIR')
     expect(installerHook).toContain('No registered installation needs legacy data recovery')
-    expect(installerHook).toContain('Var ccHahaPerUserInstallLocation')
-    expect(installerHook).toContain('Var ccHahaPerMachineInstallLocation')
-    expect(installerHook).toMatch(/!macro CcHahaRunLegacyRecovery[\s\S]*ReadRegStr \$ccHahaPerUserInstallLocation[\s\S]*\$ccHahaPerUserUninstallString == ""[\s\S]*No registered installation needs legacy data recovery[\s\S]*Call CcHahaRecoverLegacy/)
+    expect(installerHook).toContain('Var wangmaiPerUserInstallLocation')
+    expect(installerHook).toContain('Var wangmaiPerMachineInstallLocation')
+    expect(installerHook).toMatch(/!macro WangMaiRunLegacyRecovery[\s\S]*ReadRegStr \$wangmaiPerUserInstallLocation[\s\S]*\$wangmaiPerUserUninstallString == ""[\s\S]*No registered installation needs legacy data recovery[\s\S]*Call WangMaiRecoverLegacy/)
     expect(installerHook).toContain('SetErrorLevel 20')
     expect(installerHook).toContain('/SD IDOK')
     expect(installerHook).toContain('Quit')
@@ -1074,7 +1074,7 @@ describe('release desktop workflow', () => {
     expect(recoveryHelper).toContain('robocopy.exe')
     expect(recoveryHelper).not.toMatch(/\/XC|\/XN|\/XO/)
     expect(recoveryHelper).toContain('Multiple distinct legacy data sources')
-    expect(recoveryHelper).toContain('Active CLAUDE_CONFIG_DIR is managed outside Claude Code Haha')
+    expect(recoveryHelper).toContain('Active CLAUDE_CONFIG_DIR is managed outside 网脉智能体')
     expect(recoveryHelper).toContain('Test-LexicalPathAtOrBelow')
     expect(recoveryHelper).toContain('-SharedInstallDirs @($PerMachineInstallDir)')
     expect(normalizedRecoveryHelper).toContain("function Invoke-LegacyRecovery {\n  param(\n    [Parameter(Mandatory = $true)][AllowEmptyCollection()][AllowEmptyString()][string[]]$InstallDirs")
@@ -1115,9 +1115,9 @@ describe('release desktop workflow', () => {
     expect(installerSmoke).toContain('$Stage completed successfully.')
     expect(installerSmoke).toContain('Fresh install did not create the application executable')
     expect(installerSmoke).toContain('Reinstall removed the application executable')
-    expect(installerSmoke).toContain("'中文 安装目录\\Claude Code Haha'")
+    expect(installerSmoke).toContain("'中文 安装目录\\网脉智能体'")
     expect(installerSmoke).toContain('Invoke-InstalledApplicationSmoke')
-    expect(installerSmoke).toContain('CC_HAHA_ELECTRON_WINDOW_SMOKE_LOG')
+    expect(installerSmoke).toContain('WANGMAI_ELECTRON_WINDOW_SMOKE_LOG')
     expect(installerSmoke).toContain('desktop-server-state.json')
     expect(installerSmoke).toContain('"reason":"after-final-show"')
     expect(installerSmoke).toContain('"http://127.0.0.1:$port/health"')

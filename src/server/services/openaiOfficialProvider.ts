@@ -19,7 +19,7 @@ import {
   IMAGE_GENERATION_PROVIDER_KIND_ENV_KEY,
   OPENAI_IMAGE_DEFAULT_MODEL,
 } from '../../services/imageGeneration/config.js'
-import { getHahaOpenAIOAuthFilePath } from './hahaOpenAIOAuthService.js'
+import { getWangMaiOpenAIOAuthFilePath } from './wangmaiOpenAIOAuthService.js'
 import {
   OPENAI_OFFICIAL_PROVIDER_ID,
   type SavedProvider,
@@ -27,7 +27,7 @@ import {
 
 export { OPENAI_OFFICIAL_PROVIDER_ID }
 export const OPENAI_OFFICIAL_PROVIDER_NAME = 'ChatGPT Official'
-export const OPENAI_OAUTH_PROVIDER_ENV_KEY = 'CC_HAHA_OPENAI_OAUTH_PROVIDER'
+export const OPENAI_OAUTH_PROVIDER_ENV_KEY = 'WANGMAI_OPENAI_OAUTH_PROVIDER'
 export const OPENAI_CODEX_OAUTH_FILE_ENV_KEY = 'OPENAI_CODEX_OAUTH_FILE'
 
 export function isOpenAIOfficialProviderId(
@@ -87,7 +87,7 @@ export function buildOpenAIOfficialRuntimeEnv(
   }
   return {
     [OPENAI_OAUTH_PROVIDER_ENV_KEY]: '1',
-    [OPENAI_CODEX_OAUTH_FILE_ENV_KEY]: getHahaOpenAIOAuthFilePath(),
+    [OPENAI_CODEX_OAUTH_FILE_ENV_KEY]: getWangMaiOpenAIOAuthFilePath(),
     [IMAGE_GENERATION_PROVIDER_KIND_ENV_KEY]: 'openai_oauth',
     [IMAGE_GENERATION_PROVIDER_ID_ENV_KEY]: OPENAI_OFFICIAL_PROVIDER_ID,
     [IMAGE_GENERATION_MODEL_ENV_KEY]: OPENAI_IMAGE_DEFAULT_MODEL,

@@ -44,7 +44,7 @@ function context(): ToolUseContext {
 
 for (const extension of ['pdf', 'PDF']) {
   test(`automatic change checks after Write do not authorize an unseen ${extension} version`, async () => {
-    const root = await mkdtemp(join(tmpdir(), 'cc-haha-pdf-attachments-'))
+    const root = await mkdtemp(join(tmpdir(), 'wangmai-pdf-attachments-'))
     directories.push(root)
     const filePath = join(root, `report.${extension}`)
     await writeFile(filePath, asciiPDF('ORIGINAL'))
@@ -72,7 +72,7 @@ for (const extension of ['pdf', 'PDF']) {
 }
 
 test('automatic change checks still deliver external text changes after Write', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'cc-haha-text-attachments-'))
+  const root = await mkdtemp(join(tmpdir(), 'wangmai-text-attachments-'))
   directories.push(root)
   const filePath = join(root, 'report.txt')
   const ctx = context()

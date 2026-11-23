@@ -11,9 +11,9 @@ const sessionId = 'cf32fbbc-67ee-4309-b531-dd258547f320'
 
 beforeEach(async () => {
   directory = await fs.mkdtemp(join(tmpdir(), 'strict-session-existence-'))
-  previous = { config: process.env.CLAUDE_CONFIG_DIR, index: process.env.CC_HAHA_LOCAL_INDEX }
+  previous = { config: process.env.CLAUDE_CONFIG_DIR, index: process.env.WANGMAI_LOCAL_INDEX }
   process.env.CLAUDE_CONFIG_DIR = directory
-  process.env.CC_HAHA_LOCAL_INDEX = 'off'
+  process.env.WANGMAI_LOCAL_INDEX = 'off'
   service = new SessionService()
 })
 
@@ -21,8 +21,8 @@ afterEach(async () => {
   mock.restore()
   if (previous.config === undefined) delete process.env.CLAUDE_CONFIG_DIR
   else process.env.CLAUDE_CONFIG_DIR = previous.config
-  if (previous.index === undefined) delete process.env.CC_HAHA_LOCAL_INDEX
-  else process.env.CC_HAHA_LOCAL_INDEX = previous.index
+  if (previous.index === undefined) delete process.env.WANGMAI_LOCAL_INDEX
+  else process.env.WANGMAI_LOCAL_INDEX = previous.index
   await fs.rm(directory, { recursive: true, force: true })
 })
 

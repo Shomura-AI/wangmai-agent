@@ -55,7 +55,7 @@ function restoreEnv(name: string, value: string | undefined): void {
 beforeEach(async () => {
   previousSession = { id: getSessionId(), projectDir: getSessionProjectDir() }
   metadataWrites = []
-  configDir = await mkdtemp(join(tmpdir(), 'cc-haha-agent-transcript-'))
+  configDir = await mkdtemp(join(tmpdir(), 'wangmai-agent-transcript-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
   process.env.TEST_ENABLE_SESSION_PERSISTENCE = '1'
   process.env.USER_TYPE = 'external'

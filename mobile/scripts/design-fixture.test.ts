@@ -512,7 +512,7 @@ test('schedule create/pause/run/results/delete and repository branches remain ho
     ).toHaveLength(4)
     await a.client.post('/api/sessions/repository-branch', {
       name: 'feat/design-test',
-      workDir: '/fixture/cc-haha-demo',
+      workDir: '/fixture/wangmai-demo',
       from: 'main',
     })
     const branchNames = async (client: ApiClient) =>

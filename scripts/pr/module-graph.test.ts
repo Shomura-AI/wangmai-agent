@@ -12,7 +12,7 @@ import {
 } from './module-graph'
 
 function fixtureRepo(files: Record<string, string>) {
-  const root = mkdtempSync(join(tmpdir(), 'cc-haha-module-graph-'))
+  const root = mkdtempSync(join(tmpdir(), 'wangmai-module-graph-'))
   for (const [path, contents] of Object.entries(files)) {
     const full = join(root, path)
     mkdirSync(dirname(full), { recursive: true })
@@ -152,9 +152,9 @@ describe('this repository', () => {
       .toContain('desktop/electron/services/sidecarManager.ts')
     // The desktop CU worker enters the merged sidecar before normal routing.
     expect(dependentsOf(['src/utils/computerUse/replWorker.ts'], graph))
-      .toContain('desktop/sidecars/claude-sidecar.ts')
+      .toContain('desktop/sidecars/wangmai-sidecar.ts')
     expect(dependentsOf(['preload.ts'], graph))
-      .toContain('desktop/sidecars/claude-sidecar.ts')
+      .toContain('desktop/sidecars/wangmai-sidecar.ts')
   })
 
   test('resolves every repo-local module specifier so selection stays trustworthy', () => {

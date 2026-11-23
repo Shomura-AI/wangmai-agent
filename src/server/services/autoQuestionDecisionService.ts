@@ -9,8 +9,8 @@ import { anthropicToOpenaiResponses } from '../proxy/transform/anthropicToOpenai
 import type { AnthropicRequest } from '../proxy/transform/types.js'
 import { openaiResponsesStreamToAnthropicResponse } from '../proxy/streaming/openaiResponsesStreamToAnthropicResponse.js'
 import type { ProviderAuthStrategy } from '../types/provider.js'
-import { hahaOpenAIOAuthService } from './hahaOpenAIOAuthService.js'
-import { hahaGrokOAuthService } from './hahaGrokOAuthService.js'
+import { wangmaiOpenAIOAuthService } from './wangmaiOpenAIOAuthService.js'
+import { wangmaiGrokOAuthService } from './wangmaiGrokOAuthService.js'
 import {
   getNetworkProxyFetchOptions,
   loadNetworkSettings,
@@ -299,7 +299,7 @@ async function askOpenAIOfficial(
   networkSettings: NetworkSettings,
   signal: AbortSignal,
 ): Promise<string | null> {
-  const tokens = await hahaOpenAIOAuthService.ensureFreshTokens()
+  const tokens = await wangmaiOpenAIOAuthService.ensureFreshTokens()
   if (!tokens?.accessToken || signal.aborted) return null
   const mappedModel = resolveOpenAICodexModel(model)
   const requestBody = anthropicToOpenaiResponses({
@@ -333,7 +333,7 @@ async function askGrokOfficial(
   networkSettings: NetworkSettings,
   signal: AbortSignal,
 ): Promise<string | null> {
-  const tokens = await hahaGrokOAuthService.ensureFreshTokens()
+  const tokens = await wangmaiGrokOAuthService.ensureFreshTokens()
   if (!tokens?.accessToken || signal.aborted) return null
   const requestBody = anthropicToOpenaiResponses({
     ...body,

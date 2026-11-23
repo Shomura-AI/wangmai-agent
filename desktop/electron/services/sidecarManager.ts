@@ -33,8 +33,8 @@ export const SERVER_STARTUP_TIMEOUT_MS = 30_000
 export const SERVER_STARTUP_LOG_LIMIT = 80
 export const HOST_DIAGNOSTICS_LINE_LIMIT = 80
 export const HOST_DIAGNOSTICS_BYTE_LIMIT = 256 * 1024
-export const ELECTRON_DIAGNOSTICS_FILE_ENV = 'CC_HAHA_ELECTRON_DIAGNOSTICS_FILE'
-export const RIPGREP_PATH_ENV = 'CC_HAHA_RIPGREP_PATH'
+export const ELECTRON_DIAGNOSTICS_FILE_ENV = 'WANGMAI_ELECTRON_DIAGNOSTICS_FILE'
+export const RIPGREP_PATH_ENV = 'WANGMAI_RIPGREP_PATH'
 const HOST_DIAGNOSTICS_LINE_BYTE_LIMIT = 4096
 // Shared with the Tauri shell (src-tauri/src/lib.rs) so both desktop builds
 // reuse the same sticky port across restarts (issue #767).
@@ -65,8 +65,8 @@ const PROXY_ENV_KEYS = [
   'ALL_PROXY',
   'all_proxy',
 ] as const
-export const SYSTEM_PROXY_BRIDGE_ENV = 'CC_HAHA_SYSTEM_PROXY_URL'
-export const SYSTEM_PROXY_ERROR_ENV = 'CC_HAHA_SYSTEM_PROXY_ERROR'
+export const SYSTEM_PROXY_BRIDGE_ENV = 'WANGMAI_SYSTEM_PROXY_URL'
+export const SYSTEM_PROXY_ERROR_ENV = 'WANGMAI_SYSTEM_PROXY_ERROR'
 const LOOPBACK_NO_PROXY_ENTRIES = ['localhost', '127.0.0.1', '::1'] as const
 
 export function resolveHostTriple(platform = process.platform, arch = process.arch): string {
@@ -80,7 +80,7 @@ export function resolveHostTriple(platform = process.platform, arch = process.ar
 }
 
 export function resolveSidecarExecutable(desktopRoot: string, triple = resolveHostTriple()): string {
-  const base = path.join(desktopRoot, 'src-tauri', 'binaries', `claude-sidecar-${triple}`)
+  const base = path.join(desktopRoot, 'src-tauri', 'binaries', `wangmai-sidecar-${triple}`)
   return process.platform === 'win32' ? `${base}.exe` : base
 }
 
@@ -206,10 +206,10 @@ export function electronHostDiagnosticsFile(
   env: NodeJS.ProcessEnv = process.env,
   homeDir = os.homedir(),
 ): string {
-  return path.join(claudeConfigDir(env, homeDir), 'cc-haha', 'diagnostics', 'electron-host.log')
+  return path.join(claudeConfigDir(env, homeDir), 'wangmai', 'diagnostics', 'electron-host.log')
 }
 
-/** Parse h5Access.fixedPort out of cc-haha/settings.json contents. */
+/** Parse h5Access.fixedPort out of wangmai/settings.json contents. */
 export function parseH5FixedPort(contents: string): number | null {
   let value: unknown
   try {
@@ -227,7 +227,7 @@ export function parseH5FixedPort(contents: string): number | null {
 
 export function readH5FixedPort(env: NodeJS.ProcessEnv = process.env): number | null {
   try {
-    const settingsPath = path.join(claudeConfigDir(env), 'cc-haha', 'settings.json')
+    const settingsPath = path.join(claudeConfigDir(env), 'wangmai', 'settings.json')
     return parseH5FixedPort(readFileSync(settingsPath, 'utf-8'))
   } catch {
     return null
@@ -429,7 +429,7 @@ export function appendHostDiagnostic(
 function ensurePrivateHostDiagnosticsDirectory(directory: string): void {
   const parent = path.dirname(directory)
   const rootBoundary = path.basename(directory) === 'diagnostics' &&
-      path.basename(parent) === 'cc-haha'
+      path.basename(parent) === 'wangmai'
     ? path.dirname(parent)
     : parent
   mkdirSync(rootBoundary, { recursive: true, mode: 0o700 })
@@ -695,7 +695,7 @@ export function createServerPlan({
   }
 }
 
-/** IM adapters the sidecar can start; mirrors `ADAPTERS` in claude-sidecar.ts. */
+/** IM adapters the sidecar can start; mirrors `ADAPTERS` in wangmai-sidecar.ts. */
 export const ADAPTER_FLAGS = [
   '--feishu',
   '--telegram',
@@ -748,14 +748,14 @@ export function spawnSidecar(plan: SidecarPlan, deps: SpawnSidecarDeps = {}): Si
   try {
     return (deps.spawnFn ?? spawn)(plan.command, plan.args, {
       env: plan.env,
-      stdio: [plan.env.CC_HAHA_MIGRATION_CONTROL === '1' && plan.args[0] === 'adapters' ? 'pipe' : 'ignore', 'pipe', 'pipe'],
+      stdio: [plan.env.WANGMAI_MIGRATION_CONTROL === '1' && plan.args[0] === 'adapters' ? 'pipe' : 'ignore', 'pipe', 'pipe'],
       windowsHide: true,
     }) as SidecarChild
   } catch (error) {
     const code = (error as NodeJS.ErrnoException | null)?.code
     if (typeof code !== 'string' || !UNEXECUTABLE_SIDECAR_ERROR_CODES.has(code)) throw error
     throw new Error(
-      `Electron sidecar could not be executed (${code}): ${plan.command}. The file may be damaged, incomplete, or blocked by security software. Reinstall Claude Code Haha with the full installer, and allow its install directory in your security software if this keeps happening.`,
+      `Electron sidecar could not be executed (${code}): ${plan.command}. The file may be damaged, incomplete, or blocked by security software. Reinstall 网脉智能体 with the full installer, and allow its install directory in your security software if this keeps happening.`,
       { cause: error },
     )
   }

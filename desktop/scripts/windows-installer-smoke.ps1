@@ -25,19 +25,19 @@ try {
 
 $resolvedArtifactsDir = (Resolve-Path -LiteralPath $ArtifactsDir).Path
 $installers = @(Get-ChildItem -LiteralPath $resolvedArtifactsDir -File |
-  Where-Object { $_.Name -like "Claude-Code-Haha-*-Windows-$Arch-Setup.exe" })
+  Where-Object { $_.Name -like "WangMai-Agent-*-Windows-$Arch-Setup.exe" })
 if ($installers.Count -ne 1) {
   throw "Expected exactly one Windows $Arch installer in $resolvedArtifactsDir, found $($installers.Count)."
 }
 $installer = $installers[0].FullName
 
-$testRoot = Join-Path ([IO.Path]::GetTempPath()) "cc-haha-installer-smoke-$([Guid]::NewGuid().ToString('N'))"
-$installDir = Join-Path $testRoot '中文 安装目录\Claude Code Haha'
+$testRoot = Join-Path ([IO.Path]::GetTempPath()) "wangmai-installer-smoke-$([Guid]::NewGuid().ToString('N'))"
+$installDir = Join-Path $testRoot '中文 安装目录\网脉智能体'
 $appData = Join-Path $testRoot 'AppData\Roaming'
 $localAppData = Join-Path $testRoot 'AppData\Local'
 $userProfile = Join-Path $testRoot 'UserProfile'
-$appExe = Join-Path $installDir 'Claude Code Haha.exe'
-$uninstaller = Join-Path $installDir 'Uninstall Claude Code Haha.exe'
+$appExe = Join-Path $installDir '网脉智能体.exe'
+$uninstaller = Join-Path $installDir 'Uninstall 网脉智能体.exe'
 $recoveryHelper = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\build\recover-legacy-install-data.ps1')).Path
 $processHelper = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\build\check-install-processes.ps1')).Path
 $siblingProcess = $null
@@ -45,7 +45,7 @@ $installProcess = $null
 $bundledHelperProcess = $null
 
 $savedEnvironment = @{}
-foreach ($name in @('APPDATA', 'LOCALAPPDATA', 'USERPROFILE', 'CLAUDE_CONFIG_DIR', 'CC_HAHA_APP_PORTABLE_DIR', 'COMPLUS_Version')) {
+foreach ($name in @('APPDATA', 'LOCALAPPDATA', 'USERPROFILE', 'CLAUDE_CONFIG_DIR', 'WANGMAI_APP_PORTABLE_DIR', 'COMPLUS_Version')) {
   $savedEnvironment[$name] = [Environment]::GetEnvironmentVariable($name, 'Process')
 }
 
@@ -118,15 +118,15 @@ function Test-IsProcessElevated {
 }
 
 # The exact image names installer.nsh falls back to when PowerShell is
-# unavailable (see CcHahaFindInstallProcess's findstr list). Without a CLR the
+# unavailable (see WangMaiFindInstallProcess's findstr list). Without a CLR the
 # installer cannot resolve paths, so it matches on these names alone and any
 # process carrying one -- whoever started it -- reads as "the app is still
 # running". Keep this in sync with installer.nsh.
 $installerFallbackImageNames = @(
-  'Claude Code Haha.exe',
-  'claude-sidecar-x86_64-pc-windows-msvc.exe',
-  'claude-sidecar-aarch64-pc-windows-msvc.exe',
-  'claude-sidecar.exe',
+  '网脉智能体.exe',
+  'wangmai-sidecar-x86_64-pc-windows-msvc.exe',
+  'wangmai-sidecar-aarch64-pc-windows-msvc.exe',
+  'wangmai-sidecar.exe',
   'OpenConsole.exe',
   'winpty-agent.exe',
   'rg.exe'
@@ -265,10 +265,10 @@ function Invoke-InstalledApplicationSmoke {
   $configDir = Join-Path $IsolatedUserProfile '.claude'
   $serverStateFile = Join-Path $configDir 'desktop-server-state.json'
   $windowLog = Join-Path $testRoot 'electron-window-smoke.jsonl'
-  $hostDiagnostics = Join-Path $configDir 'cc-haha\diagnostics\electron-host.log'
+  $hostDiagnostics = Join-Path $configDir 'wangmai\diagnostics\electron-host.log'
   $smokeEnvironmentNames = @(
     'CLAUDE_CONFIG_DIR',
-    'CC_HAHA_ELECTRON_WINDOW_SMOKE_LOG',
+    'WANGMAI_ELECTRON_WINDOW_SMOKE_LOG',
     'HOME',
     'CI',
     'NO_PROXY',
@@ -283,7 +283,7 @@ function Invoke-InstalledApplicationSmoke {
   try {
     New-Item -ItemType Directory -Path $configDir -Force | Out-Null
     $env:CLAUDE_CONFIG_DIR = $configDir
-    $env:CC_HAHA_ELECTRON_WINDOW_SMOKE_LOG = $windowLog
+    $env:WANGMAI_ELECTRON_WINDOW_SMOKE_LOG = $windowLog
     $env:HOME = $IsolatedUserProfile
     Remove-Item Env:CI -ErrorAction SilentlyContinue
     $env:NO_PROXY = '127.0.0.1,localhost,::1'
@@ -350,7 +350,7 @@ function Invoke-InstalledApplicationSmoke {
             -Stage 'Installed application Unicode-path smoke cleanup' `
             -Arguments @(
               '-InstallDir', $InstallDirectory,
-              '-ProcessName', 'Claude Code Haha.exe',
+              '-ProcessName', '网脉智能体.exe',
               '-Action', 'KillForce',
               '-InstallerPid', [string]$PID,
               '-InstallerParentPid', '0'
@@ -391,11 +391,11 @@ function Invoke-LegacyRecoveryDiagnostic {
     '-CandidateInstallDir',
     $installDir,
     '-UserDataDir',
-    (Join-Path $appData 'Claude Code Haha'),
+    (Join-Path $appData '网脉智能体'),
     '-RecoveryRoot',
-    (Join-Path $userProfile 'Claude Code Haha Data\Recovered'),
+    (Join-Path $userProfile '网脉智能体 Data\Recovered'),
     '-ProcessName',
-    'Claude Code Haha.exe',
+    '网脉智能体.exe',
     '-InstallerIdentitySafety',
     'trusted-user'
   )
@@ -418,7 +418,7 @@ try {
   $env:LOCALAPPDATA = $localAppData
   $env:USERPROFILE = $userProfile
   Remove-Item Env:CLAUDE_CONFIG_DIR -ErrorAction SilentlyContinue
-  Remove-Item Env:CC_HAHA_APP_PORTABLE_DIR -ErrorAction SilentlyContinue
+  Remove-Item Env:WANGMAI_APP_PORTABLE_DIR -ErrorAction SilentlyContinue
 
   # Baseline before anything here starts a process. Whatever this prints was put
   # there by earlier steps of the job or by the runner image, and it is exactly
@@ -436,7 +436,7 @@ try {
 
   $processProbeSource = Join-Path $env:SystemRoot 'System32\ping.exe'
   $siblingDir = "$installDir Tools"
-  $siblingProbe = Join-Path $siblingDir 'Claude Code Haha.exe'
+  $siblingProbe = Join-Path $siblingDir '网脉智能体.exe'
   New-Item -ItemType Directory -Path $siblingDir -Force | Out-Null
   Copy-Item -LiteralPath $processProbeSource -Destination $siblingProbe
   $siblingProcess = Start-Process -FilePath $siblingProbe -ArgumentList @('-t', '127.0.0.1') -PassThru
@@ -456,7 +456,7 @@ try {
     -ExpectedExitCode 0 `
     -Arguments @(
       '-InstallDir', $installDir,
-      '-ProcessName', 'Claude Code Haha.exe',
+      '-ProcessName', '网脉智能体.exe',
       '-Action', 'Find',
       '-InstallerPid', [string]$PID,
       '-InstallerParentPid', [string]$installProcess.Id

@@ -22,7 +22,7 @@ beforeEach(async () => {
   restores.push(() => home.mockRestore())
   savedEnv = { ...process.env }
   const environment = createSandboxedTestEnvironment(root, {
-    CC_HAHA_LOCAL_INDEX: 'off',
+    WANGMAI_LOCAL_INDEX: 'off',
     CLAUDE_CLI_PATH: join(root, 'fixture-cli.ts'),
   })
   for (const key of Object.keys(process.env)) delete process.env[key]

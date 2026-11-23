@@ -60,7 +60,7 @@ const BOUNDARY_CASES: Case[] = [
 
   // ─── other non-paths ───────────────────────────────────────────────────────
   { input: 'example.com', path: null, why: 'TLD is not an extension' },
-  { input: 'cchaha.ai', path: null, why: 'TLD is not an extension' },
+  { input: 'wangmai.example.com', path: null, why: 'TLD is not an extension' },
   { input: 'v0.5.0', path: null, why: 'version number' },
   { input: '1.2.3', path: null, why: 'version number' },
   { input: '@types/node', path: null, why: 'package name, no extension' },
@@ -217,11 +217,11 @@ describe('splitTextByFilePaths', () => {
 describe('matchGitHubRef', () => {
   it('reads the owner/repo#123 form the prompt asks for', () => {
     // src/constants/prompts.ts:438 — "so they render as clickable links".
-    expect(matchGitHubRef('NanmiCoder/cc-haha#1146')).toMatchObject({
-      owner: 'NanmiCoder',
-      repo: 'cc-haha',
+    expect(matchGitHubRef('wangmai-ai/wangmai-agent#1146')).toMatchObject({
+      owner: 'wangmai-ai',
+      repo: 'wangmai',
       number: 1146,
-      url: 'https://github.com/NanmiCoder/cc-haha/issues/1146',
+      url: 'https://github.com/wangmai-ai/wangmai-agent/issues/1146',
     })
   })
 
@@ -236,8 +236,8 @@ describe('matchGitHubRef', () => {
   })
 
   it('is picked over the path matcher when splitting prose', () => {
-    const segments = splitTextByFilePaths('见 NanmiCoder/cc-haha#1146 和 src/app.ts:4')
-    expect(segments.filter((s) => s.type === 'github').map((s) => s.value)).toEqual(['NanmiCoder/cc-haha#1146'])
+    const segments = splitTextByFilePaths('见 wangmai-ai/wangmai-agent#1146 和 src/app.ts:4')
+    expect(segments.filter((s) => s.type === 'github').map((s) => s.value)).toEqual(['wangmai-ai/wangmai-agent#1146'])
     expect(segments.filter((s) => s.type === 'path').map((s) => s.value)).toEqual(['src/app.ts:4'])
   })
 })
@@ -270,8 +270,8 @@ describe('parseFilePathRef / isFilePathOnly', () => {
   })
 
   it('keeps a spaced code span a command, while the same text as an href is a path (#1556)', () => {
-    expect(parseFilePathRef('D:/cchaha/cchaha d/记忆.md')).toBeNull()
-    expect(parseFileHref('D:/cchaha/cchaha d/记忆.md')?.path).toBe('D:/cchaha/cchaha d/记忆.md')
+    expect(parseFilePathRef('D:/wangmai/wangmai d/记忆.md')).toBeNull()
+    expect(parseFileHref('D:/wangmai/wangmai d/记忆.md')?.path).toBe('D:/wangmai/wangmai d/记忆.md')
     expect(parseFileHref('src/My File.ts#L7')).toMatchObject({ path: 'src/My File.ts', line: 7 })
     expect(parseFileHref('notes about plan')).toBeNull()
     expect(parseFileHref('a.md?b')).toBeNull()

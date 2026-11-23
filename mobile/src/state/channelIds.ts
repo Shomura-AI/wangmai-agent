@@ -2,11 +2,11 @@
  * Android 通知渠道 id。电脑推送按事件类型选渠道：登记时带 `delivery.channels = 'split'`
  * 的新版本手机用下面三个，旧版本仍用单一的 legacy 渠道。
  */
-export const LEGACY_CHANNEL_ID = 'cc-haha'
+export const LEGACY_CHANNEL_ID = 'wangmai'
 export const CHANNEL_IDS = {
-  decisions: 'cc-haha-decisions',
-  completed: 'cc-haha-completed',
-  errors: 'cc-haha-errors',
+  decisions: 'wangmai-decisions',
+  completed: 'wangmai-completed',
+  errors: 'wangmai-errors',
 } as const
 export type ChannelKind = keyof typeof CHANNEL_IDS
 

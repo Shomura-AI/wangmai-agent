@@ -1,6 +1,6 @@
-# cc-haha 移动端
+# 网脉智能体 移动端
 
-React Native / Expo 58 / Expo Router 的 iOS、Android 客户端。按「cc-haha 移动端主题提案」重做界面和功能分工：手机负责收到提醒、做决定、派任务、查看结果和及时停止；模型执行、仓库和配置保留在电脑上。
+React Native / Expo 58 / Expo Router 的 iOS、Android 客户端。按「wangmai 移动端主题提案」重做界面和功能分工：手机负责收到提醒、做决定、派任务、查看结果和及时停止；模型执行、仓库和配置保留在电脑上。
 
 ## 页面与真实行为
 
@@ -37,9 +37,9 @@ bun run android
 
 原生目录由 Expo 根据 `app.json`、`app.config.ts` 和配置插件生成，禁止手工维护生成的 `ios/`、`android/`。原生依赖或配置变化后需要重新构建。
 
-Android 必须使用独立构建：`plugins/withPinnedWebSockets.js` 关闭 WebSocket 的自动跨地址重定向；Expo Go 不具备该保护，代码会阻止其连接。同一插件在 React 启动前给 `expo/fetch` 和 WebSocket 装上 `modules/cchaha-network`：系统解析结果全部落在 Cloudflare 网段的主机名（Quick Tunnel、用户自己的 Cloudflare 域名）会在解析结果和内置的 Cloudflare 入口地址间错峰竞速 TCP 连接，避开运营商临时丢弃的个别地址；其他主机名照常解析、不做探测。竞速逻辑的 JVM 单测：`./android/gradlew -p android :cchaha-network:testDebugUnitTest`。网页 `bun run web` 仅用于布局和协议检查，凭据仅保存在页面内存；刷新后需重新连接，不能替代原生验收。
+Android 必须使用独立构建：`plugins/withPinnedWebSockets.js` 关闭 WebSocket 的自动跨地址重定向；Expo Go 不具备该保护，代码会阻止其连接。同一插件在 React 启动前给 `expo/fetch` 和 WebSocket 装上 `modules/wangmai-network`：系统解析结果全部落在 Cloudflare 网段的主机名（Quick Tunnel、用户自己的 Cloudflare 域名）会在解析结果和内置的 Cloudflare 入口地址间错峰竞速 TCP 连接，避开运营商临时丢弃的个别地址；其他主机名照常解析、不做探测。竞速逻辑的 JVM 单测：`./android/gradlew -p android :wangmai-network:testDebugUnitTest`。网页 `bun run web` 仅用于布局和协议检查，凭据仅保存在页面内存；刷新后需重新连接，不能替代原生验收。
 
-同一套界面也是手机浏览器的 H5：桌面 `bun run build` 调用 `bun run export:h5`，以 `EXPO_PUBLIC_CC_HAHA_H5=1` 导出到 `desktop/dist/m`，由桌面服务端托管在 `/m/`。H5 只连接托管它的电脑（`src/state/h5.ts`），沿用桌面 H5 入口验证过的令牌或远程设备 Cookie；扫码、多台电脑、推送和锁屏实时活动不进入 H5，文件改为浏览器下载。expo-router 在子路径下会把 `/member`、`/models` 误剥成 `/ember`、`/odels`，`patches/expo-router@58.0.25.patch` 修正了这一点；升级 expo-router 时用 `src/core/h5BasePath.test.ts` 确认是否还需要它。
+同一套界面也是手机浏览器的 H5：桌面 `bun run build` 调用 `bun run export:h5`，以 `EXPO_PUBLIC_WANGMAI_H5=1` 导出到 `desktop/dist/m`，由桌面服务端托管在 `/m/`。H5 只连接托管它的电脑（`src/state/h5.ts`），沿用桌面 H5 入口验证过的令牌或远程设备 Cookie；扫码、多台电脑、推送和锁屏实时活动不进入 H5，文件改为浏览器下载。expo-router 在子路径下会把 `/member`、`/models` 误剥成 `/ember`、`/odels`，`patches/expo-router@58.0.25.patch` 修正了这一点；升级 expo-router 时用 `src/core/h5BasePath.test.ts` 确认是否还需要它。
 
 Release 模拟器构建可运行 `bunx expo run:ios --configuration Release`。直接调用 `xcodebuild` 时应保留正常的模拟器代码签名；完全关闭签名会使 SecureStore / Keychain 不能保存连接凭据。模拟器 `.app` 不能作为手机 IPA 安装。
 
@@ -84,7 +84,7 @@ bunx expo prebuild --platform android --no-install
 详见 [PUSH_NOTIFICATIONS.md](PUSH_NOTIFICATIONS.md)。前台本地提醒、系统通知授权和后台远程推送是不同路径。没有 APNs / FCM 配置时，设置页会明确提示，不能据此声称后台远程投递成功。
 
 - iOS：构建包含通知与 ActivityKit entitlement，桌面端显式配置 APNs 密钥、Team ID、Key ID、topic 及环境。私钥不进入手机或仓库。
-- Android：构建前设置 `CC_HAHA_GOOGLE_SERVICES_FILE=/绝对路径/google-services.json`，文件必须含 `app.cchaha.mobile` 的 Firebase 客户端；重新 prebuild / 构建。桌面另需 FCM 服务账户。这两个 JSON 用途不同，不能互相代替。参见 [Expo 官方配置说明](https://docs.expo.dev/push-notifications/fcm-credentials/)。
+- Android：构建前设置 `WANGMAI_GOOGLE_SERVICES_FILE=/绝对路径/google-services.json`，文件必须含 `app.wangmai.mobile` 的 Firebase 客户端；重新 prebuild / 构建。桌面另需 FCM 服务账户。这两个 JSON 用途不同，不能互相代替。参见 [Expo 官方配置说明](https://docs.expo.dev/push-notifications/fcm-credentials/)。
 - 服务端登记按设备权限、偏好、勿扰时段与期限校验；令牌加密保存。推送不携带模型密钥。通知按钮会重新验证审批，AskUserQuestion 和计划不能被普通「允许」动作替代。
 
 ## 验证

@@ -6,7 +6,7 @@ diff --git a/android/src/main/java/expo/modules/camera/CameraViewModule.kt b/and
  
      AsyncFunction("scanFromURLAsync") { url: String, barcodeTypes: List<BarcodeType>, promise: Promise ->
 -      if (!CameraUtils.isMLKitAvailable(appContext.reactContext)) {
-+      // cc-haha: image decoding uses the bundled ML Kit model, just like the
++      // wangmai: image decoding uses the bundled ML Kit model, just like the
 +      // camera analyzer. It does not need the Play Store / Google Code Scanner.
 +      if (!CameraUtils.isMLKitBarcodeScannerAvailable()) {
          promise.reject(CameraExceptions.MLKitUnavailableException())

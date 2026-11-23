@@ -35,7 +35,7 @@ function denied(): never {
   throw new DOMException('The operation is insecure.', 'SecurityError')
 }
 
-type FakeWindow = Record<string, unknown> & { __CC_HAHA_MEMORY_STORAGE__?: string[] }
+type FakeWindow = Record<string, unknown> & { __WANGMAI_MEMORY_STORAGE__?: string[] }
 
 function windowWith(local: () => unknown, session: () => unknown): FakeWindow {
   const win: FakeWindow = {}
@@ -52,17 +52,17 @@ function run(win: FakeWindow) {
 
 describe('index.html storage fallback', () => {
   it('leaves readable storage untouched, including Electron and every normal browser', () => {
-    const local = realStorage({ 'cc-haha-theme': 'dark' })
+    const local = realStorage({ 'wangmai-theme': 'dark' })
     const session = realStorage()
     const win = run(windowWith(() => local, () => session))
     expect(win.localStorage).toBe(local)
     expect(win.sessionStorage).toBe(session)
-    expect(win.__CC_HAHA_MEMORY_STORAGE__).toBeUndefined()
+    expect(win.__WANGMAI_MEMORY_STORAGE__).toBeUndefined()
     expect(isLocalStoragePersistent(win)).toBe(true)
   })
 
   it('keeps storage that reads but cannot be written, so what is already saved stays visible', () => {
-    const local = realStorage({ 'cc-haha-h5-token': 'h5_saved' }, { failWrites: true })
+    const local = realStorage({ 'wangmai-h5-token': 'h5_saved' }, { failWrites: true })
     const win = run(windowWith(() => local, () => realStorage()))
     expect(win.localStorage).toBe(local)
     expect(isLocalStoragePersistent(win)).toBe(true)
@@ -70,7 +70,7 @@ describe('index.html storage fallback', () => {
 
   it('swaps a denied storage for a working in-memory one and says so', () => {
     const win = run(windowWith(denied, denied))
-    expect(win.__CC_HAHA_MEMORY_STORAGE__).toEqual(['localStorage', 'sessionStorage'])
+    expect(win.__WANGMAI_MEMORY_STORAGE__).toEqual(['localStorage', 'sessionStorage'])
     expect(isLocalStoragePersistent(win)).toBe(false)
 
     const local = win.localStorage as Storage
@@ -91,7 +91,7 @@ describe('index.html storage fallback', () => {
 
   it('also swaps a storage object whose reads throw', () => {
     const win = run(windowWith(() => ({ getItem: denied }), () => realStorage()))
-    expect(win.__CC_HAHA_MEMORY_STORAGE__).toEqual(['localStorage'])
+    expect(win.__WANGMAI_MEMORY_STORAGE__).toEqual(['localStorage'])
     expect((win.localStorage as Storage).getItem('x')).toBeNull()
   })
 })

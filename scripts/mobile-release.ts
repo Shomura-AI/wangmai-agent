@@ -33,7 +33,7 @@ export function parseDelivery(value: unknown): Delivery {
     || !sha.test(item.commit) || !digest.test(item.fingerprint) || !semver.test(item.version)
     || !/^[a-f0-9-]{36}$/.test(item.buildId) || !Number.isFinite(Date.parse(item.deliveredAt))
     || item.destination !== (item.platform === 'ios' ? 'app-store-connect' : 'github-release')
-    || (item.platform === 'android' && (!item.asset || !/^cc-haha-mobile-[\w.-]+\.apk$/.test(item.asset) || !digest.test(item.sha256 ?? '')))) {
+    || (item.platform === 'android' && (!item.asset || !/^wangmai-mobile-[\w.-]+\.apk$/.test(item.asset) || !digest.test(item.sha256 ?? '')))) {
     throw new Error('Invalid mobile delivery manifest')
   }
   return item
@@ -135,7 +135,7 @@ export async function carryForwardApk(previous: Delivery, effects: { download: (
 }
 
 export function buildMessage(platform: Platform, fingerprint: string) {
-  return `cc-haha-release:${platform}:${fingerprint}`
+  return `wangmai-release:${platform}:${fingerprint}`
 }
 
 export function selectReusableBuild(builds: Build[], input: { platform: Platform, commit: string, fingerprint: string, version: string }) {
@@ -281,7 +281,7 @@ async function main() {
         if (!response.ok) throw new Error(`APK download failed: ${response.status}`)
         const bytes = new Uint8Array(await response.arrayBuffer())
         if (bytes[0] !== 0x50 || bytes[1] !== 0x4b) throw new Error('EAS artifact is not an APK archive')
-        const asset = `cc-haha-mobile-${version}-${finished.id}.apk`
+        const asset = `wangmai-mobile-${version}-${finished.id}.apk`
         const path = resolve(outputDir, asset)
         writeFileSync(path, bytes)
         const entries = (await command(['unzip', '-Z1', path], root)).split('\n')

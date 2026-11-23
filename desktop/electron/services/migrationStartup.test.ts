@@ -24,7 +24,7 @@ function startupFixture(
     async failValidation() { step('rollback'); if (failure === 'rollback') throw new Error('Original directory is unavailable') },
   }
   const runtime = {
-    async startServer() { step('start'); expect(env.CC_HAHA_MIGRATION_VALIDATION === '1' || calls.includes('rollback')).toBe(true) },
+    async startServer() { step('start'); expect(env.WANGMAI_MIGRATION_VALIDATION === '1' || calls.includes('rollback')).toBe(true) },
     async validateMigrationStartup() { step('validate'); if (failure && failure !== 'recover') throw new Error('Invalid copied configuration') },
     async activateAfterMigrationValidation() { step('activate'); expect(calls).toContain('complete') },
     async stopAllAndWait() { step('stop'); if (failure === 'shutdown') throw new Error('Runtime process did not exit') },
@@ -56,7 +56,7 @@ describe('migration startup admission boundary', () => {
     const f = startupFixture()
     await f.startup
     expect(f.calls).toEqual(['clearEnv', 'recover', 'applyRoot', 'start', 'validate', 'complete', 'activate', 'window', 'publicAccess'])
-    expect(f.env.CC_HAHA_MIGRATION_VALIDATION).toBeUndefined()
+    expect(f.env.WANGMAI_MIGRATION_VALIDATION).toBeUndefined()
     expect(f.context.setStorageWritesFrozen).not.toHaveBeenCalled()
   })
 
@@ -65,7 +65,7 @@ describe('migration startup admission boundary', () => {
     await f.startup
     expect(f.calls).toEqual(['clearEnv', 'recover', 'applyRoot', 'start', 'validate', 'stop', 'rollback', 'clearEnv', 'applyRoot', 'start', 'window', 'publicAccess'])
     expect(f.calls).not.toContain('activate')
-    expect(f.env.CC_HAHA_MIGRATION_VALIDATION).toBeUndefined()
+    expect(f.env.WANGMAI_MIGRATION_VALIDATION).toBeUndefined()
   })
 
   it.each(['recover', 'rollback', 'shutdown'] as const)('fails closed when %s cannot complete safely', async failure => {

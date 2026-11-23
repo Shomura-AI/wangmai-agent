@@ -4,8 +4,8 @@ import { existsSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { tmpdir } from 'os'
 import { join } from 'path'
-import { HahaOpenAIOAuthService } from '../services/hahaOpenAIOAuthService.js'
-import { HahaGrokOAuthService } from '../services/hahaGrokOAuthService.js'
+import { WangMaiOpenAIOAuthService } from '../services/wangmaiOpenAIOAuthService.js'
+import { WangMaiGrokOAuthService } from '../services/wangmaiGrokOAuthService.js'
 import { ensureFreshOpenAITokens } from '../../services/openaiAuth/index.js'
 import { clearOpenAIOAuthTokenCache } from '../../services/openaiAuth/storage.js'
 import { ensureFreshGrokTokens } from '../../services/grokAuth/refresh.js'
@@ -29,8 +29,8 @@ afterEach(async () => {
 })
 
 for (const [provider, Service, ensureCli, envKey] of [
-  ['OpenAI', HahaOpenAIOAuthService, ensureFreshOpenAITokens, 'OPENAI_CODEX_OAUTH_FILE'],
-  ['Grok', HahaGrokOAuthService, ensureFreshGrokTokens, 'GROK_OAUTH_FILE'],
+  ['OpenAI', WangMaiOpenAIOAuthService, ensureFreshOpenAITokens, 'OPENAI_CODEX_OAUTH_FILE'],
+  ['Grok', WangMaiGrokOAuthService, ensureFreshGrokTokens, 'GROK_OAUTH_FILE'],
 ] as const) describe(`${provider} desktop refresh coordination`, () => {
   const expired = { accessToken: 'old-access', refreshToken: 'old-refresh', expiresAt: 1, email: null, accountId: null }
 
@@ -127,7 +127,7 @@ for (const [provider, Service, ensureCli, envKey] of [
     const goPath = join(directory, 'go')
     const children = ['desktop', 'cli'].map(entry => {
       const modulePath = entry === 'desktop'
-        ? join(sourceRoot, 'server', 'services', `haha${provider}OAuthService.ts`)
+        ? join(sourceRoot, 'server', 'services', `wangmai${provider}OAuthService.ts`)
         : join(sourceRoot, 'services', `${provider.toLowerCase()}Auth`, provider === 'OpenAI' ? 'index.ts' : 'refresh.ts')
       const readyPath = join(directory, `${entry}.ready`)
       const script = `
@@ -139,7 +139,7 @@ for (const [provider, Service, ensureCli, envKey] of [
         };
         globalThis.fetch = async () => Response.json(await refresh());
         const mod = await import(${JSON.stringify(pathToFileURL(modulePath).href)});
-        ${entry === 'desktop' ? `const service = new mod.Haha${provider}OAuthService(); service.setRefreshFn(refresh);` : ''}
+        ${entry === 'desktop' ? `const service = new mod.WangMai${provider}OAuthService(); service.setRefreshFn(refresh);` : ''}
         writeFileSync(${JSON.stringify(readyPath)}, 'ready');
         while (!existsSync(${JSON.stringify(goPath)})) await Bun.sleep(10);
         const result = await ${entry === 'desktop' ? 'service.ensureFreshTokens()' : `mod.ensureFresh${provider}Tokens()`};

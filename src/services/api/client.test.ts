@@ -273,11 +273,11 @@ describe('getAnthropicClient', () => {
       expiresAt: Date.now() + 3600_000,
     }))
     const previous = {
-      marker: process.env.CC_HAHA_GROK_OAUTH_PROVIDER,
+      marker: process.env.WANGMAI_GROK_OAUTH_PROVIDER,
       tokenFile: process.env.GROK_OAUTH_FILE,
       configDir: process.env.CLAUDE_CONFIG_DIR,
     }
-    process.env.CC_HAHA_GROK_OAUTH_PROVIDER = '1'
+    process.env.WANGMAI_GROK_OAUTH_PROVIDER = '1'
     process.env.GROK_OAUTH_FILE = tokenFile
     process.env.CLAUDE_CONFIG_DIR = tempDir
     try {
@@ -286,8 +286,8 @@ describe('getAnthropicClient', () => {
       expect(client.authToken).toBeNull()
       expect(client._options.fetch).toBeFunction()
     } finally {
-      if (previous.marker === undefined) delete process.env.CC_HAHA_GROK_OAUTH_PROVIDER
-      else process.env.CC_HAHA_GROK_OAUTH_PROVIDER = previous.marker
+      if (previous.marker === undefined) delete process.env.WANGMAI_GROK_OAUTH_PROVIDER
+      else process.env.WANGMAI_GROK_OAUTH_PROVIDER = previous.marker
       if (previous.tokenFile === undefined) delete process.env.GROK_OAUTH_FILE
       else process.env.GROK_OAUTH_FILE = previous.tokenFile
       if (previous.configDir === undefined) delete process.env.CLAUDE_CONFIG_DIR
@@ -306,7 +306,7 @@ describe('getAnthropicClient', () => {
       deviceId: 'device-1',
     }))
     const keys = [
-      'CC_HAHA_DEEPSEEK_OAUTH_PROVIDER',
+      'WANGMAI_DEEPSEEK_OAUTH_PROVIDER',
       'DEEPSEEK_OAUTH_FILE',
       'ANTHROPIC_BASE_URL',
       'ANTHROPIC_API_KEY',
@@ -314,7 +314,7 @@ describe('getAnthropicClient', () => {
       'CLAUDE_CONFIG_DIR',
     ] as const
     const previous = Object.fromEntries(keys.map((key) => [key, process.env[key]]))
-    process.env.CC_HAHA_DEEPSEEK_OAUTH_PROVIDER = '1'
+    process.env.WANGMAI_DEEPSEEK_OAUTH_PROVIDER = '1'
     process.env.DEEPSEEK_OAUTH_FILE = tokenFile
     process.env.ANTHROPIC_BASE_URL = 'https://api.deepseek.com/anthropic'
     process.env.ANTHROPIC_API_KEY = 'deepseek-oauth-dummy-key'
@@ -414,7 +414,7 @@ describe('getAnthropicClient', () => {
       authToken: process.env.ANTHROPIC_AUTH_TOKEN,
       apiKey: process.env.ANTHROPIC_API_KEY,
       baseUrl: process.env.ANTHROPIC_BASE_URL,
-      localAccessToken: process.env.CC_HAHA_LOCAL_ACCESS_TOKEN,
+      localAccessToken: process.env.WANGMAI_LOCAL_ACCESS_TOKEN,
       providerManagedByHost: process.env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST,
       simple: process.env.CLAUDE_CODE_SIMPLE,
     }
@@ -422,7 +422,7 @@ describe('getAnthropicClient', () => {
     process.env.ANTHROPIC_AUTH_TOKEN = 'stale-provider-token'
     process.env.ANTHROPIC_API_KEY = 'proxy-managed'
     process.env.ANTHROPIC_BASE_URL = 'http://127.0.0.1:3456/proxy/providers/provider-1'
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     process.env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST = '1'
     process.env.CLAUDE_CODE_SIMPLE = '1'
 
@@ -458,7 +458,7 @@ describe('getAnthropicClient', () => {
         ['ANTHROPIC_AUTH_TOKEN', previous.authToken],
         ['ANTHROPIC_API_KEY', previous.apiKey],
         ['ANTHROPIC_BASE_URL', previous.baseUrl],
-        ['CC_HAHA_LOCAL_ACCESS_TOKEN', previous.localAccessToken],
+        ['WANGMAI_LOCAL_ACCESS_TOKEN', previous.localAccessToken],
         ['CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST', previous.providerManagedByHost],
         ['CLAUDE_CODE_SIMPLE', previous.simple],
       ] as const) {
@@ -536,14 +536,14 @@ describe('getAnthropicClient', () => {
     const { withAgentProviderRoute } = await import('../../utils/model/providerEnvScope.js')
     const keys = [
       'ANTHROPIC_AUTH_TOKEN', 'ANTHROPIC_API_KEY', 'ANTHROPIC_BASE_URL', 'ANTHROPIC_CUSTOM_HEADERS',
-      'CC_HAHA_LOCAL_ACCESS_TOKEN', 'CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST', 'CLAUDE_CODE_SIMPLE',
+      'WANGMAI_LOCAL_ACCESS_TOKEN', 'CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST', 'CLAUDE_CODE_SIMPLE',
     ] as const
     const previous = keys.map(key => process.env[key])
     Object.assign(process.env, {
       ANTHROPIC_API_KEY: 'fake-session-key',
       ANTHROPIC_BASE_URL: 'https://session.example/anthropic',
       ANTHROPIC_CUSTOM_HEADERS: 'X-Session-Only: session',
-      CC_HAHA_LOCAL_ACCESS_TOKEN: 'desktop-local-secret',
+      WANGMAI_LOCAL_ACCESS_TOKEN: 'desktop-local-secret',
       CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST: '1',
       CLAUDE_CODE_SIMPLE: '1',
     })

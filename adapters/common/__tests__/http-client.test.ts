@@ -305,8 +305,8 @@ describe('AdapterHttpClient', () => {
     globalThis.fetch = mock(() =>
       Promise.resolve(new Response(JSON.stringify({
         branch: 'main',
-        repoName: 'claude-code-haha',
-        workDir: '/repo/claude-code-haha',
+        repoName: 'wangmai-agent',
+        workDir: '/repo/wangmai-agent',
         changedFiles: 2,
       }), {
         headers: { 'Content-Type': 'application/json' },
@@ -314,7 +314,7 @@ describe('AdapterHttpClient', () => {
     ) as any
 
     const gitInfo = await client.getGitInfo('session-123')
-    expect(gitInfo.repoName).toBe('claude-code-haha')
+    expect(gitInfo.repoName).toBe('wangmai-agent')
     expect((globalThis.fetch as any).mock.calls[0][0]).toBe(
       'http://127.0.0.1:3456/api/sessions/session-123/git-info',
     )

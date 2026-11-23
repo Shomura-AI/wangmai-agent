@@ -16,12 +16,12 @@ import { H5_BASE_PATH } from '../app.config'
 const mobileRoot = resolve(import.meta.dir, '..')
 /** The desktop probes this file before leaving its own phone shell for the phone app. */
 export const H5_MARKER_FILE = 'h5.json'
-export const H5_MARKER_APP = 'cc-haha-mobile'
+export const H5_MARKER_APP = 'wangmai-mobile'
 
 export function h5ExportEnvironment(source: NodeJS.ProcessEnv = process.env): NodeJS.ProcessEnv {
   return {
     ...source,
-    EXPO_PUBLIC_CC_HAHA_H5: '1',
+    EXPO_PUBLIC_WANGMAI_H5: '1',
     CI: '1',
     EXPO_OFFLINE: '1',
     EXPO_NO_TELEMETRY: '1',

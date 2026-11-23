@@ -28,7 +28,7 @@ import {
   loadNetworkSettings,
   type NetworkSettings,
 } from './networkSettings.js'
-import { hahaOpenAIOAuthService } from './hahaOpenAIOAuthService.js'
+import { wangmaiOpenAIOAuthService } from './wangmaiOpenAIOAuthService.js'
 import { isOpenAIOfficialProviderId } from './openaiOfficialProvider.js'
 import {
   isDeepSeekAccountProviderId,
@@ -332,7 +332,7 @@ async function completeWithOpenAIOfficial(
   overall: AbortSignal | undefined,
   attemptTimeoutMs: number,
 ): Promise<ProviderTextCompletionResult> {
-  const tokens = await hahaOpenAIOAuthService.ensureFreshTokens()
+  const tokens = await wangmaiOpenAIOAuthService.ensureFreshTokens()
   if (!tokens?.accessToken) return failure('auth', 'ChatGPT is not signed in')
 
   const mappedModel = resolveOpenAICodexModel(request.modelId)

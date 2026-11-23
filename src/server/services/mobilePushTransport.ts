@@ -18,7 +18,7 @@ const encode = (value: unknown) => Buffer.from(JSON.stringify(value)).toString('
 export class DirectMobilePushTransport implements PushTransport {
   constructor(private env: NodeJS.ProcessEnv = process.env, private io: { fetch?: (url: string, init: RequestInit) => Promise<Response>; connect?: (origin: string) => ClientHttp2Session } = {}) {}
   configured(platform: MobilePushPlatform) {
-    if (platform === 'ios') return ['KEY_PATH', 'KEY_ID', 'TEAM_ID', 'TOPIC'].every(key => !!this.env[`CC_HAHA_APNS_${key}`]) && existsSync(this.env.CC_HAHA_APNS_KEY_PATH!)
+    if (platform === 'ios') return ['KEY_PATH', 'KEY_ID', 'TEAM_ID', 'TOPIC'].every(key => !!this.env[`WANGMAI_APNS_${key}`]) && existsSync(this.env.WANGMAI_APNS_KEY_PATH!)
     return !!this.env.GOOGLE_APPLICATION_CREDENTIALS && existsSync(this.env.GOOGLE_APPLICATION_CREDENTIALS)
   }
   async send(delivery: PushDelivery): Promise<'sent' | 'invalidToken'> {
@@ -27,16 +27,16 @@ export class DirectMobilePushTransport implements PushTransport {
   }
   private async apns(delivery: PushDelivery): Promise<'sent' | 'invalidToken'> {
     const now = Math.floor(Date.now() / 1000)
-    const unsigned = `${encode({ alg: 'ES256', kid: this.env.CC_HAHA_APNS_KEY_ID })}.${encode({ iss: this.env.CC_HAHA_APNS_TEAM_ID, iat: now })}`
-    const signature = sign('sha256', Buffer.from(unsigned), { key: readFileSync(this.env.CC_HAHA_APNS_KEY_PATH!, 'utf8'), dsaEncoding: 'ieee-p1363' }).toString('base64url')
-    const origin = this.env.CC_HAHA_APNS_SANDBOX === 'true' || this.env.CC_HAHA_APNS_SANDBOX === '1' ? 'https://api.sandbox.push.apple.com' : 'https://api.push.apple.com'
+    const unsigned = `${encode({ alg: 'ES256', kid: this.env.WANGMAI_APNS_KEY_ID })}.${encode({ iss: this.env.WANGMAI_APNS_TEAM_ID, iat: now })}`
+    const signature = sign('sha256', Buffer.from(unsigned), { key: readFileSync(this.env.WANGMAI_APNS_KEY_PATH!, 'utf8'), dsaEncoding: 'ieee-p1363' }).toString('base64url')
+    const origin = this.env.WANGMAI_APNS_SANDBOX === 'true' || this.env.WANGMAI_APNS_SANDBOX === '1' ? 'https://api.sandbox.push.apple.com' : 'https://api.push.apple.com'
     return new Promise((resolve, reject) => {
       const connection = (this.io.connect ?? connect)(origin)
       const timer = setTimeout(() => { connection.destroy(); reject(new Error('APNs delivery timed out')) }, 15000)
       let settled = false
       const finish = (error?: Error, result: 'sent' | 'invalidToken' = 'sent') => { if (settled) return; settled = true; clearTimeout(timer); connection.close(); error ? reject(error) : resolve(result) }
       connection.on('error', () => finish(new Error('APNs connection failed')))
-      const request = connection.request({ ':method': 'POST', ':path': `/3/device/${delivery.token}`, authorization: `bearer ${unsigned}.${signature}`, 'apns-topic': `${this.env.CC_HAHA_APNS_TOPIC}${delivery.kind === 'liveActivity' ? '.push-type.liveactivity' : ''}`, 'apns-push-type': delivery.kind === 'liveActivity' ? 'liveactivity' : 'alert', 'apns-priority': '10', 'apns-expiration': String(now + 300) })
+      const request = connection.request({ ':method': 'POST', ':path': `/3/device/${delivery.token}`, authorization: `bearer ${unsigned}.${signature}`, 'apns-topic': `${this.env.WANGMAI_APNS_TOPIC}${delivery.kind === 'liveActivity' ? '.push-type.liveactivity' : ''}`, 'apns-push-type': delivery.kind === 'liveActivity' ? 'liveactivity' : 'alert', 'apns-priority': '10', 'apns-expiration': String(now + 300) })
       let status = 0, body = ''
       request.on('response', headers => { status = Number(headers[':status']) })
       request.on('data', chunk => { if (body.length < 4096) body += chunk.toString() })
@@ -84,7 +84,7 @@ export class ExpoPushTransport implements PushTransport {
   configured() { return true }
   async send(delivery: PushDelivery): Promise<'sent' | 'invalidToken'> {
     if (delivery.kind !== 'notification') throw new Error('Expo push only carries ordinary notifications')
-    // Many desktops reach the internet only through the proxy set in cc-haha.
+    // Many desktops reach the internet only through the proxy set in wangmai.
     const proxy = await (this.io.fetchOptions ?? (this.io.fetch ? async () => ({}) : networkProxyOptions))(EXPO_PUSH_URL)
     const response = await (this.io.fetch ?? fetch)(EXPO_PUSH_URL, { ...proxy, method: 'POST', redirect: 'error', signal: AbortSignal.timeout(15000), headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify([{ ...delivery.payload, to: delivery.token }]) })
     if (!response.ok) throw new Error(`Expo push rejected delivery (${response.status})`)

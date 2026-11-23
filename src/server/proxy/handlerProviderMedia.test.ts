@@ -39,7 +39,7 @@ describe('provider image files reach the actual proxy upstream', () => {
     })
     const fetchMock = spyOn(globalThis, 'fetch').mockImplementation(async () => Response.json(
       { type: 'error', error: { type: 'authentication_error', message: 'token expired' } },
-      { status: 401, headers: { 'x-cc-haha-invalid-provider-key': 'true', 'x-should-retry': 'true', 'retry-after': '1' } },
+      { status: 401, headers: { 'x-wangmai-invalid-provider-key': 'true', 'x-should-retry': 'true', 'retry-after': '1' } },
     ))
     try {
       const request = new Request(`http://localhost/proxy/providers/${provider.id}/v1/messages`, {
@@ -48,7 +48,7 @@ describe('provider image files reach the actual proxy upstream', () => {
       })
       const response = await handleProxyRequest(request, new URL(request.url))
       expect(response.status).toBe(401)
-      expect(response.headers.get('x-cc-haha-invalid-provider-key')).toBeNull()
+      expect(response.headers.get('x-wangmai-invalid-provider-key')).toBeNull()
       expect(response.headers.get('x-should-retry')).toBe('true')
       expect(response.headers.get('retry-after')).toBe('1')
       expect(await response.text()).toContain('token expired')
@@ -87,7 +87,7 @@ describe('provider image files reach the actual proxy upstream', () => {
         })
         const response = await handleProxyRequest(request, new URL(request.url))
         expect(response.status).toBe(sample.status)
-        expect(response.headers.get('x-cc-haha-invalid-provider-key')).toBe(sample.final ? 'true' : null)
+        expect(response.headers.get('x-wangmai-invalid-provider-key')).toBe(sample.final ? 'true' : null)
         expect(response.headers.get('x-should-retry')).toBe(sample.final ? 'false' : 'true')
         expect(response.headers.get('content-encoding')).toBe(sample.encoding)
         expect(response.headers.get('content-length')).toBe(String(sample.bytes.length))

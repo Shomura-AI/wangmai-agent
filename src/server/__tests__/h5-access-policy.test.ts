@@ -178,7 +178,7 @@ describe('h5AccessPolicy', () => {
       '/proxy/openai/v1/chat/completions',
       '/ws/session-1',
     ]) {
-      const request = req(`https://haha.example.com:8443${pathname}`)
+      const request = req(`https://wangmai.example.com:8443${pathname}`)
       const url = new URL(request.url)
 
       expect(classifyH5Request(request, url, localContext)).toBe('h5-browser')
@@ -195,9 +195,9 @@ describe('h5AccessPolicy', () => {
 
   test('does not trust loopback requests carrying reverse proxy trace headers', () => {
     for (const [header, value] of [
-      ['Forwarded', 'for=203.0.113.9;proto=https;host=haha.example.com'],
+      ['Forwarded', 'for=203.0.113.9;proto=https;host=wangmai.example.com'],
       ['X-Forwarded-For', '203.0.113.9'],
-      ['X-Forwarded-Host', 'haha.example.com'],
+      ['X-Forwarded-Host', 'wangmai.example.com'],
       ['X-Forwarded-Proto', 'https'],
       ['X-Real-IP', '203.0.113.9'],
       ['Via', '1.1 proxy.example.com'],
@@ -335,7 +335,7 @@ describe('h5AccessPolicy', () => {
     }
 
     for (const pathname of [
-      '/api/haha-grok-oauth/success',
+      '/api/wangmai-grok-oauth/success',
       '/api/sessions',
       '/preview-fs/session-1/index.html',
       '/ws/session-1',

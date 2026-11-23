@@ -60,7 +60,7 @@ function connector(id: string, overrides: Partial<ConnectorDto> = {}): Connector
     id,
     displayName: id,
     description: `${id} service`,
-    pluginId: `${id}@haha-connectors`,
+    pluginId: `${id}@wangmai-connectors`,
     connection: 'disconnected',
     enabled: false,
     installed: false,
@@ -294,7 +294,7 @@ describe('buildCapabilitySections', () => {
 })
 
 it('keeps withdrawn installed packages out of the connector list', () => {
-  const hidden = { ...feishu, id: 'frontend-design', pluginId: 'office-frontend-design@haha-connectors' } as ConnectorDto
+  const hidden = { ...feishu, id: 'frontend-design', pluginId: 'office-frontend-design@wangmai-connectors' } as ConnectorDto
   const connectors = rootItem(buildInput({ connectors: [hidden, feishu] }), 'connectors')
   expect(connectors.count).toBe(1)
   expect(connectors.children!.some(item => item.key === 'connector:frontend-design')).toBe(false)

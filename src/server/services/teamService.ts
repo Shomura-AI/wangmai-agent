@@ -223,7 +223,7 @@ const MESSAGE_ENTRY_TYPES = new Set([
   'tool_use',
   'tool_result',
 ])
-const PERSISTED_TASK_NOTIFICATION_ENTRY_TYPE = 'cc-haha-task-notification'
+const PERSISTED_TASK_NOTIFICATION_ENTRY_TYPE = 'wangmai-task-notification'
 const TASK_NOTIFICATION_BLOCK_RE = /<task-notification>\s*[\s\S]*?<\/task-notification>/i
 
 const TEAM_WORKBENCH_ARCHIVE_SCHEMA_VERSION = 1
@@ -1496,7 +1496,7 @@ export class TeamService {
   }
 
   private getWorkbenchArchiveDir(): string {
-    return path.join(this.getConfigDir(), 'cc-haha', 'agent-teams')
+    return path.join(this.getConfigDir(), 'wangmai', 'agent-teams')
   }
 
   private getWorkbenchArchivePath(sessionId: string): string {

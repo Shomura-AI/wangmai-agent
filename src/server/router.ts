@@ -20,10 +20,10 @@ import { handlePluginsApi } from './api/plugins.js'
 import { handleSkillsApi } from './api/skills.js'
 import { handleMarketApi } from './api/market.js'
 import { handleComputerUseApi } from './api/computer-use.js'
-import { handleHahaOAuthApi } from './api/haha-oauth.js'
-import { handleHahaOpenAIOAuthApi } from './api/haha-openai-oauth.js'
-import { handleHahaGrokOAuthApi } from './api/haha-grok-oauth.js'
-import { handleHahaDeepSeekOAuthApi } from './api/haha-deepseek-oauth.js'
+import { handleWangMaiOAuthApi } from './api/wangmai-oauth.js'
+import { handleWangMaiOpenAIOAuthApi } from './api/wangmai-openai-oauth.js'
+import { handleWangMaiGrokOAuthApi } from './api/wangmai-grok-oauth.js'
+import { handleWangMaiDeepSeekOAuthApi } from './api/wangmai-deepseek-oauth.js'
 import { handleMcpApi } from './api/mcp.js'
 import { handleDiagnosticsApi } from './api/diagnostics.js'
 import { handleDoctorApi } from './api/doctor.js'
@@ -159,17 +159,17 @@ async function routeApiRequest(req: Request, url: URL): Promise<Response> {
     case 'providers':
       return handleProvidersApi(req, url, segments)
 
-    case 'haha-oauth':
-      return handleHahaOAuthApi(req, url, segments)
+    case 'wangmai-oauth':
+      return handleWangMaiOAuthApi(req, url, segments)
 
-    case 'haha-openai-oauth':
-      return handleHahaOpenAIOAuthApi(req, url, segments)
+    case 'wangmai-openai-oauth':
+      return handleWangMaiOpenAIOAuthApi(req, url, segments)
 
-    case 'haha-grok-oauth':
-      return handleHahaGrokOAuthApi(req, url, segments)
+    case 'wangmai-grok-oauth':
+      return handleWangMaiGrokOAuthApi(req, url, segments)
 
-    case 'haha-deepseek-oauth':
-      return handleHahaDeepSeekOAuthApi(req, url, segments)
+    case 'wangmai-deepseek-oauth':
+      return handleWangMaiDeepSeekOAuthApi(req, url, segments)
 
     case 'adapters':
       // Adapter protocols pull in platform SDKs that are unnecessary for the

@@ -15,7 +15,7 @@ import { CLAUDE_CODE_COMPAT_VERSION } from '../../constants/claudeCodeCompatibil
 // Imported statically on purpose: these tests switch USER_TYPE to `ant` to reach
 // the local OAuth config, and modules first loaded under that value would keep
 // their ant-only module-level branches for the rest of a shared test process.
-import { HahaOAuthService } from '../../server/services/hahaOAuthService.js'
+import { WangMaiOAuthService } from '../../server/services/wangmaiOAuthService.js'
 import { exchangeCodeForTokens } from './client.js'
 import { getOauthProfileFromOauthToken } from './getOauthProfile.js'
 
@@ -139,7 +139,7 @@ describe('OAuth requests on the wire', () => {
   })
 
   test('the desktop server exchange goes through the same CLI request', async () => {
-    const service = new HahaOAuthService()
+    const service = new WangMaiOAuthService()
     const session = service.startSession({ serverPort: 54322 })
 
     await service.completeSession('code-2', session.state)

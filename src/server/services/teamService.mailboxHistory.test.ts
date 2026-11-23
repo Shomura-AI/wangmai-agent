@@ -19,7 +19,7 @@ let service: TeamService
 
 beforeEach(async () => {
   originalConfigDir = process.env.CLAUDE_CONFIG_DIR
-  configDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-team-feed-'))
+  configDir = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-team-feed-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
   const teamDir = path.join(configDir, 'teams', TEAM)
   await fs.mkdir(teamDir, { recursive: true })

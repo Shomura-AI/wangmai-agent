@@ -1,17 +1,17 @@
 import Foundation
 import Testing
-@testable import cc_haha_computer_use
+@testable import wangmai_computer_use
 
 @Suite("Computer Use client attestation policy")
 struct ClientAttestationTests {
     private let team = "TEAM123456"
     private let leaf = Data([0xCA, 0xFE])
-    private let appRoot = "/Applications/Claude Code Haha.app"
+    private let appRoot = "/Applications/网脉智能体.app"
 
     private var sidecarPath: String {
         appRoot
             + "/Contents/Resources/app.asar.unpacked/src-tauri/binaries/"
-            + "claude-sidecar-aarch64-apple-darwin"
+            + "wangmai-sidecar-aarch64-apple-darwin"
     }
 
     private func process(
@@ -38,8 +38,8 @@ struct ClientAttestationTests {
         process(
             pid: 900,
             parentPID: 1,
-            path: "/Users/test/Library/Application Support/Claude Code Haha/"
-                + "cc-haha-computer-use.app/Contents/MacOS/cc-haha-computer-use",
+            path: "/Users/test/Library/Application Support/网脉智能体/"
+                + "wangmai-computer-use.app/Contents/MacOS/wangmai-computer-use",
             identifier: HelperClientPolicy.helperIdentifier
         )
     }
@@ -48,7 +48,7 @@ struct ClientAttestationTests {
         process(
             pid: 300,
             parentPID: 1,
-            path: appRoot + "/Contents/MacOS/Claude Code Haha",
+            path: appRoot + "/Contents/MacOS/网脉智能体",
             identifier: HelperClientPolicy.desktopIdentifier
         )
     }
@@ -116,7 +116,7 @@ struct ClientAttestationTests {
         )
 
         var spoofed = cli
-        spoofed.executablePath = appRoot + "/Contents/Resources/claude-sidecar-aarch64-apple-darwin"
+        spoofed.executablePath = appRoot + "/Contents/Resources/wangmai-sidecar-aarch64-apple-darwin"
         #expect(
             HelperClientPolicy.authorizeDaemon(
                 peer: spoofed,
@@ -240,7 +240,7 @@ struct ClientAttestationTests {
         )
 
         var wrongPath = helper
-        wrongPath.executablePath = "/tmp/cc-haha-computer-use"
+        wrongPath.executablePath = "/tmp/wangmai-computer-use"
         #expect(
             HelperClientPolicy.authorizeDaemonPeer(
                 peer: wrongPath,

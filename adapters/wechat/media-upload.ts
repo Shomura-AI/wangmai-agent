@@ -78,7 +78,7 @@ export async function sendWechatMedia(params: {
     payload: {
       msg: {
         from_user_id: '', to_user_id: params.to,
-        client_id: params.clientId ?? `claude-code-haha-wechat-${crypto.randomUUID()}`,
+        client_id: params.clientId ?? `wangmai-agent-wechat-${crypto.randomUUID()}`,
         message_type: 2, message_state: 2,
         context_token: params.contextToken,
         item_list: [item],

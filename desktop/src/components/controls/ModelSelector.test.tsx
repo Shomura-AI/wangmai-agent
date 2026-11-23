@@ -17,10 +17,10 @@ vi.mock('../../lib/desktopRuntime', async (importOriginal) => {
 
 import { ModelSelector } from './ModelSelector'
 import { useChatStore } from '../../stores/chatStore'
-import { useHahaOAuthStore } from '../../stores/hahaOAuthStore'
-import { useHahaOpenAIOAuthStore } from '../../stores/hahaOpenAIOAuthStore'
-import { useHahaGrokOAuthStore } from '../../stores/hahaGrokOAuthStore'
-import { useHahaDeepSeekOAuthStore } from '../../stores/hahaDeepSeekOAuthStore'
+import { useWangMaiOAuthStore } from '../../stores/wangmaiOAuthStore'
+import { useWangMaiOpenAIOAuthStore } from '../../stores/wangmaiOpenAIOAuthStore'
+import { useWangMaiGrokOAuthStore } from '../../stores/wangmaiGrokOAuthStore'
+import { useWangMaiDeepSeekOAuthStore } from '../../stores/wangmaiDeepSeekOAuthStore'
 import { useProviderStore } from '../../stores/providerStore'
 import { useSessionRuntimeStore } from '../../stores/sessionRuntimeStore'
 import { useSettingsStore } from '../../stores/settingsStore'
@@ -52,10 +52,10 @@ afterEach(() => {
   useSessionRuntimeStore.setState(useSessionRuntimeStore.getInitialState(), true)
   useSessionStore.setState(useSessionStore.getInitialState(), true)
   useChatStore.setState(useChatStore.getInitialState(), true)
-  useHahaOAuthStore.setState(useHahaOAuthStore.getInitialState(), true)
-  useHahaOpenAIOAuthStore.setState(useHahaOpenAIOAuthStore.getInitialState(), true)
-  useHahaGrokOAuthStore.setState(useHahaGrokOAuthStore.getInitialState(), true)
-  useHahaDeepSeekOAuthStore.setState(useHahaDeepSeekOAuthStore.getInitialState(), true)
+  useWangMaiOAuthStore.setState(useWangMaiOAuthStore.getInitialState(), true)
+  useWangMaiOpenAIOAuthStore.setState(useWangMaiOpenAIOAuthStore.getInitialState(), true)
+  useWangMaiGrokOAuthStore.setState(useWangMaiGrokOAuthStore.getInitialState(), true)
+  useWangMaiDeepSeekOAuthStore.setState(useWangMaiDeepSeekOAuthStore.getInitialState(), true)
   useTabStore.setState(useTabStore.getInitialState(), true)
   useUIStore.setState(useUIStore.getInitialState(), true)
   useMagpieStore.setState(useMagpieStore.getInitialState(), true)
@@ -63,10 +63,10 @@ afterEach(() => {
 })
 
 beforeEach(() => {
-  useHahaOAuthStore.setState({ fetchStatus: async () => {} })
-  useHahaOpenAIOAuthStore.setState({ fetchStatus: async () => {} })
-  useHahaGrokOAuthStore.setState({ fetchStatus: async () => {} })
-  useHahaDeepSeekOAuthStore.setState({ fetchStatus: async () => {} })
+  useWangMaiOAuthStore.setState({ fetchStatus: async () => {} })
+  useWangMaiOpenAIOAuthStore.setState({ fetchStatus: async () => {} })
+  useWangMaiGrokOAuthStore.setState({ fetchStatus: async () => {} })
+  useWangMaiDeepSeekOAuthStore.setState({ fetchStatus: async () => {} })
 })
 
 describe('ModelSelector', () => {
@@ -188,7 +188,7 @@ describe('ModelSelector', () => {
       providerId: null, modelId: 'claude-opus-4-8', effortLevel: 'high',
     })
     const fetchStatus = vi.fn(async () => {})
-    useHahaOAuthStore.setState({ status: null, fetchStatus })
+    useWangMaiOAuthStore.setState({ status: null, fetchStatus })
 
     render(<ModelSelector runtimeKey="official-restored" />)
 
@@ -297,7 +297,7 @@ describe('ModelSelector', () => {
       { id: 'claude-sonnet-4-6', name: 'Sonnet 4.6', description: 'Legacy Sonnet', context: '200k' },
       { id: 'claude-haiku-4-5', name: 'Haiku 4.5', description: 'Legacy Haiku', context: '200k' },
     ]
-    useHahaOAuthStore.setState({
+    useWangMaiOAuthStore.setState({
       status: {
         loggedIn: true,
         expiresAt: null,
@@ -359,8 +359,8 @@ describe('ModelSelector', () => {
   it('does not query official OAuth status when mounted', () => {
     const fetchClaudeStatus = vi.fn(async () => {})
     const fetchOpenAIStatus = vi.fn(async () => {})
-    useHahaOAuthStore.setState({ fetchStatus: fetchClaudeStatus })
-    useHahaOpenAIOAuthStore.setState({ fetchStatus: fetchOpenAIStatus })
+    useWangMaiOAuthStore.setState({ fetchStatus: fetchClaudeStatus })
+    useWangMaiOpenAIOAuthStore.setState({ fetchStatus: fetchOpenAIStatus })
     useSettingsStore.setState({
       locale: 'en',
       availableModels: MODELS,
@@ -383,8 +383,8 @@ describe('ModelSelector', () => {
   it('queries official OAuth status once when the runtime dropdown is opened', async () => {
     const fetchClaudeStatus = vi.fn(async () => {})
     const fetchOpenAIStatus = vi.fn(async () => {})
-    useHahaOAuthStore.setState({ fetchStatus: fetchClaudeStatus })
-    useHahaOpenAIOAuthStore.setState({ fetchStatus: fetchOpenAIStatus })
+    useWangMaiOAuthStore.setState({ fetchStatus: fetchClaudeStatus })
+    useWangMaiOpenAIOAuthStore.setState({ fetchStatus: fetchOpenAIStatus })
     useSettingsStore.setState({
       locale: 'en',
       availableModels: MODELS,
@@ -427,8 +427,8 @@ describe('ModelSelector', () => {
   it('does not query official OAuth status for plain model dropdowns', async () => {
     const fetchClaudeStatus = vi.fn(async () => {})
     const fetchOpenAIStatus = vi.fn(async () => {})
-    useHahaOAuthStore.setState({ fetchStatus: fetchClaudeStatus })
-    useHahaOpenAIOAuthStore.setState({ fetchStatus: fetchOpenAIStatus })
+    useWangMaiOAuthStore.setState({ fetchStatus: fetchClaudeStatus })
+    useWangMaiOpenAIOAuthStore.setState({ fetchStatus: fetchOpenAIStatus })
     useSettingsStore.setState({
       locale: 'en',
       availableModels: MODELS,
@@ -445,21 +445,21 @@ describe('ModelSelector', () => {
 
   it('routes an unconfigured runtime to provider settings instead of showing a fallback model', async () => {
     const fetchClaudeStatus = vi.fn(async () => {
-      useHahaOAuthStore.setState({ status: { loggedIn: false } })
+      useWangMaiOAuthStore.setState({ status: { loggedIn: false } })
     })
     const fetchOpenAIStatus = vi.fn(async () => {
-      useHahaOpenAIOAuthStore.setState({ status: { loggedIn: false } })
+      useWangMaiOpenAIOAuthStore.setState({ status: { loggedIn: false } })
     })
     const fetchGrokStatus = vi.fn(async () => {
-      useHahaGrokOAuthStore.setState({ status: { loggedIn: false } })
+      useWangMaiGrokOAuthStore.setState({ status: { loggedIn: false } })
     })
     const fetchDeepSeekStatus = vi.fn(async () => {
-      useHahaDeepSeekOAuthStore.setState({ status: { loggedIn: false } })
+      useWangMaiDeepSeekOAuthStore.setState({ status: { loggedIn: false } })
     })
-    useHahaOAuthStore.setState({ fetchStatus: fetchClaudeStatus })
-    useHahaOpenAIOAuthStore.setState({ fetchStatus: fetchOpenAIStatus })
-    useHahaGrokOAuthStore.setState({ fetchStatus: fetchGrokStatus })
-    useHahaDeepSeekOAuthStore.setState({ fetchStatus: fetchDeepSeekStatus })
+    useWangMaiOAuthStore.setState({ fetchStatus: fetchClaudeStatus })
+    useWangMaiOpenAIOAuthStore.setState({ fetchStatus: fetchOpenAIStatus })
+    useWangMaiGrokOAuthStore.setState({ fetchStatus: fetchGrokStatus })
+    useWangMaiDeepSeekOAuthStore.setState({ fetchStatus: fetchDeepSeekStatus })
     useSettingsStore.setState({
       locale: 'en',
       availableModels: MODELS,
@@ -502,10 +502,10 @@ describe('ModelSelector', () => {
     const fetchOpenAIStatus = vi.fn(async () => {})
     const fetchGrokStatus = vi.fn(async () => {})
     const fetchDeepSeekStatus = vi.fn(async () => {})
-    useHahaOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: fetchClaudeStatus })
-    useHahaOpenAIOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: fetchOpenAIStatus })
-    useHahaGrokOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: fetchGrokStatus })
-    useHahaDeepSeekOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: fetchDeepSeekStatus })
+    useWangMaiOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: fetchClaudeStatus })
+    useWangMaiOpenAIOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: fetchOpenAIStatus })
+    useWangMaiGrokOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: fetchGrokStatus })
+    useWangMaiDeepSeekOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: fetchDeepSeekStatus })
     useSettingsStore.setState({
       locale: 'en',
       currentModel: {
@@ -535,11 +535,11 @@ describe('ModelSelector', () => {
 
   it('opens Claude Official models when the configuration check finds a login', async () => {
     const fetchClaudeStatus = vi.fn(async () => {
-      useHahaOAuthStore.setState({
+      useWangMaiOAuthStore.setState({
         status: { loggedIn: true, expiresAt: null, scopes: [], subscriptionType: 'pro' },
       })
     })
-    useHahaOAuthStore.setState({ fetchStatus: fetchClaudeStatus })
+    useWangMaiOAuthStore.setState({ fetchStatus: fetchClaudeStatus })
     useSettingsStore.setState({
       locale: 'en',
       availableModels: MODELS,
@@ -588,9 +588,9 @@ describe('ModelSelector', () => {
         isLoading: false,
       })
     })
-    useHahaOAuthStore.setState({ status: { loggedIn: false } })
-    useHahaOpenAIOAuthStore.setState({ status: { loggedIn: false } })
-    useHahaGrokOAuthStore.setState({ status: { loggedIn: false } })
+    useWangMaiOAuthStore.setState({ status: { loggedIn: false } })
+    useWangMaiOpenAIOAuthStore.setState({ status: { loggedIn: false } })
+    useWangMaiGrokOAuthStore.setState({ status: { loggedIn: false } })
     useSettingsStore.setState({ locale: 'en', activeProviderName: null })
     useProviderStore.setState({
       providers: [],
@@ -841,7 +841,7 @@ describe('ModelSelector', () => {
   })
 
   it('closes the focus ring on both halves of the segmented control', () => {
-    useHahaOAuthStore.setState({
+    useWangMaiOAuthStore.setState({
       status: { loggedIn: true, expiresAt: null, scopes: [], subscriptionType: 'pro' },
       fetchStatus: async () => {},
     })
@@ -1171,7 +1171,7 @@ describe('ModelSelector', () => {
       },
     ]
     const setSessionRuntime = vi.fn()
-    useHahaOpenAIOAuthStore.setState({
+    useWangMaiOpenAIOAuthStore.setState({
       status: { loggedIn: true, expiresAt: null, email: null, accountId: null },
       fetchStatus: async () => {},
     })
@@ -1231,7 +1231,7 @@ describe('ModelSelector', () => {
         supportedReasoningEfforts: ['low', 'medium', 'high', 'xhigh'],
       },
     ]
-    useHahaOpenAIOAuthStore.setState({
+    useWangMaiOpenAIOAuthStore.setState({
       status: { loggedIn: true, expiresAt: null, email: null, accountId: null },
       fetchStatus: async () => {},
     })
@@ -1291,7 +1291,7 @@ describe('ModelSelector', () => {
 
   it('toggles Fast only for ChatGPT Official OAuth and keeps it across effort and model changes', async () => {
     const setSessionRuntime = vi.fn()
-    useHahaOpenAIOAuthStore.setState({
+    useWangMaiOpenAIOAuthStore.setState({
       status: { loggedIn: true, expiresAt: null, email: null, accountId: null },
       fetchStatus: async () => {},
     })
@@ -1364,7 +1364,7 @@ describe('ModelSelector', () => {
       supportedReasoningEfforts: ['low', 'medium', 'high', 'xhigh', 'max'],
     }
     const setSessionRuntime = vi.fn()
-    useHahaOpenAIOAuthStore.setState({
+    useWangMaiOpenAIOAuthStore.setState({
       status: { loggedIn: true, expiresAt: null, email: null, accountId: null },
       fetchStatus: async () => {},
     })
@@ -1467,7 +1467,7 @@ describe('ModelSelector', () => {
       context: '',
       supportedReasoningEfforts: [],
     }]
-    useHahaGrokOAuthStore.setState({
+    useWangMaiGrokOAuthStore.setState({
       status: { loggedIn: true, expiresAt: null, email: 'grok@example.com' },
       fetchStatus: async () => {},
     })
@@ -1522,14 +1522,14 @@ describe('ModelSelector', () => {
         hasLoadedProviders: true,
         isLoading: false,
       })
-      useHahaOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
-      useHahaOpenAIOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
-      useHahaGrokOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+      useWangMaiOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+      useWangMaiOpenAIOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+      useWangMaiGrokOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
     }
 
     it('does not offer DeepSeek Account models while signed out', async () => {
       useSavedProviderActive()
-      useHahaDeepSeekOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+      useWangMaiDeepSeekOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
 
       render(<ModelSelector runtimeKey="session-ds-out" />)
       await clickByRole(/provider-main/i)
@@ -1542,7 +1542,7 @@ describe('ModelSelector', () => {
 
     it('lists the account models once signed in and selects one for the session', async () => {
       useSavedProviderActive()
-      useHahaDeepSeekOAuthStore.setState({
+      useWangMaiDeepSeekOAuthStore.setState({
         status: { loggedIn: true, name: 'Ada', contact: 'a***@example.com' },
         fetchStatus: async () => {},
       })
@@ -1578,7 +1578,7 @@ describe('ModelSelector', () => {
           opus: 'deepseek-v4-pro',
         },
       })
-      useHahaDeepSeekOAuthStore.setState({
+      useWangMaiDeepSeekOAuthStore.setState({
         status: { loggedIn: true, name: null, contact: null },
         fetchStatus: async () => {},
       })
@@ -1604,10 +1604,10 @@ describe('ModelSelector', () => {
     })
 
     it('offers the models of the live account listing while the account is the default provider', async () => {
-      useHahaOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
-      useHahaOpenAIOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
-      useHahaGrokOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
-      useHahaDeepSeekOAuthStore.setState({ status: { loggedIn: true, name: null, contact: null }, fetchStatus: async () => {} })
+      useWangMaiOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+      useWangMaiOpenAIOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+      useWangMaiGrokOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+      useWangMaiDeepSeekOAuthStore.setState({ status: { loggedIn: true, name: null, contact: null }, fetchStatus: async () => {} })
       const listed = [
         { id: 'deepseek-v4-pro[1m]', name: 'DeepSeek-V4-Pro', description: 'Main model', context: '1048576' },
         { id: 'deepseek-flash', name: 'DeepSeek-V4.1-Flash', description: 'Haiku model', context: '1048576' },
@@ -1645,7 +1645,7 @@ describe('ModelSelector', () => {
       ['deepseek-flash', 'DeepSeek-V4.1-Flash'],
     ])('keeps restored DeepSeek selection %s and its catalog display name', (modelId, modelName) => {
       useSavedProviderActive()
-      useHahaDeepSeekOAuthStore.setState({ status: null, fetchStatus: async () => {} })
+      useWangMaiDeepSeekOAuthStore.setState({ status: null, fetchStatus: async () => {} })
       useSessionRuntimeStore.getState().setSelection('session-ds-restored', {
         providerId: 'deepseek-account',
         modelId,
@@ -1663,7 +1663,7 @@ describe('ModelSelector', () => {
     it('fetches the DeepSeek sign-in status when the selector opens', async () => {
       useSavedProviderActive()
       const fetchStatus = vi.fn(async () => {})
-      useHahaDeepSeekOAuthStore.setState({ status: null, fetchStatus })
+      useWangMaiDeepSeekOAuthStore.setState({ status: null, fetchStatus })
 
       render(<ModelSelector runtimeKey="session-ds-lazy" />)
       expect(fetchStatus).not.toHaveBeenCalled()
@@ -1675,10 +1675,10 @@ describe('ModelSelector', () => {
     it('opens the selector instead of routing to settings when DeepSeek is the only login', async () => {
       useSettingsStore.setState({ locale: 'en', currentModel: undefined, activeProviderName: null })
       useProviderStore.setState({ providers: [], activeId: null, hasLoadedProviders: true, isLoading: false })
-      useHahaOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
-      useHahaOpenAIOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
-      useHahaGrokOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
-      useHahaDeepSeekOAuthStore.setState({
+      useWangMaiOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+      useWangMaiOpenAIOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+      useWangMaiGrokOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+      useWangMaiDeepSeekOAuthStore.setState({
         status: { loggedIn: true, name: null, contact: null },
         fetchStatus: async () => {},
       })
@@ -1696,17 +1696,17 @@ describe('ModelSelector', () => {
     it('opens the selector after the status fetch finds a DeepSeek login nobody had checked yet', async () => {
       useSettingsStore.setState({ locale: 'en', currentModel: undefined, activeProviderName: null })
       useProviderStore.setState({ providers: [], activeId: null, hasLoadedProviders: true, isLoading: false })
-      useHahaOAuthStore.setState({ status: null, fetchStatus: async () => {
-        useHahaOAuthStore.setState({ status: { loggedIn: false } })
+      useWangMaiOAuthStore.setState({ status: null, fetchStatus: async () => {
+        useWangMaiOAuthStore.setState({ status: { loggedIn: false } })
       } })
-      useHahaOpenAIOAuthStore.setState({ status: null, fetchStatus: async () => {
-        useHahaOpenAIOAuthStore.setState({ status: { loggedIn: false } })
+      useWangMaiOpenAIOAuthStore.setState({ status: null, fetchStatus: async () => {
+        useWangMaiOpenAIOAuthStore.setState({ status: { loggedIn: false } })
       } })
-      useHahaGrokOAuthStore.setState({ status: null, fetchStatus: async () => {
-        useHahaGrokOAuthStore.setState({ status: { loggedIn: false } })
+      useWangMaiGrokOAuthStore.setState({ status: null, fetchStatus: async () => {
+        useWangMaiGrokOAuthStore.setState({ status: { loggedIn: false } })
       } })
-      useHahaDeepSeekOAuthStore.setState({ status: null, fetchStatus: async () => {
-        useHahaDeepSeekOAuthStore.setState({ status: { loggedIn: true, name: null, contact: null } })
+      useWangMaiDeepSeekOAuthStore.setState({ status: null, fetchStatus: async () => {
+        useWangMaiDeepSeekOAuthStore.setState({ status: { loggedIn: true, name: null, contact: null } })
       } })
 
       render(<ModelSelector runtimeKey="session-ds-late" />)
@@ -1731,7 +1731,7 @@ describe('ModelSelector', () => {
       defaultReasoningEffort: 'high',
       supportedReasoningEfforts: ['xhigh', 'high', 'medium', 'low'],
     }]
-    useHahaGrokOAuthStore.setState({
+    useWangMaiGrokOAuthStore.setState({
       status: { loggedIn: true, expiresAt: null, email: 'grok@example.com' },
       fetchStatus: async () => {},
     })
@@ -1782,9 +1782,9 @@ describe('ModelSelector', () => {
   })
 
   it('hides official provider sections when OAuth is not logged in', async () => {
-    useHahaOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
-    useHahaOpenAIOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
-    useHahaGrokOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+    useWangMaiOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+    useWangMaiOpenAIOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
+    useWangMaiGrokOAuthStore.setState({ status: { loggedIn: false }, fetchStatus: async () => {} })
     useSettingsStore.setState({
       locale: 'en',
       availableModels: MODELS,
@@ -1941,7 +1941,7 @@ describe('controlled runtime pickers outside the composer', () => {
   it('keeps leading non-provider choices intact and lists only saved API providers', async () => {
     useSettingsStore.setState({ locale: 'en' })
     useProviderStore.setState({ hasLoadedProviders: true, providers: [zhipu], activeId: 'zhipu' })
-    useHahaOAuthStore.setState({ status: { loggedIn: true } as never })
+    useWangMaiOAuthStore.setState({ status: { loggedIn: true } as never })
     const onRuntimeSelectionChange = vi.fn()
     render(<ModelSelector
       appearance="field"
@@ -1968,7 +1968,7 @@ describe('controlled runtime pickers outside the composer', () => {
 
   it('docks effort controls and permissions shortcut inside the frosted-glass model dropdown', async () => {
     useSettingsStore.setState({ locale: 'en', effortLevel: 'high' })
-    useHahaOAuthStore.setState({ status: { loggedIn: true } as never })
+    useWangMaiOAuthStore.setState({ status: { loggedIn: true } as never })
     useSessionRuntimeStore.getState().setSelection('session-docked', {
       providerId: null,
       modelId: 'claude-opus-4-8',

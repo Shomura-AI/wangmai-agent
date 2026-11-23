@@ -48,9 +48,9 @@ const AUTH_ENV_KEYS = [
   'CLAUDE_CODE_USE_VERTEX',
   'CLAUDE_CODE_USE_FOUNDRY',
   'CLAUDE_CODE_USE_AZURE_OPENAI',
-  'CC_HAHA_OPENAI_OAUTH_PROVIDER',
-  'CC_HAHA_GROK_OAUTH_PROVIDER',
-  'CC_HAHA_DEEPSEEK_OAUTH_PROVIDER',
+  'WANGMAI_OPENAI_OAUTH_PROVIDER',
+  'WANGMAI_GROK_OAUTH_PROVIDER',
+  'WANGMAI_DEEPSEEK_OAUTH_PROVIDER',
 ] as const
 
 afterAll(() => {
@@ -185,8 +185,8 @@ describe('shouldIncludeCyberRiskInstruction', () => {
     ['Vertex', { CLAUDE_CODE_USE_VERTEX: '1' }],
     ['Foundry', { CLAUDE_CODE_USE_FOUNDRY: '1' }],
     ['Azure OpenAI', { CLAUDE_CODE_USE_AZURE_OPENAI: '1' }],
-    ['Grok OAuth', { CC_HAHA_GROK_OAUTH_PROVIDER: '1' }],
-    ['DeepSeek OAuth', { CC_HAHA_DEEPSEEK_OAUTH_PROVIDER: '1' }],
+    ['Grok OAuth', { WANGMAI_GROK_OAUTH_PROVIDER: '1' }],
+    ['DeepSeek OAuth', { WANGMAI_DEEPSEEK_OAUTH_PROVIDER: '1' }],
   ])('does not treat %s as a protected Claude official account', (_label, extraEnv) => {
     process.env.CLAUDE_CODE_OAUTH_TOKEN = 'fixture-claude-oauth-token'
     Object.assign(process.env, extraEnv)
@@ -197,7 +197,7 @@ describe('shouldIncludeCyberRiskInstruction', () => {
 
   test('treats OpenAI Codex OAuth as third-party only when OpenAI OAuth tokens are actually present', () => {
     process.env.CLAUDE_CODE_OAUTH_TOKEN = 'fixture-claude-oauth-token'
-    process.env.CC_HAHA_OPENAI_OAUTH_PROVIDER = '1'
+    process.env.WANGMAI_OPENAI_OAUTH_PROVIDER = '1'
     writeUserSettings({ includeCyberRiskInstruction: false })
 
     // Without OpenAI tokens, client.ts falls back to Claude OAuth; keep protection active.

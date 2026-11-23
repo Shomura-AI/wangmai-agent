@@ -60,7 +60,7 @@ describe('Settings section navigation', () => {
     const scroller = screen.getByTestId('settings-page-frame').parentElement!
     scroller.scrollTop = 900
     act(() => useUIStore.getState().setPendingSettingsTab('h5Access'))
-    await screen.findByRole('heading', { name: 'Get cc-haha on your phone' })
+    await screen.findByRole('heading', { name: 'Get wangmai on your phone' })
     expect(scroller.scrollTop).toBe(0)
     // Re-entering the current section must bring its installation card back too.
     scroller.scrollTop = 600

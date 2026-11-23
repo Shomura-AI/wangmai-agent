@@ -560,7 +560,7 @@ export function updateSettingsForSource(
     )
 
     if (managedGeneralSync) {
-      syncCcHahaUserGeneralSettings(managedGeneralSync)
+      syncWangMaiUserGeneralSettings(managedGeneralSync)
     }
 
     // Invalidate the session cache since settings have been updated
@@ -787,14 +787,14 @@ function normalizeUserSettingsGeneralPatch(
   }
 }
 
-function syncCcHahaUserGeneralSettings(sync: {
+function syncWangMaiUserGeneralSettings(sync: {
   defaultEffort?: ModelReasoningEffort | null
   language?: string | null
 }): void {
   const onlyClearing =
     (sync.defaultEffort === undefined || sync.defaultEffort === null) &&
     (sync.language === undefined || sync.language === null)
-  const managedPath = join(getClaudeConfigHomeDir(), 'cc-haha', 'settings.json')
+  const managedPath = join(getClaudeConfigHomeDir(), 'wangmai', 'settings.json')
 
   let content: string | null = null
   try {
@@ -877,7 +877,7 @@ function syncCcHahaUserGeneralSettings(sync: {
   }
 }
 
-function loadCcHahaUserGeneralFallback(
+function loadWangMaiUserGeneralFallback(
   userMerged: SettingsJson,
 ): Record<string, unknown> | null {
   if (getUserSettingsFilePath() !== 'settings.json') {
@@ -893,7 +893,7 @@ function loadCcHahaUserGeneralFallback(
   }
 
   try {
-    const managedPath = join(getClaudeConfigHomeDir(), 'cc-haha', 'settings.json')
+    const managedPath = join(getClaudeConfigHomeDir(), 'wangmai', 'settings.json')
     const content = readFileSync(managedPath)
     if (content.trim() === '') return null
     const parsed = safeParseJSON(content, false)
@@ -943,7 +943,7 @@ export function getUserLanguageSettingWithFallback(
   ) {
     return rawUserSettings.language
   }
-  const fallback = loadCcHahaUserGeneralFallback(rawUserSettings ?? {})
+  const fallback = loadWangMaiUserGeneralFallback(rawUserSettings ?? {})
   return typeof fallback?.language === 'string' ? fallback.language : undefined
 }
 
@@ -1096,11 +1096,11 @@ function loadSettingsFromDisk(): SettingsWithErrors {
       }
 
       if (source === 'userSettings') {
-        const ccHahaFallback = loadCcHahaUserGeneralFallback(mergedSettings)
-        if (ccHahaFallback) {
+        const wangmaiFallback = loadWangMaiUserGeneralFallback(mergedSettings)
+        if (wangmaiFallback) {
           mergedSettings = mergeSettingsLayerWithEffortPrecedence(
             mergedSettings,
-            ccHahaFallback,
+            wangmaiFallback,
           )
         }
       }

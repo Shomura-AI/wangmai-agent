@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import '@testing-library/jest-dom'
 
 const { planUsageMock, statusMock } = vi.hoisted(() => ({ planUsageMock: vi.fn(), statusMock: vi.fn() }))
-vi.mock('../../api/hahaOAuth', () => ({ hahaOAuthApi: { planUsage: planUsageMock, status: statusMock } }))
+vi.mock('../../api/wangmaiOAuth', () => ({ wangmaiOAuthApi: { planUsage: planUsageMock, status: statusMock } }))
 vi.mock('../../components/settings/ChatGPTOfficialLogin', () => ({ ChatGPTOfficialLogin: () => null }))
 vi.mock('../../components/settings/GrokOfficialLogin', () => ({ GrokOfficialLogin: () => null }))
 vi.mock('../../components/settings/DeepSeekAccountLogin', () => ({ DeepSeekAccountLogin: () => null }))
@@ -13,11 +13,11 @@ import { ProviderSettings } from './ProviderSettings'
 import { providersApi } from '../../api/providers'
 import { useProviderStore } from '../../stores/providerStore'
 import { useSettingsStore } from '../../stores/settingsStore'
-import { useHahaOAuthStore } from '../../stores/hahaOAuthStore'
+import { useWangMaiOAuthStore } from '../../stores/wangmaiOAuthStore'
 import { useMagpieStore } from '../../stores/magpieStore'
 
 const providerState = useProviderStore.getState()
-const oauthState = useHahaOAuthStore.getState()
+const oauthState = useWangMaiOAuthStore.getState()
 const loggedIn = { loggedIn: true as const, expiresAt: 9999999999999, scopes: ['user:inference', 'user:profile'], subscriptionType: 'max' as const }
 
 beforeEach(() => {
@@ -28,15 +28,15 @@ beforeEach(() => {
   vi.spyOn(providersApi, 'list').mockResolvedValue({ providers: [], activeId: 'openai-official' })
   vi.spyOn(providersApi, 'getSettings').mockResolvedValue({})
   useProviderStore.setState({ providers: [], activeId: 'openai-official', providerOrder: [], hasLoadedProviders: false, isLoading: false })
-  useHahaOAuthStore.setState({ ...oauthState, status: null })
+  useWangMaiOAuthStore.setState({ ...oauthState, status: null })
   statusMock.mockResolvedValue(loggedIn)
   planUsageMock.mockResolvedValue({ available: true, fetchedAt: '2026-11-11T09:00:00.000Z', usage: { five_hour: { utilization: 42, resets_at: null } } })
 })
 afterEach(() => {
   cleanup()
-  useHahaOAuthStore.getState().stopPolling()
+  useWangMaiOAuthStore.getState().stopPolling()
   useProviderStore.setState(providerState)
-  useHahaOAuthStore.setState(oauthState)
+  useWangMaiOAuthStore.setState(oauthState)
   vi.restoreAllMocks()
 })
 

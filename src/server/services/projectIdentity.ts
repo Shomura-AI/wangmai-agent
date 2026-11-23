@@ -26,7 +26,7 @@ export function findExplicitProjectRoot(candidate: string, roots: readonly strin
 /** Project identity reads share one parsed preference snapshot across all rows.
  * Revision tracks only roots so unrelated preference edits do not expire history. */
 export function readProjectIdentity(configDir: string): ProjectIdentitySnapshot {
-  const filePath = path.join(configDir, 'cc-haha', 'desktop-ui.json')
+  const filePath = path.join(configDir, 'wangmai', 'desktop-ui.json')
   let signature: string
   try {
     const stat = statSync(filePath)

@@ -1,4 +1,4 @@
-export const TAB_BEHAVIOR_STORAGE_KEY = 'cc-haha-tab-behavior'
+export const TAB_BEHAVIOR_STORAGE_KEY = 'wangmai-tab-behavior'
 export const TAB_BEHAVIOR_VERSION = 1
 
 /** Presets rather than a free number: each is a count people actually keep. */

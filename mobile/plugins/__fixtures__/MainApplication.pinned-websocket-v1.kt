@@ -1,4 +1,4 @@
-package app.cchaha.mobile
+package app.wangmai.mobile
 
 import com.facebook.react.modules.websocket.WebSocketModule
 
@@ -31,12 +31,12 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    // cc-haha: pinned WebSocket origin (begin)
+    // wangmai: pinned WebSocket origin (begin)
     WebSocketModule.setCustomClientBuilder { builder ->
       builder.followRedirects(false)
       builder.followSslRedirects(false)
     }
-    // cc-haha: pinned WebSocket origin (end)
+    // wangmai: pinned WebSocket origin (end)
     DefaultNewArchitectureEntryPoint.releaseLevel = try {
       ReleaseLevel.valueOf(BuildConfig.REACT_NATIVE_RELEASE_LEVEL.uppercase())
     } catch (e: IllegalArgumentException) {

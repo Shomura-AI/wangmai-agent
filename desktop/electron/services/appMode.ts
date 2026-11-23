@@ -57,7 +57,7 @@ function writeAppModeConfig(configDir: string, config: PersistedAppModeConfig): 
 function assertWritableDataDir(configDir: string): void {
   try {
     fs.mkdirSync(configDir, { recursive: true })
-    const probeDir = fs.mkdtempSync(path.join(configDir, '.cc-haha-write-test-'))
+    const probeDir = fs.mkdtempSync(path.join(configDir, '.wangmai-write-test-'))
     try {
       fs.writeFileSync(path.join(probeDir, 'probe'), '')
     } finally {
@@ -101,7 +101,7 @@ export function normalizedCustomDir(app: AppModeAppLike, value: string | null | 
 }
 
 function externallyControlled(env: NodeJS.ProcessEnv): boolean {
-  return Boolean(env.CLAUDE_CONFIG_DIR && env.CC_HAHA_APP_PORTABLE_DIR !== '1')
+  return Boolean(env.CLAUDE_CONFIG_DIR && env.WANGMAI_APP_PORTABLE_DIR !== '1')
 }
 
 // The app-managed portable selection is process-local derived state; the
@@ -110,9 +110,9 @@ function externallyControlled(env: NodeJS.ProcessEnv): boolean {
 // spawned by quitAndInstall()), otherwise the child would trust a snapshot
 // that may no longer match the persisted mode (#1160).
 export function clearAppManagedPortableEnv(env: NodeJS.ProcessEnv = process.env): void {
-  if (env.CC_HAHA_APP_PORTABLE_DIR !== '1') return
+  if (env.WANGMAI_APP_PORTABLE_DIR !== '1') return
   delete env.CLAUDE_CONFIG_DIR
-  delete env.CC_HAHA_APP_PORTABLE_DIR
+  delete env.WANGMAI_APP_PORTABLE_DIR
   delete env.WEBVIEW2_USER_DATA_FOLDER
 }
 
@@ -149,7 +149,7 @@ export function applyStartupPortableMode(
   const webViewDataDir = path.join(customDir, 'EBWebView')
   fs.mkdirSync(webViewDataDir, { recursive: true })
   env.CLAUDE_CONFIG_DIR = customDir
-  env.CC_HAHA_APP_PORTABLE_DIR = '1'
+  env.WANGMAI_APP_PORTABLE_DIR = '1'
   env.WEBVIEW2_USER_DATA_FOLDER = webViewDataDir
   return customDir
 }
@@ -168,7 +168,7 @@ export function getAppMode(
       mode: 'portable',
       portableDir: customDir,
       activeConfigDir: customDir,
-      configDirSource: envConfigDir && env.CC_HAHA_APP_PORTABLE_DIR !== '1'
+      configDirSource: envConfigDir && env.WANGMAI_APP_PORTABLE_DIR !== '1'
         ? 'environment'
         : 'portable',
     }

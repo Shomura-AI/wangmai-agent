@@ -30,10 +30,10 @@ const originalClaudeCodeEntrypoint = process.env.CLAUDE_CODE_ENTRYPOINT
 const originalHome = process.env.HOME
 const originalShell = process.env.SHELL
 const originalZdotdir = process.env.ZDOTDIR
-const originalDisableTerminalShellEnv = process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV
-const originalTaskTimeout = process.env.CC_HAHA_TASK_TIMEOUT_MS
-const originalLocalAccessToken = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-const originalSystemProxyUrl = process.env.CC_HAHA_SYSTEM_PROXY_URL
+const originalDisableTerminalShellEnv = process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV
+const originalTaskTimeout = process.env.WANGMAI_TASK_TIMEOUT_MS
+const originalLocalAccessToken = process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+const originalSystemProxyUrl = process.env.WANGMAI_SYSTEM_PROXY_URL
 const originalHttpProxy = process.env.HTTP_PROXY
 const originalHttpsProxy = process.env.HTTPS_PROXY
 const originalLowerHttpProxy = process.env.http_proxy
@@ -122,24 +122,24 @@ function restoreEnv(): void {
     delete process.env.ZDOTDIR
   }
   if (originalDisableTerminalShellEnv) {
-    process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV = originalDisableTerminalShellEnv
+    process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV = originalDisableTerminalShellEnv
   } else {
-    delete process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV
+    delete process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV
   }
   if (originalTaskTimeout) {
-    process.env.CC_HAHA_TASK_TIMEOUT_MS = originalTaskTimeout
+    process.env.WANGMAI_TASK_TIMEOUT_MS = originalTaskTimeout
   } else {
-    delete process.env.CC_HAHA_TASK_TIMEOUT_MS
+    delete process.env.WANGMAI_TASK_TIMEOUT_MS
   }
   if (originalLocalAccessToken !== undefined) {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = originalLocalAccessToken
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = originalLocalAccessToken
   } else {
-    delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
+    delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
   }
   if (originalSystemProxyUrl !== undefined) {
-    process.env.CC_HAHA_SYSTEM_PROXY_URL = originalSystemProxyUrl
+    process.env.WANGMAI_SYSTEM_PROXY_URL = originalSystemProxyUrl
   } else {
-    delete process.env.CC_HAHA_SYSTEM_PROXY_URL
+    delete process.env.WANGMAI_SYSTEM_PROXY_URL
   }
   if (originalHttpProxy !== undefined) process.env.HTTP_PROXY = originalHttpProxy
   else delete process.env.HTTP_PROXY
@@ -159,7 +159,7 @@ describe('cron scheduler launcher resolution', () => {
   beforeEach(async () => {
     tmpDir = await createTmpDir()
     process.env.CLAUDE_CONFIG_DIR = path.join(tmpDir, 'config')
-    process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV = '1'
+    process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV = '1'
     resetSettingsCache()
     resetTerminalShellEnvironmentCacheForTests()
   })
@@ -171,14 +171,14 @@ describe('cron scheduler launcher resolution', () => {
 
   it('uses a configurable scheduled task timeout with the default unchanged', () => {
     expect(resolveCronTaskTimeoutMs({})).toBe(10 * 60 * 1000)
-    expect(resolveCronTaskTimeoutMs({ CC_HAHA_TASK_TIMEOUT_MS: '1800000' })).toBe(1_800_000)
-    expect(resolveCronTaskTimeoutMs({ CC_HAHA_TASK_TIMEOUT_MS: 'not-a-number' })).toBe(10 * 60 * 1000)
-    expect(resolveCronTaskTimeoutMs({ CC_HAHA_TASK_TIMEOUT_MS: '0' })).toBe(10 * 60 * 1000)
+    expect(resolveCronTaskTimeoutMs({ WANGMAI_TASK_TIMEOUT_MS: '1800000' })).toBe(1_800_000)
+    expect(resolveCronTaskTimeoutMs({ WANGMAI_TASK_TIMEOUT_MS: 'not-a-number' })).toBe(10 * 60 * 1000)
+    expect(resolveCronTaskTimeoutMs({ WANGMAI_TASK_TIMEOUT_MS: '0' })).toBe(10 * 60 * 1000)
   })
 
-  unixOnly('executeTask arms the subprocess timeout from CC_HAHA_TASK_TIMEOUT_MS', async () => {
+  unixOnly('executeTask arms the subprocess timeout from WANGMAI_TASK_TIMEOUT_MS', async () => {
     const binDir = path.join(tmpDir, 'bin')
-    const sidecarPath = path.join(tmpDir, 'claude-sidecar')
+    const sidecarPath = path.join(tmpDir, 'wangmai-sidecar')
     const appRoot = path.join(tmpDir, 'app-root')
     await fs.mkdir(binDir, { recursive: true })
     await fs.mkdir(appRoot, { recursive: true })
@@ -206,7 +206,7 @@ describe('cron scheduler launcher resolution', () => {
     process.env.PATH = binDir
     process.env.CLAUDE_CLI_PATH = sidecarPath
     process.env.CLAUDE_APP_ROOT = appRoot
-    process.env.CC_HAHA_TASK_TIMEOUT_MS = '12345'
+    process.env.WANGMAI_TASK_TIMEOUT_MS = '12345'
 
     try {
       const cronService = new CronService()
@@ -229,7 +229,7 @@ describe('cron scheduler launcher resolution', () => {
   })
 
   it('uses the bundled sidecar launcher when one is configured', () => {
-    const sidecarPath = path.join(tmpDir, 'claude-sidecar')
+    const sidecarPath = path.join(tmpDir, 'wangmai-sidecar')
     const appRoot = path.join(tmpDir, 'app-root')
 
     const args = buildCronCliArgs(['--print'], {
@@ -263,7 +263,7 @@ describe('cron scheduler launcher resolution', () => {
     })
   })
 
-  it('prefers an explicit CC_HAHA_ROOT when it points at a source checkout', async () => {
+  it('prefers an explicit WANGMAI_ROOT when it points at a source checkout', async () => {
     const sourceRoot = path.join(tmpDir, 'source')
     await createSourceRoot(sourceRoot)
 
@@ -271,7 +271,7 @@ describe('cron scheduler launcher resolution', () => {
       resolveCronProjectRoot({
         cwd: path.join(tmpDir, 'other'),
         moduleDir: path.join(tmpDir, 'broken', 'src', 'server', 'services'),
-        env: { CC_HAHA_ROOT: sourceRoot },
+        env: { WANGMAI_ROOT: sourceRoot },
       }),
     ).toBe(sourceRoot)
   })
@@ -294,7 +294,7 @@ describe('cron scheduler launcher resolution', () => {
   unixOnly('executeTask launches the configured desktop sidecar instead of source bun', async () => {
     const binDir = path.join(tmpDir, 'bin')
     const appRoot = path.join(tmpDir, 'app-root')
-    const sidecarPath = path.join(tmpDir, 'claude-sidecar')
+    const sidecarPath = path.join(tmpDir, 'wangmai-sidecar')
     const sidecarArgsPath = path.join(tmpDir, 'sidecar.args')
     const bunArgsPath = path.join(tmpDir, 'bun.args')
 
@@ -366,7 +366,7 @@ describe('cron scheduler launcher resolution', () => {
 
   unixOnly('executeTask passes provider-scoped model runtime to the sidecar', async () => {
     const appRoot = path.join(tmpDir, 'app-root')
-    const sidecarPath = path.join(tmpDir, 'claude-sidecar')
+    const sidecarPath = path.join(tmpDir, 'wangmai-sidecar')
     const sidecarArgsPath = path.join(tmpDir, 'sidecar.args')
     const sidecarEnvPath = path.join(tmpDir, 'sidecar.env')
 
@@ -392,7 +392,7 @@ describe('cron scheduler launcher resolution', () => {
     process.env.ANTHROPIC_BASE_URL = 'https://stale-parent.example'
     process.env.ANTHROPIC_MODEL = 'stale-parent-model'
     process.env.CLAUDE_CODE_ENTRYPOINT = 'stale-parent-entrypoint'
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
 
     const provider = await new ProviderService().addProvider({
       presetId: 'custom',
@@ -446,14 +446,14 @@ describe('cron scheduler launcher resolution', () => {
     expect(env.ANTHROPIC_MODEL).toBe('provider-fast')
     expect(env.ANTHROPIC_MODEL).not.toBe('stale-parent-model')
     expect(env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST).toBe('1')
-    expect(env.CC_HAHA_LOCAL_ACCESS_TOKEN).toBe('desktop-local-secret')
+    expect(env.WANGMAI_LOCAL_ACCESS_TOKEN).toBe('desktop-local-secret')
     expect(env.CLAUDE_CODE_ATTRIBUTION_HEADER).toBe('0')
     expect(env.CLAUDE_CODE_ENTRYPOINT).toBe('sdk-cli')
   })
 
   unixOnly('executeTask applies direct, system, and manual network settings to the sidecar', async () => {
     const appRoot = path.join(tmpDir, 'app-root')
-    const sidecarPath = path.join(tmpDir, 'claude-sidecar')
+    const sidecarPath = path.join(tmpDir, 'wangmai-sidecar')
     const sidecarEnvPath = path.join(tmpDir, 'sidecar.env')
     const settingsPath = path.join(process.env.CLAUDE_CONFIG_DIR!, 'settings.json')
 
@@ -476,7 +476,7 @@ describe('cron scheduler launcher resolution', () => {
 
     process.env.CLAUDE_CLI_PATH = sidecarPath
     process.env.CLAUDE_APP_ROOT = appRoot
-    process.env.CC_HAHA_SYSTEM_PROXY_URL = 'http://127.0.0.1:7897'
+    process.env.WANGMAI_SYSTEM_PROXY_URL = 'http://127.0.0.1:7897'
     process.env.HTTP_PROXY = 'http://stale-parent.example:8080'
     process.env.HTTPS_PROXY = 'http://stale-parent.example:8080'
     process.env.http_proxy = 'http://stale-parent.example:8080'
@@ -531,7 +531,7 @@ describe('cron scheduler launcher resolution', () => {
 
   unixOnly('executeTask lets a provider proxy override beat the global proxy for its scheduled sidecar', async () => {
     const appRoot = path.join(tmpDir, 'app-root')
-    const sidecarPath = path.join(tmpDir, 'claude-sidecar')
+    const sidecarPath = path.join(tmpDir, 'wangmai-sidecar')
     const sidecarEnvPath = path.join(tmpDir, 'sidecar.env')
     const settingsPath = path.join(process.env.CLAUDE_CONFIG_DIR!, 'settings.json')
 
@@ -615,12 +615,12 @@ describe('cron scheduler launcher resolution', () => {
 
   unixOnly('executeTask reloads the General team preference for each new scheduled process', async () => {
     const appRoot = path.join(tmpDir, 'app-root')
-    const sidecarPath = path.join(tmpDir, 'claude-sidecar')
+    const sidecarPath = path.join(tmpDir, 'wangmai-sidecar')
     const teamEnvPath = path.join(tmpDir, 'team.env')
     const settingsPath = path.join(process.env.CLAUDE_CONFIG_DIR!, 'settings.json')
     const envKeys = [
-      'CC_HAHA_AGENT_TEAMS_DEFAULT',
-      'CC_HAHA_AGENT_TEAMS_ENABLED',
+      'WANGMAI_AGENT_TEAMS_DEFAULT',
+      'WANGMAI_AGENT_TEAMS_ENABLED',
       'CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS',
     ] as const
     const savedEnv = Object.fromEntries(envKeys.map(key => [key, process.env[key]]))
@@ -628,7 +628,7 @@ describe('cron scheduler launcher resolution', () => {
     await fs.mkdir(path.dirname(settingsPath), { recursive: true })
     await fs.writeFile(sidecarPath, [
       '#!/bin/sh',
-      `printf '%s\\n' "$CC_HAHA_AGENT_TEAMS_DEFAULT" "\${CC_HAHA_AGENT_TEAMS_ENABLED-unset}" "$CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS" > "${teamEnvPath}"`,
+      `printf '%s\\n' "$WANGMAI_AGENT_TEAMS_DEFAULT" "\${WANGMAI_AGENT_TEAMS_ENABLED-unset}" "$CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS" > "${teamEnvPath}"`,
       'IFS= read -r turn',
       'printf \'%s\\n\' \'{"type":"result","result":"team env ok"}\'',
       '/bin/cat >/dev/null',
@@ -638,8 +638,8 @@ describe('cron scheduler launcher resolution', () => {
     process.env.CLAUDE_CLI_PATH = sidecarPath
     process.env.CLAUDE_APP_ROOT = appRoot
     process.env.HOME = tmpDir
-    process.env.CC_HAHA_AGENT_TEAMS_DEFAULT = '0'
-    process.env.CC_HAHA_AGENT_TEAMS_ENABLED = '1'
+    process.env.WANGMAI_AGENT_TEAMS_DEFAULT = '0'
+    process.env.WANGMAI_AGENT_TEAMS_ENABLED = '1'
     process.env.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = '0'
 
     try {
@@ -675,7 +675,7 @@ describe('cron scheduler launcher resolution', () => {
 
   unixOnly('executeTask launches scheduled tasks with full permissions', async () => {
     const appRoot = path.join(tmpDir, 'app-root')
-    const sidecarPath = path.join(tmpDir, 'claude-sidecar')
+    const sidecarPath = path.join(tmpDir, 'wangmai-sidecar')
     const sidecarArgsPath = path.join(tmpDir, 'sidecar.args')
 
     await fs.mkdir(appRoot, { recursive: true })
@@ -863,7 +863,7 @@ for await (const line of input) {
 }
 `)
     const env = createSandboxedTestEnvironment(root, {
-      CLAUDE_CONFIG_DIR: path.join(root, 'config'), CLAUDE_CLI_PATH: cliPath, CC_HAHA_TASK_TIMEOUT_MS: '5000',
+      CLAUDE_CONFIG_DIR: path.join(root, 'config'), CLAUDE_CLI_PATH: cliPath, WANGMAI_TASK_TIMEOUT_MS: '5000',
       DISABLE_TELEMETRY: '1', DISABLE_ERROR_REPORTING: '1', DISABLE_AUTOUPDATER: '1',
     })
     for (const key of Object.keys(process.env)) delete process.env[key]
@@ -921,7 +921,7 @@ for await (const line of input) {
 
   unixOnly('executeTask inherits exported terminal shell variables', async () => {
     const appRoot = path.join(tmpDir, 'app-root')
-    const sidecarPath = path.join(tmpDir, 'claude-sidecar')
+    const sidecarPath = path.join(tmpDir, 'wangmai-sidecar')
     const sidecarEnvPath = path.join(tmpDir, 'sidecar.env')
     const shellPath = path.join(tmpDir, 'zsh')
     const nodeBin = path.join(tmpDir, 'node-bin')
@@ -975,7 +975,7 @@ for await (const line of input) {
     )
     await fs.chmod(sidecarPath, 0o755)
 
-    delete process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV
+    delete process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV
     process.env.HOME = tmpDir
     process.env.SHELL = shellPath
     process.env.PATH = '/usr/bin:/bin'

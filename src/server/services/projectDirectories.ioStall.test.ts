@@ -43,7 +43,7 @@ test.each([
     try {
       const service = new DesktopUiPreferencesService()
       await service.updateProjectDirectories({ workDir: project, additionalDirectories: [extra] })
-      const preferencesFile = join(process.env.CLAUDE_CONFIG_DIR, 'cc-haha', 'desktop-ui.json')
+      const preferencesFile = join(process.env.CLAUDE_CONFIG_DIR, 'wangmai', 'desktop-ui.json')
       const before = await readFile(preferencesFile, 'utf8')
       await setProjectDirectoryWorkerFactoryForTests(script => {
         const worker = new Worker(`

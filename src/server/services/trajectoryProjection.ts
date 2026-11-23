@@ -404,7 +404,7 @@ export function oversizedProjectionEntry(head: string): Rec {
   }
 }
 
-/** Per-field max: block lines of one response may carry partial usage (cc-haha writes the final usage on the last line only). */
+/** Per-field max: block lines of one response may carry partial usage (wangmai writes the final usage on the last line only). */
 function mergeUsage(current: TrajectoryUsage | undefined, next: TrajectoryUsage | undefined): TrajectoryUsage | undefined {
   if (!current || !next) return current ?? next
   return {

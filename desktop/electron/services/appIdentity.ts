@@ -9,7 +9,7 @@ export type AppUserModelIdHost = {
 // Must stay in sync with build.appId in desktop/package.json. Windows attributes
 // toast notifications (and taskbar pinning) to this AppUserModelID; without an
 // explicit call, notifications from a dev/unpackaged run can silently fail to show.
-export const WINDOWS_APP_USER_MODEL_ID = 'com.claude-code-haha.desktop'
+export const WINDOWS_APP_USER_MODEL_ID = 'com.wangmai.agent'
 
 export function applyWindowsAppUserModelId(
   app: AppUserModelIdHost,
@@ -53,7 +53,7 @@ export function applyWindowsTaskbarIdentity(
     appIconPath: existsSync(externalIcon) ? externalIcon : paths.executablePath,
     appIconIndex: 0,
     relaunchCommand: `"${paths.executablePath}"`,
-    relaunchDisplayName: 'Claude Code Haha',
+    relaunchDisplayName: '网脉智能体',
   })
   return true
 }

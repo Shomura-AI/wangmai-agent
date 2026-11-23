@@ -4,7 +4,7 @@ import { resolvePluginMcpEnvironment, addPluginScopeToServers } from '../../util
 import { UnauthorizedError } from '@modelcontextprotocol/sdk/client/auth.js'
 import { McpConnectionError, type McpConnectionErrorKind } from '../mcp/connectionErrors.js'
 
-const recipe = (auth: RemoteConnectorRecipe['auth']): RemoteConnectorRecipe => ({ id: 'maps-fixture', pluginId: 'office-maps-fixture@haha-connectors', version: '1.0.0', endpoint: 'https://official.example/mcp?format=0', transport: 'http', auth })
+const recipe = (auth: RemoteConnectorRecipe['auth']): RemoteConnectorRecipe => ({ id: 'maps-fixture', pluginId: 'office-maps-fixture@wangmai-connectors', version: '1.0.0', endpoint: 'https://official.example/mcp?format=0', transport: 'http', auth })
 function fixture() {
   const options: Record<string, Record<string, string>> = { 'another-plugin@other': { apiKey: 'keep-other-secret' } }
   const calls: Array<{ kind: string, name: string, config?: unknown }> = []

@@ -126,7 +126,7 @@ export async function runProviderMediaScenario(rootDir: string, artifactDir: str
       '--debug-file', join(artifactDir, 'provider-media.debug.log'),
     ], {
       cwd: workDir, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe',
-      env: { ...sandbox.env, ...providerEnv, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1',
+      env: { ...sandbox.env, ...providerEnv, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1',
         MOCK_PROVIDER_MEDIA_ORIGIN: `http://127.0.0.1:${gateway.port}`,
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1' },
     })

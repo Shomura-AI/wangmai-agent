@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 
 /**
- * Deliberately its own key rather than a field on `cc-haha-chat-appearance`:
+ * Deliberately its own key rather than a field on `wangmai-chat-appearance`:
  * the bubble position is not a reading style, so changing it must not rewrite
  * the appearance record, and "Reset chat appearance" must not clear it.
  */
-export const SELECTION_MENU_PLACEMENT_STORAGE_KEY = 'cc-haha-selection-menu-placement'
+export const SELECTION_MENU_PLACEMENT_STORAGE_KEY = 'wangmai-selection-menu-placement'
 
 /**
  * Where the action menu goes after a text selection. `auto` is the upstream

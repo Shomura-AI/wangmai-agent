@@ -9,7 +9,7 @@ import {
 } from '../constants/grokOfficialProvider'
 import { normalizeRuntimeSelection } from '../lib/runtimeSelection'
 
-const STORAGE_KEY = 'cc-haha-session-runtime'
+const STORAGE_KEY = 'wangmai-session-runtime'
 // Session-list metadata can lag behind runtime changes or arrive out of order.
 // Protect local choices until the server confirms them. Object identity also
 // lets callers discard list responses started before a choice/confirmation.

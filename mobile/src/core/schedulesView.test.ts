@@ -134,7 +134,7 @@ test('run duration prefers durationMs, then timestamps, and counts running runs 
 })
 
 test('project label falls back to the computer default directory', () => {
-  expect(projectLabel('/Users/me/code/cc-haha/')).toBe('cc-haha')
+  expect(projectLabel('/Users/me/code/wangmai/')).toBe('wangmai')
   expect(projectLabel('C:\\work\\blog')).toBe('blog')
   expect(projectLabel(undefined)).toBe('电脑默认目录')
   expect(projectLabel('')).toBe('电脑默认目录')

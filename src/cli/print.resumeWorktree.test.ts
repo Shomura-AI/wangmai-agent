@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { createSandboxedTestEnvironment } from '../../scripts/pr/test-environment.js'
 import { sanitizePath } from '../utils/sessionStoragePortable.js'
 
-const CLI = join(import.meta.dir, '..', '..', 'bin', 'claude-haha')
+const CLI = join(import.meta.dir, '..', '..', 'bin', 'wangmai')
 
 function completion() {
   const events = [
@@ -31,7 +31,7 @@ async function resumeAfterEnterWorktree(options: { worktreeExists: boolean }) {
     return new Response(completion(), { headers: { 'content-type': 'text/event-stream' } })
   } })
   const env = createSandboxedTestEnvironment(home, {
-    NODE_ENV: 'production', CI: '1', CC_HAHA_SKIP_DOTENV: '1', CALLER_DIR: repo,
+    NODE_ENV: 'production', CI: '1', WANGMAI_SKIP_DOTENV: '1', CALLER_DIR: repo,
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',
     DISABLE_AUTOUPDATER: '1', DISABLE_TELEMETRY: '1', DISABLE_ERROR_REPORTING: '1',
     ANTHROPIC_API_KEY: 'fixture-key', ANTHROPIC_BASE_URL: server.url.origin,

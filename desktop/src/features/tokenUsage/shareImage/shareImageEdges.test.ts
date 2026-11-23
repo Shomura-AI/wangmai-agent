@@ -23,7 +23,7 @@ const models = [
 
 const DATA: ShareImageData = {
   displayName: 'Ada Lovelace',
-  linkText: 'github.com/NanmiCoder/cc-haha',
+  linkText: 'github.com/wangmai-ai/wangmai-agent',
   dateLabel: '2026.10.17',
   caption: '累计 Token',
   totalValue: '241',

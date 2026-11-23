@@ -54,12 +54,12 @@ test('publishes real shell terminals while the model is still working, without r
     }
     return response([{ type: 'text', text: 'Finished developing.' }], 'end_turn')
   } })
-  const child = Bun.spawn([process.execPath, '--no-env-file', resolve('bin/claude-haha'),
+  const child = Bun.spawn([process.execPath, '--no-env-file', resolve('bin/wangmai'),
     '--bare', '-p', '--verbose', '--input-format', 'stream-json', '--output-format', 'stream-json',
     '--dangerously-skip-permissions'], {
     cwd: home,
     env: createSandboxedTestEnvironment(home, {
-      NODE_ENV: 'production', CI: '1', CC_HAHA_SKIP_DOTENV: '1',
+      NODE_ENV: 'production', CI: '1', WANGMAI_SKIP_DOTENV: '1',
       CALLER_DIR: home, ANTHROPIC_API_KEY: 'loopback-fixture-key',
       ANTHROPIC_BASE_URL: `http://127.0.0.1:${server.port}`,
       ANTHROPIC_MODEL: 'claude-sonnet-4-5',

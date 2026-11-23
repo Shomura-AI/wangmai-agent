@@ -81,12 +81,12 @@ const documentTarget: AssistantOutputTarget = {
 // The #1556 card: a file the turn wrote outside the workdir, under a folder
 // whose name holds a space.
 const spacedWindowsTarget: AssistantOutputTarget = {
-  id: 'markdown:D:/cchaha/cchaha d/全局档案重写/全局记忆-2026-10-14.md',
+  id: 'markdown:D:/wangmai/wangmai d/全局档案重写/全局记忆-2026-10-14.md',
   kind: 'markdown',
   title: '全局记忆-2026-10-14.md',
-  subtitle: 'D:/cchaha/cchaha d/全局档案重写/全局记忆-2026-10-14.md',
-  href: 'D:/cchaha/cchaha d/全局档案重写/全局记忆-2026-10-14.md',
-  normalizedPath: 'D:/cchaha/cchaha d/全局档案重写/全局记忆-2026-10-14.md',
+  subtitle: 'D:/wangmai/wangmai d/全局档案重写/全局记忆-2026-10-14.md',
+  href: 'D:/wangmai/wangmai d/全局档案重写/全局记忆-2026-10-14.md',
+  normalizedPath: 'D:/wangmai/wangmai d/全局档案重写/全局记忆-2026-10-14.md',
   confidence: 'high',
   source: 'changed-file',
 }

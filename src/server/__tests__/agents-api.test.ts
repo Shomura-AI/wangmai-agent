@@ -28,7 +28,7 @@ let originalHasSession: typeof conversationService.hasSession
 let originalRequestControl: typeof conversationService.requestControl
 
 beforeEach(async () => {
-  tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-agents-api-'))
+  tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-agents-api-'))
   configDir = path.join(tempRoot, 'config')
   projectRoot = path.join(tempRoot, 'project')
   projectCwd = path.join(projectRoot, 'src')
@@ -260,7 +260,7 @@ describe('Agents API Markdown CRUD', () => {
     }
 
     // A provider that was deleted after saving does not block other edits.
-    const providersFile = path.join(configDir, 'cc-haha', 'providers.json')
+    const providersFile = path.join(configDir, 'wangmai', 'providers.json')
     const providers = JSON.parse(await fs.readFile(providersFile, 'utf-8'))
     await fs.writeFile(providersFile, JSON.stringify({ ...providers, providers: [] }))
     const descriptionOnly = await api('PUT', '/api/agents/provider-reviewer', {
@@ -2152,8 +2152,8 @@ describe('Agents API built-in overrides', () => {
 })
 
 async function writeSavedProviders(configDir: string): Promise<void> {
-  await fs.mkdir(path.join(configDir, 'cc-haha'), { recursive: true })
-  await fs.writeFile(path.join(configDir, 'cc-haha', 'providers.json'), JSON.stringify({
+  await fs.mkdir(path.join(configDir, 'wangmai'), { recursive: true })
+  await fs.writeFile(path.join(configDir, 'wangmai', 'providers.json'), JSON.stringify({
     schemaVersion: 4,
     activeId: null,
     providers: [

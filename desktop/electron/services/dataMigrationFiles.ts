@@ -20,8 +20,8 @@ const indexes = new Set(['index-v1.sqlite', 'trace-index-v1.sqlite', 'search-ind
 
 export function skipMigrationEntry(relative: string): boolean {
   const normalized = relative.split(path.sep).join('/')
-  if (normalized.startsWith('cc-haha/db/')) {
-    const name = normalized.slice('cc-haha/db/'.length)
+  if (normalized.startsWith('wangmai/db/')) {
+    const name = normalized.slice('wangmai/db/'.length)
     if (indexes.has(name.replace(/-(wal|shm|journal)$/, ''))) return true
   }
   if (normalized === '.runtime/venv' || normalized.startsWith('.runtime/venv/')) return true

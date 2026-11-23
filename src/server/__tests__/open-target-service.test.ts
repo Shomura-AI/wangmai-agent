@@ -8,7 +8,7 @@ import {
   parseDarwinApplicationListOutput,
 } from '../services/openTargetService.js'
 
-async function makeDir(prefix = 'cc-haha-open-target-') {
+async function makeDir(prefix = 'wangmai-open-target-') {
   return mkdtemp(join(tmpdir(), prefix))
 }
 
@@ -155,7 +155,7 @@ describe('openTargetService', () => {
   it.each(['/Applications/Zed.app', join(homedir(), 'Applications', 'Zed.app')])(
     'detects Zed installed at %s and opens projects and files through the app bundle',
     async (appPath) => {
-      const dir = await makeDir('cc-haha zed-')
+      const dir = await makeDir('wangmai zed-')
       const file = join(dir, 'hello world.txt')
       await writeFile(file, 'fixture')
       const state = createService('darwin', { paths: { [appPath]: true } })
@@ -177,7 +177,7 @@ describe('openTargetService', () => {
   )
 
   it.each(['zed', 'zeditor'])('detects and launches Linux Zed using %s', async (command) => {
-    const dir = await makeDir('cc-haha zed-')
+    const dir = await makeDir('wangmai zed-')
     const state = createService('linux', { commands: { [command]: true } })
     try {
       expect((await state.service.listTargets()).targets.map((target) => target.id)).toEqual(['zed'])
@@ -189,7 +189,7 @@ describe('openTargetService', () => {
   })
 
   it('detects and launches the resolved Windows Zed executable', async () => {
-    const dir = await makeDir('cc-haha zed-')
+    const dir = await makeDir('wangmai zed-')
     const executablePath = 'C:/fixture/Zed/zed.exe'
     const state = createService('win32', {
       commandPaths: { 'zed.exe': executablePath },
@@ -331,7 +331,7 @@ describe('openTargetService', () => {
       nativeApplications: {
         defaultApplicationPath: '/Applications/Word.app',
         applications: [
-          { appPath: '/Applications/Chat Haha.app', bundleId: 'com.claude-code-haha.desktop', displayName: 'Chat Haha', isDefault: false },
+          { appPath: '/Applications/Chat WangMai.app', bundleId: 'com.wangmai.agent', displayName: 'Chat WangMai', isDefault: false },
           { appPath: '/Applications/Visual Studio Code.app', bundleId: 'com.microsoft.VSCode', displayName: 'Visual Studio Code', isDefault: false },
           { appPath: '/Applications/Word.app', bundleId: 'com.microsoft.Word', displayName: 'Word', isDefault: false },
         ],
@@ -747,7 +747,7 @@ describe('openTargetService', () => {
   })
 
   it('launches command-first targets with argument arrays and the path as one argument', async () => {
-    const dir = await makeDir('cc-haha open-target-')
+    const dir = await makeDir('wangmai open-target-')
     const { service, launched } = createService('linux', {
       commands: { code: true },
     })
@@ -872,7 +872,7 @@ describe('openTargetService', () => {
 
   it('reports missing tilde paths with the expanded home path', async () => {
     const { service } = createService('darwin')
-    const missing = `~/cc-haha-missing-${Date.now()}/report.html`
+    const missing = `~/wangmai-missing-${Date.now()}/report.html`
 
     const rejection = expect(service.openTarget({ targetId: 'finder', path: missing })).rejects
     await rejection.toMatchObject({ code: 'OPEN_TARGET_PATH_MISSING' })
@@ -881,7 +881,7 @@ describe('openTargetService', () => {
 
   it('expands Windows backslash tilde paths on win32', async () => {
     const { service } = createService('win32')
-    const missing = `~\\cc-haha-missing-${Date.now()}\\report.html`
+    const missing = `~\\wangmai-missing-${Date.now()}\\report.html`
 
     const rejection = expect(service.openTarget({ targetId: 'explorer', path: missing })).rejects
     await rejection.toMatchObject({ code: 'OPEN_TARGET_PATH_MISSING' })

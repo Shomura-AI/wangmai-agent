@@ -1,7 +1,7 @@
 /**
  * Provider types — preset-based provider configuration.
  *
- * Providers are stored in ~/.claude/cc-haha/providers.json as a lightweight index.
+ * Providers are stored in ~/.claude/wangmai/providers.json as a lightweight index.
  * The active provider's env vars are written to ~/.claude/settings.json.
  */
 
@@ -152,9 +152,9 @@ export type ProviderProxyConfig = z.infer<typeof ProviderProxyConfigSchema>
 /**
  * A provider's balance/quota query, as cc-switch stores it in a provider's
  * `meta.usage_script`. It is kept exactly as cc-switch wrote it, field names
- * included, so the same scripts and template settings can run once cc-haha has
+ * included, so the same scripts and template settings can run once wangmai has
  * a runner for them; template fields not listed here (Coding Plan ids,
- * Volcengine signing keys, ...) are preserved. cc-haha does not run it yet.
+ * Volcengine signing keys, ...) are preserved. wangmai does not run it yet.
  */
 export const ProviderUsageScriptSchema = z.object({
   enabled: z.boolean(),

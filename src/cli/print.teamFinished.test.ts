@@ -24,7 +24,7 @@ let originalConfigDir: string | undefined
 
 beforeEach(async () => {
   originalConfigDir = process.env.CLAUDE_CONFIG_DIR
-  configDir = await mkdtemp(join(tmpdir(), 'cc-haha-print-team-finished-'))
+  configDir = await mkdtemp(join(tmpdir(), 'wangmai-print-team-finished-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
   const taskListId = getCanonicalTeamTaskListId(TEAM)
   await withTaskListLifecycleLock(taskListId, () => beginTaskListLifecycle(taskListId, {

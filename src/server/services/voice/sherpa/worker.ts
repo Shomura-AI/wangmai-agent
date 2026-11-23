@@ -3,7 +3,7 @@
  * transcriptions over an authenticated loopback HTTP socket. Native inference is
  * synchronous, so requests are naturally serialized. Nothing here may import
  * server modules; in the compiled desktop app this file is reached through
- * `claude-sidecar --voice-worker`.
+ * `wangmai-sidecar --voice-worker`.
  */
 import { timingSafeEqual } from 'node:crypto'
 import { createServer, type Server } from 'node:http'

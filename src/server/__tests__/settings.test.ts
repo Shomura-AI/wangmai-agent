@@ -14,9 +14,9 @@ import { handleStatusApi, resetUsage, addUsage } from '../api/status.js'
 import { getRuntimeSettings } from '../ws/handler.js'
 import { ProviderService } from '../services/providerService.js'
 import { clearDeepSeekAccountModelCatalogCache } from '../../services/deepseekAuth/modelCatalog.js'
-import { hahaOAuthService } from '../services/hahaOAuthService.js'
+import { wangmaiOAuthService } from '../services/wangmaiOAuthService.js'
 import * as claudeModelCatalog from '../services/claudeModelCatalog.js'
-import { hahaOpenAIOAuthService } from '../services/hahaOpenAIOAuthService.js'
+import { wangmaiOpenAIOAuthService } from '../services/wangmaiOpenAIOAuthService.js'
 import { OPENAI_CODEX_CLIENT_VERSION } from '../../services/openaiAuth/client.js'
 import { OPENAI_CODEX_RELEASE_SOURCES } from '../../services/openaiAuth/clientVersion.js'
 import {
@@ -781,7 +781,7 @@ describe('Settings API', () => {
   it('GET /api/settings/cli-launcher should expose bundled launcher status', async () => {
     if (process.platform === 'win32') return
 
-    const sidecarPath = path.join(tmpDir, 'claude-sidecar')
+    const sidecarPath = path.join(tmpDir, 'wangmai-sidecar')
     await fs.writeFile(sidecarPath, '#!/bin/sh\necho desktop-sidecar\n', {
       encoding: 'utf8',
       mode: 0o755,
@@ -793,7 +793,7 @@ describe('Settings API', () => {
 
     expect(res.status).toBe(200)
     const body = await res.json()
-    expect(body.command).toBe('claude-haha')
+    expect(body.command).toBe('wangmai')
     expect(body.installed).toBe(true)
     expect(body.availableInNewTerminals).toBe(true)
   })
@@ -1324,7 +1324,7 @@ describe('Models API', () => {
   })
 
   it('GET /api/models/current should replace the legacy opus[1m] default with the Claude OAuth Pro default', async () => {
-    await hahaOAuthService.saveTokens({
+    await wangmaiOAuthService.saveTokens({
       accessToken: 'claude-pro-access',
       refreshToken: 'claude-pro-refresh',
       expiresAt: Date.now() + 60 * 60_000,
@@ -1370,7 +1370,7 @@ describe('Models API', () => {
   })
 
   it('GET /api/models/current should use Opus for a Claude OAuth Max account without a full model selection', async () => {
-    await hahaOAuthService.saveTokens({
+    await wangmaiOAuthService.saveTokens({
       accessToken: 'claude-max-access',
       refreshToken: 'claude-max-refresh',
       expiresAt: Date.now() + 60 * 60_000,
@@ -1391,7 +1391,7 @@ describe('Models API', () => {
   })
 
   it('GET /api/models/current should preserve an explicit full Claude model selection across subscription defaults', async () => {
-    await hahaOAuthService.saveTokens({
+    await wangmaiOAuthService.saveTokens({
       accessToken: 'claude-pro-explicit-access',
       refreshToken: 'claude-pro-explicit-refresh',
       expiresAt: Date.now() + 60 * 60_000,
@@ -1445,8 +1445,8 @@ describe('Models API', () => {
     expect(res.status).toBe(400)
   })
 
-  it('GET /api/models/current should prefer cc-haha managed model over global user model when provider is active', async () => {
-    await hahaOAuthService.saveTokens({
+  it('GET /api/models/current should prefer wangmai managed model over global user model when provider is active', async () => {
+    await wangmaiOAuthService.saveTokens({
       accessToken: 'unrelated-claude-access',
       refreshToken: 'unrelated-claude-refresh',
       expiresAt: Date.now() + 60 * 60_000,
@@ -1481,7 +1481,7 @@ describe('Models API', () => {
     expect(body.model.id).toBe('glm-5-turbo')
   })
 
-  it('PUT /api/models/current should persist to cc-haha managed settings when provider is active', async () => {
+  it('PUT /api/models/current should persist to wangmai managed settings when provider is active', async () => {
     const settingsSvc = new SettingsService()
     const providerSvc = new ProviderService()
     const provider = await providerSvc.addProvider({
@@ -1565,7 +1565,7 @@ describe('Models API', () => {
   it('GET /api/models discovers models using the desktop ChatGPT account', async () => {
     const providerSvc = new ProviderService()
     await providerSvc.activateProvider('openai-official')
-    await hahaOpenAIOAuthService.saveTokens({
+    await wangmaiOpenAIOAuthService.saveTokens({
       accessToken: 'desktop-catalog-token',
       refreshToken: null,
       expiresAt: null,
@@ -1729,9 +1729,9 @@ describe('Models API', () => {
     it('reads the signed-in DeepSeek account listing even while another provider is active', async () => {
       const providerSvc = new ProviderService()
       await providerSvc.activateProvider('grok-official')
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
       await fs.writeFile(
-        path.join(tmpDir, 'cc-haha', 'deepseek-oauth.json'),
+        path.join(tmpDir, 'wangmai', 'deepseek-oauth.json'),
         JSON.stringify({ token: 'fake-account-token', issuer: 'https://platform.deepseek.com', deviceId: 'fake-device' }),
       )
       await fs.writeFile(
@@ -1837,7 +1837,7 @@ describe('Models API', () => {
     expect(userRaw.effort).toBe('xhigh')
     expect(userRaw).not.toHaveProperty('effortLevel')
 
-    const managedRaw = JSON.parse(await fs.readFile(path.join(tmpDir, 'cc-haha', 'settings.json'), 'utf-8'))
+    const managedRaw = JSON.parse(await fs.readFile(path.join(tmpDir, 'wangmai', 'settings.json'), 'utf-8'))
     expect(managedRaw.defaultEffort).toBe('xhigh')
   })
 
@@ -1884,12 +1884,12 @@ describe('Models API', () => {
     const putLang = makeRequest('PUT', '/api/settings/user', { language: 'chinese' })
     expect((await handleSettingsApi(putLang.req, putLang.url, putLang.segments)).status).toBe(200)
 
-    // When both values already live on disk, ccHahaFallbackKeys must not be emitted.
+    // When both values already live on disk, wangmaiFallbackKeys must not be emitted.
     const getUserBeforeOverwrite = makeRequest('GET', '/api/settings/user')
     const beforeOverwriteBody = await (
       await handleSettingsApi(getUserBeforeOverwrite.req, getUserBeforeOverwrite.url, getUserBeforeOverwrite.segments)
     ).json()
-    expect(beforeOverwriteBody.ccHahaFallbackKeys).toBeUndefined()
+    expect(beforeOverwriteBody.wangmaiFallbackKeys).toBeUndefined()
 
     // Simulate external CC Switch overwriting ~/.claude/settings.json on reboot (#1916).
     const ccSwitchSnapshot = {
@@ -1926,7 +1926,7 @@ describe('Models API', () => {
     const userBody = await userRes.json()
     expect(userBody.language).toBe('chinese')
     expect(userBody.effort).toBe('xhigh')
-    expect(userBody.ccHahaFallbackKeys).toEqual(['language', 'effort'])
+    expect(userBody.wangmaiFallbackKeys).toEqual(['language', 'effort'])
 
     // Read-time fallback must not rewrite user-owned ~/.claude/settings.json.
     expect(await fs.readFile(path.join(tmpDir, 'settings.json'), 'utf-8')).toBe(overwrittenJson)
@@ -1935,8 +1935,8 @@ describe('Models API', () => {
     const runtime = await getRuntimeSettings(`reboot-session-${crypto.randomUUID()}`)
     expect(runtime.effort).toBe('xhigh')
 
-    // Explicit reset to Default (English, '') must delete language from BOTH settings.json and cc-haha/settings.json,
-    // and never persist ccHahaFallbackKeys if round-tripped.
+    // Explicit reset to Default (English, '') must delete language from BOTH settings.json and wangmai/settings.json,
+    // and never persist wangmaiFallbackKeys if round-tripped.
     await fs.writeFile(
       path.join(tmpDir, 'settings.json'),
       JSON.stringify({ ...ccSwitchSnapshot, language: 'chinese' }, null, 2),
@@ -1944,13 +1944,13 @@ describe('Models API', () => {
     )
     const resetLang = makeRequest('PUT', '/api/settings/user', {
       language: '',
-      ccHahaFallbackKeys: ['language', 'effort'],
+      wangmaiFallbackKeys: ['language', 'effort'],
     })
     expect((await handleSettingsApi(resetLang.req, resetLang.url, resetLang.segments)).status).toBe(200)
 
     const userDiskAfterLangReset = JSON.parse(await fs.readFile(path.join(tmpDir, 'settings.json'), 'utf-8'))
     expect(userDiskAfterLangReset.language).toBe('')
-    expect(userDiskAfterLangReset).not.toHaveProperty('ccHahaFallbackKeys')
+    expect(userDiskAfterLangReset).not.toHaveProperty('wangmaiFallbackKeys')
 
     await fs.writeFile(path.join(tmpDir, 'settings.json'), overwrittenJson, 'utf-8')
     resetSettingsCache()
@@ -1960,7 +1960,7 @@ describe('Models API', () => {
       await handleSettingsApi(getUserAfterReset.req, getUserAfterReset.url, getUserAfterReset.segments)
     ).json()
     expect(resetBody.language).toBeUndefined()
-    expect(resetBody.ccHahaFallbackKeys).toEqual(['effort'])
+    expect(resetBody.wangmaiFallbackKeys).toEqual(['effort'])
 
     // Direct SettingsService updates via effortLevel or null/undefined delete keys instead of writing literal null.
     const settingsSvc = new SettingsService()
@@ -1974,7 +1974,7 @@ describe('Models API', () => {
     expect(userAfterNullClear).not.toHaveProperty('language')
 
     const managedAfterClear = JSON.parse(
-      await fs.readFile(path.join(tmpDir, 'cc-haha', 'settings.json'), 'utf-8'),
+      await fs.readFile(path.join(tmpDir, 'wangmai', 'settings.json'), 'utf-8'),
     )
     expect(managedAfterClear.defaultEffort).toBeUndefined()
     expect(managedAfterClear.language).toBeUndefined()

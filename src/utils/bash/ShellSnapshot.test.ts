@@ -8,7 +8,7 @@ const originalConfigDir = process.env.CLAUDE_CONFIG_DIR
 let configDir: string
 
 beforeEach(() => {
-  configDir = mkdtempSync(join(tmpdir(), 'cc-haha-shell-snapshot-'))
+  configDir = mkdtempSync(join(tmpdir(), 'wangmai-shell-snapshot-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
 })
 

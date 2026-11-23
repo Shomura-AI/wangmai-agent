@@ -11,7 +11,7 @@ afterEach(async () => {
 
 describe('managed attachment relocation', () => {
   test('maps attachment prefixes across multiple migrations without changing project references', () => {
-    for (const prefix of ['uploads', 'image-cache', 'im-downloads', 'cc-haha/generated-images']) {
+    for (const prefix of ['uploads', 'image-cache', 'im-downloads', 'wangmai/generated-images']) {
       expect(mapRelocatedAttachmentPath(`/old/${prefix}/session/file.png`, '/new', ['/older', '/old'], 'darwin'))
         .toBe(`/new/${prefix}/session/file.png`)
     }
@@ -34,8 +34,8 @@ describe('managed attachment relocation', () => {
     const currentRoot = join(root, 'current')
     const oldPath = join(oldRoot, 'uploads', 'session', 'a.png')
     expect(resolveRelocatedAttachmentPath(oldPath, currentRoot)).toBe(oldPath)
-    await mkdir(join(currentRoot, 'cc-haha'), { recursive: true })
-    await writeFile(join(currentRoot, 'cc-haha', 'storage-relocations.json'), JSON.stringify({ version: 1, previousRoots: [oldRoot], futureField: true }))
+    await mkdir(join(currentRoot, 'wangmai'), { recursive: true })
+    await writeFile(join(currentRoot, 'wangmai', 'storage-relocations.json'), JSON.stringify({ version: 1, previousRoots: [oldRoot], futureField: true }))
     expect(resolveRelocatedAttachmentPath(oldPath, currentRoot)).toBe(join(currentRoot, 'uploads', 'session', 'a.png'))
     expect(readStorageRelocations(currentRoot).futureField).toBe(true)
   })
@@ -43,9 +43,9 @@ describe('managed attachment relocation', () => {
   test('does not interpret malformed or future metadata as permission to fall back to old storage', async () => {
     const root = await mkdtemp(join(tmpdir(), 'storage-relocation-invalid-'))
     directories.push(root)
-    await mkdir(join(root, 'cc-haha'))
+    await mkdir(join(root, 'wangmai'))
     for (const data of ['{', JSON.stringify({ version: 2, previousRoots: [] }), JSON.stringify({ version: 1, previousRoots: ['relative'] })]) {
-      await writeFile(join(root, 'cc-haha', 'storage-relocations.json'), data)
+      await writeFile(join(root, 'wangmai', 'storage-relocations.json'), data)
       expect(() => readStorageRelocations(root)).toThrow()
     }
   })

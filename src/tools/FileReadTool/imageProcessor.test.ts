@@ -16,11 +16,11 @@ afterEach(async () => {
 
 describe('image processor module loading', () => {
   test.each([
-    ['file:///B:/%7EBUN/root/claude-sidecar.exe', true],
-    ['file:///B:/%7eBUN/root/claude-sidecar.exe', true],
-    ['file:///B:/~BUN/root/claude-sidecar.exe', true],
-    ['file:///$bunfs/root/claude-sidecar', true],
-    ['file:///%24bunfs/root/claude-sidecar', true],
+    ['file:///B:/%7EBUN/root/wangmai-sidecar.exe', true],
+    ['file:///B:/%7eBUN/root/wangmai-sidecar.exe', true],
+    ['file:///B:/~BUN/root/wangmai-sidecar.exe', true],
+    ['file:///$bunfs/root/wangmai-sidecar', true],
+    ['file:///%24bunfs/root/wangmai-sidecar', true],
     ['file:///D:/中文%20项目/src/tools/FileReadTool/imageProcessor.ts', false],
     ['file:///home/user/project/src/tools/FileReadTool/imageProcessor.ts', false],
     ['file:///D:/project/~BUN-tools/imageProcessor.ts', false],
@@ -45,10 +45,10 @@ describe('image processor module loading', () => {
   })
 
   test('loads both bundled image APIs from the executable installation instead of the project', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'cc-haha-image-module-'))
+    const root = await mkdtemp(join(tmpdir(), 'wangmai-image-module-'))
     directories.push(root)
     const moduleDirectory = join(root, 'app.asar.unpacked', 'node_modules', 'sharp')
-    const executable = join(root, 'app.asar.unpacked', 'src-tauri', 'binaries', 'claude-sidecar')
+    const executable = join(root, 'app.asar.unpacked', 'src-tauri', 'binaries', 'wangmai-sidecar')
     await mkdir(moduleDirectory, { recursive: true })
     await mkdir(join(root, 'app.asar.unpacked', 'src-tauri', 'binaries'), { recursive: true })
     await writeFile(join(moduleDirectory, 'package.json'), JSON.stringify({ name: 'sharp', main: 'index.cjs' }))

@@ -37,7 +37,7 @@ type OfficialProviderModelsResponse = {
 }
 type AuthStatusResponse = {
   hasAuth: boolean
-  source: 'cc-haha-provider' | 'claude-oauth' | 'openai-oauth' | 'grok-oauth' | 'deepseek-oauth' | 'original-settings' | 'env' | 'none'
+  source: 'wangmai-provider' | 'claude-oauth' | 'openai-oauth' | 'grok-oauth' | 'deepseek-oauth' | 'original-settings' | 'env' | 'none'
   activeProvider?: string
   localAgentStatus?: LocalAgentStatus
 }

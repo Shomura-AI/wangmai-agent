@@ -1,5 +1,5 @@
 export const OPENAI_REASONING_ENVELOPE_PREFIX =
-  'cc-haha:openai-reasoning:v1:'
+  'wangmai:openai-reasoning:v1:'
 
 export type OpenAIReasoningEnvelopeData = {
   id?: string

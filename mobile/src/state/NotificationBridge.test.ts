@@ -64,10 +64,10 @@ function runCase(body: string) {
     }
     mock.module(${JSON.stringify(import.meta.resolve('./AppContext'))}, () => ({ useApp: () => app }))
     const sign = (url, credential = credentials.desk) =>
-      createHmac('sha256', createHash('sha256').update(credential).digest('hex')).update('cc-haha-host-url\\n' + url).digest('base64url')
+      createHmac('sha256', createHash('sha256').update(credential).digest('hex')).update('wangmai-host-url\\n' + url).digest('base64url')
     const hostUrl = (identifier, url, mac = sign(url), date = 0) => ({
       date,
-      request: { identifier, content: { title: '电脑地址已更新 · cc-haha', data: { hostId: 'desk', eventType: 'hostUrl', url, mac } }, trigger: { type: 'push' } },
+      request: { identifier, content: { title: '电脑地址已更新 · wangmai', data: { hostId: 'desk', eventType: 'hostUrl', url, mac } }, trigger: { type: 'push' } },
     })
     const tap = (notification, actionIdentifier = 'expo.modules.notifications.actions.DEFAULT') => ({ notification, actionIdentifier })
     const module = await import(${JSON.stringify(import.meta.resolve('./NotificationBridge'))})

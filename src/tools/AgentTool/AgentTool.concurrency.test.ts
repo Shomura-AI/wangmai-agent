@@ -91,7 +91,7 @@ function spawn(background = false, overrides: Record<string, unknown> = {}, ctx 
 }
 
 beforeEach(() => {
-  configDir = mkdtempSync(join(tmpdir(), 'cc-haha-agent-concurrency-'))
+  configDir = mkdtempSync(join(tmpdir(), 'wangmai-agent-concurrency-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
   resetSettingsCache()
   setLimit(1)

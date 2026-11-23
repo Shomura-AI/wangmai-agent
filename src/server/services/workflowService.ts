@@ -1003,7 +1003,7 @@ class WorkflowService {
       }
     }
 
-    const persisted = entry.type === 'cc-haha-task-notification' &&
+    const persisted = entry.type === 'wangmai-task-notification' &&
       isObjectRecord(entry.taskNotification)
       ? entry.taskNotification
       : undefined

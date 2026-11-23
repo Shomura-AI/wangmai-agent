@@ -23,7 +23,7 @@ import type { CreateProviderInput } from '../types/provider.js'
 import { buildComputerUseTools } from '../../vendor/computer-use-mcp/tools.js'
 import { clearGrokModelCatalogCache } from '../../services/grokAuth/modelCatalog.js'
 import { getDesktopGrokModelCatalog } from '../services/grokModelCatalog.js'
-import { hahaGrokOAuthService } from '../services/hahaGrokOAuthService.js'
+import { wangmaiGrokOAuthService } from '../services/wangmaiGrokOAuthService.js'
 import { MODEL_CONTEXT_WINDOWS_ENV_KEY } from '../../utils/model/modelContextWindows.js'
 
 // ─── Test helpers ─────────────────────────────────────────────────────────────
@@ -110,13 +110,13 @@ function sampleInput(overrides?: Partial<CreateProviderInput>): CreateProviderIn
 
 /** Read the settings.json written to the temp config dir */
 async function readSettings(): Promise<Record<string, unknown>> {
-  const raw = await fs.readFile(path.join(tmpDir, 'cc-haha', 'settings.json'), 'utf-8')
+  const raw = await fs.readFile(path.join(tmpDir, 'wangmai', 'settings.json'), 'utf-8')
   return JSON.parse(raw) as Record<string, unknown>
 }
 
 /** Read the providers.json written to the temp config dir */
 async function readProvidersConfig(): Promise<Record<string, unknown>> {
-  const raw = await fs.readFile(path.join(tmpDir, 'cc-haha', 'providers.json'), 'utf-8')
+  const raw = await fs.readFile(path.join(tmpDir, 'wangmai', 'providers.json'), 'utf-8')
   return JSON.parse(raw) as Record<string, unknown>
 }
 
@@ -248,12 +248,12 @@ describe('ProviderService', () => {
     })
 
     test('should recover from a malformed providers index after an upgrade', async () => {
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
-      await fs.writeFile(path.join(tmpDir, 'cc-haha', 'providers.json'), '{not json', 'utf-8')
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
+      await fs.writeFile(path.join(tmpDir, 'wangmai', 'providers.json'), '{not json', 'utf-8')
 
       const svc = new ProviderService()
       const result = await svc.listProviders()
-      const files = await fs.readdir(path.join(tmpDir, 'cc-haha'))
+      const files = await fs.readdir(path.join(tmpDir, 'wangmai'))
 
       expect(result).toEqual({
         providers: [],
@@ -264,13 +264,13 @@ describe('ProviderService', () => {
     })
 
     test('should normalize a legacy activeProviderId field', async () => {
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
       const provider = {
         id: 'legacy-provider',
         ...sampleInput({ name: 'Legacy Provider' }),
       }
       await fs.writeFile(
-        path.join(tmpDir, 'cc-haha', 'providers.json'),
+        path.join(tmpDir, 'wangmai', 'providers.json'),
         JSON.stringify({ activeProviderId: provider.id, providers: [provider] }),
         'utf-8',
       )
@@ -345,7 +345,7 @@ describe('ProviderService', () => {
       const svc = new ProviderService()
       await svc.addProvider(sampleInput())
 
-      await expect(fs.readFile(path.join(tmpDir, 'cc-haha', 'settings.json'), 'utf-8')).rejects.toThrow()
+      await expect(fs.readFile(path.join(tmpDir, 'wangmai', 'settings.json'), 'utf-8')).rejects.toThrow()
     })
 
     test('custom providers keep thinking compatibility without narrowing CLI effort', async () => {
@@ -488,7 +488,7 @@ describe('ProviderService', () => {
 
       const settings = await readSettings()
       const env = settings.env as Record<string, string>
-      expect(env.CC_HAHA_SEND_DISABLED_THINKING).toBeUndefined()
+      expect(env.WANGMAI_SEND_DISABLED_THINKING).toBeUndefined()
       expect(env.ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES).toBe(
         'thinking,effort,adaptive_thinking,xhigh_effort,max_effort',
       )
@@ -599,9 +599,9 @@ describe('ProviderService', () => {
 
     describe('ChatGPT Official provider metadata', () => {
       test('normalizes the built-in ChatGPT provider as an active provider id', async () => {
-        await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+        await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
         await fs.writeFile(
-          path.join(tmpDir, 'cc-haha', 'providers.json'),
+          path.join(tmpDir, 'wangmai', 'providers.json'),
           JSON.stringify({ activeId: 'openai-official', providers: [] }),
           'utf-8',
         )
@@ -704,9 +704,9 @@ describe('ProviderService', () => {
         const settings = await readSettings()
         expect(config.activeId).toBe('openai-official')
         const env = settings.env as Record<string, string>
-        expect(env.CC_HAHA_OPENAI_OAUTH_PROVIDER).toBe('1')
+        expect(env.WANGMAI_OPENAI_OAUTH_PROVIDER).toBe('1')
         expect(env.OPENAI_CODEX_OAUTH_FILE).toBe(
-          path.join(tmpDir, 'cc-haha', 'openai-oauth.json'),
+          path.join(tmpDir, 'wangmai', 'openai-oauth.json'),
         )
         expect(env.ANTHROPIC_MODEL).toBe('gpt-6-sol')
         expect(env.ANTHROPIC_DEFAULT_HAIKU_MODEL).toBe('gpt-6-luna')
@@ -751,9 +751,9 @@ describe('ProviderService', () => {
 
         const settings = await readSettings()
         const env = settings.env as Record<string, string>
-        expect(env.CC_HAHA_OPENAI_OAUTH_PROVIDER).toBe('1')
+        expect(env.WANGMAI_OPENAI_OAUTH_PROVIDER).toBe('1')
         expect(env.OPENAI_CODEX_OAUTH_FILE).toBe(
-          path.join(tmpDir, 'cc-haha', 'openai-oauth.json'),
+          path.join(tmpDir, 'wangmai', 'openai-oauth.json'),
         )
         expect(env.ANTHROPIC_BASE_URL).toBeUndefined()
         expect(env.ANTHROPIC_API_KEY).toBeUndefined()
@@ -761,9 +761,9 @@ describe('ProviderService', () => {
       })
 
       test('auth status reports ChatGPT Official from the desktop OpenAI token file', async () => {
-        await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+        await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
         await fs.writeFile(
-          path.join(tmpDir, 'cc-haha', 'openai-oauth.json'),
+          path.join(tmpDir, 'wangmai', 'openai-oauth.json'),
           JSON.stringify({
             accessToken: 'openai-access',
             refreshToken: 'openai-refresh',
@@ -785,9 +785,9 @@ describe('ProviderService', () => {
       })
 
       test('auth status reports Claude Official from the desktop Claude token file', async () => {
-        await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+        await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
         await fs.writeFile(
-          path.join(tmpDir, 'cc-haha', 'oauth.json'),
+          path.join(tmpDir, 'wangmai', 'oauth.json'),
           JSON.stringify({
             accessToken: 'claude-access',
             refreshToken: 'claude-refresh',
@@ -826,7 +826,7 @@ describe('ProviderService', () => {
         await svc.activateProvider(provider.id)
 
         const env = (await readSettings()).env as Record<string, string>
-        expect(env.CC_HAHA_OPENAI_OAUTH_PROVIDER).toBeUndefined()
+        expect(env.WANGMAI_OPENAI_OAUTH_PROVIDER).toBeUndefined()
         expect(env.OPENAI_CODEX_OAUTH_FILE).toBeUndefined()
         expect(env.ANTHROPIC_BASE_URL).toBe('https://api.example.com')
         expect(env.ANTHROPIC_AUTH_TOKEN).toBe('sk-test-key-123')
@@ -840,7 +840,7 @@ describe('ProviderService', () => {
           supportsReasoningEffort: true, reasoningEffort: 'low', reasoningEfforts: ['low', 'xhigh', 'max'],
         }]
         clearGrokModelCatalogCache()
-        await hahaGrokOAuthService.saveTokens({
+        await wangmaiGrokOAuthService.saveTokens({
           accessToken: 'grok-fixture-token', refreshToken: null, expiresAt: null, email: null,
         })
         await getDesktopGrokModelCatalog({
@@ -859,11 +859,11 @@ describe('ProviderService', () => {
         try {
           const svc = new ProviderService()
           await svc.updateManagedSettings({ env: {
-            CC_HAHA_GROK_MODEL_CATALOG: 'stale-catalog', USER_CUSTOM_ENV: 'preserved',
+            WANGMAI_GROK_MODEL_CATALOG: 'stale-catalog', USER_CUSTOM_ENV: 'preserved',
           } })
           await svc.activateProvider('grok-official')
           const persistedEnv = (await readSettings()).env as Record<string, string>
-          expect(persistedEnv.CC_HAHA_GROK_MODEL_CATALOG).toBeUndefined()
+          expect(persistedEnv.WANGMAI_GROK_MODEL_CATALOG).toBeUndefined()
           expect(persistedEnv.USER_CUSTOM_ENV).toBe('preserved')
           // Account-specific live catalog windows stay in launch env, never persisted to settings.json.
           const persistedWindows = JSON.parse(persistedEnv[MODEL_CONTEXT_WINDOWS_ENV_KEY]!) as Record<string, number>
@@ -871,25 +871,25 @@ describe('ProviderService', () => {
           expect(persistedWindows['grok-4.7']).toBe(500_000)
 
           const runtimeEnv = await svc.getProviderRuntimeEnv('grok-official')
-          expect(JSON.parse(runtimeEnv.CC_HAHA_GROK_MODEL_CATALOG!)).toEqual(catalog)
+          expect(JSON.parse(runtimeEnv.WANGMAI_GROK_MODEL_CATALOG!)).toEqual(catalog)
           expect(JSON.parse(runtimeEnv[MODEL_CONTEXT_WINDOWS_ENV_KEY]!)['grok-future-release']).toBe(750_000)
 
-          await hahaGrokOAuthService.deleteTokens()
+          await wangmaiGrokOAuthService.deleteTokens()
           const afterLogout = readActiveProviderManagedEnv(tmpDir)
           expect(JSON.parse(afterLogout![MODEL_CONTEXT_WINDOWS_ENV_KEY]!)['grok-future-release']).toBeUndefined()
 
-          await svc.updateManagedSettings({ env: { ...persistedEnv, CC_HAHA_GROK_MODEL_CATALOG: 'stale-catalog' } })
+          await svc.updateManagedSettings({ env: { ...persistedEnv, WANGMAI_GROK_MODEL_CATALOG: 'stale-catalog' } })
           await svc.activateOfficial()
-          expect(((await readSettings()).env as Record<string, string>).CC_HAHA_GROK_MODEL_CATALOG).toBeUndefined()
+          expect(((await readSettings()).env as Record<string, string>).WANGMAI_GROK_MODEL_CATALOG).toBeUndefined()
         } finally {
           clearGrokModelCatalogCache()
         }
       })
 
       test('normalizes the built-in Grok provider and appends it to legacy provider order', async () => {
-        await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+        await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
         await fs.writeFile(
-          path.join(tmpDir, 'cc-haha', 'providers.json'),
+          path.join(tmpDir, 'wangmai', 'providers.json'),
           JSON.stringify({
             activeId: 'grok-official',
             providers: [],
@@ -936,22 +936,22 @@ describe('ProviderService', () => {
         const config = await readProvidersConfig()
         const env = (await readSettings()).env as Record<string, string>
         expect(config.activeId).toBe('grok-official')
-        expect(env.CC_HAHA_GROK_OAUTH_PROVIDER).toBe('1')
+        expect(env.WANGMAI_GROK_OAUTH_PROVIDER).toBe('1')
         expect(env.GROK_OAUTH_FILE).toBe(
-          path.join(tmpDir, 'cc-haha', 'grok-oauth.json'),
+          path.join(tmpDir, 'wangmai', 'grok-oauth.json'),
         )
         expect(env.ANTHROPIC_MODEL).toBe('grok-4.7')
         expect(env.ANTHROPIC_DEFAULT_HAIKU_MODEL).toBe('grok-4.7')
         expect(env.ANTHROPIC_DEFAULT_SONNET_MODEL).toBe('grok-4.7')
         expect(env.ANTHROPIC_DEFAULT_OPUS_MODEL).toBe('grok-4.7')
-        expect(env.CC_HAHA_OPENAI_OAUTH_PROVIDER).toBeUndefined()
+        expect(env.WANGMAI_OPENAI_OAUTH_PROVIDER).toBeUndefined()
         expect(env.OPENAI_CODEX_OAUTH_FILE).toBeUndefined()
       })
 
       test('auth status reports Grok Official from the isolated Grok token file', async () => {
-        await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+        await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
         await fs.writeFile(
-          path.join(tmpDir, 'cc-haha', 'grok-oauth.json'),
+          path.join(tmpDir, 'wangmai', 'grok-oauth.json'),
           JSON.stringify({
             accessToken: 'grok-access',
             refreshToken: 'grok-refresh',
@@ -1009,9 +1009,9 @@ describe('ProviderService', () => {
       })
 
       test('a CLI reading an index the startup migration has not rewritten yet gets account model ids', async () => {
-        await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+        await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
         await fs.writeFile(
-          path.join(tmpDir, 'cc-haha', 'providers.json'),
+          path.join(tmpDir, 'wangmai', 'providers.json'),
           JSON.stringify({
             schemaVersion: 7,
             activeId: 'deepseek-account',
@@ -1044,9 +1044,9 @@ describe('ProviderService', () => {
         const config = await readProvidersConfig()
         const env = (await readSettings()).env as Record<string, string>
         expect(config.activeId).toBe('deepseek-account')
-        expect(env.CC_HAHA_DEEPSEEK_OAUTH_PROVIDER).toBe('1')
+        expect(env.WANGMAI_DEEPSEEK_OAUTH_PROVIDER).toBe('1')
         expect(env.DEEPSEEK_OAUTH_FILE).toBe(
-          path.join(tmpDir, 'cc-haha', 'deepseek-oauth.json'),
+          path.join(tmpDir, 'wangmai', 'deepseek-oauth.json'),
         )
         expect(env.ANTHROPIC_BASE_URL).toBe('https://api.deepseek.com/anthropic')
         for (const key of [
@@ -1059,7 +1059,7 @@ describe('ProviderService', () => {
         expect(env.ANTHROPIC_AUTH_TOKEN).toBeUndefined()
         expect(env.ANTHROPIC_API_KEY).toBe('deepseek-oauth-dummy-key')
         // The previously active OAuth provider's markers are cleared.
-        expect(env.CC_HAHA_GROK_OAUTH_PROVIDER).toBeUndefined()
+        expect(env.WANGMAI_GROK_OAUTH_PROVIDER).toBeUndefined()
         expect(env.GROK_OAUTH_FILE).toBeUndefined()
       })
 
@@ -1076,7 +1076,7 @@ describe('ProviderService', () => {
         })
 
         await fs.writeFile(
-          path.join(tmpDir, 'cc-haha', 'deepseek-oauth.json'),
+          path.join(tmpDir, 'wangmai', 'deepseek-oauth.json'),
           JSON.stringify({
             token: 'dsh_test_account_token',
             issuer: 'https://platform.deepseek.com',
@@ -1284,19 +1284,19 @@ describe('ProviderService', () => {
       let settings = await readSettings()
       let env = settings.env as Record<string, string>
       expect(env).toMatchObject({
-        CC_HAHA_IMAGE_PROVIDER_KIND: 'openai_images',
-        CC_HAHA_IMAGE_PROVIDER_ID: added.id,
-        CC_HAHA_IMAGE_BASE_URL: 'https://images.example.test/v1',
-        CC_HAHA_IMAGE_API_KEY: 'image-secret',
-        CC_HAHA_IMAGE_MODEL: 'image-model',
+        WANGMAI_IMAGE_PROVIDER_KIND: 'openai_images',
+        WANGMAI_IMAGE_PROVIDER_ID: added.id,
+        WANGMAI_IMAGE_BASE_URL: 'https://images.example.test/v1',
+        WANGMAI_IMAGE_API_KEY: 'image-secret',
+        WANGMAI_IMAGE_MODEL: 'image-model',
       })
 
       const updated = await svc.updateProvider(added.id, { imageGeneration: null })
       expect(updated.imageGeneration).toBeUndefined()
       settings = await readSettings()
       env = settings.env as Record<string, string>
-      expect(env.CC_HAHA_IMAGE_PROVIDER_KIND).toBeUndefined()
-      expect(env.CC_HAHA_IMAGE_API_KEY).toBeUndefined()
+      expect(env.WANGMAI_IMAGE_PROVIDER_KIND).toBeUndefined()
+      expect(env.WANGMAI_IMAGE_API_KEY).toBeUndefined()
     })
   })
 
@@ -1620,8 +1620,8 @@ describe('ProviderService', () => {
     })
 
     test('proxy providers keep transient desktop auth out of persisted settings', async () => {
-      const originalLocalAccessToken = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-      process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+      const originalLocalAccessToken = process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+      process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
 
       try {
         const svc = new ProviderService()
@@ -1642,9 +1642,9 @@ describe('ProviderService', () => {
         }
       } finally {
         if (originalLocalAccessToken === undefined) {
-          delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
+          delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
         } else {
-          process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = originalLocalAccessToken
+          process.env.WANGMAI_LOCAL_ACCESS_TOKEN = originalLocalAccessToken
         }
       }
     })
@@ -1659,8 +1659,8 @@ describe('ProviderService', () => {
         id: `saved-${presetId}`,
         ...sampleInput({ presetId, baseUrl, models: { main: model, haiku: model, sonnet: model, opus: model } }),
       }
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
-      await fs.writeFile(path.join(tmpDir, 'cc-haha', 'providers.json'), JSON.stringify({
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
+      await fs.writeFile(path.join(tmpDir, 'wangmai', 'providers.json'), JSON.stringify({
         providers: [legacyProvider],
         activeId: legacyProvider.id,
       }))
@@ -1752,7 +1752,7 @@ describe('ProviderService', () => {
 
       expect(status).toEqual({
         hasAuth: true,
-        source: 'cc-haha-provider',
+        source: 'wangmai-provider',
         activeProvider: provider.name,
       })
     })
@@ -1769,7 +1769,7 @@ describe('ProviderService', () => {
 
       expect(status).toEqual({
         hasAuth: true,
-        source: 'cc-haha-provider',
+        source: 'wangmai-provider',
         activeProvider: provider.name,
       })
     })
@@ -1793,9 +1793,9 @@ describe('ProviderService', () => {
 
     test('should preserve existing settings.json fields on activation', async () => {
       // Pre-seed settings with an extra field
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
       await fs.writeFile(
-        path.join(tmpDir, 'cc-haha', 'settings.json'),
+        path.join(tmpDir, 'wangmai', 'settings.json'),
         JSON.stringify({ theme: 'dark', env: { CUSTOM_VAR: 'keep-me' } }),
       )
 
@@ -1813,8 +1813,8 @@ describe('ProviderService', () => {
     })
 
     test('should recover malformed managed settings before activation sync', async () => {
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
-      await fs.writeFile(path.join(tmpDir, 'cc-haha', 'settings.json'), '{not json', 'utf-8')
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
+      await fs.writeFile(path.join(tmpDir, 'wangmai', 'settings.json'), '{not json', 'utf-8')
 
       const svc = new ProviderService()
       const provider = await svc.addProvider(sampleInput())
@@ -1823,7 +1823,7 @@ describe('ProviderService', () => {
 
       const settings = await readSettings()
       const env = settings.env as Record<string, string>
-      const files = await fs.readdir(path.join(tmpDir, 'cc-haha'))
+      const files = await fs.readdir(path.join(tmpDir, 'wangmai'))
 
       expect(env.ANTHROPIC_BASE_URL).toBe('https://api.example.com')
       expect(files.some((name) => name.startsWith('settings.json.invalid-'))).toBe(true)
@@ -1873,8 +1873,8 @@ describe('ProviderService', () => {
     })
 
     async function writeGrant(file: string, value: Record<string, unknown>) {
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
-      await fs.writeFile(path.join(tmpDir, 'cc-haha', file), JSON.stringify(value), 'utf-8')
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
+      await fs.writeFile(path.join(tmpDir, 'wangmai', file), JSON.stringify(value), 'utf-8')
     }
 
     async function writeOriginalSettingsAuth() {
@@ -1893,7 +1893,7 @@ describe('ProviderService', () => {
       await expect(svc.checkAuthStatus()).resolves.toEqual({ hasAuth: false, source: 'none' })
       await expect(svc.checkAuthStatus(provider.id)).resolves.toEqual({
         hasAuth: true,
-        source: 'cc-haha-provider',
+        source: 'wangmai-provider',
         activeProvider: 'Test Provider',
       })
     })
@@ -1928,7 +1928,7 @@ describe('ProviderService', () => {
       const svc = new ProviderService()
       const provider = await svc.addProvider(sampleInput())
       await svc.activateProvider(provider.id)
-      await expect(svc.checkAuthStatus()).resolves.toMatchObject({ hasAuth: true, source: 'cc-haha-provider' })
+      await expect(svc.checkAuthStatus()).resolves.toMatchObject({ hasAuth: true, source: 'wangmai-provider' })
 
       await expect(svc.checkAuthStatus('claude-official')).resolves.toEqual({ hasAuth: false, source: 'none' })
       // An expired grant that cannot be refreshed is not a credential.
@@ -4058,7 +4058,7 @@ describe('Providers API', () => {
         }
         return JSON.parse(text) as Record<string, unknown>
       }
-      const globalDefault = { hasAuth: true, source: 'cc-haha-provider', activeProvider: 'Keyed' }
+      const globalDefault = { hasAuth: true, source: 'wangmai-provider', activeProvider: 'Keyed' }
 
       // Without (or with a blank) providerId the global default is evaluated as before.
       expect(await authStatus('')).toEqual(globalDefault)
@@ -4935,7 +4935,7 @@ describe('OpenCode Go preset request contract', () => {
       for (const model of ['deepseek-v4.1-flash[1m]', 'gpt-fixture', 'minimax-fixture', 'gemini-4-argon[1m]']) {
         const response = await proxy(provider.id, { model, max_tokens: 16, messages: [{ role: 'user', content: 'hello' }] })
         expect(response.status).toBe(401)
-        expect(response.headers.get('x-cc-haha-invalid-provider-key')).toBe('true')
+        expect(response.headers.get('x-wangmai-invalid-provider-key')).toBe('true')
         expect(response.headers.get('x-should-retry')).toBe('false')
         expect(await response.text()).toContain('Invalid credential')
       }
@@ -4946,7 +4946,7 @@ describe('OpenCode Go preset request contract', () => {
       const tokenProvider = (await createProvider({ authStrategy: 'auth_token' })).provider
       for (const model of ['minimax-fixture', 'gemini-4-argon[1m]']) {
         const response = await proxy(tokenProvider.id, { model, max_tokens: 16, messages: [{ role: 'user', content: 'hello' }] })
-        expect(response.headers.get('x-cc-haha-invalid-provider-key')).toBeNull()
+        expect(response.headers.get('x-wangmai-invalid-provider-key')).toBeNull()
         expect(response.headers.get('x-should-retry')).toBeNull()
       }
     } finally {
@@ -4973,14 +4973,14 @@ describe('OpenCode Go preset request contract', () => {
           const response = await proxy(provider.id, { model: 'fixture-model', max_tokens: 16, messages: [{ role: 'user', content: 'hello' }] })
           const body = await response.json() as { error: { message: string } }
           expect(response.status).toBe(sample.status)
-          expect(response.headers.get('x-cc-haha-invalid-provider-key')).toBe(sample.final ? 'true' : null)
+          expect(response.headers.get('x-wangmai-invalid-provider-key')).toBe(sample.final ? 'true' : null)
           expect(response.headers.get('x-should-retry')).toBe(sample.final ? 'false' : null)
           expect(body.error.message).toContain(JSON.stringify(sample.body))
         }
         const tokenProvider = (await createProvider({ presetId: 'custom', apiFormat, authStrategy: 'auth_token' })).provider
         globalThis.fetch = (async () => Response.json({ error: { type: 'authentication_error', message: 'Invalid credential' } }, { status: 401 })) as typeof fetch
         const tokenResponse = await proxy(tokenProvider.id, { model: 'fixture-model', max_tokens: 16, messages: [{ role: 'user', content: 'hello' }] })
-        expect(tokenResponse.headers.get('x-cc-haha-invalid-provider-key')).toBeNull()
+        expect(tokenResponse.headers.get('x-wangmai-invalid-provider-key')).toBeNull()
         expect(tokenResponse.headers.get('x-should-retry')).toBeNull()
       } finally {
         globalThis.fetch = originalFetch
@@ -5106,7 +5106,7 @@ describe('OpenCode Go preset request contract', () => {
         // Without this the gateway answers 400 MissingSessionID on every path.
         expect(calls[0].headers.get('x-opencode-session'), `${model} session`).toBe(SESSION_ID)
         // Identify as this client, never as a generic HTTP library or the CLI we fork.
-        expect(calls[0].headers.get('user-agent'), `${model} ua`).toMatch(/^cc-haha\//)
+        expect(calls[0].headers.get('user-agent'), `${model} ua`).toMatch(/^wangmai\//)
         expect(calls[0].headers.get('user-agent'), `${model} ua`).not.toContain('claude-cli/')
       }
     } finally {
@@ -5136,7 +5136,7 @@ describe('OpenCode Go preset request contract', () => {
       expect(calls[0].headers.get('x-goog-api-key')).toBe(apiKey)
       expect(calls[0].headers.get('authorization')).toBeNull()
       expect(calls[0].headers.get('x-opencode-session')).toBe(SESSION_ID)
-      expect(calls[0].headers.get('user-agent')).toMatch(/^cc-haha\//)
+      expect(calls[0].headers.get('user-agent')).toMatch(/^wangmai\//)
       expect(calls[0].body).toEqual({
         contents: [{ role: 'user', parts: [{ text: 'hello' }] }],
         generationConfig: { maxOutputTokens: 32 },
@@ -5364,7 +5364,7 @@ describe('OpenCode Go preset request contract', () => {
       expect(response.status).toBe(200)
       expect(calls[0].url).toBe('https://opencode.ai/zen/go/v1/chat/completions')
       expect(calls[0].headers.get('x-opencode-session')).toBeNull()
-      expect(calls[0].headers.get('user-agent') ?? '').not.toMatch(/^cc-haha\//)
+      expect(calls[0].headers.get('user-agent') ?? '').not.toMatch(/^wangmai\//)
     } finally {
       restore()
     }
@@ -5439,7 +5439,7 @@ describe('OpenCode Go preset request contract', () => {
         { 'user-agent': 'some-third-party-sdk/1.0', 'x-opencode-session': 'caller-supplied-bogus' },
       )
       expect(response.status).toBe(200)
-      expect(calls[0].headers.get('user-agent')).toMatch(/^cc-haha\//)
+      expect(calls[0].headers.get('user-agent')).toMatch(/^wangmai\//)
       expect(calls[0].headers.get('x-opencode-session')).toBe(SESSION_ID)
     } finally {
       restore()

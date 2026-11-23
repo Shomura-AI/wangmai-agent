@@ -17,21 +17,21 @@ import {
 
 async function fixture(run: (filePath: string) => Promise<void>) {
   const previousConfig = process.env.CLAUDE_CONFIG_DIR
-  const previousMode = process.env.CC_HAHA_LOCAL_INDEX
+  const previousMode = process.env.WANGMAI_LOCAL_INDEX
   const scope = await fs.mkdtemp(join(tmpdir(), 'trace-hard-bounds-'))
   process.env.CLAUDE_CONFIG_DIR = scope
-  process.env.CC_HAHA_LOCAL_INDEX = 'on'
+  process.env.WANGMAI_LOCAL_INDEX = 'on'
   clearTraceCaptureStateForTests()
   try {
-    const dir = join(scope, 'cc-haha', 'traces')
+    const dir = join(scope, 'wangmai', 'traces')
     await fs.mkdir(dir, { recursive: true })
     await run(join(dir, 'fixture.jsonl'))
   } finally {
     clearTraceCaptureStateForTests()
     if (previousConfig === undefined) delete process.env.CLAUDE_CONFIG_DIR
     else process.env.CLAUDE_CONFIG_DIR = previousConfig
-    if (previousMode === undefined) delete process.env.CC_HAHA_LOCAL_INDEX
-    else process.env.CC_HAHA_LOCAL_INDEX = previousMode
+    if (previousMode === undefined) delete process.env.WANGMAI_LOCAL_INDEX
+    else process.env.WANGMAI_LOCAL_INDEX = previousMode
     await fs.rm(scope, { recursive: true, force: true })
   }
 }
@@ -350,7 +350,7 @@ test('in-process appends across the byte limit produce the same window as a cold
   expect(incremental.length).toBeGreaterThan(1)
 
   clearTraceCaptureStateForTests()
-  await fs.rm(join(process.env.CLAUDE_CONFIG_DIR!, 'cc-haha', 'db'), { recursive: true, force: true })
+  await fs.rm(join(process.env.CLAUDE_CONFIG_DIR!, 'wangmai', 'db'), { recursive: true, force: true })
   expect(await describeWindows()).toEqual(incremental)
 }), 30_000)
 
@@ -378,7 +378,7 @@ test('appends across the record limit produce the same window as a cold rebuild'
   expect(incremental[0]?.state).toBe('limited')
 
   clearTraceCaptureStateForTests()
-  await fs.rm(join(process.env.CLAUDE_CONFIG_DIR!, 'cc-haha', 'db'), { recursive: true, force: true })
+  await fs.rm(join(process.env.CLAUDE_CONFIG_DIR!, 'wangmai', 'db'), { recursive: true, force: true })
   expect(await describeTraceWindows()).toEqual(incremental)
 }), 30_000)
 

@@ -168,7 +168,7 @@ describe('WeChat local speech synthesis', () => {
     const child = new EventEmitter() as EventEmitter & { stdin: EventEmitter & { end: () => void }; stderr: EventEmitter; kill: () => boolean }
     child.stderr = new EventEmitter()
     child.stdin = Object.assign(new EventEmitter(), { end: () => {
-      child.stderr.emit('data', Buffer.from('private input CC_HAHA_SPEECH_ERROR:NO_CHINESE_VOICE'))
+      child.stderr.emit('data', Buffer.from('private input WANGMAI_SPEECH_ERROR:NO_CHINESE_VOICE'))
       child.emit('close', 1)
     } })
     child.kill = () => true

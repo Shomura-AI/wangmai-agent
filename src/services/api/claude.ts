@@ -524,7 +524,7 @@ export function configureEffortParams(
     // Native Claude defaults to high effort when this field is omitted, and
     // historically sends it explicitly for stable request behavior. OpenAI
     // Responses is different: its Desktop session effort lives in
-    // CC_HAHA_OPENAI_REASONING_EFFORT and its catalog has per-model defaults.
+    // WANGMAI_OPENAI_REASONING_EFFORT and its catalog has per-model defaults.
     // Writing a synthetic `high` here would make the transport mistake that
     // fallback for an explicit request value and override both layers.
     if (isOpenAIResponsesModel(model)) return
@@ -4135,7 +4135,7 @@ function canUseMaxTokensCap(model: string): boolean {
   return getAPIProvider() !== 'azureOpenAI'
     && !isOpenAIResponsesModel(model)
     && !isLocalProtocolProxy(readProviderEnvForModel(model, 'ANTHROPIC_BASE_URL'))
-    && !['CC_HAHA_OPENAI_OAUTH_PROVIDER', 'CC_HAHA_GROK_OAUTH_PROVIDER', 'CC_HAHA_DEEPSEEK_OAUTH_PROVIDER']
+    && !['WANGMAI_OPENAI_OAUTH_PROVIDER', 'WANGMAI_GROK_OAUTH_PROVIDER', 'WANGMAI_DEEPSEEK_OAUTH_PROVIDER']
       .some(key => isEnvTruthy(readProviderEnvForModel(model, key)))
     && !process.env.CLAUDE_CODE_MAX_OUTPUT_TOKENS
     && getConfiguredProviderOutputBudget(undefined, model) === undefined

@@ -13,7 +13,7 @@ import type { QueryParams } from '../../query.js'
 const scenarios = ['chat-error-after-finish', 'anthropic-eof-after-tool', 'chat-truncated-mid-tool'] as const
 type Scenario = typeof scenarios[number]
 const resultPrefix = 'STREAM_RETRY_TOOL_RESULT:'
-const childScenario = process.env.CC_HAHA_STREAM_RETRY_TOOL_SCENARIO
+const childScenario = process.env.WANGMAI_STREAM_RETRY_TOOL_SCENARIO
 
 // Loading the real query graph in a shared Bun test process can cache runtime
 // modules before later mock.module tests install their fixtures, so every
@@ -145,7 +145,7 @@ for (const scenario of scenarios) {
     const child = Bun.spawn([process.execPath, '--no-env-file', 'test', fileURLToPath(import.meta.url)], {
       cwd: root,
       env: createSandboxedTestEnvironment(root, {
-        CC_HAHA_STREAM_RETRY_TOOL_SCENARIO: scenario,
+        WANGMAI_STREAM_RETRY_TOOL_SCENARIO: scenario,
         NODE_ENV: 'production',
         CLAUDE_CODE_SIMPLE: '1',
         CLAUDE_CODE_DISABLE_AUTO_MEMORY: '1',

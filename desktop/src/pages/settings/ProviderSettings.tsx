@@ -1430,7 +1430,7 @@ function openExternalUrl(url: string) {
 
 function ProviderFormModal({ open, onClose, mode, provider, presets, initialPresetId, onPickMagpie, browserMode = false }: ProviderFormProps) {
   const { createProvider, updateProvider, testConfig, fetchModels, fetchProviders, activeId } = useProviderStore()
-  // cc-haha/settings.json carries the default provider's runtime env, which every
+  // wangmai/settings.json carries the default provider's runtime env, which every
   // session started on the default reads (Claude Official too). Only an edit of
   // that provider may write it; saving any other provider must leave it alone,
   // or the default silently starts routing to this provider's endpoint and key.
@@ -2041,7 +2041,7 @@ function ProviderFormModal({ open, onClose, mode, provider, presets, initialPres
     setSaveFailed(false)
     setCredentialRequired(false)
     try {
-      // Write the edited cc-haha settings.json first so provider-specific model
+      // Write the edited wangmai settings.json first so provider-specific model
       // settings never conflict with the user's global ~/.claude/settings.json.
       if (!browserMode && writesManagedSettings && provider && settingsJson.trim()) {
         const parsed = restoreSettingsJsonSecrets(JSON.parse(settingsJson), settingsJson, apiKey)

@@ -43,7 +43,7 @@ export async function handleMigrationRuntimeRequest(
     if (request.method === 'GET' && pathname.endsWith('/validate')) {
       const root = getClaudeConfigHomeDir()
       if (!(await stat(root)).isDirectory()) throw new Error('Data directory is unavailable')
-      for (const configFile of [join(root, 'settings.json'), join(root, 'cc-haha', 'settings.json'), getGlobalClaudeFile()]) {
+      for (const configFile of [join(root, 'settings.json'), join(root, 'wangmai', 'settings.json'), getGlobalClaudeFile()]) {
         try {
           const config = JSON.parse(stripBOM(await readFile(configFile, 'utf8')))
           if (!config || typeof config !== 'object' || Array.isArray(config)) throw new Error('Invalid migrated configuration')

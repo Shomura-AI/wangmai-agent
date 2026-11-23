@@ -80,7 +80,7 @@ export async function connectHost(
       '/api/public-access/pair',
       {
         secret: parsed.pairSecret,
-        name: `cc-haha App · ${input.platform}`,
+        name: `wangmai App · ${input.platform}`,
         clientType: 'native',
       },
       { signal: input.signal }

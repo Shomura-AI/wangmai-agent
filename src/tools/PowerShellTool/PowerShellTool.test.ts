@@ -72,7 +72,7 @@ test('PowerShell forwards model-only error handling and reports a rejected spawn
 })
 
 test('PowerShell 5.1 prompt explains native invocation, BOMs, and command errors', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'cc-haha-powershell-prompt-'))
+  const directory = await mkdtemp(join(tmpdir(), 'wangmai-powershell-prompt-'))
   const previous = process.env[detection.POWERSHELL_PATH_OVERRIDE_ENV]
   try {
     const executable = join(directory, 'powershell.exe')

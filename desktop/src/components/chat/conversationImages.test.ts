@@ -64,7 +64,7 @@ describe('collectConversationImages', () => {
   })
 
   it('includes generated results once, omits failed generation, and preserves Read snapshots of generated files', () => {
-    const path = '/Users/me/.claude/cc-haha/generated-images/session/result.png'
+    const path = '/Users/me/.claude/wangmai/generated-images/session/result.png'
     const generation = {
       type: 'image_generation_result', providerId: 'fixture', providerKind: 'fixture',
       model: 'fixture', prompt: 'test', durationMs: 1, images: [{ path, mimeType: 'image/png' }],

@@ -103,7 +103,7 @@ export async function processWechatVideo(filePath: string, options: WechatVideoO
     stageRoot = path.resolve(options.outputDir ?? os.tmpdir())
     await fs.mkdir(stageRoot, { recursive: true })
     stageRoot = await fs.realpath(stageRoot)
-    jobDir = await fs.mkdtemp(path.join(stageRoot, 'cc-haha-wechat-video-'))
+    jobDir = await fs.mkdtemp(path.join(stageRoot, 'wangmai-wechat-video-'))
     const execute = async (tool: string, args: string[], timeoutMs: number) => {
       if (options.signal?.aborted) throw new Error('视频处理已取消。')
       const output = await run(tool, args, { signal: options.signal, timeoutMs })

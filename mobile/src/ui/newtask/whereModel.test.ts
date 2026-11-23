@@ -30,15 +30,15 @@ describe('recent projects', () => {
     const rows = recentProjectRows(
       [
         { realPath: '/Users/me/porthole', projectName: 'porthole' },
-        { realPath: '/Users/me/cc-haha', projectName: 'cc-haha' },
+        { realPath: '/Users/me/wangmai', projectName: 'wangmai' },
       ],
-      '/Users/me/cc-haha'
+      '/Users/me/wangmai'
     )
     expect(rows.map((row) => [row.name, row.detail, row.selected])).toEqual([
       ['porthole', '~/porthole', false],
-      ['cc-haha', '~/cc-haha', true],
+      ['wangmai', '~/wangmai', true],
     ])
-    expect(rows[1].realPath).toBe('/Users/me/cc-haha')
+    expect(rows[1].realPath).toBe('/Users/me/wangmai')
   })
 })
 

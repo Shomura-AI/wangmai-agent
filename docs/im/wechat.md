@@ -81,7 +81,7 @@ order: 3
 
 视频分析上限为 30 MiB、120 秒，每条消息分析一个视频。超过时长或缺少工具时保留附件并提示无法分析，不会悄悄截断后宣称分析完成。每条消息最多 5 个附件、合计 30 MiB。
 
-本机需要可执行的 `ffmpeg` 和 `ffprobe`。可以加入 PATH，或在启动 cc-haha 的环境中设置 `WECHAT_FFMPEG_PATH`、`WECHAT_FFPROBE_PATH` 为各自的完整路径。程序不会自动下载这些工具。语音识别模型在桌面语音设置中准备。
+本机需要可执行的 `ffmpeg` 和 `ffprobe`。可以加入 PATH，或在启动网脉智能体的环境中设置 `WECHAT_FFMPEG_PATH`、`WECHAT_FFPROBE_PATH` 为各自的完整路径。程序不会自动下载这些工具。语音识别模型在桌面语音设置中准备。
 
 ## 音频回复
 

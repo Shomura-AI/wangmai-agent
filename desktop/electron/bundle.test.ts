@@ -7,7 +7,7 @@ import { afterAll, describe, expect, it } from 'vitest'
 const desktopRoot = existsSync(path.resolve(process.cwd(), 'electron', 'main.ts'))
   ? process.cwd()
   : path.resolve(process.cwd(), 'desktop')
-const outDir = mkdtempSync(path.join(os.tmpdir(), 'cc-haha-electron-bundle-'))
+const outDir = mkdtempSync(path.join(os.tmpdir(), 'wangmai-electron-bundle-'))
 afterAll(() => rmSync(outDir, { recursive: true, force: true }))
 
 /** The `bun build` steps of build:electron, with the arguments the package script passes. */

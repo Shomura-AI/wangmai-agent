@@ -4,13 +4,13 @@
 
 ## 已关联的项目
 
-- Expo：`@relakkesyangs-team/cc-haha`
+- Expo：`@wangmai-ai/wangmai`
 - Project ID：`4e75f835-1b64-463c-a196-cc181b4c83ec`
 - App Store Connect App ID：`6826961014`
-- iOS Bundle ID：`com.yunce.cchaha.mobile`
-- iOS Widget：`com.yunce.cchaha.mobile.widgets`
-- App Group：`group.com.yunce.cchaha.mobile`
-- Android package：`app.cchaha.mobile`
+- iOS Bundle ID：`com.wangmai.agent.mobile`
+- iOS Widget：`com.wangmai.agent.mobile.widgets`
+- App Group：`group.com.wangmai.agent.mobile`
+- Android package：`app.wangmai.mobile`
 
 项目标识可公开，凭据不能提交。EAS 管理生产签名凭据；保管并备份 Android keystore，后续升级必须保持签名身份。
 
@@ -27,7 +27,7 @@
 
 `eas.json` 固定 EAS CLI 版本，使用 `production` 环境、远程签名凭据、自动递增构建号，Android 产物明确设为 APK。不要使用本地默认 debug keystore 作为公开分发签名。
 
-Android FCM 如果需要启用，在 EAS production 环境设置文件变量 `CC_HAHA_GOOGLE_SERVICES_FILE`，内容是匹配 `app.cchaha.mobile` 的 Firebase Android 客户端 JSON。服务账户私钥不能放进应用。可选：Android 默认走手机拉取，不需要 FCM。详见 [推送说明](PUSH_NOTIFICATIONS.md)。
+Android FCM 如果需要启用，在 EAS production 环境设置文件变量 `WANGMAI_GOOGLE_SERVICES_FILE`，内容是匹配 `app.wangmai.mobile` 的 Firebase Android 客户端 JSON。服务账户私钥不能放进应用。可选：Android 默认走手机拉取，不需要 FCM。详见 [推送说明](PUSH_NOTIFICATIONS.md)。
 
 ## 日常发版
 

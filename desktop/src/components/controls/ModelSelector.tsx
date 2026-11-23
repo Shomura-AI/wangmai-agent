@@ -33,14 +33,14 @@ import {
   resolveDefaultRuntimeSelection,
   resolveProviderSlotModelId,
 } from '../../lib/runtimeSelection'
-import { useHahaOAuthStore } from '../../stores/hahaOAuthStore'
-import { useHahaOpenAIOAuthStore } from '../../stores/hahaOpenAIOAuthStore'
-import { useHahaGrokOAuthStore } from '../../stores/hahaGrokOAuthStore'
+import { useWangMaiOAuthStore } from '../../stores/wangmaiOAuthStore'
+import { useWangMaiOpenAIOAuthStore } from '../../stores/wangmaiOpenAIOAuthStore'
+import { useWangMaiGrokOAuthStore } from '../../stores/wangmaiGrokOAuthStore'
 import {
   GROK_OFFICIAL_MODELS,
   GROK_OFFICIAL_PROVIDER_ID,
 } from '../../constants/grokOfficialProvider'
-import { useHahaDeepSeekOAuthStore } from '../../stores/hahaDeepSeekOAuthStore'
+import { useWangMaiDeepSeekOAuthStore } from '../../stores/wangmaiDeepSeekOAuthStore'
 import {
   DEEPSEEK_ACCOUNT_CATALOG_MODELS,
   DEEPSEEK_ACCOUNT_PROVIDER_ID,
@@ -374,14 +374,14 @@ export const ModelSelector = forwardRef<ModelSelectorHandle, Props>(function Mod
     isLoading: providersLoading,
     fetchProviders,
   } = useProviderStore()
-  const claudeOAuthStatus = useHahaOAuthStore((s) => s.status)
-  const fetchClaudeOAuthStatus = useHahaOAuthStore((s) => s.fetchStatus)
-  const openAIOAuthStatus = useHahaOpenAIOAuthStore((s) => s.status)
-  const fetchOpenAIOAuthStatus = useHahaOpenAIOAuthStore((s) => s.fetchStatus)
-  const grokOAuthStatus = useHahaGrokOAuthStore((s) => s.status)
-  const fetchGrokOAuthStatus = useHahaGrokOAuthStore((s) => s.fetchStatus)
-  const deepSeekOAuthStatus = useHahaDeepSeekOAuthStore((s) => s.status)
-  const fetchDeepSeekOAuthStatus = useHahaDeepSeekOAuthStore((s) => s.fetchStatus)
+  const claudeOAuthStatus = useWangMaiOAuthStore((s) => s.status)
+  const fetchClaudeOAuthStatus = useWangMaiOAuthStore((s) => s.fetchStatus)
+  const openAIOAuthStatus = useWangMaiOpenAIOAuthStore((s) => s.status)
+  const fetchOpenAIOAuthStatus = useWangMaiOpenAIOAuthStore((s) => s.fetchStatus)
+  const grokOAuthStatus = useWangMaiGrokOAuthStore((s) => s.status)
+  const fetchGrokOAuthStatus = useWangMaiGrokOAuthStore((s) => s.fetchStatus)
+  const deepSeekOAuthStatus = useWangMaiDeepSeekOAuthStore((s) => s.status)
+  const fetchDeepSeekOAuthStatus = useWangMaiDeepSeekOAuthStore((s) => s.fetchStatus)
   const runtimeSelection = useSessionRuntimeStore((state) =>
     runtimeKey ? state.selections[runtimeKey] : undefined,
   )
@@ -755,10 +755,10 @@ export const ModelSelector = forwardRef<ModelSelectorHandle, Props>(function Mod
       return
     }
 
-    const claudeStatus = useHahaOAuthStore.getState().status
-    const openAIStatus = useHahaOpenAIOAuthStore.getState().status
-    const grokStatus = useHahaGrokOAuthStore.getState().status
-    const deepSeekStatus = useHahaDeepSeekOAuthStore.getState().status
+    const claudeStatus = useWangMaiOAuthStore.getState().status
+    const openAIStatus = useWangMaiOpenAIOAuthStore.getState().status
+    const grokStatus = useWangMaiGrokOAuthStore.getState().status
+    const deepSeekStatus = useWangMaiDeepSeekOAuthStore.getState().status
     const statuses = [claudeStatus, openAIStatus, grokStatus, deepSeekStatus]
     const canPickAntigravity = () => {
       const agent = useProviderStore.getState().localAgent
@@ -796,10 +796,10 @@ export const ModelSelector = forwardRef<ModelSelectorHandle, Props>(function Mod
         fetchDeepSeekOAuthStatus(),
       ])
       const hasOfficialLogin = [
-        useHahaOAuthStore.getState().status,
-        useHahaOpenAIOAuthStore.getState().status,
-        useHahaGrokOAuthStore.getState().status,
-        useHahaDeepSeekOAuthStore.getState().status,
+        useWangMaiOAuthStore.getState().status,
+        useWangMaiOpenAIOAuthStore.getState().status,
+        useWangMaiGrokOAuthStore.getState().status,
+        useWangMaiDeepSeekOAuthStore.getState().status,
       ].some((status) => status?.loggedIn === true)
       if (hasOfficialLogin || canPickAntigravity()) {
         setOpen(true)

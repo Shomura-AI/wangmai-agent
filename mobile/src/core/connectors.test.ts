@@ -14,7 +14,7 @@ const make = (id: string, extra: Partial<Connector> = {}): Connector => ({
   installed: false,
   connection: 'disconnected',
   status: 'not-installed',
-  pluginId: `${id}@haha-connectors`,
+  pluginId: `${id}@wangmai-connectors`,
   ...extra,
 })
 const ids = (list: Connector[]) => list.map((connector) => connector.id)
@@ -60,7 +60,7 @@ describe('connectorSections', () => {
     make('bundle', { transport: 'skills' }),
     make('tools', { collection: 'tools' }),
     make('busy', { installed: true, connection: 'needs-auth', operation: { kind: 'authenticate' } }),
-    make('office-mcp', { pluginId: 'office-mcp-builder@haha-connectors' }),
+    make('office-mcp', { pluginId: 'office-mcp-builder@wangmai-connectors' }),
   ]
 
   test('connected, needs attention, three suggestions and the rest follow the desktop rules', () => {
@@ -102,9 +102,9 @@ describe('connectorSections', () => {
 })
 
 test('withdrawn managed plugins are hidden but same-named personal plugins are not', () => {
-  expect(isPluginIdVisible('office-mcp-builder@haha-connectors')).toBe(false)
+  expect(isPluginIdVisible('office-mcp-builder@wangmai-connectors')).toBe(false)
   expect(isPluginIdVisible('office-mcp-builder@mine')).toBe(true)
-  expect(isPluginIdVisible('feishu@haha-connectors')).toBe(true)
+  expect(isPluginIdVisible('feishu@wangmai-connectors')).toBe(true)
   expect(isPluginIdVisible('')).toBe(true)
 })
 

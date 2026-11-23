@@ -38,7 +38,7 @@ describe('Windows Git Bash discovery', () => {
   })
 
   test('checks an explicit path as a literal file without launching a command shell', () => {
-    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'cc-haha-shell-discovery-'))
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wangmai-shell-discovery-'))
     cleanups.push(() => fs.rmSync(directory, { recursive: true, force: true }))
     const binary = path.join(directory, 'bash & 100%.exe')
     fs.writeFileSync(binary, '')
@@ -59,7 +59,7 @@ describe('Windows Git Bash discovery', () => {
 
   test('hides the where.exe fallback console and skips workspace executables', () => {
     delete process.env.CLAUDE_CODE_GIT_BASH_PATH
-    const installedGit = path.resolve(os.tmpdir(), 'cc-haha-installed-git', 'cmd', 'git.exe')
+    const installedGit = path.resolve(os.tmpdir(), 'wangmai-installed-git', 'cmd', 'git.exe')
     const installedBash = path.win32.join(installedGit, '..', '..', 'bin', 'bash.exe')
     const exists = spyOn(fs, 'existsSync').mockImplementation(file => file === installedBash)
     cleanups.push(() => exists.mockRestore())

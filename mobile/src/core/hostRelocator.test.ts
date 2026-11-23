@@ -196,7 +196,7 @@ describe('local-network hints', () => {
 
 describe('pushed addresses', () => {
   const sign = (url: string, value = credential) =>
-    createHmac('sha256', createHash('sha256').update(value, 'utf8').digest('hex')).update(`cc-haha-host-url\n${url}`).digest('base64url')
+    createHmac('sha256', createHash('sha256').update(value, 'utf8').digest('hex')).update(`wangmai-host-url\n${url}`).digest('base64url')
   const target = (hosts: Host[] = [remote, lan]) => {
     const relocated: [string, string][] = []
     return {

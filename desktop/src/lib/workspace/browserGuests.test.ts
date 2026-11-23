@@ -56,7 +56,7 @@ describe('workspace browser guests', () => {
     const [webview] = webviews()
     expect(webview).toBeDefined()
     // Exactly what the host's attach policy admits; anything else is denied.
-    expect(webview!.getAttribute('partition')).toBe('persist:cc-haha-browser-app')
+    expect(webview!.getAttribute('partition')).toBe('persist:wangmai-browser-app')
     expect(webview!.getAttribute('src')).toBe('about:blank')
     // Without it Chromium drops popups before the host can turn them into tabs.
     expect(webview!.hasAttribute('allowpopups')).toBe(true)

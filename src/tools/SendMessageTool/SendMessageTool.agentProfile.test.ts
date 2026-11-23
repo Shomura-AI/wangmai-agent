@@ -17,15 +17,15 @@ import { SendMessageTool } from './SendMessageTool.js'
 
 const originalProfile = getAgentProfile()
 const originalConfig = process.env.CLAUDE_CONFIG_DIR
-const originalTeams = process.env.CC_HAHA_AGENT_TEAMS_ENABLED
+const originalTeams = process.env.WANGMAI_AGENT_TEAMS_ENABLED
 const agentId = asAgentId('a0123456789abcdef')
 let configDir: string
 let context: ToolUseContext
 
 beforeEach(() => {
-  configDir = mkdtempSync(join(tmpdir(), 'cc-haha-lean-message-'))
+  configDir = mkdtempSync(join(tmpdir(), 'wangmai-lean-message-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
-  process.env.CC_HAHA_AGENT_TEAMS_ENABLED = '0'
+  process.env.WANGMAI_AGENT_TEAMS_ENABLED = '0'
   resetSettingsCache()
   setAgentProfile('lean')
   let state = {
@@ -52,8 +52,8 @@ afterEach(async () => {
   resetSettingsCache()
   if (originalConfig === undefined) delete process.env.CLAUDE_CONFIG_DIR
   else process.env.CLAUDE_CONFIG_DIR = originalConfig
-  if (originalTeams === undefined) delete process.env.CC_HAHA_AGENT_TEAMS_ENABLED
-  else process.env.CC_HAHA_AGENT_TEAMS_ENABLED = originalTeams
+  if (originalTeams === undefined) delete process.env.WANGMAI_AGENT_TEAMS_ENABLED
+  else process.env.WANGMAI_AGENT_TEAMS_ENABLED = originalTeams
   rmSync(configDir, { recursive: true, force: true })
 })
 

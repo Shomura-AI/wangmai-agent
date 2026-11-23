@@ -76,7 +76,7 @@ test('paired remote phones read only notification readiness and can save those c
       } finally { service.disable() }
     `
     expect(() => execFileSync(process.execPath, ['--no-env-file', '-e', script], {
-      env: createSandboxedTestEnvironment(home, { CC_HAHA_LOCAL_ACCESS_TOKEN: 'notification-fixture-control' }),
+      env: createSandboxedTestEnvironment(home, { WANGMAI_LOCAL_ACCESS_TOKEN: 'notification-fixture-control' }),
       encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 20_000,
     })).not.toThrow()
   } finally { removeTestSandbox(home, 'scheduled-notification-capabilities') }

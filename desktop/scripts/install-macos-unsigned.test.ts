@@ -23,7 +23,7 @@ async function writeExecutable(pathname: string, source: string): Promise<void> 
 // to fail, so the script stops right after announcing its choice and never
 // touches /Applications.
 async function pickDmg(machine: string, dmgNames: string[]): Promise<string | undefined> {
-  const root = await mkdtemp(path.join(tmpdir(), 'cc-haha-install-macos-'))
+  const root = await mkdtemp(path.join(tmpdir(), 'wangmai-install-macos-'))
   fixtures.push(root)
   const downloads = path.join(root, 'Downloads')
   const fakeBin = path.join(root, 'fake-bin')
@@ -46,37 +46,37 @@ async function pickDmg(machine: string, dmgNames: string[]): Promise<string | un
 
 describe('install-macos-unsigned.sh DMG selection', () => {
   const releaseDmgs = [
-    'Claude-Code-Haha-0.7.7-macOS-Apple-Silicon.dmg',
-    'Claude-Code-Haha-0.7.7-macOS-Intel.dmg',
+    'WangMai-Agent-0.7.7-macOS-Apple-Silicon.dmg',
+    'WangMai-Agent-0.7.7-macOS-Intel.dmg',
   ]
 
   it.each([
-    ['arm64', 'Claude-Code-Haha-0.7.7-macOS-Apple-Silicon.dmg'],
-    ['x86_64', 'Claude-Code-Haha-0.7.7-macOS-Intel.dmg'],
+    ['arm64', 'WangMai-Agent-0.7.7-macOS-Apple-Silicon.dmg'],
+    ['x86_64', 'WangMai-Agent-0.7.7-macOS-Intel.dmg'],
   ])('picks the chip-named release DMG on %s', async (machine, expected) => {
     expect(await pickDmg(machine, releaseDmgs)).toBe(expected)
   })
 
   it.each([
-    ['arm64', 'Claude-Code-Haha-0.7.7-macOS-arm64.dmg'],
-    ['x86_64', 'Claude-Code-Haha-0.7.7-macOS-x64.dmg'],
+    ['arm64', 'WangMai-Agent-0.7.7-macOS-arm64.dmg'],
+    ['x86_64', 'WangMai-Agent-0.7.7-macOS-x64.dmg'],
   ])('picks the arch-named development DMG on %s', async (machine, expected) => {
-    const devDmgs = ['Claude-Code-Haha-0.7.7-macOS-arm64.dmg', 'Claude-Code-Haha-0.7.7-macOS-x64.dmg']
+    const devDmgs = ['WangMai-Agent-0.7.7-macOS-arm64.dmg', 'WangMai-Agent-0.7.7-macOS-x64.dmg']
     expect(await pickDmg(machine, devDmgs)).toBe(expected)
   })
 
   it.each([
-    ['arm64', 'Claude-Code-Haha-0.7.6-mac-arm64.dmg'],
-    ['x86_64', 'Claude-Code-Haha-0.7.6-mac-x64.dmg'],
+    ['arm64', 'WangMai-Agent-0.7.6-mac-arm64.dmg'],
+    ['x86_64', 'WangMai-Agent-0.7.6-mac-x64.dmg'],
   ])('recognizes a release before the rename on %s', async (machine, expected) => {
-    const legacyDmgs = ['Claude-Code-Haha-0.7.6-mac-arm64.dmg', 'Claude-Code-Haha-0.7.6-mac-x64.dmg']
+    const legacyDmgs = ['WangMai-Agent-0.7.6-mac-arm64.dmg', 'WangMai-Agent-0.7.6-mac-x64.dmg']
     expect(await pickDmg(machine, legacyDmgs)).toBe(expected)
   })
 
   it('does not mistake the auto-update zip for an installer', async () => {
     expect(await pickDmg('arm64', [
-      'Claude-Code-Haha-0.7.7-macOS-arm64-update.zip',
-      'Claude-Code-Haha-0.7.7-macOS-Apple-Silicon.dmg',
-    ])).toBe('Claude-Code-Haha-0.7.7-macOS-Apple-Silicon.dmg')
+      'WangMai-Agent-0.7.7-macOS-arm64-update.zip',
+      'WangMai-Agent-0.7.7-macOS-Apple-Silicon.dmg',
+    ])).toBe('WangMai-Agent-0.7.7-macOS-Apple-Silicon.dmg')
   })
 })

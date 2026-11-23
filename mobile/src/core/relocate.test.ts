@@ -22,8 +22,8 @@ const sign = (text: string, credential = T) =>
     .update(text, 'utf8')
     .digest('base64url')
 const locateMac = (nonce: string, url: string, credential = T) =>
-  sign(`cc-haha-locate\n${nonce}\n${url}`, credential)
-const pushMac = (url: string, credential = T) => sign(`cc-haha-host-url\n${url}`, credential)
+  sign(`wangmai-locate\n${nonce}\n${url}`, credential)
+const pushMac = (url: string, credential = T) => sign(`wangmai-host-url\n${url}`, credential)
 const NEW_URL = 'https://new-tunnel.trycloudflare.com'
 
 describe('hashes and MACs match node:crypto', () => {
@@ -31,7 +31,7 @@ describe('hashes and MACs match node:crypto', () => {
     const inputs = [
       new Uint8Array(0),
       new TextEncoder().encode('abc'),
-      new TextEncoder().encode('电脑地址已更新 · cc-haha'),
+      new TextEncoder().encode('电脑地址已更新 · wangmai'),
       ...[55, 56, 63, 64, 65, 119, 120, 127, 128, 1000].map((size) => new Uint8Array(randomBytes(size))),
     ]
     for (const input of inputs)
@@ -40,7 +40,7 @@ describe('hashes and MACs match node:crypto', () => {
   })
 
   test('HMAC-SHA256 for short, block-sized and long keys', () => {
-    const message = new TextEncoder().encode('cc-haha-host-url\nhttps://x.example')
+    const message = new TextEncoder().encode('wangmai-host-url\nhttps://x.example')
     for (const key of [new Uint8Array(randomBytes(16)), new TextEncoder().encode(H), new Uint8Array(randomBytes(100))])
       expect(Buffer.from(hmacSha256(key, message)).toString('hex')).toBe(createHmac('sha256', key).update(message).digest('hex'))
   })

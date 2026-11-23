@@ -307,7 +307,7 @@ export async function sendWechatText(params: {
     msg: {
       from_user_id: '',
       to_user_id: params.to,
-      client_id: params.clientId ?? `claude-code-haha-wechat-${crypto.randomUUID()}`,
+      client_id: params.clientId ?? `wangmai-agent-wechat-${crypto.randomUUID()}`,
       message_type: 2,
       message_state: 2,
       item_list: params.text ? [{ type: 1, text_item: { text: params.text } }] : undefined,

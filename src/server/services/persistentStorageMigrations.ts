@@ -412,16 +412,16 @@ function buildManagedSettingsForMigratedProvider(provider: JsonObject | undefine
 
 async function migrateLegacyRootProviders(
   configDir: string,
-  ccHahaDir: string,
+  wangmaiDir: string,
   report: MigrationReport,
 ): Promise<void> {
-  const targetPath = path.join(ccHahaDir, 'providers.json')
+  const targetPath = path.join(wangmaiDir, 'providers.json')
   try {
     await fs.access(targetPath)
     return
   } catch (error) {
     if (errnoCode(error) !== 'ENOENT') {
-      report.failures.push(`cc-haha/providers.json: ${error instanceof Error ? error.message : String(error)}`)
+      report.failures.push(`wangmai/providers.json: ${error instanceof Error ? error.message : String(error)}`)
       return
     }
   }
@@ -436,9 +436,9 @@ async function migrateLegacyRootProviders(
     if (!migrated) return
 
     await writeJsonFile(targetPath, migrated)
-    report.migratedEntries.push('providers.json -> cc-haha/providers.json')
+    report.migratedEntries.push('providers.json -> wangmai/providers.json')
 
-    const settingsPath = path.join(ccHahaDir, 'settings.json')
+    const settingsPath = path.join(wangmaiDir, 'settings.json')
     const settings = await readJsonFile(settingsPath).catch(() => ({ missing: false, value: undefined, raw: '' }))
     if (!settings.missing) return
 
@@ -451,7 +451,7 @@ async function migrateLegacyRootProviders(
     )
     if (managedSettings) {
       await writeJsonFile(settingsPath, managedSettings)
-      report.migratedEntries.push('providers.json -> cc-haha/settings.json')
+      report.migratedEntries.push('providers.json -> wangmai/settings.json')
     }
   } catch (error) {
     if (error instanceof SyntaxError) {
@@ -464,7 +464,7 @@ async function migrateLegacyRootProviders(
 
 async function runPersistentStorageMigrations(configDir: string): Promise<MigrationReport> {
   const report: MigrationReport = { migratedEntries: [], failures: [] }
-  const ccHahaDir = path.join(configDir, 'cc-haha')
+  const wangmaiDir = path.join(configDir, 'wangmai')
 
   // Task definitions are user-authored data: never quarantine/reset malformed JSON.
   const tasksPath = path.join(configDir, 'scheduled_tasks.json')
@@ -482,33 +482,33 @@ async function runPersistentStorageMigrations(configDir: string): Promise<Migrat
     report.failures.push(`scheduled_tasks.json: ${error instanceof Error ? error.message : String(error)}`)
   }
 
-  await migrateLegacyRootProviders(configDir, ccHahaDir, report)
+  await migrateLegacyRootProviders(configDir, wangmaiDir, report)
 
   let activeProviderId: string | undefined
   try {
-    const index = (await readJsonFile(path.join(ccHahaDir, 'providers.json'))).value
+    const index = (await readJsonFile(path.join(wangmaiDir, 'providers.json'))).value
     const migrated = migrateProvidersIndex(index)
     if (typeof migrated.activeId === 'string') activeProviderId = migrated.activeId
   } catch (error) {
     // Malformed JSON still goes through the existing quarantine/recovery below.
     // An I/O failure is different: no identity can safely be published yet.
     if (!(error instanceof SyntaxError)) {
-      report.failures.push(`cc-haha/settings.json: Provider ownership lookup failed: ${error instanceof Error ? error.message : String(error)}`)
+      report.failures.push(`wangmai/settings.json: Provider ownership lookup failed: ${error instanceof Error ? error.message : String(error)}`)
     }
   }
   await migrateJsonEntry(
-    path.join(ccHahaDir, 'settings.json'),
-    'cc-haha/settings.json',
+    path.join(wangmaiDir, 'settings.json'),
+    'wangmai/settings.json',
     report,
     (value) => migrateManagedSettings(value, activeProviderId),
     Boolean(activeProviderId),
   )
   // Publish the schema that requires owner metadata only after that metadata
   // was saved. A failed rename must leave standalone legacy reads usable.
-  if (!report.failures.some(failure => failure.startsWith('cc-haha/settings.json:'))) {
+  if (!report.failures.some(failure => failure.startsWith('wangmai/settings.json:'))) {
     await migrateJsonEntry(
-      path.join(ccHahaDir, 'providers.json'),
-      'cc-haha/providers.json',
+      path.join(wangmaiDir, 'providers.json'),
+      'wangmai/providers.json',
       report,
       migrateProvidersIndex,
     )
@@ -524,7 +524,7 @@ export function ensurePersistentStorageUpgraded(): Promise<MigrationReport> {
     const attempt: Promise<MigrationReport> = runPersistentStorageMigrations(configDir).then(report => {
       // Retry transient ownership writes at the next entry, without making a
       // failed attempt look like a completed upgrade for this process lifetime.
-      if (report.failures.some(failure => failure.startsWith('cc-haha/settings.json:')) && migrationPromise === attempt) {
+      if (report.failures.some(failure => failure.startsWith('wangmai/settings.json:')) && migrationPromise === attempt) {
         migrationPromise = null
       }
       return report

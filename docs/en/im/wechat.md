@@ -73,7 +73,7 @@ An incoming video is downloaded as an attachment and sampled into at most 12 tim
 
 Analysis is limited to 30 MiB, 120 seconds, and one video per message. Longer clips or missing dependencies keep the original attachment and produce an explanation instead of silently truncating the analysis. Each message accepts up to five attachments totaling 30 MiB.
 
-Install or provide executable `ffmpeg` and `ffprobe` on PATH, or set `WECHAT_FFMPEG_PATH` and `WECHAT_FFPROBE_PATH` to their full paths in the environment used to start cc-haha. The app does not download them automatically. Prepare the recognizer through desktop voice settings.
+Install or provide executable `ffmpeg` and `ffprobe` on PATH, or set `WECHAT_FFMPEG_PATH` and `WECHAT_FFPROBE_PATH` to their full paths in the environment used to start WangMai Agent. The app does not download them automatically. Prepare the recognizer through desktop voice settings.
 
 ## Audio replies
 

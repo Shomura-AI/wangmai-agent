@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { CircleCheck, Copy, LogIn, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { useHahaDeepSeekOAuthStore } from '../../stores/hahaDeepSeekOAuthStore'
+import { useWangMaiDeepSeekOAuthStore } from '../../stores/wangmaiDeepSeekOAuthStore'
 import { useTranslation } from '../../i18n'
 import { copyTextToClipboard } from '@/lib/clipboard'
 import { getDesktopHost } from '../../lib/desktopHost'
@@ -12,7 +12,7 @@ export function DeepSeekAccountLogin() {
   const [manualAuthorizeUrl, setManualAuthorizeUrl] = useState<string | null>(null)
   const [riskDialogOpen, setRiskDialogOpen] = useState(false)
   const { status, isLoading, error, fetchStatus, login, logout, startPolling, stopPolling } =
-    useHahaDeepSeekOAuthStore()
+    useWangMaiDeepSeekOAuthStore()
 
   useEffect(() => {
     void fetchStatus()
@@ -34,7 +34,7 @@ export function DeepSeekAccountLogin() {
         startPolling()
       } catch (err) {
         console.error('[DeepSeekAccountLogin] shellOpen failed:', err)
-        useHahaDeepSeekOAuthStore.setState({
+        useWangMaiDeepSeekOAuthStore.setState({
           error: t('settings.deepseekAccountLogin.openBrowserFailed'),
         })
       }
@@ -47,10 +47,10 @@ export function DeepSeekAccountLogin() {
     if (!manualAuthorizeUrl) return
     if (await copyTextToClipboard(manualAuthorizeUrl)) {
       setManualAuthorizeUrl(null)
-      useHahaDeepSeekOAuthStore.setState({ error: null })
+      useWangMaiDeepSeekOAuthStore.setState({ error: null })
       startPolling()
     } else {
-      useHahaDeepSeekOAuthStore.setState({
+      useWangMaiDeepSeekOAuthStore.setState({
         error: t('settings.deepseekAccountLogin.copyLinkFailed'),
       })
     }

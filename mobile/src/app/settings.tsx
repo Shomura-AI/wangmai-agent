@@ -419,7 +419,7 @@ export default function Settings() {
           <ListRow
             title={
               <Text style={{ fontSize: 16, lineHeight: 21, fontWeight: '600', color: colors.ink }}>
-                cc-haha
+                wangmai
               </Text>
             }
             subtitle={

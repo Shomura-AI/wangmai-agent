@@ -63,7 +63,7 @@ for (const { input, unavailable } of [
         PATH: process.env.PATH, HOME: root, USERPROFILE: root, CLAUDE_CONFIG_DIR: config,
         ADAPTER_SERVER_URL: 'ws://127.0.0.1:1', ADAPTER_ALLOWED_PROJECT_ROOTS: root,
         WECHAT_ACCOUNT_ID: 'fixture-account', WECHAT_BOT_TOKEN: 'fixture-token',
-        WECHAT_BASE_URL: 'http://127.0.0.1:1', CC_HAHA_LOCAL_ACCESS_TOKEN: '', NODE_ENV: 'test',
+        WECHAT_BASE_URL: 'http://127.0.0.1:1', WANGMAI_LOCAL_ACCESS_TOKEN: '', NODE_ENV: 'test',
       }, stdout: 'pipe', stderr: 'pipe',
     })
     try {

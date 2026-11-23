@@ -1760,7 +1760,7 @@ describe('anthropicToOpenaiResponses', () => {
         role: 'assistant',
         content: [{
           type: 'redacted_thinking',
-          data: 'cc-haha:openai-reasoning:v1:{"id":"rs_1","summary":[],"encrypted_content":"encrypted-reasoning"}',
+          data: 'wangmai:openai-reasoning:v1:{"id":"rs_1","summary":[],"encrypted_content":"encrypted-reasoning"}',
         }],
       }],
     } as AnthropicRequest

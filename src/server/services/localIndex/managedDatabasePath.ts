@@ -93,7 +93,7 @@ export function prepareManagedDatabasePath(options: {
   }
 
   const lexicalScope = resolve(options.scope)
-  const expectedPath = join(lexicalScope, 'cc-haha', 'db', options.filename)
+  const expectedPath = join(lexicalScope, 'wangmai', 'db', options.filename)
   if (databasePath !== expectedPath) throw new UnsafeLocalIndexPathError()
 
   // Recursive creation is restricted to the caller-owned trust root. Every
@@ -104,9 +104,9 @@ export function prepareManagedDatabasePath(options: {
   if (!scopeSnapshot.isDirectory() && !scopeSnapshot.isSymbolicLink()) {
     throw new UnsafeLocalIndexPathError()
   }
-  const ccHahaDir = join(lexicalScope, 'cc-haha')
-  const databaseDir = join(ccHahaDir, 'db')
-  ensureRealManagedDirectory(ccHahaDir, trustRoot)
+  const wangmaiDir = join(lexicalScope, 'wangmai')
+  const databaseDir = join(wangmaiDir, 'db')
+  ensureRealManagedDirectory(wangmaiDir, trustRoot)
   ensureRealManagedDirectory(databaseDir, trustRoot)
   assertDatabaseFamilySafe(databasePath)
 }

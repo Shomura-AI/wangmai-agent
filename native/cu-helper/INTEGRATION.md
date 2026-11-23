@@ -1,6 +1,6 @@
 # `cu-helper` — Integration Guide
 
-A native Swift Computer Use helper for claude-code-haha. It replaces the
+A native Swift Computer Use helper for wangmai-agent. It replaces the
 `runtime/mac_helper.py` (pyautogui + mss) bridge with a single, code-signed
 `arm64` executable that:
 
@@ -304,7 +304,7 @@ Add the signed binary as a Tauri sidecar alongside the existing one:
 
 ```jsonc
 "externalBin": [
-  "binaries/claude-sidecar",
+  "binaries/wangmai-sidecar",
   "binaries/cu-helper"          // <- added
 ]
 ```
@@ -390,10 +390,10 @@ back to ad-hoc.
 ./build.sh
 # 1) swift build -c release --arch arm64 --package-path <pkg dir>
 # 2) codesign --force --options runtime \
-#      --identifier dev.cchaha.cu-helper \
+#      --identifier dev.wangmai.cu-helper \
 #      --sign "Apple Development: 524134442@qq.com (F8ZSJJ78S7)" \
-#      .build/release/cc-haha-computer-use
-# 3) wraps and signs .build/release/cc-haha-computer-use.app
+#      .build/release/wangmai-computer-use
+# 3) wraps and signs .build/release/wangmai-computer-use.app
 # 4) prints: built: <abs path to the app bundle>
 ```
 
@@ -415,8 +415,8 @@ back to ad-hoc.
   unchanged:
 
   ```bash
-  codesign -dv --verbose=4 .build/release/cc-haha-computer-use.app 2>&1 | grep -E 'Identifier|Authority|Timestamp'
-  # Identifier=dev.cchaha.cu-helper            <- constant across rebuilds
+  codesign -dv --verbose=4 .build/release/wangmai-computer-use.app 2>&1 | grep -E 'Identifier|Authority|Timestamp'
+  # Identifier=dev.wangmai.cu-helper            <- constant across rebuilds
   # Authority=Apple Development: 524134442@qq.com (F8ZSJJ78S7)
   ```
 
@@ -432,7 +432,7 @@ back to ad-hoc.
 
 ```bash
 ./native/cu-helper/build.sh
-# expect: built: .../native/cu-helper/.build/release/cc-haha-computer-use.app
+# expect: built: .../native/cu-helper/.build/release/wangmai-computer-use.app
 ```
 
 ### 6.2 TCC-free CLI smoke (agent-runnable — **no permissions needed**)
@@ -440,7 +440,7 @@ back to ad-hoc.
 Each must print **exactly one** clean JSON line:
 
 ```bash
-B=native/cu-helper/.build/release/cc-haha-computer-use.app/Contents/MacOS/cc-haha-computer-use
+B=native/cu-helper/.build/release/wangmai-computer-use.app/Contents/MacOS/wangmai-computer-use
 "$B" list_displays       --payload '{}'   # DisplayGeometry[] with id+displayId+name+label
 "$B" get_display_size    --payload '{}'   # primary display (isPrimary:true)
 "$B" frontmost_app       --payload '{}'   # {bundleId,displayName} | null

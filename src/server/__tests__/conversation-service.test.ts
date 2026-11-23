@@ -8,9 +8,9 @@ import {
   DESKTOP_CLI_GRACEFUL_SHUTDOWN_TIMEOUT_MS,
 } from '../services/conversationService.js'
 import { diagnosticsService } from '../services/diagnosticsService.js'
-import { hahaOAuthService } from '../services/hahaOAuthService.js'
-import { hahaOpenAIOAuthService } from '../services/hahaOpenAIOAuthService.js'
-import { hahaGrokOAuthService } from '../services/hahaGrokOAuthService.js'
+import { wangmaiOAuthService } from '../services/wangmaiOAuthService.js'
+import { wangmaiOpenAIOAuthService } from '../services/wangmaiOpenAIOAuthService.js'
+import { wangmaiGrokOAuthService } from '../services/wangmaiGrokOAuthService.js'
 import { ProviderService } from '../services/providerService.js'
 import { sessionService } from '../services/sessionService.js'
 import { updateTraceCaptureSettings, traceCaptureService } from '../services/traceCaptureService.js'
@@ -45,7 +45,7 @@ describe('ConversationService', () => {
   let originalDisableTerminalShellEnv: string | undefined
 
   beforeEach(async () => {
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-conversation-service-'))
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-conversation-service-'))
     originalConfigDir = process.env.CLAUDE_CONFIG_DIR
     originalApiKey = process.env.ANTHROPIC_API_KEY
     originalAuthToken = process.env.ANTHROPIC_AUTH_TOKEN
@@ -54,20 +54,20 @@ describe('ConversationService', () => {
     originalEntrypoint = process.env.CLAUDE_CODE_ENTRYPOINT
     originalOAuthToken = process.env.CLAUDE_CODE_OAUTH_TOKEN
     originalProviderManagedByHost = process.env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST
-    originalLocalAccessToken = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
+    originalLocalAccessToken = process.env.WANGMAI_LOCAL_ACCESS_TOKEN
     originalDiagnosticsFile = process.env.CLAUDE_CODE_DIAGNOSTICS_FILE
     originalAttributionHeader = process.env.CLAUDE_CODE_ATTRIBUTION_HEADER
     originalDisableExperimentalBetas = process.env.CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS
     originalResumeInterruptedTurn = process.env.CLAUDE_CODE_RESUME_INTERRUPTED_TURN
-    originalTraceApiCalls = process.env.CC_HAHA_TRACE_API_CALLS
-    originalTraceProviderId = process.env.CC_HAHA_TRACE_PROVIDER_ID
-    originalTraceProviderName = process.env.CC_HAHA_TRACE_PROVIDER_NAME
-    originalTraceProviderFormat = process.env.CC_HAHA_TRACE_PROVIDER_FORMAT
+    originalTraceApiCalls = process.env.WANGMAI_TRACE_API_CALLS
+    originalTraceProviderId = process.env.WANGMAI_TRACE_PROVIDER_ID
+    originalTraceProviderName = process.env.WANGMAI_TRACE_PROVIDER_NAME
+    originalTraceProviderFormat = process.env.WANGMAI_TRACE_PROVIDER_FORMAT
     originalHome = process.env.HOME
     originalPath = process.env.PATH
     originalShell = process.env.SHELL
     originalZdotdir = process.env.ZDOTDIR
-    originalDisableTerminalShellEnv = process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV
+    originalDisableTerminalShellEnv = process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV
 
     process.env.CLAUDE_CONFIG_DIR = tmpDir
     process.env.ANTHROPIC_API_KEY = 'stale-parent-api-key'
@@ -79,24 +79,24 @@ describe('ConversationService', () => {
     // buildChildEnv injects it or not without interference from the shell env.
     delete process.env.CLAUDE_CODE_ENTRYPOINT
     delete process.env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST
-    delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
+    delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
     delete process.env.CLAUDE_CODE_DIAGNOSTICS_FILE
     delete process.env.CLAUDE_CODE_ATTRIBUTION_HEADER
     delete process.env.CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS
     delete process.env.CLAUDE_CODE_RESUME_INTERRUPTED_TURN
-    delete process.env.CC_HAHA_TRACE_API_CALLS
-    delete process.env.CC_HAHA_TRACE_PROVIDER_ID
-    delete process.env.CC_HAHA_TRACE_PROVIDER_NAME
-    delete process.env.CC_HAHA_TRACE_PROVIDER_FORMAT
-    process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV = '1'
+    delete process.env.WANGMAI_TRACE_API_CALLS
+    delete process.env.WANGMAI_TRACE_PROVIDER_ID
+    delete process.env.WANGMAI_TRACE_PROVIDER_NAME
+    delete process.env.WANGMAI_TRACE_PROVIDER_FORMAT
+    process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV = '1'
     resetTerminalShellEnvironmentCacheForTests()
     // Spawning an official-mode session looks the account up through the
     // profile endpoint; keep that off the network.
-    hahaOAuthService.setFetchAccountUuidFn(async () => 'account-uuid-from-profile')
+    wangmaiOAuthService.setFetchAccountUuidFn(async () => 'account-uuid-from-profile')
   })
 
   afterEach(async () => {
-    hahaOAuthService.setFetchAccountUuidFn()
+    wangmaiOAuthService.setFetchAccountUuidFn()
     if (originalConfigDir === undefined) delete process.env.CLAUDE_CONFIG_DIR
     else process.env.CLAUDE_CONFIG_DIR = originalConfigDir
 
@@ -121,8 +121,8 @@ describe('ConversationService', () => {
     if (originalProviderManagedByHost === undefined) delete process.env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST
     else process.env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST = originalProviderManagedByHost
 
-    if (originalLocalAccessToken === undefined) delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-    else process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = originalLocalAccessToken
+    if (originalLocalAccessToken === undefined) delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+    else process.env.WANGMAI_LOCAL_ACCESS_TOKEN = originalLocalAccessToken
 
     if (originalDiagnosticsFile === undefined) delete process.env.CLAUDE_CODE_DIAGNOSTICS_FILE
     else process.env.CLAUDE_CODE_DIAGNOSTICS_FILE = originalDiagnosticsFile
@@ -136,17 +136,17 @@ describe('ConversationService', () => {
     if (originalResumeInterruptedTurn === undefined) delete process.env.CLAUDE_CODE_RESUME_INTERRUPTED_TURN
     else process.env.CLAUDE_CODE_RESUME_INTERRUPTED_TURN = originalResumeInterruptedTurn
 
-    if (originalTraceApiCalls === undefined) delete process.env.CC_HAHA_TRACE_API_CALLS
-    else process.env.CC_HAHA_TRACE_API_CALLS = originalTraceApiCalls
+    if (originalTraceApiCalls === undefined) delete process.env.WANGMAI_TRACE_API_CALLS
+    else process.env.WANGMAI_TRACE_API_CALLS = originalTraceApiCalls
 
-    if (originalTraceProviderId === undefined) delete process.env.CC_HAHA_TRACE_PROVIDER_ID
-    else process.env.CC_HAHA_TRACE_PROVIDER_ID = originalTraceProviderId
+    if (originalTraceProviderId === undefined) delete process.env.WANGMAI_TRACE_PROVIDER_ID
+    else process.env.WANGMAI_TRACE_PROVIDER_ID = originalTraceProviderId
 
-    if (originalTraceProviderName === undefined) delete process.env.CC_HAHA_TRACE_PROVIDER_NAME
-    else process.env.CC_HAHA_TRACE_PROVIDER_NAME = originalTraceProviderName
+    if (originalTraceProviderName === undefined) delete process.env.WANGMAI_TRACE_PROVIDER_NAME
+    else process.env.WANGMAI_TRACE_PROVIDER_NAME = originalTraceProviderName
 
-    if (originalTraceProviderFormat === undefined) delete process.env.CC_HAHA_TRACE_PROVIDER_FORMAT
-    else process.env.CC_HAHA_TRACE_PROVIDER_FORMAT = originalTraceProviderFormat
+    if (originalTraceProviderFormat === undefined) delete process.env.WANGMAI_TRACE_PROVIDER_FORMAT
+    else process.env.WANGMAI_TRACE_PROVIDER_FORMAT = originalTraceProviderFormat
 
     if (originalHome === undefined) delete process.env.HOME
     else process.env.HOME = originalHome
@@ -160,8 +160,8 @@ describe('ConversationService', () => {
     if (originalZdotdir === undefined) delete process.env.ZDOTDIR
     else process.env.ZDOTDIR = originalZdotdir
 
-    if (originalDisableTerminalShellEnv === undefined) delete process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV
-    else process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV = originalDisableTerminalShellEnv
+    if (originalDisableTerminalShellEnv === undefined) delete process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV
+    else process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV = originalDisableTerminalShellEnv
 
     resetTerminalShellEnvironmentCacheForTests()
     await fs.rm(tmpDir, { recursive: true, force: true })
@@ -221,15 +221,15 @@ describe('ConversationService', () => {
 
   test('keeps inherited provider env when no desktop provider config exists', async () => {
     const service = new ConversationService() as any
-    const env = (await service.buildChildEnv('D:\\workspace\\code\\myself_code\\cc-haha')) as Record<string, string>
+    const env = (await service.buildChildEnv('D:\\workspace\\code\\myself_code\\wangmai')) as Record<string, string>
 
     expect(env.ANTHROPIC_AUTH_TOKEN).toBe('test-token')
     expect(env.ANTHROPIC_BASE_URL).toBe('https://example.invalid/anthropic')
     expect(env.ANTHROPIC_MODEL).toBe('test-model')
     expect(env.CLAUDE_CODE_ATTRIBUTION_HEADER).toBe('0')
-    expect(env.CLAUDE_CODE_DIAGNOSTICS_FILE).toBe(path.join(tmpDir, 'cc-haha', 'diagnostics', 'cli-diagnostics.jsonl'))
+    expect(env.CLAUDE_CODE_DIAGNOSTICS_FILE).toBe(path.join(tmpDir, 'wangmai', 'diagnostics', 'cli-diagnostics.jsonl'))
     expect(env.CLAUDE_COWORK_MEMORY_PATH_OVERRIDE).toBe(
-      `${path.join(tmpDir, 'projects', 'D--workspace-code-myself-code-cc-haha', 'memory')}${path.sep}`,
+      `${path.join(tmpDir, 'projects', 'D--workspace-code-myself-code-wangmai', 'memory')}${path.sep}`,
     )
     const diagnosticsDirectory = await fs.stat(path.dirname(env.CLAUDE_CODE_DIAGNOSTICS_FILE))
     expect(diagnosticsDirectory).toBeTruthy()
@@ -243,9 +243,9 @@ describe('ConversationService', () => {
     const unrelatedDir = path.join(tmpDir, 'unrelated-cli-diagnostics')
     const unrelatedDiagnosticsDir = path.join(unrelatedDir, 'diagnostics')
     await fs.mkdir(unrelatedDiagnosticsDir, { recursive: true, mode: 0o755 })
-    await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
-    await fs.rm(path.join(tmpDir, 'cc-haha'), { recursive: true, force: true })
-    await fs.symlink(unrelatedDir, path.join(tmpDir, 'cc-haha'), 'dir')
+    await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
+    await fs.rm(path.join(tmpDir, 'wangmai'), { recursive: true, force: true })
+    await fs.symlink(unrelatedDir, path.join(tmpDir, 'wangmai'), 'dir')
 
     const service = new ConversationService() as any
     const env = (await service.buildChildEnv('/tmp')) as Record<string, string>
@@ -349,7 +349,7 @@ describe('ConversationService', () => {
 
   test('buildChildEnv pins desktop memory to the current sanitized project directory', async () => {
     const service = new ConversationService() as any
-    const workDir = path.join(tmpDir, 'workspace', 'myself_code', 'claude-code-haha')
+    const workDir = path.join(tmpDir, 'workspace', 'myself_code', 'wangmai-agent')
     await fs.mkdir(workDir, { recursive: true })
 
     const env = (await service.buildChildEnv(workDir)) as Record<string, string>
@@ -379,7 +379,7 @@ describe('ConversationService', () => {
         ].join('\n'),
       )
 
-      delete process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV
+      delete process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV
       process.env.HOME = tmpDir
       process.env.SHELL = shellPath
       process.env.PATH = '/usr/bin:/bin'
@@ -396,16 +396,16 @@ describe('ConversationService', () => {
   )
 
   test('strips inherited provider env when desktop provider config exists', async () => {
-    const ccHahaDir = path.join(tmpDir, 'cc-haha')
-    await fs.mkdir(ccHahaDir, { recursive: true })
+    const wangmaiDir = path.join(tmpDir, 'wangmai')
+    await fs.mkdir(wangmaiDir, { recursive: true })
     await fs.writeFile(
-      path.join(ccHahaDir, 'providers.json'),
+      path.join(wangmaiDir, 'providers.json'),
       JSON.stringify({ activeId: null, providers: [] }),
       'utf-8',
     )
 
     const service = new ConversationService() as any
-    const env = (await service.buildChildEnv('D:\\workspace\\code\\myself_code\\cc-haha')) as Record<string, string>
+    const env = (await service.buildChildEnv('D:\\workspace\\code\\myself_code\\wangmai')) as Record<string, string>
 
     expect(env.ANTHROPIC_AUTH_TOKEN).toBeUndefined()
     expect(env.ANTHROPIC_BASE_URL).toBeUndefined()
@@ -416,8 +416,8 @@ describe('ConversationService', () => {
     for (const { settingsFile, setting, preference } of [
       { settingsFile: 'settings.json', setting: undefined, preference: undefined },
       { settingsFile: 'settings.json', setting: '0', preference: undefined },
-      { settingsFile: 'cc-haha/settings.json', setting: 'false', preference: undefined },
-      { settingsFile: 'cc-haha/settings.json', setting: 'false', preference: true },
+      { settingsFile: 'wangmai/settings.json', setting: 'false', preference: undefined },
+      { settingsFile: 'wangmai/settings.json', setting: 'false', preference: true },
       { settingsFile: 'settings.json', setting: '1', preference: false },
     ]) {
       test(`desktop team tools survive child startup (${entrypoint}, ${settingsFile}=${setting ?? 'unset'}, preference=${preference ?? 'unset'})`, async () => {
@@ -447,7 +447,7 @@ describe('ConversationService', () => {
         })
         // Pass the host's real team defaults across a fresh process boundary,
         // without inheriting provider credentials or any user configuration.
-        for (const key of ['CC_HAHA_AGENT_TEAMS_DEFAULT', 'CC_HAHA_AGENT_TEAMS_ENABLED', 'CLAUDE_CODE_ENABLE_TASKS']) {
+        for (const key of ['WANGMAI_AGENT_TEAMS_DEFAULT', 'WANGMAI_AGENT_TEAMS_ENABLED', 'CLAUDE_CODE_ENABLE_TASKS']) {
           if (childEnv[key] !== undefined) probeEnv[key] = childEnv[key]
         }
         if (setting !== undefined) {
@@ -515,8 +515,8 @@ describe('ConversationService', () => {
   })
 
   test('buildChildEnv routes system mode through the host-managed dynamic bridge', async () => {
-    const originalBridgeUrl = process.env.CC_HAHA_SYSTEM_PROXY_URL
-    process.env.CC_HAHA_SYSTEM_PROXY_URL = 'http://127.0.0.1:17890'
+    const originalBridgeUrl = process.env.WANGMAI_SYSTEM_PROXY_URL
+    process.env.WANGMAI_SYSTEM_PROXY_URL = 'http://127.0.0.1:17890'
     await fs.writeFile(
       path.join(tmpDir, 'settings.json'),
       JSON.stringify({
@@ -536,8 +536,8 @@ describe('ConversationService', () => {
       expect(env.ALL_PROXY).toBe('http://127.0.0.1:17890')
       expect(env.all_proxy).toBe('http://127.0.0.1:17890')
     } finally {
-      if (originalBridgeUrl === undefined) delete process.env.CC_HAHA_SYSTEM_PROXY_URL
-      else process.env.CC_HAHA_SYSTEM_PROXY_URL = originalBridgeUrl
+      if (originalBridgeUrl === undefined) delete process.env.WANGMAI_SYSTEM_PROXY_URL
+      else process.env.WANGMAI_SYSTEM_PROXY_URL = originalBridgeUrl
     }
   })
 
@@ -646,19 +646,19 @@ describe('ConversationService', () => {
     }
   })
 
-  test('buildChildEnv injects CLAUDE_CODE_OAUTH_TOKEN when official mode + haha oauth token exists', async () => {
-    const ccHahaDir = path.join(tmpDir, 'cc-haha')
-    await fs.mkdir(ccHahaDir, { recursive: true })
+  test('buildChildEnv injects CLAUDE_CODE_OAUTH_TOKEN when official mode + wangmai oauth token exists', async () => {
+    const wangmaiDir = path.join(tmpDir, 'wangmai')
+    await fs.mkdir(wangmaiDir, { recursive: true })
     await fs.writeFile(
-      path.join(ccHahaDir, 'settings.json'),
+      path.join(wangmaiDir, 'settings.json'),
       JSON.stringify({ env: {} }),
       'utf-8',
     )
 
-    const { hahaOAuthService } = await import('../services/hahaOAuthService.js')
-    await hahaOAuthService.saveTokens({
-      accessToken: 'haha-fresh-token',
-      refreshToken: 'haha-refresh-xxx',
+    const { wangmaiOAuthService } = await import('../services/wangmaiOAuthService.js')
+    await wangmaiOAuthService.saveTokens({
+      accessToken: 'wangmai-fresh-token',
+      refreshToken: 'wangmai-refresh-xxx',
       expiresAt: Date.now() + 30 * 60_000,
       scopes: ['user:inference', 'user:profile'],
       subscriptionType: 'max',
@@ -668,7 +668,7 @@ describe('ConversationService', () => {
     const env = (await service.buildChildEnv('/tmp')) as Record<string, string>
 
     expect(env.CLAUDE_CODE_ENTRYPOINT).toBe('claude-desktop')
-    expect(env.CLAUDE_CODE_OAUTH_TOKEN).toBe('haha-fresh-token')
+    expect(env.CLAUDE_CODE_OAUTH_TOKEN).toBe('wangmai-fresh-token')
     // The CLI cannot read the account off an env-injected token, so the host
     // hands it over for metadata.user_id.
     expect(env.CLAUDE_CODE_ACCOUNT_UUID).toBe('account-uuid-from-profile')
@@ -678,10 +678,10 @@ describe('ConversationService', () => {
     const originalAccountUuid = process.env.CLAUDE_CODE_ACCOUNT_UUID
     process.env.CLAUDE_CODE_ACCOUNT_UUID = 'inherited-parent-account'
     try {
-      const ccHahaDir = path.join(tmpDir, 'cc-haha')
-      await fs.mkdir(ccHahaDir, { recursive: true })
+      const wangmaiDir = path.join(tmpDir, 'wangmai')
+      await fs.mkdir(wangmaiDir, { recursive: true })
       await fs.writeFile(
-        path.join(ccHahaDir, 'settings.json'),
+        path.join(wangmaiDir, 'settings.json'),
         JSON.stringify({ env: { ANTHROPIC_AUTH_TOKEN: 'custom-provider-token' } }),
         'utf-8',
       )
@@ -697,8 +697,8 @@ describe('ConversationService', () => {
   })
 
   test('sendMessage updates a running official OAuth CLI token before the user turn', async () => {
-    const { hahaOAuthService } = await import('../services/hahaOAuthService.js')
-    await hahaOAuthService.saveTokens({
+    const { wangmaiOAuthService } = await import('../services/wangmaiOAuthService.js')
+    await wangmaiOAuthService.saveTokens({
       accessToken: 'fresh-after-wake-token',
       refreshToken: 'refresh-xxx',
       expiresAt: Date.now() + 30 * 60_000,
@@ -742,15 +742,15 @@ describe('ConversationService', () => {
   })
 
   test('recovers a running official OAuth CLI token after the provider rejects it with 401', async () => {
-    const { hahaOAuthService } = await import('../services/hahaOAuthService.js')
-    await hahaOAuthService.saveTokens({
+    const { wangmaiOAuthService } = await import('../services/wangmaiOAuthService.js')
+    await wangmaiOAuthService.saveTokens({
       accessToken: 'rejected-running-token',
       refreshToken: 'refresh-running-token',
       expiresAt: Date.now() + 30 * 60_000,
       scopes: ['user:inference'],
       subscriptionType: 'pro',
     })
-    hahaOAuthService.setRefreshFn(async () => ({
+    wangmaiOAuthService.setRefreshFn(async () => ({
       accessToken: 'recovered-running-token',
       refreshToken: 'refresh-running-next',
       expiresAt: Date.now() + 60 * 60_000,
@@ -794,9 +794,9 @@ describe('ConversationService', () => {
   })
 
   test('does not run Claude OAuth recovery for a third-party provider 401', async () => {
-    const { hahaOAuthService } = await import('../services/hahaOAuthService.js')
+    const { wangmaiOAuthService } = await import('../services/wangmaiOAuthService.js')
     let refreshCalls = 0
-    hahaOAuthService.setRefreshFn(async () => {
+    wangmaiOAuthService.setRefreshFn(async () => {
       refreshCalls += 1
       throw new Error('Claude refresh must stay isolated')
     })
@@ -930,8 +930,8 @@ describe('ConversationService', () => {
   })
 
   test('sendMessage hot-applies direct to system routing before the next user turn', async () => {
-    const originalBridgeUrl = process.env.CC_HAHA_SYSTEM_PROXY_URL
-    process.env.CC_HAHA_SYSTEM_PROXY_URL = 'http://127.0.0.1:17890'
+    const originalBridgeUrl = process.env.WANGMAI_SYSTEM_PROXY_URL
+    process.env.WANGMAI_SYSTEM_PROXY_URL = 'http://127.0.0.1:17890'
     try {
       await fs.writeFile(
         path.join(tmpDir, 'settings.json'),
@@ -967,8 +967,8 @@ describe('ConversationService', () => {
       expect(update.variables.no_proxy).toContain('localhost')
       expect(JSON.parse(sent[1]!).type).toBe('user')
     } finally {
-      if (originalBridgeUrl === undefined) delete process.env.CC_HAHA_SYSTEM_PROXY_URL
-      else process.env.CC_HAHA_SYSTEM_PROXY_URL = originalBridgeUrl
+      if (originalBridgeUrl === undefined) delete process.env.WANGMAI_SYSTEM_PROXY_URL
+      else process.env.WANGMAI_SYSTEM_PROXY_URL = originalBridgeUrl
     }
   })
 
@@ -1059,8 +1059,8 @@ describe('ConversationService', () => {
   })
 
   test('sendMessage does not resend network env when the system bridge fingerprint is unchanged', async () => {
-    const originalBridgeUrl = process.env.CC_HAHA_SYSTEM_PROXY_URL
-    process.env.CC_HAHA_SYSTEM_PROXY_URL = 'http://127.0.0.1:17893'
+    const originalBridgeUrl = process.env.WANGMAI_SYSTEM_PROXY_URL
+    process.env.WANGMAI_SYSTEM_PROXY_URL = 'http://127.0.0.1:17893'
     try {
       await fs.writeFile(
         path.join(tmpDir, 'settings.json'),
@@ -1079,8 +1079,8 @@ describe('ConversationService', () => {
       expect(sent).toHaveLength(1)
       expect(JSON.parse(sent[0]!).type).toBe('user')
     } finally {
-      if (originalBridgeUrl === undefined) delete process.env.CC_HAHA_SYSTEM_PROXY_URL
-      else process.env.CC_HAHA_SYSTEM_PROXY_URL = originalBridgeUrl
+      if (originalBridgeUrl === undefined) delete process.env.WANGMAI_SYSTEM_PROXY_URL
+      else process.env.WANGMAI_SYSTEM_PROXY_URL = originalBridgeUrl
     }
   })
 
@@ -1088,7 +1088,7 @@ describe('ConversationService', () => {
     clearOpenAICodexModelCatalogCache()
     const fetchSpy = spyOn(globalThis, 'fetch').mockRejectedValue(new Error('catalog unavailable'))
     try {
-      await hahaOpenAIOAuthService.saveTokens({ accessToken: 'rotated-fixture-token', refreshToken: null,
+      await wangmaiOpenAIOAuthService.saveTokens({ accessToken: 'rotated-fixture-token', refreshToken: null,
         accountId: 'fixture-account', expiresAt: null, email: null })
       const service = new ConversationService() as any
       const sent: string[] = []
@@ -1110,7 +1110,7 @@ describe('ConversationService', () => {
     clearGrokModelCatalogCache()
     const fetchSpy = spyOn(globalThis, 'fetch').mockRejectedValue(new Error('catalog unavailable'))
     try {
-      await hahaGrokOAuthService.saveTokens({ accessToken: 'grok-fixture-token', refreshToken: null,
+      await wangmaiGrokOAuthService.saveTokens({ accessToken: 'grok-fixture-token', refreshToken: null,
         expiresAt: null, email: null })
       const service = new ConversationService() as any
       const sent: string[] = []
@@ -1129,17 +1129,17 @@ describe('ConversationService', () => {
   })
 
   test('buildChildEnv does NOT inject CLAUDE_CODE_OAUTH_TOKEN when not official mode', async () => {
-    const ccHahaDir = path.join(tmpDir, 'cc-haha')
-    await fs.mkdir(ccHahaDir, { recursive: true })
+    const wangmaiDir = path.join(tmpDir, 'wangmai')
+    await fs.mkdir(wangmaiDir, { recursive: true })
     await fs.writeFile(
-      path.join(ccHahaDir, 'settings.json'),
+      path.join(wangmaiDir, 'settings.json'),
       JSON.stringify({ env: { ANTHROPIC_AUTH_TOKEN: 'custom-provider-token' } }),
       'utf-8',
     )
 
-    const { hahaOAuthService } = await import('../services/hahaOAuthService.js')
-    await hahaOAuthService.saveTokens({
-      accessToken: 'haha-token-should-not-be-used',
+    const { wangmaiOAuthService } = await import('../services/wangmaiOAuthService.js')
+    await wangmaiOAuthService.saveTokens({
+      accessToken: 'wangmai-token-should-not-be-used',
       refreshToken: null,
       expiresAt: null,
       scopes: [],
@@ -1154,7 +1154,7 @@ describe('ConversationService', () => {
   })
 
   test('buildChildEnv injects explicit provider runtime env for session-scoped providers', async () => {
-    process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
+    process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'desktop-local-secret'
     const providerService = new ProviderService()
     const provider = await providerService.addProvider({
       presetId: 'custom',
@@ -1182,13 +1182,13 @@ describe('ConversationService', () => {
     expect(env.ANTHROPIC_DEFAULT_SONNET_MODEL).toBe('kimi-k2.6')
     expect(env.ANTHROPIC_DEFAULT_OPUS_MODEL).toBe('kimi-k2.6')
     expect(env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST).toBe('1')
-    expect(env.CC_HAHA_LOCAL_ACCESS_TOKEN).toBe('desktop-local-secret')
+    expect(env.WANGMAI_LOCAL_ACCESS_TOKEN).toBe('desktop-local-secret')
     expect(env.CLAUDE_CODE_ATTRIBUTION_HEADER).toBe('0')
-    expect(env.CC_HAHA_TRANSCRIPT_ENTRYPOINT).toBe('claude-desktop')
+    expect(env.WANGMAI_TRANSCRIPT_ENTRYPOINT).toBe('claude-desktop')
     expect(env.CLAUDE_CODE_ENTRYPOINT).toBeUndefined()
-    expect(env.CC_HAHA_TRACE_PROVIDER_ID).toBeUndefined()
-    expect(env.CC_HAHA_TRACE_PROVIDER_NAME).toBeUndefined()
-    expect(env.CC_HAHA_TRACE_PROVIDER_FORMAT).toBeUndefined()
+    expect(env.WANGMAI_TRACE_PROVIDER_ID).toBeUndefined()
+    expect(env.WANGMAI_TRACE_PROVIDER_NAME).toBeUndefined()
+    expect(env.WANGMAI_TRACE_PROVIDER_FORMAT).toBeUndefined()
   })
 
   test('buildChildEnv isolates experimental beta kill switch for session-scoped providers', async () => {
@@ -1246,10 +1246,10 @@ describe('ConversationService', () => {
       { providerId: provider.id },
     )) as Record<string, string>
 
-    expect(env.CC_HAHA_TRACE_API_CALLS).toBe('1')
-    expect(env.CC_HAHA_TRACE_PROVIDER_ID).toBe(provider.id)
-    expect(env.CC_HAHA_TRACE_PROVIDER_NAME).toBe('Traceable Provider')
-    expect(env.CC_HAHA_TRACE_PROVIDER_FORMAT).toBe('anthropic')
+    expect(env.WANGMAI_TRACE_API_CALLS).toBe('1')
+    expect(env.WANGMAI_TRACE_PROVIDER_ID).toBe(provider.id)
+    expect(env.WANGMAI_TRACE_PROVIDER_NAME).toBe('Traceable Provider')
+    expect(env.WANGMAI_TRACE_PROVIDER_FORMAT).toBe('anthropic')
   })
 
   test('buildChildEnv does not inject trace env when managed trace capture is disabled', async () => {
@@ -1276,10 +1276,10 @@ describe('ConversationService', () => {
       { providerId: provider.id },
     )) as Record<string, string>
 
-    expect(env.CC_HAHA_TRACE_API_CALLS).toBeUndefined()
-    expect(env.CC_HAHA_TRACE_PROVIDER_ID).toBeUndefined()
-    expect(env.CC_HAHA_TRACE_PROVIDER_NAME).toBeUndefined()
-    expect(env.CC_HAHA_TRACE_PROVIDER_FORMAT).toBeUndefined()
+    expect(env.WANGMAI_TRACE_API_CALLS).toBeUndefined()
+    expect(env.WANGMAI_TRACE_PROVIDER_ID).toBeUndefined()
+    expect(env.WANGMAI_TRACE_PROVIDER_NAME).toBeUndefined()
+    expect(env.WANGMAI_TRACE_PROVIDER_FORMAT).toBeUndefined()
   })
 
   test('buildChildEnv uses the session-selected model for session-scoped providers', async () => {
@@ -1380,16 +1380,16 @@ describe('ConversationService', () => {
   })
 
   test('buildChildEnv can force official auth even when a custom default provider exists', async () => {
-    const ccHahaDir = path.join(tmpDir, 'cc-haha')
-    await fs.mkdir(ccHahaDir, { recursive: true })
+    const wangmaiDir = path.join(tmpDir, 'wangmai')
+    await fs.mkdir(wangmaiDir, { recursive: true })
     await fs.writeFile(
-      path.join(ccHahaDir, 'settings.json'),
+      path.join(wangmaiDir, 'settings.json'),
       JSON.stringify({ env: { ANTHROPIC_AUTH_TOKEN: 'custom-provider-token' } }),
       'utf-8',
     )
 
-    const { hahaOAuthService } = await import('../services/hahaOAuthService.js')
-    await hahaOAuthService.saveTokens({
+    const { wangmaiOAuthService } = await import('../services/wangmaiOAuthService.js')
+    await wangmaiOAuthService.saveTokens({
       accessToken: 'forced-official-token',
       refreshToken: 'forced-official-refresh',
       expiresAt: Date.now() + 30 * 60_000,
@@ -1411,8 +1411,8 @@ describe('ConversationService', () => {
     const providerService = new ProviderService()
     await providerService.activateProvider('openai-official')
 
-    const { hahaOAuthService } = await import('../services/hahaOAuthService.js')
-    await hahaOAuthService.saveTokens({
+    const { wangmaiOAuthService } = await import('../services/wangmaiOAuthService.js')
+    await wangmaiOAuthService.saveTokens({
       accessToken: 'claude-oauth-token-that-must-not-be-used',
       refreshToken: 'claude-refresh-token',
       expiresAt: Date.now() + 30 * 60_000,
@@ -1436,9 +1436,9 @@ describe('ConversationService', () => {
       providerId: 'openai-official',
     })) as Record<string, string>
 
-    expect(env.CC_HAHA_OPENAI_OAUTH_PROVIDER).toBe('1')
+    expect(env.WANGMAI_OPENAI_OAUTH_PROVIDER).toBe('1')
     expect(env.OPENAI_CODEX_OAUTH_FILE).toBe(
-      path.join(tmpDir, 'cc-haha', 'openai-oauth.json'),
+      path.join(tmpDir, 'wangmai', 'openai-oauth.json'),
     )
     expect(env.ANTHROPIC_MODEL).toBe('gpt-6-sol')
     expect(env.ANTHROPIC_DEFAULT_SONNET_MODEL).toBe('gpt-6-sol')
@@ -1509,20 +1509,20 @@ describe('ConversationService', () => {
   })
 
   test('Fast mode is isolated to explicit ChatGPT OAuth launches and cannot leak from parent env', async () => {
-    const original = process.env.CC_HAHA_OPENAI_FAST_MODE
-    process.env.CC_HAHA_OPENAI_FAST_MODE = '1'
+    const original = process.env.WANGMAI_OPENAI_FAST_MODE
+    process.env.WANGMAI_OPENAI_FAST_MODE = '1'
     try {
       const service = new ConversationService() as any
       const build = (providerId: string | null, openAIFastMode?: boolean) =>
         service.buildChildEnv('/tmp', undefined, { providerId, model: 'future-model', openAIFastMode })
-      expect((await build('openai-official', true)).CC_HAHA_OPENAI_FAST_MODE).toBe('1')
-      expect((await build('openai-official', false)).CC_HAHA_OPENAI_FAST_MODE).toBeUndefined()
-      expect((await build('openai-official')).CC_HAHA_OPENAI_FAST_MODE).toBeUndefined()
-      expect((await build('grok-official', true)).CC_HAHA_OPENAI_FAST_MODE).toBeUndefined()
-      expect((await build(null, true)).CC_HAHA_OPENAI_FAST_MODE).toBeUndefined()
+      expect((await build('openai-official', true)).WANGMAI_OPENAI_FAST_MODE).toBe('1')
+      expect((await build('openai-official', false)).WANGMAI_OPENAI_FAST_MODE).toBeUndefined()
+      expect((await build('openai-official')).WANGMAI_OPENAI_FAST_MODE).toBeUndefined()
+      expect((await build('grok-official', true)).WANGMAI_OPENAI_FAST_MODE).toBeUndefined()
+      expect((await build(null, true)).WANGMAI_OPENAI_FAST_MODE).toBeUndefined()
     } finally {
-      if (original === undefined) delete process.env.CC_HAHA_OPENAI_FAST_MODE
-      else process.env.CC_HAHA_OPENAI_FAST_MODE = original
+      if (original === undefined) delete process.env.WANGMAI_OPENAI_FAST_MODE
+      else process.env.WANGMAI_OPENAI_FAST_MODE = original
     }
   })
 
@@ -1533,12 +1533,12 @@ describe('ConversationService', () => {
       model: 'grok-4.5',
     })) as Record<string, string>
 
-    expect(env.CC_HAHA_GROK_OAUTH_PROVIDER).toBe('1')
-    expect(env.GROK_OAUTH_FILE).toBe(path.join(tmpDir, 'cc-haha', 'grok-oauth.json'))
+    expect(env.WANGMAI_GROK_OAUTH_PROVIDER).toBe('1')
+    expect(env.GROK_OAUTH_FILE).toBe(path.join(tmpDir, 'wangmai', 'grok-oauth.json'))
     expect(env.ANTHROPIC_MODEL).toBe('grok-4.5')
     expect(env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST).toBe('1')
     expect(env.CLAUDE_CODE_OAUTH_TOKEN).toBeUndefined()
-    expect(env.CC_HAHA_OPENAI_OAUTH_PROVIDER).toBeUndefined()
+    expect(env.WANGMAI_OPENAI_OAUTH_PROVIDER).toBeUndefined()
     expect(env.OPENAI_CODEX_OAUTH_FILE).toBeUndefined()
     expect(env.ANTHROPIC_API_KEY).toBeUndefined()
     expect(env.ANTHROPIC_AUTH_TOKEN).toBeUndefined()
@@ -1546,34 +1546,34 @@ describe('ConversationService', () => {
   })
 
   test('buildChildEnv replaces inherited Grok catalogs and removes them when selecting another provider', async () => {
-    const original = process.env.CC_HAHA_GROK_MODEL_CATALOG
-    process.env.CC_HAHA_GROK_MODEL_CATALOG = 'stale-parent-catalog'
+    const original = process.env.WANGMAI_GROK_MODEL_CATALOG
+    process.env.WANGMAI_GROK_MODEL_CATALOG = 'stale-parent-catalog'
     try {
       const service = new ConversationService() as any
       const grokEnv = await service.buildChildEnv('/tmp', undefined, { providerId: 'grok-official' })
-      expect(JSON.parse(grokEnv.CC_HAHA_GROK_MODEL_CATALOG).some((entry: { value: string }) => entry.value === 'grok-4.7')).toBe(true)
+      expect(JSON.parse(grokEnv.WANGMAI_GROK_MODEL_CATALOG).some((entry: { value: string }) => entry.value === 'grok-4.7')).toBe(true)
       const otherEnv = await service.buildChildEnv('/tmp', undefined, { providerId: 'deepseek-account' })
-      expect(otherEnv.CC_HAHA_GROK_MODEL_CATALOG).toBeUndefined()
+      expect(otherEnv.WANGMAI_GROK_MODEL_CATALOG).toBeUndefined()
       const claudeEnv = await service.buildChildEnv('/tmp', undefined, { providerId: null })
-      expect(claudeEnv.CC_HAHA_GROK_MODEL_CATALOG).toBeUndefined()
+      expect(claudeEnv.WANGMAI_GROK_MODEL_CATALOG).toBeUndefined()
     } finally {
-      if (original === undefined) delete process.env.CC_HAHA_GROK_MODEL_CATALOG
-      else process.env.CC_HAHA_GROK_MODEL_CATALOG = original
+      if (original === undefined) delete process.env.WANGMAI_GROK_MODEL_CATALOG
+      else process.env.WANGMAI_GROK_MODEL_CATALOG = original
     }
   })
 
   test('buildChildEnv builds the DeepSeek account env for a session-scoped selection over another active provider', async () => {
-    const ccHahaDir = path.join(tmpDir, 'cc-haha')
-    await fs.mkdir(ccHahaDir, { recursive: true })
+    const wangmaiDir = path.join(tmpDir, 'wangmai')
+    await fs.mkdir(wangmaiDir, { recursive: true })
     await fs.writeFile(
-      path.join(ccHahaDir, 'providers.json'),
+      path.join(wangmaiDir, 'providers.json'),
       JSON.stringify({ activeId: 'grok-official', providers: [], providerOrder: [] }),
     )
     await fs.writeFile(
-      path.join(ccHahaDir, 'settings.json'),
+      path.join(wangmaiDir, 'settings.json'),
       JSON.stringify({
         env: {
-          CC_HAHA_GROK_OAUTH_PROVIDER: '1',
+          WANGMAI_GROK_OAUTH_PROVIDER: '1',
           GROK_OAUTH_FILE: '/stale/grok.json',
           ANTHROPIC_MODEL: 'grok-4.5',
           ANTHROPIC_AUTH_TOKEN: 'stale-token',
@@ -1586,22 +1586,22 @@ describe('ConversationService', () => {
       model: 'deepseek-v4-flash',
     })) as Record<string, string>
 
-    expect(env.CC_HAHA_DEEPSEEK_OAUTH_PROVIDER).toBe('1')
-    expect(env.DEEPSEEK_OAUTH_FILE).toBe(path.join(tmpDir, 'cc-haha', 'deepseek-oauth.json'))
+    expect(env.WANGMAI_DEEPSEEK_OAUTH_PROVIDER).toBe('1')
+    expect(env.DEEPSEEK_OAUTH_FILE).toBe(path.join(tmpDir, 'wangmai', 'deepseek-oauth.json'))
     expect(env.ANTHROPIC_BASE_URL).toBe('https://api.deepseek.com/anthropic')
     expect(env.ANTHROPIC_MODEL).toBe('deepseek-v4-flash')
     expect(env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST).toBe('1')
     expect(env.ANTHROPIC_AUTH_TOKEN).toBeUndefined()
     // The account grant never reaches the child; the fetch layer reads the file.
     expect(JSON.stringify(env)).not.toContain('dsh_')
-    expect(env.CC_HAHA_GROK_OAUTH_PROVIDER).toBeUndefined()
+    expect(env.WANGMAI_GROK_OAUTH_PROVIDER).toBeUndefined()
     expect(env.GROK_OAUTH_FILE).toBeUndefined()
-    expect(env.CC_HAHA_OPENAI_OAUTH_PROVIDER).toBeUndefined()
+    expect(env.WANGMAI_OPENAI_OAUTH_PROVIDER).toBeUndefined()
   })
 
   test('buildChildEnv passes OpenAI-native effort without leaking Claude effort state', async () => {
-    const originalEffort = process.env.CC_HAHA_OPENAI_REASONING_EFFORT
-    process.env.CC_HAHA_OPENAI_REASONING_EFFORT = 'stale-parent-effort'
+    const originalEffort = process.env.WANGMAI_OPENAI_REASONING_EFFORT
+    process.env.WANGMAI_OPENAI_REASONING_EFFORT = 'stale-parent-effort'
     try {
       const service = new ConversationService() as any
       const env = (await service.buildChildEnv('/tmp', undefined, {
@@ -1611,18 +1611,18 @@ describe('ConversationService', () => {
       })) as Record<string, string>
 
       expect(env.ANTHROPIC_MODEL).toBe('gpt-5.6-sol')
-      expect(env.CC_HAHA_OPENAI_REASONING_EFFORT).toBe('xhigh')
+      expect(env.WANGMAI_OPENAI_REASONING_EFFORT).toBe('xhigh')
     } finally {
-      if (originalEffort === undefined) delete process.env.CC_HAHA_OPENAI_REASONING_EFFORT
-      else process.env.CC_HAHA_OPENAI_REASONING_EFFORT = originalEffort
+      if (originalEffort === undefined) delete process.env.WANGMAI_OPENAI_REASONING_EFFORT
+      else process.env.WANGMAI_OPENAI_REASONING_EFFORT = originalEffort
     }
   })
 
   test('buildChildEnv does not leak inherited CLAUDE_CODE_OAUTH_TOKEN when official token is unavailable', async () => {
-    const ccHahaDir = path.join(tmpDir, 'cc-haha')
-    await fs.mkdir(ccHahaDir, { recursive: true })
+    const wangmaiDir = path.join(tmpDir, 'wangmai')
+    await fs.mkdir(wangmaiDir, { recursive: true })
     await fs.writeFile(
-      path.join(ccHahaDir, 'settings.json'),
+      path.join(wangmaiDir, 'settings.json'),
       JSON.stringify({ env: {} }),
       'utf-8',
     )
@@ -1641,11 +1641,11 @@ describe('ConversationService', () => {
       'ws://127.0.0.1:3456/sdk/test-session?token=test-token',
     )) as Record<string, string>
 
-    expect(env.CC_HAHA_COMPUTER_USE_HOST_BUNDLE_ID).toBe(
-      'com.claude-code-haha.desktop',
+    expect(env.WANGMAI_COMPUTER_USE_HOST_BUNDLE_ID).toBe(
+      'com.wangmai.agent',
     )
-    expect(env.CC_HAHA_DESKTOP_SERVER_URL).toBe('http://127.0.0.1:3456')
-    expect(env.CC_HAHA_TRACE_API_CALLS).toBe('1')
+    expect(env.WANGMAI_DESKTOP_SERVER_URL).toBe('http://127.0.0.1:3456')
+    expect(env.WANGMAI_TRACE_API_CALLS).toBe('1')
     expect(env.CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING).toBe('1')
   })
 
@@ -1659,7 +1659,7 @@ describe('ConversationService', () => {
       expect(args[2]).toContain('preload.ts')
       expect(args[3]).toContain(path.join('src', 'entrypoints', 'cli.tsx'))
     } else {
-      expect(args[0]).toContain(path.join('bin', 'claude-haha'))
+      expect(args[0]).toContain(path.join('bin', 'wangmai'))
     }
   })
 
@@ -1684,8 +1684,8 @@ describe('ConversationService', () => {
       'ws://127.0.0.1:3456/sdk/test-session?token=test-token',
     )) as Record<string, string>
 
-    expect(env.CC_HAHA_DESKTOP_AWAIT_MCP).toBe('1')
-    expect(env.CC_HAHA_DESKTOP_AWAIT_MCP_TIMEOUT_MS).toBe('5000')
+    expect(env.WANGMAI_DESKTOP_AWAIT_MCP).toBe('1')
+    expect(env.WANGMAI_DESKTOP_AWAIT_MCP_TIMEOUT_MS).toBe('5000')
   })
 
   test('buildChildEnv disables inherited interrupted-turn resume for prewarm launches', async () => {
@@ -2140,10 +2140,10 @@ describe('ConversationService', () => {
   })
 
   test('buildChildEnv disables Claude fast mode for non-Anthropic and experimental-betas-disabled providers', async () => {
-    const ccHahaDir = path.join(tmpDir, 'cc-haha')
-    await fs.mkdir(ccHahaDir, { recursive: true })
+    const wangmaiDir = path.join(tmpDir, 'wangmai')
+    await fs.mkdir(wangmaiDir, { recursive: true })
     await fs.writeFile(
-      path.join(ccHahaDir, 'providers.json'),
+      path.join(wangmaiDir, 'providers.json'),
       JSON.stringify({
         activeId: 'proxy-no-betas',
         providers: [

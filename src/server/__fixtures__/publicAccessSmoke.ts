@@ -24,14 +24,14 @@ const keylessProvider = await new ProviderService().addProvider({ presetId: 'cus
 const server = startServer(0, '127.0.0.1')
 const base = `http://127.0.0.1:${server.port}`
 const control = (route: string, body?: unknown) => fetch(`${base}/api/public-access${route}`, {
-  method: body === undefined ? 'GET' : 'POST', headers: { Authorization: `Bearer ${process.env.CC_HAHA_LOCAL_ACCESS_TOKEN}` }, ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+  method: body === undefined ? 'GET' : 'POST', headers: { Authorization: `Bearer ${process.env.WANGMAI_LOCAL_ACCESS_TOKEN}` }, ...(body === undefined ? {} : { body: JSON.stringify(body) }),
 })
 let socket: WebSocket | undefined
 try {
   const denied = await fetch(`${base}/api/public-access`)
   if (denied.status !== 403) throw new Error('Control plane accepted unauthenticated loopback')
   let enabled = await (await control('/enable', { publicUrl: origin })).json()
-  const nativeClient = process.env.CC_HAHA_PUBLIC_ACCESS_TEST_CLIENT === 'native'
+  const nativeClient = process.env.WANGMAI_PUBLIC_ACCESS_TEST_CLIENT === 'native'
   // Reuse a port allocated by this isolated process to exercise a custom
   // tunnel's stable upstream without competing for a hard-coded machine port.
   const fixedPort = nativeClient ? enabled.port : undefined
@@ -74,7 +74,7 @@ try {
   const keylessStatus = await scopedAuthStatus(keylessProvider.id)
   if (JSON.stringify(keylessStatus) !== JSON.stringify({ hasAuth: false, source: 'none', activeProvider: 'Keyless fixture' })) throw new Error(`Provider-scoped auth-status borrowed ambient credentials: ${JSON.stringify(keylessStatus)}`)
   const keyedStatus = await scopedAuthStatus(keyedProvider.id)
-  if (JSON.stringify(keyedStatus) !== JSON.stringify({ hasAuth: true, source: 'cc-haha-provider', activeProvider: 'Keyed fixture' })) throw new Error(`Provider-scoped auth-status missed the provider key: ${JSON.stringify(keyedStatus)}`)
+  if (JSON.stringify(keyedStatus) !== JSON.stringify({ hasAuth: true, source: 'wangmai-provider', activeProvider: 'Keyed fixture' })) throw new Error(`Provider-scoped auth-status missed the provider key: ${JSON.stringify(keyedStatus)}`)
   const createdResponse = await fetch(`${remote}/api/sessions`, {
     method: 'POST', headers: { Origin: origin, ...authHeaders, 'Content-Type': 'application/json' },
     body: JSON.stringify({ workDir: process.env.HOME, permissionMode: 'default' }),

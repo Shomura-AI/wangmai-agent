@@ -266,7 +266,7 @@ describe('ElectronServerRuntime', () => {
 
   it('keeps adapters stopped until migrated startup is validated and explicitly activated', async () => {
     const paths: string[] = []
-    const runtime = createRuntime({ env: { CC_HAHA_MIGRATION_VALIDATION: '1' }, fetch: (async input => {
+    const runtime = createRuntime({ env: { WANGMAI_MIGRATION_VALIDATION: '1' }, fetch: (async input => {
       paths.push(String(input))
       return Response.json(String(input).endsWith('/validate') ? { valid: true } : { activated: true })
     }) as typeof fetch })
@@ -281,7 +281,7 @@ describe('ElectronServerRuntime', () => {
   })
 
   beforeEach(() => {
-    isolatedConfigDir = mkdtempSync(path.join(tmpdir(), 'cc-haha-electron-runtime-'))
+    isolatedConfigDir = mkdtempSync(path.join(tmpdir(), 'wangmai-electron-runtime-'))
     sidecarMocks.nextPort = 49321
     sidecarMocks.spawnError = null
     sidecarMocks.serverChildren.length = 0
@@ -335,7 +335,7 @@ describe('ElectronServerRuntime', () => {
 
     await runtime.startServer()
 
-    expect(sidecarMocks.serverPlans[0]!.env.CC_HAHA_ELECTRON_DIAGNOSTICS_FILE)
+    expect(sidecarMocks.serverPlans[0]!.env.WANGMAI_ELECTRON_DIAGNOSTICS_FILE)
       .toBe('/isolated/user-data/diagnostics/electron-host.log')
     expect(sidecarMocks.serverPlans[0]!.env.CLAUDE_CONFIG_DIR).toBe(isolatedConfigDir)
     expect(sidecarMocks.serverPlans[0]!.env.CLAUDE_CONFIG_DIR)
@@ -352,13 +352,13 @@ describe('ElectronServerRuntime', () => {
     expect(localToken.length).toBeGreaterThanOrEqual(32)
     expect(petToken.length).toBeGreaterThanOrEqual(32)
     expect(petToken).not.toBe(localToken)
-    expect(sidecarMocks.serverPlans[0]!.env.CC_HAHA_LOCAL_ACCESS_TOKEN).toBe(localToken)
-    expect(sidecarMocks.serverPlans[0]!.env.CC_HAHA_PET_ACCESS_TOKEN).toBe(petToken)
+    expect(sidecarMocks.serverPlans[0]!.env.WANGMAI_LOCAL_ACCESS_TOKEN).toBe(localToken)
+    expect(sidecarMocks.serverPlans[0]!.env.WANGMAI_PET_ACCESS_TOKEN).toBe(petToken)
     for (const adapter of sidecarMocks.spawnSidecar.mock.calls
       .map(([plan]) => plan)
       .filter(plan => plan.args[0] === 'adapters')) {
-      expect(adapter.env.CC_HAHA_LOCAL_ACCESS_TOKEN).toBe(localToken)
-      expect(adapter.env.CC_HAHA_PET_ACCESS_TOKEN).toBeUndefined()
+      expect(adapter.env.WANGMAI_LOCAL_ACCESS_TOKEN).toBe(localToken)
+      expect(adapter.env.WANGMAI_PET_ACCESS_TOKEN).toBeUndefined()
     }
   })
 
@@ -371,9 +371,9 @@ describe('ElectronServerRuntime', () => {
     expect(endpointToken.length).toBeGreaterThanOrEqual(32)
     expect(endpointToken).not.toBe(runtime.getLocalAccessToken())
     expect(endpointToken).not.toBe(runtime.getPetAccessToken())
-    expect(sidecarMocks.serverPlans[0]!.env.CC_HAHA_P2P_ENDPOINT_TOKEN).toBe(endpointToken)
+    expect(sidecarMocks.serverPlans[0]!.env.WANGMAI_P2P_ENDPOINT_TOKEN).toBe(endpointToken)
     const adapters = sidecarMocks.spawnSidecar.mock.calls.map(([plan]) => plan).filter(plan => plan.args[0] === 'adapters')
-    for (const adapter of adapters) expect(adapter.env.CC_HAHA_P2P_ENDPOINT_TOKEN).toBeUndefined()
+    for (const adapter of adapters) expect(adapter.env.WANGMAI_P2P_ENDPOINT_TOKEN).toBeUndefined()
     expect(createRuntime().getP2PEndpointToken()).not.toBe(endpointToken)
   })
 
@@ -396,7 +396,7 @@ describe('ElectronServerRuntime', () => {
     await runtime.startServer()
 
     const serverEnv = sidecarMocks.serverPlans[0]!.env
-    expect(serverEnv.CC_HAHA_SYSTEM_PROXY_URL).toBe('http://127.0.0.1:49123')
+    expect(serverEnv.WANGMAI_SYSTEM_PROXY_URL).toBe('http://127.0.0.1:49123')
     expect(serverEnv.HTTP_PROXY).toBeUndefined()
     expect(serverEnv.HTTPS_PROXY).toBeUndefined()
     expect(serverEnv.ALL_PROXY).toBeUndefined()
@@ -441,7 +441,7 @@ describe('ElectronServerRuntime', () => {
   })
 
   it('waits for real server shutdown cleanup before the first restart attempt', async () => {
-    const root = mkdtempSync(path.join(tmpdir(), 'cc-haha-electron-restart-'))
+    const root = mkdtempSync(path.join(tmpdir(), 'wangmai-electron-restart-'))
     const activeTurn = path.join(root, 'active-turn')
     const children: ChildProcess[] = []
     const readyFiles: string[] = []
@@ -547,7 +547,7 @@ describe('ElectronServerRuntime', () => {
     expect(serverEnv.HTTP_PROXY).toBeUndefined()
     expect(serverEnv.HTTPS_PROXY).toBeUndefined()
     expect(serverEnv.ALL_PROXY).toBeUndefined()
-    expect(serverEnv.CC_HAHA_SYSTEM_PROXY_URL).toBeUndefined()
+    expect(serverEnv.WANGMAI_SYSTEM_PROXY_URL).toBeUndefined()
     expect(serverEnv[SYSTEM_PROXY_ERROR_ENV]).toContain('System proxy bridge unavailable: failed via')
     expect(serverEnv[SYSTEM_PROXY_ERROR_ENV]).not.toContain('password')
     expect(serverEnv[SYSTEM_PROXY_ERROR_ENV]).not.toContain('sk-secret')
@@ -952,7 +952,7 @@ describe('ElectronServerRuntime', () => {
     })
     try {
       await runtime.startServer()
-      const bridge = new URL(sidecarMocks.serverPlans.at(-1)!.env.CC_HAHA_SYSTEM_PROXY_URL!)
+      const bridge = new URL(sidecarMocks.serverPlans.at(-1)!.env.WANGMAI_SYSTEM_PROXY_URL!)
       const status = await new Promise<number | undefined>((resolve, reject) => {
         const request = http.request({ hostname: bridge.hostname, port: Number(bridge.port), method: 'CONNECT', path: 'region1.v2.argotunnel.com:7844' })
         request.once('connect', (response, socket) => { socket.destroy(); resolve(response.statusCode) })

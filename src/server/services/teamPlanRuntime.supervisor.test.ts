@@ -14,7 +14,7 @@ beforeEach(async () => {
   home = await mkdtemp(join(tmpdir(), 'team-supervisor-'))
   process.env.HOME = home
   process.env.CLAUDE_CONFIG_DIR = home
-  process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV = '1'
+  process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV = '1'
   // The lead fixture's own model call lands mid-test, as it does on a loaded CI
   // runner. Assertions about members must not depend on when the lead speaks.
   process.env.FIXTURE_LEAD_MODEL_DELAY_MS = '300'

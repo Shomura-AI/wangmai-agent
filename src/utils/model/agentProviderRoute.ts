@@ -38,7 +38,7 @@ export class AgentProviderUnavailableError extends Error {
  */
 function getHostProxyPort(): number | undefined {
   if (!isEnvTruthy(process.env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST)) return undefined
-  const serverUrl = process.env.CC_HAHA_DESKTOP_SERVER_URL
+  const serverUrl = process.env.WANGMAI_DESKTOP_SERVER_URL
   if (!serverUrl) return undefined
   try {
     const port = Number(new URL(serverUrl).port)
@@ -98,9 +98,9 @@ export async function resolveAgentProviderRoute({
       ANTHROPIC_MODEL: routeModel,
       // The provider env derives this from its main slot; the Agent may use another.
       ...attributionHeaderEnvForModel(routeModel),
-      CC_HAHA_TRACE_PROVIDER_ID: provider.id,
-      CC_HAHA_TRACE_PROVIDER_NAME: provider.name,
-      CC_HAHA_TRACE_PROVIDER_FORMAT: resolveProviderApiFormat(provider),
+      WANGMAI_TRACE_PROVIDER_ID: provider.id,
+      WANGMAI_TRACE_PROVIDER_NAME: provider.name,
+      WANGMAI_TRACE_PROVIDER_FORMAT: resolveProviderApiFormat(provider),
     },
     ...(proxyUrl !== undefined ? { proxyUrl } : {}),
   }

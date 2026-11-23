@@ -16,7 +16,7 @@ from urllib.request import Request, urlopen
 
 VERSION_RE = re.compile(r"^release-notes/v(\d+)\.(\d+)\.(\d+)\.md$")
 LOGIN_RE = re.compile(r"(?<![A-Za-z0-9._%+-])@([A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?)")
-RELEASE_HEADING_RE = re.compile(r"(?m)^#\s+Claude Code Haha v\d+\.\d+\.\d+\s*$")
+RELEASE_HEADING_RE = re.compile(r"(?m)^#\s+网脉智能体 v\d+\.\d+\.\d+\s*$")
 CLOSING_PUNCTUATION = set("，。、；：！？）》」』】〕”’％")
 OPENING_PUNCTUATION = set("（《「『【〔“‘")
 POSTER_WIDTH = 1080
@@ -271,7 +271,7 @@ def get_avatar(person, spec_path, avatar_dir, allow_offline_avatars=False):
 
     request = Request(
         "https://api.github.com/users/" + quote(login),
-        headers={"Accept": "application/vnd.github+json", "User-Agent": "cc-haha-release-announcement"},
+        headers={"Accept": "application/vnd.github+json", "User-Agent": "wangmai-release-announcement"},
     )
     try:
         with urlopen(request, timeout=20) as response:
@@ -281,7 +281,7 @@ def get_avatar(person, spec_path, avatar_dir, allow_offline_avatars=False):
         url = profile.get("avatar_url")
         if not url:
             raise ValueError(f"@{login} 没有公开头像地址")
-        image_request = Request(url + "&s=256", headers={"User-Agent": "cc-haha-release-announcement"})
+        image_request = Request(url + "&s=256", headers={"User-Agent": "wangmai-release-announcement"})
         with urlopen(image_request, timeout=20) as response:
             content = response.read()
     except (HTTPError, URLError, TimeoutError) as exc:
@@ -299,7 +299,7 @@ def render(spec, scan_data, spec_path, output, allow_offline_avatars=False):
     p = PALETTE
     margin, right, content_width = MARGIN, RIGHT, CONTENT_WIDTH
     body_x, body_width = margin + 160, content_width - 160
-    product = str(spec.get("product") or "Claude Code Haha")
+    product = str(spec.get("product") or "网脉智能体")
     features, extras, fixes, people = spec["features"], spec.get("extras", []), spec["fixes"], spec["contributors"]
     faces, strokes, avatars = {}, {}, {}
 

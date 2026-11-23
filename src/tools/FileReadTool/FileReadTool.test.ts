@@ -59,9 +59,9 @@ test('uses the relocated managed upload for permissions and reading, preserving 
     const oldPath = join(oldRoot, 'uploads', 'session', 'fixture.txt')
     const newPath = join(current, 'uploads', 'session', 'fixture.txt')
     await mkdir(join(current, 'uploads/session'), { recursive: true })
-    await mkdir(join(current, 'cc-haha'))
+    await mkdir(join(current, 'wangmai'))
     await writeFile(newPath, 'copied upload')
-    await writeFile(join(current, 'cc-haha/storage-relocations.json'), JSON.stringify({ version: 1, previousRoots: [oldRoot] }))
+    await writeFile(join(current, 'wangmai/storage-relocations.json'), JSON.stringify({ version: 1, previousRoots: [oldRoot] }))
     expect(FileReadTool.getPath({ file_path: oldPath })).toBe(newPath)
     const result = await FileReadTool.call({ file_path: oldPath }, makeToolUseContext())
     expect(result.data).toMatchObject({ type: 'text', file: { content: 'copied upload' } })
@@ -74,7 +74,7 @@ test('uses the relocated managed upload for permissions and reading, preserving 
 })
 
 test('uses the shared image processor for the final image compression fallback', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'cc-haha-read-image-fallback-'))
+  const root = await mkdtemp(join(tmpdir(), 'wangmai-read-image-fallback-'))
   temporaryDirectories.push(root)
   const filePath = join(root, 'fixture.png')
   const creator = await getImageCreator()
@@ -168,7 +168,7 @@ describe('FileReadTool pages validation', () => {
 
 describe('FileReadTool Windows text fidelity', () => {
   test('preserves Unicode paths and literal tabs in model-facing output', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'cc-haha-read-'))
+    const root = await mkdtemp(join(tmpdir(), 'wangmai-read-'))
     temporaryDirectories.push(root)
     const directory = join(root, '中文目录')
     const filePath = join(directory, 'Tab 样例.txt')

@@ -21,8 +21,8 @@ let calls: FetchCall[]
 const SANDBOXED_ENV_KEYS = [
   'CLAUDE_CONFIG_DIR',
   'HOME',
-  'CC_HAHA_SYSTEM_PROXY_URL',
-  'CC_HAHA_SYSTEM_PROXY_ERROR',
+  'WANGMAI_SYSTEM_PROXY_URL',
+  'WANGMAI_SYSTEM_PROXY_ERROR',
 ] as const
 
 /** Install a stub `fetch` that records every call it receives. */
@@ -71,8 +71,8 @@ beforeEach(async () => {
   // an empty sandbox so a developer's real settings cannot steer the tests.
   process.env.CLAUDE_CONFIG_DIR = tmpDir
   process.env.HOME = tmpDir
-  delete process.env.CC_HAHA_SYSTEM_PROXY_URL
-  delete process.env.CC_HAHA_SYSTEM_PROXY_ERROR
+  delete process.env.WANGMAI_SYSTEM_PROXY_URL
+  delete process.env.WANGMAI_SYSTEM_PROXY_ERROR
   originalFetch = globalThis.fetch
   calls = []
 })

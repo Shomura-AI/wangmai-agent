@@ -91,12 +91,12 @@ describe('typescript', () => {
 
 describe('other languages', () => {
   test('json keys, values and literals', () => {
-    const [line] = highlight('{ "name": "cc-haha", "private": true, "n": -1.5 }', 'json')
+    const [line] = highlight('{ "name": "wangmai", "private": true, "n": -1.5 }', 'json')
     expect(kinds(line)).toEqual([
       'plain:{',
       'ty:"name"',
       'plain::',
-      'str:"cc-haha"',
+      'str:"wangmai"',
       'plain:,',
       'ty:"private"',
       'plain::',

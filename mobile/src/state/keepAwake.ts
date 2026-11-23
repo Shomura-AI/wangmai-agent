@@ -1,4 +1,4 @@
-export const KEEP_AWAKE_TAG = 'cc-haha-keep-awake'
+export const KEEP_AWAKE_TAG = 'wangmai-keep-awake'
 
 export type KeepAwakeAdapter = {
   activate(tag: string): Promise<void>

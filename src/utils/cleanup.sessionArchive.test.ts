@@ -74,7 +74,7 @@ describe('archived session retention', () => {
   it('excludes old archived transcripts and backing files from preview and actual cleanup, then resumes cleanup after restore', async () => {
     const archived = await fixture(archivedId)
     const ordinary = await fixture(ordinaryId)
-    const archivePath = join(configDir, 'cc-haha', 'session-archives.json')
+    const archivePath = join(configDir, 'wangmai', 'session-archives.json')
     await mkdir(dirname(archivePath))
     // Old unversioned metadata is also a retention promise.
     await writeFile(archivePath, JSON.stringify({ sessions: { [archivedId]: { archived: true, extension: 'keep' } }, rootExtension: true }))
@@ -96,7 +96,7 @@ describe('archived session retention', () => {
 
   it('stops destructive cleanup when archive metadata is unreadable', async () => {
     const archived = await fixture(archivedId)
-    const archivePath = join(configDir, 'cc-haha', 'session-archives.json')
+    const archivePath = join(configDir, 'wangmai', 'session-archives.json')
     await mkdir(dirname(archivePath))
     await writeFile(archivePath, '{broken')
     await expect(cleanupOldSessionFiles(new Date())).rejects.toThrow()

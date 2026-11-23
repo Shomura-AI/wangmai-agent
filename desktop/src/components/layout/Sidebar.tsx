@@ -1145,12 +1145,12 @@ export function Sidebar({
             <span
               className={`sidebar-copy ${expanded ? 'sidebar-copy--visible' : 'sidebar-copy--hidden'} text-[15px] font-semibold leading-5 tracking-tight text-[var(--color-text-primary)]`}
             >
-              cc-<span className="text-[var(--color-brand)]">haha</span>
+              cc-<span className="text-[var(--color-brand)]">wangmai</span>
             </span>
           </div>
           <div className={`flex items-center ${expanded ? 'gap-0.5' : 'flex-col gap-2'}`}>
             <a
-              href="https://github.com/NanmiCoder/cc-haha"
+              href="https://github.com/wangmai-ai/wangmai-agent"
               target="_blank"
               rel="noopener noreferrer"
               className={`sidebar-copy ${expanded ? 'sidebar-copy--visible' : 'sidebar-copy--hidden'} inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-sm)] text-[var(--color-text-tertiary)] transition-colors hover:bg-[var(--color-sidebar-item-hover)] hover:text-[var(--color-text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)]`}
@@ -1625,7 +1625,7 @@ export function Sidebar({
           </NavItem>
         </div>
         {expanded && appVersion ? (
-          <Tooltip placement="top-end" appearance="surface" content={`cc-haha v${appVersion}`}>
+          <Tooltip placement="top-end" appearance="surface" content={`wangmai v${appVersion}`}>
             <span
               data-testid="sidebar-app-version"
               className="shrink-0 cursor-default px-2 font-mono text-[11px] tabular-nums text-[var(--color-text-tertiary)]"

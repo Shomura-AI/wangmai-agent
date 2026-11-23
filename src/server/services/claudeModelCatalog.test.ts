@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { getClaudeCodeUserAgent } from '../../utils/userAgent.js'
-import { hahaOAuthService } from './hahaOAuthService.js'
+import { wangmaiOAuthService } from './wangmaiOAuthService.js'
 import {
   CLAUDE_MODEL_CATALOG,
   CLAUDE_MODELS_ENDPOINT,
@@ -13,7 +13,7 @@ import {
 
 const ENV_KEYS = [
   'HOME', 'CLAUDE_CONFIG_DIR', 'CLAUDE_CODE_OAUTH_TOKEN',
-  'CC_HAHA_SYSTEM_PROXY_URL', 'CC_HAHA_SYSTEM_PROXY_ERROR', 'NO_PROXY', 'no_proxy',
+  'WANGMAI_SYSTEM_PROXY_URL', 'WANGMAI_SYSTEM_PROXY_ERROR', 'NO_PROXY', 'no_proxy',
 ] as const
 
 type FetchCall = { url: URL; init: RequestInit | undefined }
@@ -30,8 +30,8 @@ describe('desktop Claude model catalog', () => {
     process.env.HOME = directory
     process.env.CLAUDE_CONFIG_DIR = directory
     process.env.CLAUDE_CODE_OAUTH_TOKEN = 'other-cli-token'
-    delete process.env.CC_HAHA_SYSTEM_PROXY_URL
-    delete process.env.CC_HAHA_SYSTEM_PROXY_ERROR
+    delete process.env.WANGMAI_SYSTEM_PROXY_URL
+    delete process.env.WANGMAI_SYSTEM_PROXY_ERROR
     delete process.env.NO_PROXY
     delete process.env.no_proxy
     await writeFile(join(directory, '.credentials.json'), JSON.stringify({
@@ -56,7 +56,7 @@ describe('desktop Claude model catalog', () => {
     await rm(directory, { recursive: true, force: true })
   })
 
-  const saveAccount = (name = 'first') => hahaOAuthService.saveTokens({
+  const saveAccount = (name = 'first') => wangmaiOAuthService.saveTokens({
     accessToken: `desktop-${name}`,
     refreshToken: null,
     expiresAt: null,
@@ -142,7 +142,7 @@ describe('desktop Claude model catalog', () => {
     expect((await refresh(fetchOverride)).map(model => model.id)).toEqual(['claude-first'])
     await saveAccount('second')
     expect((await refresh(fetchOverride)).map(model => model.id)).toEqual(['claude-second'])
-    await hahaOAuthService.deleteTokens()
+    await wangmaiOAuthService.deleteTokens()
     expect(await getDesktopClaudeModelCatalog({ fetchOverride })).toEqual(CLAUDE_MODEL_CATALOG)
     await expect(refresh(fetchOverride)).rejects.toThrow('Claude OAuth token is unavailable')
     expect(calls).toHaveLength(2)
@@ -208,7 +208,7 @@ describe('desktop Claude model catalog', () => {
 
   test('unreadable desktop credentials do not fall through to CLI credentials', async () => {
     await saveAccount()
-    await writeFile(join(directory, 'cc-haha', 'oauth.json'), 'invalid JSON')
+    await writeFile(join(directory, 'wangmai', 'oauth.json'), 'invalid JSON')
     const fetchOverride = mockFetch(() => { throw new Error('unexpected call') })
     expect(await getDesktopClaudeModelCatalog({ fetchOverride })).toEqual(CLAUDE_MODEL_CATALOG)
     await expect(refresh(fetchOverride)).rejects.toThrow('Claude OAuth token is unavailable')

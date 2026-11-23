@@ -5,7 +5,7 @@ export const GROK_DEFAULT_SONNET_MODEL = GROK_DEFAULT_MAIN_MODEL
 export const GROK_DEFAULT_HAIKU_MODEL = GROK_DEFAULT_MAIN_MODEL
 export const GROK_DEFAULT_MODEL = GROK_DEFAULT_MAIN_MODEL
 export const GROK_DEFAULT_CONTEXT_WINDOW = 500_000
-export const GROK_MODEL_CATALOG_ENV_KEY = 'CC_HAHA_GROK_MODEL_CATALOG'
+export const GROK_MODEL_CATALOG_ENV_KEY = 'WANGMAI_GROK_MODEL_CATALOG'
 
 export type GrokModelCatalogEntry = {
   value: string
@@ -78,7 +78,7 @@ export function setGrokRuntimeModelCatalog(
 export function getGrokRuntimeModelCatalog(): readonly GrokModelCatalogEntry[] {
   if (
     runtimeCatalog === GROK_MODEL_CATALOG &&
-    readProviderEnv('CC_HAHA_GROK_OAUTH_PROVIDER') === '1'
+    readProviderEnv('WANGMAI_GROK_OAUTH_PROVIDER') === '1'
   ) {
     return parseRuntimeModelCatalog(process.env[GROK_MODEL_CATALOG_ENV_KEY]) ?? runtimeCatalog
   }
@@ -187,7 +187,7 @@ export function getGrokContextWindowForModel(
   // A Grok OAuth CLI subprocess still sees its own process-scoped launch snapshot.
   const effectiveCatalog =
     catalog ??
-    (readProviderEnv('CC_HAHA_GROK_OAUTH_PROVIDER') === '1'
+    (readProviderEnv('WANGMAI_GROK_OAUTH_PROVIDER') === '1'
       ? parseRuntimeModelCatalog(process.env[GROK_MODEL_CATALOG_ENV_KEY])
       : undefined) ??
     GROK_MODEL_CATALOG

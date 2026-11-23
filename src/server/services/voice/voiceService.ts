@@ -66,7 +66,7 @@ export type VoiceServiceOptions = {
   correctionTargets?: CorrectionTargetResolver
   /** The text transport; defaults to the one session titles use. */
   completeText?: TextCompletion
-  /** Defaults to `<cc-haha>/voice-vocabulary.json`. */
+  /** Defaults to `<wangmai>/voice-vocabulary.json`. */
   vocabulary?: VoiceVocabularyStore
   /** Where chat history lives; defaults to the Claude config home and Codex home. */
   historyPaths?: () => HistoryPaths

@@ -14,28 +14,28 @@ import {
 
 afterEach(() => __resetInstalledHelperCache())
 
-const INNER = path.join('Contents', 'MacOS', 'cc-haha-computer-use')
+const INNER = path.join('Contents', 'MacOS', 'wangmai-computer-use')
 
 describe('isNestedInHostApp', () => {
   test('true when the helper .app sits inside an OUTER .app (packaged in the host)', () => {
     const nested =
-      '/Applications/Claude Code Haha.app/Contents/Resources/app.asar.unpacked/src-tauri/binaries/cc-haha-computer-use.app'
+      '/Applications/网脉智能体.app/Contents/Resources/app.asar.unpacked/src-tauri/binaries/wangmai-computer-use.app'
     expect(isNestedInHostApp(nested)).toBe(true)
   })
 
   test('false for a standalone path (dev build or the installed copy)', () => {
     expect(
-      isNestedInHostApp('/Users/x/proj/native/cu-helper/.build/release/cc-haha-computer-use.app'),
+      isNestedInHostApp('/Users/x/proj/native/cu-helper/.build/release/wangmai-computer-use.app'),
     ).toBe(false)
-    expect(isNestedInHostApp('/Users/x/.claude/cu-helper/cc-haha-computer-use.app')).toBe(false)
+    expect(isNestedInHostApp('/Users/x/.claude/cu-helper/wangmai-computer-use.app')).toBe(false)
   })
 })
 
 describe('installedHelperAppBundle / installedHelperRoot', () => {
-  test('derive <configHome>/cu-helper[/cc-haha-computer-use.app]', () => {
+  test('derive <configHome>/cu-helper[/wangmai-computer-use.app]', () => {
     expect(installedHelperRoot('/home/.claude')).toBe('/home/.claude/cu-helper')
     expect(installedHelperAppBundle('/home/.claude')).toBe(
-      '/home/.claude/cu-helper/cc-haha-computer-use.app',
+      '/home/.claude/cu-helper/wangmai-computer-use.app',
     )
   })
 })
@@ -52,12 +52,12 @@ describe('standalone helper copy command', () => {
 
 describe('ensureInstalledHelper', () => {
   const CONFIG = '/cfg'
-  const DEST_APP = path.join(CONFIG, 'cu-helper', 'cc-haha-computer-use.app')
+  const DEST_APP = path.join(CONFIG, 'cu-helper', 'wangmai-computer-use.app')
   const DEST_INNER = path.join(DEST_APP, INNER)
-  const STAGING_APP = path.join(CONFIG, 'cu-helper', '.cc-haha-computer-use.app.staging-test')
+  const STAGING_APP = path.join(CONFIG, 'cu-helper', '.wangmai-computer-use.app.staging-test')
   const NESTED =
-    '/Applications/Claude Code Haha.app/Contents/Resources/app.asar.unpacked/src-tauri/binaries/cc-haha-computer-use.app'
-  const STANDALONE = '/dev/native/cu-helper/.build/release/cc-haha-computer-use.app'
+    '/Applications/网脉智能体.app/Contents/Resources/app.asar.unpacked/src-tauri/binaries/wangmai-computer-use.app'
+  const STANDALONE = '/dev/native/cu-helper/.build/release/wangmai-computer-use.app'
   const BYTES = Buffer.from('helper-binary-v1')
   const HASH = createHash('sha256')
     .update(INNER).update('\0').update(BYTES).update('\0')
@@ -152,14 +152,14 @@ describe('ensureInstalledHelper', () => {
   })
 
   test('installs and refreshes a canonical bundle through the real lock and recoverable replace path', () => {
-    const tempRoot = mkdtempSync(path.join(tmpdir(), 'cc-haha-cu-install-'))
+    const tempRoot = mkdtempSync(path.join(tmpdir(), 'wangmai-cu-install-'))
     try {
       const sourceApp = path.join(
         tempRoot,
         'Host.app',
         'Contents',
         'Resources',
-        'cc-haha-computer-use.app',
+        'wangmai-computer-use.app',
       )
       const configHome = path.join(tempRoot, 'config')
       const fixtureFiles = [
@@ -201,14 +201,14 @@ describe('ensureInstalledHelper', () => {
   })
 
   test('restores the last working bundle when post-replacement verification fails', () => {
-    const tempRoot = mkdtempSync(path.join(tmpdir(), 'cc-haha-cu-rollback-'))
+    const tempRoot = mkdtempSync(path.join(tmpdir(), 'wangmai-cu-rollback-'))
     try {
       const sourceApp = path.join(
         tempRoot,
         'Host.app',
         'Contents',
         'Resources',
-        'cc-haha-computer-use.app',
+        'wangmai-computer-use.app',
       )
       const configHome = path.join(tempRoot, 'config')
       const destApp = installedHelperAppBundle(configHome)

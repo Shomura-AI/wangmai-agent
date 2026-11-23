@@ -255,7 +255,7 @@ export function resolveCustomPetsRoot(options: CustomPetsRootOptions = {}): stri
   const claudeConfigDir = configuredRoot
     ? path.resolve(resolveHomePath(configuredRoot, homeDir))
     : path.join(homeDir, '.claude')
-  return path.join(claudeConfigDir, 'cc-haha', 'pets')
+  return path.join(claudeConfigDir, 'wangmai', 'pets')
 }
 
 export async function ensureCustomPetsRoot(options: CustomPetsRootOptions = {}): Promise<string> {

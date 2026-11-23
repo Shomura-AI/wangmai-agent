@@ -191,10 +191,10 @@ export type ShortcutConflictReason =
   | 'desktopShortcut'
 
 /**
- * `blocked` keys are refused: cc-haha's own shortcuts, the system's, and keys
+ * `blocked` keys are refused: wangmai's own shortcuts, the system's, and keys
  * that would eat ordinary typing. `warning` keys are known to be taken by input
  * methods, layouts or common tools on some machines, so they may never reach
- * cc-haha; the user can still keep them.
+ * wangmai; the user can still keep them.
  */
 export type ShortcutVerdict =
   | { level: 'ok' }
@@ -257,7 +257,7 @@ const KEY_FOR_CODE: Record<string, string> = {
   Backslash: '\\',
 }
 
-/** The `key` a US layout would report, for feeding cc-haha's own matchers. */
+/** The `key` a US layout would report, for feeding wangmai's own matchers. */
 function keyForCode(code: string): string {
   if (/^Key[A-Z]$/.test(code)) return code.slice(3).toLowerCase()
   if (/^Digit\d$/.test(code)) return code.slice(5)
@@ -265,7 +265,7 @@ function keyForCode(code: string): string {
 }
 
 /**
- * cc-haha's own shortcuts. The workspace and zoom keys come from the matchers
+ * wangmai's own shortcuts. The workspace and zoom keys come from the matchers
  * that handle them, so adding one there is caught here without a second list.
  */
 function isAppShortcut(shortcut: { modifiers: ShortcutModifier[]; code: string }, platform: ShortcutPlatform): boolean {

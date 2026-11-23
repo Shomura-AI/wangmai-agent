@@ -531,7 +531,7 @@ export async function runSetup(platform: string = process.platform): Promise<Set
 }
 
 // ============================================================================
-// Authorized Apps configuration — stored in ~/.claude/cc-haha/computer-use-config.json
+// Authorized Apps configuration — stored in ~/.claude/wangmai/computer-use-config.json
 // ============================================================================
 
 type AuthorizedApp = {

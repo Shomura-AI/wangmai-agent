@@ -265,7 +265,7 @@ fn cursor_feedback(acknowledged: bool, error: Option<&AdapterError>) {
         "acknowledged": acknowledged,
         "warning": warning,
     });
-    let _ = writeln!(std::io::stderr().lock(), "CC_HAHA_CURSOR_FEEDBACK {data}");
+    let _ = writeln!(std::io::stderr().lock(), "WANGMAI_CURSOR_FEEDBACK {data}");
 }
 
 pub(crate) fn dispatch_mouse_event_with_cursor(

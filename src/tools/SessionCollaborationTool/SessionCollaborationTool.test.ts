@@ -23,15 +23,15 @@ test('batch creation bounds tasks and accepts exact provider/model identities', 
 
 test('pending proposals yield the turn and explicit quotes get the actual latest human message identity', async () => {
   const { consumeUserDecisionTurnPause } = await import('../../utils/userDecisionTurnBoundary.js')
-  const names = ['CC_HAHA_DESKTOP_SERVER_URL', 'CC_HAHA_SESSION_COLLABORATION_TOKEN', 'CC_HAHA_SESSION_ID'] as const
+  const names = ['WANGMAI_DESKTOP_SERVER_URL', 'WANGMAI_SESSION_COLLABORATION_TOKEN', 'WANGMAI_SESSION_ID'] as const
   const original = names.map(name => process.env[name])
   const fetchBefore = globalThis.fetch
   const payloads: any[] = []
   let requiresReview = true
   try {
-    process.env.CC_HAHA_DESKTOP_SERVER_URL = 'http://127.0.0.1:12345'
-    process.env.CC_HAHA_SESSION_COLLABORATION_TOKEN = 'fixture-token'
-    process.env.CC_HAHA_SESSION_ID = 'fixture-parent'
+    process.env.WANGMAI_DESKTOP_SERVER_URL = 'http://127.0.0.1:12345'
+    process.env.WANGMAI_SESSION_COLLABORATION_TOKEN = 'fixture-token'
+    process.env.WANGMAI_SESSION_ID = 'fixture-parent'
     globalThis.fetch = (async (_url, options) => {
       payloads.push(JSON.parse(String(options?.body)))
       return Response.json({ state: requiresReview ? 'review' : 'launched', requiresReview })

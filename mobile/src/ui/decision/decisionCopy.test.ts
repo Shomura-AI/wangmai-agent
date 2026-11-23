@@ -85,7 +85,7 @@ test('description prefers the protocol field and then the Bash description', () 
 })
 
 test('work directory caption abbreviates only the user home and hides when unknown', () => {
-  expect(workDirCaption('/Users/me/code/cc-haha')).toBe('在 ~/code/cc-haha')
+  expect(workDirCaption('/Users/me/code/wangmai')).toBe('在 ~/code/wangmai')
   expect(workDirCaption('/home/dev')).toBe('在 ~')
   expect(workDirCaption('C:\\Users\\dev\\repo')).toBe('在 ~\\repo')
   expect(workDirCaption('/opt/Users/x')).toBe('在 /opt/Users/x')

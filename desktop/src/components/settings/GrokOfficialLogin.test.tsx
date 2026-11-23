@@ -9,23 +9,23 @@ const { copyMock, logoutMock, startMock, statusMock } = vi.hoisted(() => ({
   statusMock: vi.fn(),
 }))
 
-vi.mock('../../api/hahaGrokOAuth', () => ({
-  hahaGrokOAuthApi: {
+vi.mock('../../api/wangmaiGrokOAuth', () => ({
+  wangmaiGrokOAuthApi: {
     start: startMock,
     status: statusMock,
     logout: logoutMock,
-    successUrl: () => 'http://127.0.0.1:3456/api/haha-grok-oauth/success',
+    successUrl: () => 'http://127.0.0.1:3456/api/wangmai-grok-oauth/success',
   },
 }))
 
 vi.mock('@/lib/clipboard', () => ({ copyTextToClipboard: copyMock }))
 
 import { GrokOfficialLogin } from './GrokOfficialLogin'
-import { useHahaGrokOAuthStore } from '../../stores/hahaGrokOAuthStore'
+import { useWangMaiGrokOAuthStore } from '../../stores/wangmaiGrokOAuthStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { browserHost } from '../../lib/desktopHost/browserHost'
 
-const initialOAuthState = useHahaGrokOAuthStore.getState()
+const initialOAuthState = useWangMaiGrokOAuthStore.getState()
 
 describe('GrokOfficialLogin', () => {
   beforeEach(() => {
@@ -36,7 +36,7 @@ describe('GrokOfficialLogin', () => {
     })
     copyMock.mockResolvedValue(true)
     useSettingsStore.setState({ locale: 'en' })
-    useHahaGrokOAuthStore.setState({
+    useWangMaiGrokOAuthStore.setState({
       ...initialOAuthState,
       status: null,
       isPolling: false,
@@ -46,8 +46,8 @@ describe('GrokOfficialLogin', () => {
   })
 
   afterEach(() => {
-    useHahaGrokOAuthStore.getState().stopPolling()
-    useHahaGrokOAuthStore.setState(initialOAuthState)
+    useWangMaiGrokOAuthStore.getState().stopPolling()
+    useWangMaiGrokOAuthStore.setState(initialOAuthState)
     Reflect.deleteProperty(window, 'desktopHost')
     cleanup()
     vi.restoreAllMocks()
@@ -91,13 +91,13 @@ describe('GrokOfficialLogin', () => {
     expect(open).toHaveBeenCalledWith(expect.stringContaining('accounts.x.ai'))
 
     act(() => {
-      useHahaGrokOAuthStore.setState({
+      useWangMaiGrokOAuthStore.setState({
         status: { loggedIn: true, expiresAt: Date.now() + 60_000, email: 'grok@example.com' },
       })
     })
 
     await waitFor(() => {
-      expect(open).toHaveBeenCalledWith('http://127.0.0.1:3456/api/haha-grok-oauth/success')
+      expect(open).toHaveBeenCalledWith('http://127.0.0.1:3456/api/wangmai-grok-oauth/success')
     })
   })
 

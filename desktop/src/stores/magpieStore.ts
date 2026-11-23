@@ -6,7 +6,7 @@ import type { MagpieModel, MagpieState, OpenMagpieResult, SavedProvider } from '
 export const MAGPIE_PRESET_ID = 'magpie'
 
 /** The connect bar was closed with ×; it stays closed on this computer. */
-export const MAGPIE_BANNER_DISMISSED_KEY = 'cc-haha-magpie-banner-dismissed'
+export const MAGPIE_BANNER_DISMISSED_KEY = 'wangmai-magpie-banner-dismissed'
 
 function readBannerDismissed(): boolean {
   try {

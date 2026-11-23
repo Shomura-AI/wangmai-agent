@@ -77,7 +77,7 @@ export async function relocateManagedData(sourceDir: string, targetDir: string, 
     if (!inside(target, resolve(finalPath))) throw new Error('Managed connector path escaped migration target')
     return join(stage, relative(target, resolve(finalPath)))
   }
-  const mappingPath = join(stage, 'cc-haha', 'storage-relocations.json')
+  const mappingPath = join(stage, 'wangmai', 'storage-relocations.json')
   const mapping = await optionalJson(stage, mappingPath) ?? { version: 1, previousRoots: [] }
   if (mapping.version !== 1 || !Array.isArray(mapping.previousRoots) ||
     !mapping.previousRoots.every(root => typeof root === 'string' && isAbsolute(root) && !root.includes('\0'))) {

@@ -40,11 +40,11 @@ test.each(inputs(origin))('manual and QR HTTP input keeps its scheme and token c
 test.each([origin, 'http://100.101.102.103:60506', 'http://nas:60506'])('version 1 host metadata restores HTTP without changing credentials or schema: %s', async url => {
   const host = { id: 'http-fixture', name: 'Fixture', url, auth: 'lan' as const }
   const raw = JSON.stringify({ version: 1, hosts: [host], selectedId: host.id })
-  const metadata = new Map([['cc-haha.hosts', raw]])
-  const secrets = new Map([[`cc-haha.host.${host.id}`, token]])
+  const metadata = new Map([['wangmai.hosts', raw]])
+  const secrets = new Map([[`wangmai.host.${host.id}`, token]])
   const repository = new HostRepository(storage(metadata), storage(secrets))
   expect((await repository.load()).hosts).toEqual([host])
-  expect(metadata.get('cc-haha.hosts')).toBe(raw)
+  expect(metadata.get('wangmai.hosts')).toBe(raw)
   expect(await repository.credential(host.id)).toBe(token)
   expect(buildSocketOptions(host, token, 'session', 'native')).toEqual({
     url: `${url.replace('http:', 'ws:')}/ws/session?media=ref`,
@@ -114,7 +114,7 @@ test('HTTP manual/QR verification, save/reload, REST and reconnect preserve the 
         await repository.add(result.host, result.credential)
         const host = (await repository.load()).hosts[0]!
         expect(host.url).toBe(customOrigin)
-        expect(metadata.get('cc-haha.hosts')).not.toContain(token)
+        expect(metadata.get('wangmai.hosts')).not.toContain(token)
         const credential = (await repository.credential(host.id))!
         const client = new ApiClient(host, credential, { fetch })
         expect(await client.history('session')).toMatchObject(page)

@@ -100,8 +100,8 @@ export async function runTeamReviewScenario(rootDir: string, artifactDir: string
       rootDir, artifactDir, label: 'team-review', seedProviders: false, stepTimeoutMs: TIMEOUT_MS,
       sandboxSource: { PATH: process.env.PATH, SHELL: process.env.SHELL, SYSTEMROOT: process.env.SYSTEMROOT,
         CLAUDE_CONFIG_DIR: join(artifactDir, 'unused-source-config') },
-      envOverrides: { CC_HAHA_SKIP_DOTENV: '1', CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1',
-        CC_HAHA_AGENT_TEAMS_ENABLED: '1', CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: '1' },
+      envOverrides: { WANGMAI_SKIP_DOTENV: '1', CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1',
+        WANGMAI_AGENT_TEAMS_ENABLED: '1', CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: '1' },
       scenarios: [{ id: 'team-review', title: 'review an initial roster and a running-team addition (#1856)' }],
       async resolveTarget(server) {
         baseUrl = server.baseUrl

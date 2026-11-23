@@ -62,7 +62,7 @@ async function inspect(query: string): Promise<Record<string, unknown>> {
 }
 
 beforeEach(async () => {
-  tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-usage-only-'))
+  tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-usage-only-'))
   const fixtureEnv = createSandboxedTestEnvironment(tempRoot)
   for (const key of Object.keys(process.env)) delete process.env[key]
   Object.assign(process.env, fixtureEnv)

@@ -125,7 +125,7 @@ const okRepositoryContext = {
   state: 'ok' as const,
   workDir: '/repo',
   repoRoot: '/repo',
-  repoName: 'cc-haha',
+  repoName: 'wangmai',
   currentBranch: 'main',
   defaultBranch: 'main',
   headCommit: HEAD_COMMIT,
@@ -248,7 +248,7 @@ function ControlledHarness({
 
 /** Opens the pill's root menu. */
 async function openPill() {
-  const pill = await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+  const pill = await screen.findByRole('button', { name: 'Location: wangmai / main' })
   fireEvent.click(pill)
   return pill
 }
@@ -295,9 +295,9 @@ describe('RepositoryLaunchControls', () => {
   it('collapses directory, branch and worktree into a single pill', async () => {
     renderControls()
 
-    const pill = await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+    const pill = await screen.findByRole('button', { name: 'Location: wangmai / main' })
     expect(pill).toHaveAttribute('aria-haspopup', 'menu')
-    expect(within(pill).getByText('cc-haha')).toBeInTheDocument()
+    expect(within(pill).getByText('wangmai')).toBeInTheDocument()
     expect(within(pill).getByText('main')).toBeInTheDocument()
 
     // The three separate triggers are gone — that was the point of the change.
@@ -313,7 +313,7 @@ describe('RepositoryLaunchControls', () => {
       repoRoot: '/repo',
     })
     renderControls({ workDir })
-    await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+    await screen.findByRole('button', { name: 'Location: wangmai / main' })
 
     act(() => {
       hydrateProjectDisplayNames(
@@ -348,7 +348,7 @@ describe('RepositoryLaunchControls', () => {
   it('truncates the branch from the start so its tail survives', async () => {
     renderControls()
 
-    const pill = await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+    const pill = await screen.findByRole('button', { name: 'Location: wangmai / main' })
     // `dir="rtl"` is what moves the ellipsis to the front; without it a long
     // `feature/...` name would truncate down to its meaningless prefix.
     expect(within(pill).getByText('main').closest('[dir="rtl"]')).not.toBeNull()
@@ -357,7 +357,7 @@ describe('RepositoryLaunchControls', () => {
   it('marks the isolated worktree on the pill itself', async () => {
     renderControls({ useWorktree: true })
 
-    const pill = await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+    const pill = await screen.findByRole('button', { name: 'Location: wangmai / main' })
     expect(within(pill).getByText('Isolated')).toBeInTheDocument()
   })
 
@@ -469,12 +469,12 @@ describe('RepositoryLaunchControls', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Create branch…' }))
     fireEvent.change(await screen.findByLabelText('Branch name'), { target: { value: 'feature/new' } })
     fireEvent.click(screen.getByRole('button', { name: 'Create' }))
-    await screen.findByRole('button', { name: 'Location: cc-haha / feature/new' })
+    await screen.findByRole('button', { name: 'Location: wangmai / feature/new' })
 
     // The refresh was read before the branch existed and lands afterwards.
     await act(async () => { resolveRefresh(okRepositoryContext) })
 
-    expect(screen.getByRole('button', { name: 'Location: cc-haha / feature/new' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Location: wangmai / feature/new' })).toBeInTheDocument()
   })
 
   it('does not apply a refresh that lands after the directory changed', async () => {
@@ -494,7 +494,7 @@ describe('RepositoryLaunchControls', () => {
     await act(async () => { resolveRefresh(okRepositoryContext) })
 
     expect(screen.getByRole('button', { name: 'Location: plain' })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /cc-haha/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /wangmai/ })).not.toBeInTheDocument()
   })
 
   it('drills into the branch list and back out again', async () => {
@@ -548,7 +548,7 @@ describe('RepositoryLaunchControls', () => {
 
     try {
       renderControls()
-      const pill = await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      const pill = await screen.findByRole('button', { name: 'Location: wangmai / main' })
       vi.spyOn(pill, 'getBoundingClientRect').mockReturnValue({
         x: 40, y: 260, top: 260, left: 40, right: 200, bottom: 290, width: 160, height: 30,
         toJSON: () => ({}),
@@ -596,7 +596,7 @@ describe('RepositoryLaunchControls', () => {
   it('sizes the pill for the toolbar row when placed there', async () => {
     renderControls({ placement: 'toolbar' })
 
-    const pill = await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+    const pill = await screen.findByRole('button', { name: 'Location: wangmai / main' })
     // 28px matches the other controls in the composer's toolbar; the H5 line
     // below the composer uses 40px for touch.
     expect(pill).toHaveClass('h-7')
@@ -606,7 +606,7 @@ describe('RepositoryLaunchControls', () => {
   it('keeps the pointer-sized pill on its own line in a narrow desktop column', async () => {
     renderControls({ placement: 'outside' })
 
-    const pill = await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+    const pill = await screen.findByRole('button', { name: 'Location: wangmai / main' })
     expect(pill).toHaveClass('h-7')
     expect(pill).not.toHaveClass('h-10')
   })
@@ -617,7 +617,7 @@ describe('RepositoryLaunchControls', () => {
     // A toolbar placement still falls back to the standalone line on H5.
     renderControls({ placement: 'toolbar' })
 
-    const pill = await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+    const pill = await screen.findByRole('button', { name: 'Location: wangmai / main' })
     expect(pill).toHaveClass('h-10')
     expect(pill).not.toHaveClass('h-7')
   })
@@ -771,7 +771,7 @@ describe('RepositoryLaunchControls', () => {
       branches: okRepositoryContext.branches.map((candidate) => ({ ...candidate, current: false })),
     }
 
-    async function pickBranch(name: RegExp, pillName = 'Location: cc-haha / main') {
+    async function pickBranch(name: RegExp, pillName = 'Location: wangmai / main') {
       fireEvent.click(await screen.findByRole('button', { name: pillName }))
       fireEvent.click(await screen.findByRole('menuitem', { name: /Branch/ }))
       fireEvent.click(await screen.findByRole('option', { name }))
@@ -787,20 +787,20 @@ describe('RepositoryLaunchControls', () => {
 
     it('follows the checkout when it comes back on screen with a branch it chose itself', async () => {
       const { rerender } = render(<RetainedHarness />)
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
 
       rerender(<RetainedHarness visible={false} />)
       apiMocks.getRepositoryContext.mockResolvedValue(movedToFeatureContext)
       rerender(<RetainedHarness visible />)
 
-      expect(await screen.findByRole('button', { name: 'Location: cc-haha / feature/h5' })).toBeInTheDocument()
+      expect(await screen.findByRole('button', { name: 'Location: wangmai / feature/h5' })).toBeInTheDocument()
       expect(apiMocks.getRepositoryContext).toHaveBeenCalledTimes(2)
     })
 
     it('keeps a picked branch when it comes back, warning against the fresh checkout', async () => {
       const { rerender } = render(<RetainedHarness />)
       await pickBranch(/feature\/h5/)
-      await screen.findByRole('button', { name: 'Location: cc-haha / feature/h5' })
+      await screen.findByRole('button', { name: 'Location: wangmai / feature/h5' })
       expect(screen.queryByRole('status', { name: 'Dirty worktree' })).not.toBeInTheDocument()
 
       rerender(<RetainedHarness visible={false} />)
@@ -809,17 +809,17 @@ describe('RepositoryLaunchControls', () => {
       rerender(<RetainedHarness visible />)
 
       expect(await screen.findByRole('status', { name: 'Dirty worktree' })).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Location: cc-haha / feature/h5' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Location: wangmai / feature/h5' })).toBeInTheDocument()
     })
 
     it('answers the checkout as it is at send time for a branch it chose itself', async () => {
       const handle = createRef<RepositoryLaunchControlsHandle>()
       render(<RetainedHarness handleRef={handle} />)
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
       apiMocks.getRepositoryContext.mockResolvedValue(movedToFeatureContext)
 
       expect(await resolveWith(handle)).toBe('feature/h5')
-      expect(screen.getByRole('button', { name: 'Location: cc-haha / feature/h5' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Location: wangmai / feature/h5' })).toBeInTheDocument()
     })
 
     it('sends a branch the user picked as it is, even the one that was current', async () => {
@@ -838,17 +838,17 @@ describe('RepositoryLaunchControls', () => {
     // that never left the screen: no tab change, so nothing else would re-read.
     it('follows the checkout when the window comes back to the front', async () => {
       render(<RetainedHarness />)
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
       apiMocks.getRepositoryContext.mockResolvedValue(movedToFeatureContext)
 
       act(() => { window.dispatchEvent(new Event('focus')) })
 
-      expect(await screen.findByRole('button', { name: 'Location: cc-haha / feature/h5' })).toBeInTheDocument()
+      expect(await screen.findByRole('button', { name: 'Location: wangmai / feature/h5' })).toBeInTheDocument()
     })
 
     it('reads once, not twice, when focus and visibility both announce the return', async () => {
       render(<RetainedHarness />)
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
       const reads = apiMocks.getRepositoryContext.mock.calls.length
 
       act(() => {
@@ -862,17 +862,17 @@ describe('RepositoryLaunchControls', () => {
 
     it('follows the checkout when the page becomes visible again in its window', async () => {
       render(<RetainedHarness />)
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
       apiMocks.getRepositoryContext.mockResolvedValue(movedToFeatureContext)
 
       act(() => { document.dispatchEvent(new Event('visibilitychange')) })
 
-      expect(await screen.findByRole('button', { name: 'Location: cc-haha / feature/h5' })).toBeInTheDocument()
+      expect(await screen.findByRole('button', { name: 'Location: wangmai / feature/h5' })).toBeInTheDocument()
     })
 
     it('does not re-read for a page that is not on screen', async () => {
       const { rerender } = render(<RetainedHarness />)
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
       rerender(<RetainedHarness visible={false} />)
       const reads = apiMocks.getRepositoryContext.mock.calls.length
 
@@ -889,7 +889,7 @@ describe('RepositoryLaunchControls', () => {
       const handle = createRef<RepositoryLaunchControlsHandle>()
       render(<RetainedHarness handleRef={handle} />)
 
-      const pill = await screen.findByRole('button', { name: 'Location: cc-haha / HEAD aaaaaaa' })
+      const pill = await screen.findByRole('button', { name: 'Location: wangmai / HEAD aaaaaaa' })
       expect(pill).toHaveAttribute('title', expect.stringContaining('Detached HEAD: aaaaaaa'))
       expect(await resolveWith(handle)).toBeNull()
     })
@@ -897,7 +897,7 @@ describe('RepositoryLaunchControls', () => {
     it('names the commit, and the default branch an isolated worktree starts from, on a detached HEAD', async () => {
       apiMocks.getRepositoryContext.mockResolvedValue(detachedContext)
       render(<RetainedHarness />)
-      fireEvent.click(await screen.findByRole('button', { name: 'Location: cc-haha / HEAD aaaaaaa' }))
+      fireEvent.click(await screen.findByRole('button', { name: 'Location: wangmai / HEAD aaaaaaa' }))
 
       const menu = await screen.findByRole('menu', { name: 'Location' })
       // Working in place lands on the commit; the worktree would start from main.
@@ -910,7 +910,7 @@ describe('RepositoryLaunchControls', () => {
       // What the server really answers for a fresh clone-less repo checked out at a commit.
       apiMocks.getRepositoryContext.mockResolvedValue({ ...detachedContext, defaultBranch: null })
       render(<RetainedHarness />)
-      fireEvent.click(await screen.findByRole('button', { name: 'Location: cc-haha / HEAD aaaaaaa' }))
+      fireEvent.click(await screen.findByRole('button', { name: 'Location: wangmai / HEAD aaaaaaa' }))
 
       const menu = await screen.findByRole('menu', { name: 'Location' })
       expect(within(menu).getByText('Based on main')).toBeInTheDocument()
@@ -923,7 +923,7 @@ describe('RepositoryLaunchControls', () => {
       const onLaunchReadyChange = vi.fn()
       renderControls({ branch: null, onLaunchReadyChange })
 
-      await screen.findByRole('button', { name: 'Location: cc-haha / HEAD aaaaaaa' })
+      await screen.findByRole('button', { name: 'Location: wangmai / HEAD aaaaaaa' })
       expect(onLaunchReadyChange).toHaveBeenLastCalledWith(true)
     })
 
@@ -932,7 +932,7 @@ describe('RepositoryLaunchControls', () => {
       const handle = createRef<RepositoryLaunchControlsHandle>()
       render(<RetainedHarness handleRef={handle} useWorktree />)
 
-      expect(await screen.findByRole('button', { name: 'Location: cc-haha / main' })).toBeInTheDocument()
+      expect(await screen.findByRole('button', { name: 'Location: wangmai / main' })).toBeInTheDocument()
       expect(await resolveWith(handle)).toBe('main')
     })
 
@@ -940,9 +940,9 @@ describe('RepositoryLaunchControls', () => {
       apiMocks.getRepositoryContext.mockResolvedValue(detachedContext)
       const handle = createRef<RepositoryLaunchControlsHandle>()
       render(<RetainedHarness handleRef={handle} />)
-      await pickBranch(/^main/, 'Location: cc-haha / HEAD aaaaaaa')
+      await pickBranch(/^main/, 'Location: wangmai / HEAD aaaaaaa')
 
-      expect(await screen.findByRole('button', { name: 'Location: cc-haha / main' })).toBeInTheDocument()
+      expect(await screen.findByRole('button', { name: 'Location: wangmai / main' })).toBeInTheDocument()
       expect(await resolveWith(handle)).toBe('main')
     })
 
@@ -952,7 +952,7 @@ describe('RepositoryLaunchControls', () => {
     it('keeps following a branch its parent says was chosen for the user, after a remount', async () => {
       const handle = createRef<RepositoryLaunchControlsHandle>()
       renderControls({ ref: handle, branch: 'main', branchAutomatic: true })
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
       apiMocks.getRepositoryContext.mockResolvedValue(movedToFeatureContext)
 
       expect(await resolveWith(handle)).toBe('feature/h5')
@@ -961,7 +961,7 @@ describe('RepositoryLaunchControls', () => {
     it('tells its parent when a branch is chosen for the user and when the user picks one', async () => {
       const onBranchAutomaticChange = vi.fn()
       render(<RetainedHarness onBranchAutomaticChange={onBranchAutomaticChange} />)
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
       expect(onBranchAutomaticChange).toHaveBeenLastCalledWith(true)
 
       await pickBranch(/feature\/h5/)
@@ -973,7 +973,7 @@ describe('RepositoryLaunchControls', () => {
       // after a remount; that pick is not ours to replace.
       const handle = createRef<RepositoryLaunchControlsHandle>()
       renderControls({ ref: handle, branch: 'main' })
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
       apiMocks.getRepositoryContext.mockResolvedValue(movedToFeatureContext)
 
       expect(await resolveWith(handle)).toBe('main')
@@ -982,7 +982,7 @@ describe('RepositoryLaunchControls', () => {
     it('stays on the checkout as it is when the repository cannot be read at send time', async () => {
       const handle = createRef<RepositoryLaunchControlsHandle>()
       render(<RetainedHarness handleRef={handle} />)
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
       apiMocks.getRepositoryContext.mockRejectedValue(new Error('git timed out'))
 
       expect(await resolveWith(handle)).toBeNull()
@@ -991,7 +991,7 @@ describe('RepositoryLaunchControls', () => {
     it('keeps the base branch of an isolated worktree when the repository cannot be read', async () => {
       const handle = createRef<RepositoryLaunchControlsHandle>()
       render(<RetainedHarness handleRef={handle} useWorktree />)
-      await screen.findByRole('button', { name: 'Location: cc-haha / main' })
+      await screen.findByRole('button', { name: 'Location: wangmai / main' })
       apiMocks.getRepositoryContext.mockRejectedValue(new Error('git timed out'))
 
       // A worktree never moves this checkout, and dropping the branch would
@@ -1056,7 +1056,7 @@ describe('RepositoryLaunchControls', () => {
       // Success closes the menu so the selected branch is immediately visible
       // on the pill instead of leaving the user inside an apparently unchanged
       // menu. The returned list is adopted without a second request.
-      const pill = await screen.findByRole('button', { name: 'Location: cc-haha / feature/new' })
+      const pill = await screen.findByRole('button', { name: 'Location: wangmai / feature/new' })
       expect(screen.queryByRole('menu', { name: 'Location' })).not.toBeInTheDocument()
       // Initial load plus the refresh triggered by entering the branch list;
       // branch creation adopts its returned context without another read.
@@ -1158,7 +1158,7 @@ describe('RepositoryLaunchControls', () => {
       try {
         root.render(<ExternalLaunchHarness />)
         const pill = await eventually(() => (
-          screen.getByRole('button', { name: 'Location: cc-haha / main' })
+          screen.getByRole('button', { name: 'Location: wangmai / main' })
         ))
         pill.click()
         const branchEntry = await eventually(() => screen.getByRole('menuitem', { name: /Branch/ }))
@@ -1178,7 +1178,7 @@ describe('RepositoryLaunchControls', () => {
         createButton.click()
 
         await eventually(() => (
-          screen.getByRole('button', { name: 'Location: cc-haha / qa/launch-picker' })
+          screen.getByRole('button', { name: 'Location: wangmai / qa/launch-picker' })
         ))
         await eventually(() => {
           if (screen.queryByRole('menu', { name: 'Location' })) {
@@ -1194,7 +1194,7 @@ describe('RepositoryLaunchControls', () => {
           repository: { branch: 'qa/launch-picker', worktree: false },
         })
         expect(useLaunchTarget.getState().branch).toBe('qa/launch-picker')
-        expect(screen.getByRole('button', { name: 'Location: cc-haha / qa/launch-picker' }))
+        expect(screen.getByRole('button', { name: 'Location: wangmai / qa/launch-picker' }))
           .toBeInTheDocument()
         expect(screen.queryByRole('menu', { name: 'Location' })).not.toBeInTheDocument()
       } finally {
@@ -1217,7 +1217,7 @@ describe('RepositoryLaunchControls', () => {
           message: 'Created and selected “feature/new”. An isolated worktree will be created from it when the session starts.',
         })
       })
-      expect(await screen.findByRole('button', { name: 'Location: cc-haha / feature/new' }))
+      expect(await screen.findByRole('button', { name: 'Location: wangmai / feature/new' }))
         .toBeInTheDocument()
       expect(screen.getByText('Isolated')).toBeInTheDocument()
     })
@@ -1452,7 +1452,7 @@ describe('RepositoryLaunchControls', () => {
       fireEvent.change(input, { target: { value: 'feature/new' } })
       fireEvent.click(screen.getByRole('button', { name: 'Create' }))
 
-      await screen.findByRole('button', { name: 'Location: cc-haha / feature/new' })
+      await screen.findByRole('button', { name: 'Location: wangmai / feature/new' })
       expect(screen.queryByRole('status', { name: 'Dirty worktree' })).not.toBeInTheDocument()
     })
 
@@ -1464,7 +1464,7 @@ describe('RepositoryLaunchControls', () => {
 
       renderControls({ branch: 'feature/new' })
 
-      await screen.findByRole('button', { name: 'Location: cc-haha / feature/new' })
+      await screen.findByRole('button', { name: 'Location: wangmai / feature/new' })
       expect(screen.queryByRole('status', { name: 'Dirty worktree' })).not.toBeInTheDocument()
     })
 

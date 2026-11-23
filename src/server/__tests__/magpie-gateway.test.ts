@@ -121,7 +121,7 @@ describe('Finding Magpie', () => {
     })
   })
 
-  test('asks for the catalog under cc-haha\'s own key and reuses it briefly', async () => {
+  test('asks for the catalog under wangmai\'s own key and reuses it briefly', async () => {
     const seen: Array<string | null> = []
     const fetchImpl = async (_url: string, init?: RequestInit) => {
       seen.push(new Headers(init?.headers).get('authorization'))
@@ -131,8 +131,8 @@ describe('Finding Magpie', () => {
     await fetchMagpieModels('http://127.0.0.1:4100', { fetchImpl, now: 1_000 })
     await fetchMagpieModels('http://127.0.0.1:4100', { fetchImpl, now: 2_000 })
     expect(seen).toEqual([`Bearer ${MAGPIE_CLIENT_KEY}`])
-    // `magpie-cc-haha`, never the bare `magpie` Claude Code is given.
-    expect(MAGPIE_CLIENT_KEY).toBe('magpie-cc-haha')
+    // `magpie-wangmai`, never the bare `magpie` Claude Code is given.
+    expect(MAGPIE_CLIENT_KEY).toBe('magpie-wangmai')
 
     await fetchMagpieModels('http://127.0.0.1:4100', { fetchImpl, now: 2_000, force: true })
     expect(seen).toHaveLength(2)
@@ -199,7 +199,7 @@ describe('Saved Magpie providers follow the running gateway', () => {
       expect(JSON.parse(env.CLAUDE_CODE_MODEL_MAX_OUTPUT_TOKENS!)).toMatchObject({ 'kimi/kimi-k3': 32_768 })
 
       // The default provider's copy in settings.json is rewritten too.
-      const settings = JSON.parse(await fs.readFile(path.join(tmpDir, 'claude', 'cc-haha', 'settings.json'), 'utf8')) as { env: Record<string, string> }
+      const settings = JSON.parse(await fs.readFile(path.join(tmpDir, 'claude', 'wangmai', 'settings.json'), 'utf8')) as { env: Record<string, string> }
       expect(settings.env.ANTHROPIC_BASE_URL).toBe(`http://127.0.0.1:${gateway.port}`)
       expect(JSON.parse(settings.env.CLAUDE_CODE_MODEL_MAX_OUTPUT_TOKENS!)).toMatchObject({ 'claude/claude-opus-5-5': 128_000 })
     } finally {

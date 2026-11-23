@@ -260,8 +260,8 @@ async function withFixture(mode: Mode, exercise: (fixture: {
   connect(sessionId: string): Promise<Client>
 }) => Promise<void>, { coldServerRestart = false } = {}) {
   // Bun 会缓存进程启动时的 homedir；直接运行本文件时不能让服务端退回真实用户目录。
-  const inProcess = !coldServerRestart && homedir() === process.env.CC_HAHA_TEST_HOME
-  const home = await realpath(await mkdtemp(join(tmpdir(), 'cc-haha-agy-test-')))
+  const inProcess = !coldServerRestart && homedir() === process.env.WANGMAI_TEST_HOME
+  const home = await realpath(await mkdtemp(join(tmpdir(), 'wangmai-agy-test-')))
   const bin = join(home, 'bin')
   const workDir = join(home, 'workspace')
   const agy = join(bin, 'agy')
@@ -277,11 +277,11 @@ async function withFixture(mode: Mode, exercise: (fixture: {
 
   try {
     const env = createSandboxedTestEnvironment(home, {
-      PATH: bin, CLAUDE_CLI_PATH: fallback, CC_HAHA_LOCAL_INDEX: 'off',
+      PATH: bin, CLAUDE_CLI_PATH: fallback, WANGMAI_LOCAL_INDEX: 'off',
       ANTHROPIC_API_KEY: 'fixture-fallback-key', ANTHROPIC_BASE_URL: 'http://127.0.0.1:1',
       SSH_CONNECTION: '192.0.2.1 12345 192.0.2.2 22',
       CLAUDE_CODE_LOCAL_SKIP_REMOTE_PREFETCH: '1',
-      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', CC_HAHA_SKIP_DOTENV: '1',
+      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', WANGMAI_SKIP_DOTENV: '1',
     })
     await mkdir(bin)
     await mkdir(workDir)

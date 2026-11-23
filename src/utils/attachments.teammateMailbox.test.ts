@@ -20,8 +20,8 @@ const WORKER_ID = `worker@${TEAM}`
 const ENV_KEYS = [
   'CLAUDE_CONFIG_DIR',
   'USER_TYPE',
-  'CC_HAHA_AGENT_TEAMS_ENABLED',
-  'CC_HAHA_TEAM_WORKER',
+  'WANGMAI_AGENT_TEAMS_ENABLED',
+  'WANGMAI_TEAM_WORKER',
 ] as const
 let savedEnv: Partial<Record<(typeof ENV_KEYS)[number], string>>
 let savedInteractive: boolean
@@ -30,11 +30,11 @@ let configDir: string
 beforeEach(async () => {
   savedEnv = Object.fromEntries(ENV_KEYS.map(key => [key, process.env[key]]))
   savedInteractive = getIsInteractive()
-  configDir = await mkdtemp(join(tmpdir(), 'cc-haha-mailbox-attachments-'))
+  configDir = await mkdtemp(join(tmpdir(), 'wangmai-mailbox-attachments-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
-  process.env.CC_HAHA_AGENT_TEAMS_ENABLED = '1'
+  process.env.WANGMAI_AGENT_TEAMS_ENABLED = '1'
   delete process.env.USER_TYPE
-  delete process.env.CC_HAHA_TEAM_WORKER
+  delete process.env.WANGMAI_TEAM_WORKER
   // The desktop lead runs in print mode.
   setIsInteractive(false)
 })
@@ -123,9 +123,9 @@ describe('external builds deliver teammate mail between turns only', () => {
     await send('team-lead', 'worker', 'for the lead', 2)
 
     // A desktop process worker leaves both inboxes to the server and the lead.
-    process.env.CC_HAHA_TEAM_WORKER = '1'
+    process.env.WANGMAI_TEAM_WORKER = '1'
     expect(await getTeammateMailboxAttachments(contextFor(leadState()))).toEqual([])
-    delete process.env.CC_HAHA_TEAM_WORKER
+    delete process.env.WANGMAI_TEAM_WORKER
 
     joinAsWorker()
     expect(await getTeammateMailboxAttachments(contextFor(leadState()))).toEqual([])

@@ -128,7 +128,7 @@ describe('WeChat bounded video processing', () => {
 
 describe('Video process runner', () => {
   it('reports missing dependencies with install guidance', async () => {
-    await expect(runVideoCommand('cc-haha-nonexistent-ffprobe-fixture', [], { timeoutMs: 1000 })).rejects.toThrow('WECHAT_FFPROBE_PATH')
+    await expect(runVideoCommand('wangmai-nonexistent-ffprobe-fixture', [], { timeoutMs: 1000 })).rejects.toThrow('WECHAT_FFPROBE_PATH')
   })
 
   it('terminates timed-out processes', async () => {

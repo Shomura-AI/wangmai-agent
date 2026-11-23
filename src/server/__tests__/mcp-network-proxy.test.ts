@@ -29,8 +29,8 @@ const PROXY_ENV_KEYS = [
   'all_proxy',
   'NO_PROXY',
   'no_proxy',
-  'CC_HAHA_SYSTEM_PROXY_URL',
-  'CC_HAHA_SYSTEM_PROXY_ERROR',
+  'WANGMAI_SYSTEM_PROXY_URL',
+  'WANGMAI_SYSTEM_PROXY_ERROR',
 ] as const
 
 let configDir = ''
@@ -46,7 +46,7 @@ let restoreStorage: () => void
 
 beforeEach(async () => {
   restoreStorage = isolateMcpFixtureCredentials()
-  configDir = await mkdtemp(join(tmpdir(), 'cc-haha-mcp-network-proxy-'))
+  configDir = await mkdtemp(join(tmpdir(), 'wangmai-mcp-network-proxy-'))
   originalConfigDir = process.env.CLAUDE_CONFIG_DIR
   process.env.CLAUDE_CONFIG_DIR = configDir
   originalProxyEnv = {}
@@ -105,7 +105,7 @@ async function checkMcpServer(url: string): Promise<{ status: string, statusDeta
 
 describe('MCP checks run by the desktop server', () => {
   test('go through the system proxy bridge the desktop host passes in', async () => {
-    process.env.CC_HAHA_SYSTEM_PROXY_URL = proxy.url
+    process.env.WANGMAI_SYSTEM_PROXY_URL = proxy.url
     const url = `http://${UNREACHABLE_MCP_HOST}/mcp`
 
     const result = await checkMcpServer(url)
@@ -129,7 +129,7 @@ describe('MCP checks run by the desktop server', () => {
   })
 
   test('reach loopback MCP servers directly', async () => {
-    process.env.CC_HAHA_SYSTEM_PROXY_URL = proxy.url
+    process.env.WANGMAI_SYSTEM_PROXY_URL = proxy.url
 
     const result = await checkMcpServer(`http://127.0.0.1:${fixture.port}/mcp`)
 
@@ -138,7 +138,7 @@ describe('MCP checks run by the desktop server', () => {
   })
 
   for (const newestFirst of [false, true]) test(`two live API listeners keep proxy routing when the ${newestFirst ? 'newest' : 'oldest'} stops`, async () => {
-    process.env.CC_HAHA_SYSTEM_PROXY_URL = proxy.url
+    process.env.WANGMAI_SYSTEM_PROXY_URL = proxy.url
     const first = startServer(0, '127.0.0.1')
     const second = startServer(0, '127.0.0.1')
     const stopped = newestFirst ? second : first
@@ -151,7 +151,7 @@ describe('MCP checks run by the desktop server', () => {
   })
 
   test('stopping the last API listener unregisters its host resolver', async () => {
-    process.env.CC_HAHA_SYSTEM_PROXY_URL = proxy.url
+    process.env.WANGMAI_SYSTEM_PROXY_URL = proxy.url
     server = startServer(0, '127.0.0.1')
     expect(await resolveMcpHostProxy(`http://${UNREACHABLE_MCP_HOST}/mcp`)).toBeDefined()
     server.stop(true)

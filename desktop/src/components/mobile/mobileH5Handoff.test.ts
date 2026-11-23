@@ -18,14 +18,14 @@ function marker(body: unknown, { ok = true, type = 'application/json; charset=ut
 
 describe('isMobileH5Available', () => {
   it('trusts only the marker the phone build writes', async () => {
-    const fetchMarker = marker({ app: 'cc-haha-mobile', version: '0.1.2' })
+    const fetchMarker = marker({ app: 'wangmai-mobile', version: '0.1.2' })
     expect(await isMobileH5Available(fetchMarker)).toBe(true)
     expect(fetchMarker).toHaveBeenCalledWith(MOBILE_H5_MARKER_PATH, { cache: 'no-store', credentials: 'same-origin' })
   })
 
   it('treats a dev server index page, a 404 or another JSON as no phone build', async () => {
     expect(await isMobileH5Available(marker('<!doctype html>', { type: 'text/html' }))).toBe(false)
-    expect(await isMobileH5Available(marker({ app: 'cc-haha-mobile' }, { ok: false }))).toBe(false)
+    expect(await isMobileH5Available(marker({ app: 'wangmai-mobile' }, { ok: false }))).toBe(false)
     expect(await isMobileH5Available(marker({ app: 'something-else' }))).toBe(false)
     expect(await isMobileH5Available(vi.fn(async () => { throw new TypeError('offline') }))).toBe(false)
   })

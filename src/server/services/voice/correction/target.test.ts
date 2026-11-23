@@ -2,8 +2,8 @@ import { afterEach, beforeEach, describe, expect, test } from 'bun:test'
 import * as fs from 'node:fs/promises'
 import * as os from 'node:os'
 import * as path from 'node:path'
-import { hahaDeepSeekOAuthService } from '../../hahaDeepSeekOAuthService.js'
-import { hahaOpenAIOAuthService } from '../../hahaOpenAIOAuthService.js'
+import { wangmaiDeepSeekOAuthService } from '../../wangmaiDeepSeekOAuthService.js'
+import { wangmaiOpenAIOAuthService } from '../../wangmaiOpenAIOAuthService.js'
 import { ProviderService } from '../../providerService.js'
 import { createProviderTargetResolver, describeCorrectionTargets, resolvePreferredTarget } from './target.js'
 
@@ -17,7 +17,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  hahaOpenAIOAuthService.dispose()
+  wangmaiOpenAIOAuthService.dispose()
   if (originalConfigDir === undefined) delete process.env.CLAUDE_CONFIG_DIR
   else process.env.CLAUDE_CONFIG_DIR = originalConfigDir
   await fs.rm(tmpDir, { recursive: true, force: true })
@@ -72,7 +72,7 @@ describe('default correction target', () => {
     await new ProviderService().activateProvider('deepseek-account')
     expect(await createProviderTargetResolver().resolveDefault()).toBeNull()
 
-    await hahaDeepSeekOAuthService.saveTokens({
+    await wangmaiDeepSeekOAuthService.saveTokens({
       token: 'dsh_fake_token',
       issuer: 'https://platform.deepseek.com',
       deviceId: 'device-1',
@@ -88,7 +88,7 @@ describe('default correction target', () => {
     await new ProviderService().activateProvider('openai-official')
     expect(await createProviderTargetResolver().resolveDefault()).toBeNull()
 
-    await hahaOpenAIOAuthService.saveTokens({
+    await wangmaiOpenAIOAuthService.saveTokens({
       accessToken: 'fake-access',
       refreshToken: 'fake-refresh',
       expiresAt: Date.now() + 60 * 60_000,

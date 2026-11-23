@@ -19,7 +19,7 @@ let originalConfigDir: string | undefined
 
 beforeEach(async () => {
   originalConfigDir = process.env.CLAUDE_CONFIG_DIR
-  configDir = await mkdtemp(join(tmpdir(), 'cc-haha-spawn-in-process-'))
+  configDir = await mkdtemp(join(tmpdir(), 'wangmai-spawn-in-process-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
   resetStateForTests()
   // A non-interactive session always spawns in-process teammates

@@ -60,7 +60,7 @@ if (command === 'session') {
   } else {
     writeFileSync(statePath, JSON.stringify({ saved: true }))
     if (process.env.AGENT_DESKTOP_CURSOR_FEEDBACK === '1') {
-      console.error('CC_HAHA_CURSOR_FEEDBACK {"acknowledged":true,"warning":null}')
+      console.error('WANGMAI_CURSOR_FEEDBACK {"acknowledged":true,"warning":null}')
     }
     output({ disposition: { delivery: 'delivered_verified', retry: 'unsafe' } })
   }

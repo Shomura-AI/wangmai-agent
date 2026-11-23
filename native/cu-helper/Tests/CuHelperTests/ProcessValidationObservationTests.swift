@@ -1,5 +1,5 @@
 import XCTest
-@testable import cc_haha_computer_use
+@testable import wangmai_computer_use
 
 #if DEBUG
 final class ProcessValidationObservationTests: XCTestCase {
@@ -8,7 +8,7 @@ final class ProcessValidationObservationTests: XCTestCase {
         let expected = try XCTUnwrap(ProvenProcessTarget(
             pid: .max,
             identity: AXTreeProcessIdentity(
-                bundleID: "dev.cchaha.tests.missing",
+                bundleID: "dev.wangmai.tests.missing",
                 executablePath: "/missing/process",
                 launchTime: 100
             )

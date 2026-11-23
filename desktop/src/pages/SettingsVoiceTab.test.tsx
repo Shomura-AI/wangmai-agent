@@ -62,7 +62,7 @@ describe('Voice Input settings tab wiring', () => {
 
     expect(await screen.findByRole('heading', { level: 2, name: 'Voice Input' })).toBeInTheDocument()
     expect(useUIStore.getState().activeSettingsTab).toBe('voice')
-    expect(localStorage.getItem('cc-haha-active-settings-tab')).toBe('voice')
+    expect(localStorage.getItem('wangmai-active-settings-tab')).toBe('voice')
   })
 
   it('opens the panel for a pending request, so other screens can deep-link to it', async () => {
@@ -75,7 +75,7 @@ describe('Voice Input settings tab wiring', () => {
   })
 
   it('restores the tab from storage on the next launch', async () => {
-    localStorage.setItem('cc-haha-active-settings-tab', 'voice')
+    localStorage.setItem('wangmai-active-settings-tab', 'voice')
     vi.resetModules()
     const fresh = await import('../stores/uiStore')
     expect(fresh.useUIStore.getState().activeSettingsTab).toBe('voice')

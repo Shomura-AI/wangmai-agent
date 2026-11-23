@@ -17,7 +17,7 @@ afterEach(async () => { await rm(directory, { recursive: true, force: true }) })
 async function saveReview(callerSessionId: string) {
   const runtime = { providerId: 'fixture-provider', modelId: 'fixture-model' }
   const seed = new SessionCollaborationService({
-    statePath: join(directory, 'cc-haha', 'session-collaboration', 'state.json'),
+    statePath: join(directory, 'wangmai', 'session-collaboration', 'state.json'),
     sessions: { exists: async () => true, list: async () => [], read: async () => [], create: async () => { throw new Error('Review must not create sessions') } },
     models: { list: async () => [], parentRuntime: async () => runtime, resolve: async () => runtime, validate: async value => value },
     runtime: { start: async () => { throw new Error('Recovery must not start work') }, enqueue: async () => {}, stop: async () => {} },
@@ -30,7 +30,7 @@ async function saveReview(callerSessionId: string) {
 test('collaboration startup stays read-only throughout migration validation', async () => {
   const previous = process.env.CLAUDE_CONFIG_DIR
   process.env.CLAUDE_CONFIG_DIR = directory
-  const stateDirectory = join(directory, 'cc-haha', 'session-collaboration')
+  const stateDirectory = join(directory, 'wangmai', 'session-collaboration')
   await mkdir(stateDirectory, { recursive: true })
   const statePath = join(stateDirectory, 'state.json')
   const before = JSON.stringify({ version: 1, revision: 1, members: {
@@ -172,7 +172,7 @@ test('startup excludes a restored review with a missing caller without writing u
   const { sessionId } = await sessionService.createSession(directory)
   await saveReview(sessionId)
   await sessionService.deleteSession(sessionId)
-  const statePath = join(directory, 'cc-haha', 'session-collaboration', 'state.json')
+  const statePath = join(directory, 'wangmai', 'session-collaboration', 'state.json')
   const before = await readFile(statePath, 'utf8')
   const dispose = configureSessionCollaborationHost('127.0.0.1', 1234)
   try {
@@ -196,7 +196,7 @@ for (const target of ['projects', 'project'] as const) test.skipIf(process.platf
   const caller = await sessionService.findSessionFile(sessionId)
   expect(caller).not.toBeNull()
   await saveReview(sessionId)
-  const statePath = join(directory, 'cc-haha', 'session-collaboration', 'state.json')
+  const statePath = join(directory, 'wangmai', 'session-collaboration', 'state.json')
   const before = await readFile(statePath, 'utf8')
   const inaccessible = target === 'projects' ? join(directory, 'projects') : dirname(caller!.filePath)
   const originalMode = (await stat(inaccessible)).mode & 0o7777
@@ -283,7 +283,7 @@ test('host startup owns persisted review readiness before the first UI or sessio
 test('an unreadable collaboration store keeps startup power readiness unavailable', async () => {
   const previous = process.env.CLAUDE_CONFIG_DIR
   process.env.CLAUDE_CONFIG_DIR = directory
-  const stateDirectory = join(directory, 'cc-haha', 'session-collaboration')
+  const stateDirectory = join(directory, 'wangmai', 'session-collaboration')
   await mkdir(stateDirectory, { recursive: true })
   await writeFile(join(stateDirectory, 'state.json'), '{broken')
   const error = spyOn(console, 'error').mockImplementation(() => {})

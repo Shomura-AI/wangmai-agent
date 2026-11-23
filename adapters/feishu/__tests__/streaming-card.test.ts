@@ -652,8 +652,8 @@ describe('StreamingCard: 错误处理', () => {
   })
 
   it('CardKit 中间帧请求挂住时不会阻塞 message_complete 收尾', async () => {
-    const previousTimeout = process.env.CC_HAHA_IM_CARD_REQUEST_TIMEOUT_MS
-    process.env.CC_HAHA_IM_CARD_REQUEST_TIMEOUT_MS = '20'
+    const previousTimeout = process.env.WANGMAI_IM_CARD_REQUEST_TIMEOUT_MS
+    process.env.WANGMAI_IM_CARD_REQUEST_TIMEOUT_MS = '20'
     try {
       const { client, calls } = makeMockClient({
         'card.create': { code: 0, data: { card_id: 'ck_hung' } },
@@ -677,9 +677,9 @@ describe('StreamingCard: 错误处理', () => {
       expect(calls.some((c) => c.api === 'cardkit.v1.card.update')).toBe(true)
     } finally {
       if (previousTimeout === undefined) {
-        delete process.env.CC_HAHA_IM_CARD_REQUEST_TIMEOUT_MS
+        delete process.env.WANGMAI_IM_CARD_REQUEST_TIMEOUT_MS
       } else {
-        process.env.CC_HAHA_IM_CARD_REQUEST_TIMEOUT_MS = previousTimeout
+        process.env.WANGMAI_IM_CARD_REQUEST_TIMEOUT_MS = previousTimeout
       }
     }
   })

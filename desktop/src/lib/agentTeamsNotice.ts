@@ -7,7 +7,7 @@
  * Stored shape (version 1): `{ "version": 1, "dismissed": true }`.
  */
 
-export const AGENT_TEAMS_NOTICE_STORAGE_KEY = 'cc-haha-agent-teams-notice'
+export const AGENT_TEAMS_NOTICE_STORAGE_KEY = 'wangmai-agent-teams-notice'
 
 type StorageLike = Pick<Storage, 'getItem' | 'setItem'>
 

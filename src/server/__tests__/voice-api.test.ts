@@ -91,9 +91,9 @@ describe('GET /api/voice/catalog', () => {
 
 describe('PUT /api/voice/preferences', () => {
   test('persists a partial update to desktop-ui.json and keeps other sections', async () => {
-    await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+    await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
     await fs.writeFile(
-      path.join(tmpDir, 'cc-haha', 'desktop-ui.json'),
+      path.join(tmpDir, 'wangmai', 'desktop-ui.json'),
       JSON.stringify({ schemaVersion: 6, futureField: { keep: true }, pet: { enabled: true } }),
     )
 
@@ -104,7 +104,7 @@ describe('PUT /api/voice/preferences', () => {
     const second = await call('PUT', '/api/voice/preferences', { language: 'zh' })
     expect(await second.json()).toEqual({ preferences: { ...DEFAULT_VOICE_PREFERENCES, language: 'zh' } })
 
-    const file = JSON.parse(await fs.readFile(path.join(tmpDir, 'cc-haha', 'desktop-ui.json'), 'utf-8'))
+    const file = JSON.parse(await fs.readFile(path.join(tmpDir, 'wangmai', 'desktop-ui.json'), 'utf-8'))
     expect(file.voiceInput).toEqual({ ...DEFAULT_VOICE_PREFERENCES, language: 'zh' })
     expect(file.futureField).toEqual({ keep: true })
     expect(file.pet.enabled).toBe(true)
@@ -124,7 +124,7 @@ describe('PUT /api/voice/preferences', () => {
     expect((await call('PUT', '/api/voice/preferences', { downloadSource: 'npmmirror' })).status).toBe(400)
     expect((await call('PUT', '/api/voice/preferences', 'not json', 'application/json')).status).toBe(400)
 
-    await expect(fs.access(path.join(tmpDir, 'cc-haha', 'desktop-ui.json'))).rejects.toThrow()
+    await expect(fs.access(path.join(tmpDir, 'wangmai', 'desktop-ui.json'))).rejects.toThrow()
   })
 })
 

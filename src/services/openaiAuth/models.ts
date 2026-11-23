@@ -61,7 +61,7 @@ export const OPENAI_REASONING_EFFORTS = [
 export type OpenAIReasoningEffort = (typeof OPENAI_REASONING_EFFORTS)[number]
 
 export const OPENAI_CODEX_REASONING_EFFORT_ENV_KEY =
-  'CC_HAHA_OPENAI_REASONING_EFFORT'
+  'WANGMAI_OPENAI_REASONING_EFFORT'
 
 const GPT_5_6_REASONING_EFFORTS: OpenAIReasoningEffort[] = [
   'low',
@@ -248,7 +248,7 @@ export function resolveOpenAIReasoningEffortWithPriority(
 export function isOpenAIResponsesModel(model: string): boolean {
   // The official runtime selects the transport even for newly published IDs
   // and Claude tier aliases, so capability checks must follow that same route.
-  return isEnvTruthy(readProviderEnv('CC_HAHA_OPENAI_OAUTH_PROVIDER')) ||
+  return isEnvTruthy(readProviderEnv('WANGMAI_OPENAI_OAUTH_PROVIDER')) ||
     isOpenAIReasoningModel(model)
 }
 

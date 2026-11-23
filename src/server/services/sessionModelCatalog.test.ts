@@ -2,10 +2,10 @@ import { describe, expect, test, spyOn, mock } from 'bun:test'
 import { buildSessionModelCatalog, resolveSessionRuntimeFromCatalog, listSessionModels } from './sessionModelCatalog.js'
 import type { SavedProvider } from '../types/provider.js'
 import { ProviderService } from './providerService.js'
-import { hahaOAuthService } from './hahaOAuthService.js'
-import { hahaOpenAIOAuthService } from './hahaOpenAIOAuthService.js'
-import { hahaGrokOAuthService } from './hahaGrokOAuthService.js'
-import { hahaDeepSeekOAuthService } from './hahaDeepSeekOAuthService.js'
+import { wangmaiOAuthService } from './wangmaiOAuthService.js'
+import { wangmaiOpenAIOAuthService } from './wangmaiOpenAIOAuthService.js'
+import { wangmaiGrokOAuthService } from './wangmaiGrokOAuthService.js'
+import { wangmaiDeepSeekOAuthService } from './wangmaiDeepSeekOAuthService.js'
 
 const provider = (id: string): SavedProvider => ({ id, name: 'Same provider name', presetId: 'custom', apiKey: 'secret-key', baseUrl: 'https://secret.invalid', apiFormat: 'anthropic', models: { main: 'shared-model', opus: 'shared-model', sonnet: 'small-model', haiku: 'small-model' } })
 const accounts = { claude: false, openai: false, grok: false, deepseek: false }
@@ -78,7 +78,7 @@ test('live directory stays local and includes configured official defaults witho
     const fetch = spyOn(globalThis, 'fetch').mockRejectedValue(new Error('No network allowed'))
     spyOn(ProviderService.prototype, 'listProviders').mockResolvedValue({ providers: [provider('saved')], activeId: 'openai-official', providerOrder: [] })
     spyOn(ProviderService.prototype, 'getOfficialProviderModels').mockResolvedValue({ main: 'configured-official', opus: 'configured-official', sonnet: 'small', haiku: 'small' })
-    for (const service of [hahaOAuthService, hahaOpenAIOAuthService, hahaGrokOAuthService, hahaDeepSeekOAuthService]) spyOn(service, 'loadTokens').mockResolvedValue({ accessToken: 'private-token' } as never)
+    for (const service of [wangmaiOAuthService, wangmaiOpenAIOAuthService, wangmaiGrokOAuthService, wangmaiDeepSeekOAuthService]) spyOn(service, 'loadTokens').mockResolvedValue({ accessToken: 'private-token' } as never)
     const result = await listSessionModels()
     expect(fetch).not.toHaveBeenCalled()
     expect(result.find(item => item.providerId === 'openai-official' && item.isDefault)?.modelId).toBe('configured-official')

@@ -1,4 +1,4 @@
-package app.cchaha.mobile
+package app.wangmai.mobile
 
 import android.app.Application
 import android.content.res.Configuration

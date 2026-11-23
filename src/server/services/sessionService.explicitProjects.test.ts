@@ -97,8 +97,8 @@ test('nearest registered ancestor wins while ordinary sibling sessions keep the 
 })
 
 test('v7 preference fixture migrates without creating project boundaries or losing extensions', async () => {
-  const file = join(process.env.CLAUDE_CONFIG_DIR!, 'cc-haha', 'desktop-ui.json')
-  await mkdir(join(process.env.CLAUDE_CONFIG_DIR!, 'cc-haha'), { recursive: true })
+  const file = join(process.env.CLAUDE_CONFIG_DIR!, 'wangmai', 'desktop-ui.json')
+  await mkdir(join(process.env.CLAUDE_CONFIG_DIR!, 'wangmai'), { recursive: true })
   await writeFile(file, JSON.stringify({ schemaVersion: 7, future: { keep: true }, projectAdditionalDirectories: { [repository]: [extra] } }))
   const service = new DesktopUiPreferencesService()
   expect((await service.readPreferences()).preferences).toMatchObject({ schemaVersion: 8, explicitProjectRoots: [], future: { keep: true } })

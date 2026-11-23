@@ -55,12 +55,12 @@ export function isClaudeOfficialAccountProtected(): boolean {
     return false
   }
   const usingOpenAIOAuth =
-    isEnvTruthy(process.env.CC_HAHA_OPENAI_OAUTH_PROVIDER) &&
+    isEnvTruthy(process.env.WANGMAI_OPENAI_OAUTH_PROVIDER) &&
     !!getOpenAIOAuthTokens()?.refreshToken
   if (
     usingOpenAIOAuth ||
-    isEnvTruthy(process.env.CC_HAHA_GROK_OAUTH_PROVIDER) ||
-    isEnvTruthy(process.env.CC_HAHA_DEEPSEEK_OAUTH_PROVIDER) ||
+    isEnvTruthy(process.env.WANGMAI_GROK_OAUTH_PROVIDER) ||
+    isEnvTruthy(process.env.WANGMAI_DEEPSEEK_OAUTH_PROVIDER) ||
     hasAnthropicCompatibleThirdPartyConfig()
   ) {
     return false

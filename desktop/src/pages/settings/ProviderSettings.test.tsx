@@ -311,7 +311,7 @@ describe('active sponsor providers', () => {
     expect(dialog.getByDisplayValue('claude-haiku-5-5')).toBeInTheDocument()
     expect(dialog.getByRole('button', { name: 'Fetch models' })).toBeDisabled()
     fireEvent.click(dialog.getByRole('button', { name: /Get API Key/ }))
-    expect(open).toHaveBeenCalledWith('https://modelflare.dev/sign-up?utm_source=github&utm_campaign=cchaha')
+    expect(open).toHaveBeenCalledWith('https://modelflare.dev/sign-up?utm_source=github&utm_campaign=wangmai')
 
     fireEvent.change(dialog.getAllByPlaceholderText('sk-...')[0]!, { target: { value: 'fake-modelflare-key' } })
     fireEvent.click(dialog.getByRole('button', { name: 'Fetch models' }))
@@ -565,7 +565,7 @@ describe('provider request compatibility', () => {
     useSettingsStore.setState({ locale: 'en' })
     vi.spyOn(useSettingsStore.getState(), 'fetchAll').mockResolvedValue()
     // The provider is the default: only the default's edits are written to
-    // cc-haha/settings.json, which these tests inspect.
+    // wangmai/settings.json, which these tests inspect.
     vi.spyOn(providersApi, 'list').mockResolvedValue({ providers: [provider], activeId: provider.id })
     vi.spyOn(providersApi, 'getSettings').mockResolvedValue({ env: { CUSTOM_ENV: 'keep' }, futureSetting: true })
     vi.spyOn(providersApi, 'updateSettings').mockResolvedValue({ ok: true })
@@ -652,7 +652,7 @@ describe('provider request compatibility', () => {
 })
 
 /**
- * cc-haha/settings.json holds the default provider's runtime env, and every session
+ * wangmai/settings.json holds the default provider's runtime env, and every session
  * on the default (Claude Official included) reads it. Saving any other provider
  * must not rewrite it, or the default starts sending to that provider (#1806).
  */

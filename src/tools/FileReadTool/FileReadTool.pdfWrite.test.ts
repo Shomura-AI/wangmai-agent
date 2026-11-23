@@ -45,7 +45,7 @@ function context(): ToolUseContext {
 }
 
 async function fixture() {
-  const root = await mkdtemp(join(tmpdir(), 'cc-haha-pdf-write-'))
+  const root = await mkdtemp(join(tmpdir(), 'wangmai-pdf-write-'))
   directories.push(root)
   const filePath = join(root, 'report.pdf')
   const original = asciiPDF('ORIGINAL')

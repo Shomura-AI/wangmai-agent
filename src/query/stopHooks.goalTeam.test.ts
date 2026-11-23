@@ -3,7 +3,7 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-const GOAL_COMMAND = '<cc-haha-goal-hook>\nreviews/SUMMARY.md exists'
+const GOAL_COMMAND = '<wangmai-goal-hook>\nreviews/SUMMARY.md exists'
 let hookResults: Array<Record<string, unknown>> = []
 
 const actualHooks = await import('../utils/hooks.js')

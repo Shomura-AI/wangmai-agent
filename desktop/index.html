@@ -30,7 +30,7 @@
       guesses from the page otherwise, and guesses gray here.
     -->
     <meta name="theme-color" content="#FCFCFC" />
-    <title>Claude Code Haha</title>
+    <title>网脉智能体</title>
     <!--
       The Electron window draws its own chrome, but this same document is what
       the H5 remote client loads in a phone browser, where a missing favicon
@@ -46,7 +46,7 @@
         modules load, before any error handling exists. Only there, swap in a
         storage that lives in this page's memory: the app runs, nothing
         survives a reload. A browser whose storage can be read keeps it
-        untouched. __CC_HAHA_MEMORY_STORAGE__ lists what was swapped, for code
+        untouched. __WANGMAI_MEMORY_STORAGE__ lists what was swapped, for code
         that needs storage to outlive the page (src/lib/browserStorage.ts).
       */
       (function () {
@@ -72,7 +72,7 @@
         var names = ['localStorage', 'sessionStorage']
         for (var i = 0; i < names.length; i++) {
           try {
-            window[names[i]].getItem('cc-haha-storage-probe')
+            window[names[i]].getItem('wangmai-storage-probe')
             continue
           } catch (_) {
             /* Denied: replace it below. */
@@ -84,7 +84,7 @@
             /* Not replaceable here; the app's own error handling applies. */
           }
         }
-        if (swapped.length) window.__CC_HAHA_MEMORY_STORAGE__ = swapped
+        if (swapped.length) window.__WANGMAI_MEMORY_STORAGE__ = swapped
       })()
     </script>
     <script>
@@ -111,12 +111,12 @@
           var narrow = window.matchMedia('(max-width: 767px)').matches
           var coarse = window.matchMedia('(pointer: coarse)').matches
           if (!narrow && !coarse) return
-          var server = window.localStorage.getItem('cc-haha-h5-server-url')
-          var token = window.localStorage.getItem('cc-haha-h5-token')
+          var server = window.localStorage.getItem('wangmai-h5-server-url')
+          var token = window.localStorage.getItem('wangmai-h5-token')
           if (!server || !token || new URL(server).origin !== window.location.origin) return
           // Landing back here right after leaving means /m/ could not take the
           // page (not built into this server): let the app's entry decide.
-          var key = 'cc-haha-mobile-h5-handoff'
+          var key = 'wangmai-mobile-h5-handoff'
           if (Date.now() - Number(window.sessionStorage.getItem(key) || 0) < 15000) return
           window.sessionStorage.setItem(key, String(Date.now()))
           window.location.replace('/m/')
@@ -163,20 +163,20 @@
             if (meta && BACKGROUND[value]) meta.setAttribute('content', BACKGROUND[value])
           }
 
-          var stored = read('cc-haha-theme')
+          var stored = read('wangmai-theme')
           var theme = (has(LIGHT, stored) || isDark(stored)) ? stored : 'white'
 
-          var followRaw = read('cc-haha-follow-system-theme')
+          var followRaw = read('wangmai-follow-system-theme')
           // Unset means: new install follows the system, existing install
           // (recognised by having a stored theme) keeps its fixed pick.
           var follow = followRaw === '1' || (followRaw !== '0' && stored === null)
 
           if (follow) {
-            var storedLight = read('cc-haha-light-theme')
+            var storedLight = read('wangmai-light-theme')
             var lightTheme = has(LIGHT, storedLight)
               ? storedLight
               : (has(LIGHT, theme) ? theme : 'white')
-            var storedDark = read('cc-haha-dark-theme')
+            var storedDark = read('wangmai-dark-theme')
             var darkTheme = isDark(storedDark) ? storedDark : (isDark(theme) ? theme : 'neutral-dark')
             var prefersDark = false
             try {
@@ -236,7 +236,7 @@
         }
 
         function renderStartupError(reason) {
-          if (window.__CC_HAHA_BOOTSTRAPPED__) return
+          if (window.__WANGMAI_BOOTSTRAPPED__) return
           var root = document.getElementById('root')
           if (!root) return
           window.clearTimeout(bootTimer)
@@ -286,7 +286,7 @@
           root.appendChild(shell)
         }
 
-        window.__CC_HAHA_SHOW_STARTUP_ERROR__ = renderStartupError
+        window.__WANGMAI_SHOW_STARTUP_ERROR__ = renderStartupError
 
         window.addEventListener('error', function (event) {
           var target = event.target

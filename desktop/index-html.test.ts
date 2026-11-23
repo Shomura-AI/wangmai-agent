@@ -6,12 +6,12 @@ const html = readFileSync(join(__dirname, 'index.html'), 'utf-8')
 
 describe('desktop index startup diagnostics', () => {
   it('installs a non-module startup watchdog before the app module loads', () => {
-    const watchdogIndex = html.indexOf('__CC_HAHA_SHOW_STARTUP_ERROR__')
+    const watchdogIndex = html.indexOf('__WANGMAI_SHOW_STARTUP_ERROR__')
     const moduleIndex = html.indexOf('type="module"')
 
     expect(watchdogIndex).toBeGreaterThan(0)
     expect(moduleIndex).toBeGreaterThan(watchdogIndex)
-    expect(html).toContain('__CC_HAHA_BOOTSTRAPPED__')
+    expect(html).toContain('__WANGMAI_BOOTSTRAPPED__')
     expect(html).toContain('Desktop startup failed')
   })
 
@@ -23,7 +23,7 @@ describe('desktop index startup diagnostics', () => {
   it('keeps the script error visible after the startup deadline', () => {
     const document = new DOMParser().parseFromString(html, 'text/html')
     const watchdog = Array.from(document.scripts).find(script =>
-      script.textContent?.includes('__CC_HAHA_SHOW_STARTUP_ERROR__'),
+      script.textContent?.includes('__WANGMAI_SHOW_STARTUP_ERROR__'),
     )!
     vi.useFakeTimers()
     try {

@@ -319,7 +319,7 @@ describe('stripSignatureBlocksAfterModelChange', () => {
     const geminiSignature = assistant('gemini-turn', [
       {
         type: 'redacted_thinking',
-        data: 'cc-haha:gemini-thought-signature:v1:abc',
+        data: 'wangmai:gemini-thought-signature:v1:abc',
       },
     ])
     const geminiTool = assistant('gemini-turn', [toolUse('tool-gemini')])

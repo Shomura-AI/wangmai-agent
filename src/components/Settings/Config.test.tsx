@@ -98,7 +98,7 @@ test('list Escape belongs to Config and restores project instructions', async ()
   }
 })
 
-test('list Escape preserves cc-haha fallback language when untouched and restores it when modified', async () => {
+test('list Escape preserves wangmai fallback language when untouched and restores it when modified', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'config-lang-cancel-'))
   const oldHome = process.env.HOME
   const oldConfig = process.env.CLAUDE_CONFIG_DIR
@@ -109,7 +109,7 @@ test('list Escape preserves cc-haha fallback language when untouched and restore
   const handlers = new Map<string, () => void>()
   let state = appState.getDefaultAppState()
   const store = { getState: () => state }
-  // Simulate ~/.claude/settings.json missing `language` while cc-haha/settings.json fallback supplies 'chinese'.
+  // Simulate ~/.claude/settings.json missing `language` while wangmai/settings.json fallback supplies 'chinese'.
   let rawUser: Record<string, unknown> = {
     pluginConfigs: { 'agents-md@builtin': { options: { instructionFiles: 'claude-md-or-agents-md' } } },
   }

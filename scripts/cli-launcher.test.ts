@@ -4,17 +4,17 @@ import { tmpdir } from 'node:os'
 import path from 'node:path'
 
 test('source CLI launcher runs through Bun without requiring Bash', async () => {
-  const configDir = await mkdtemp(path.join(tmpdir(), 'cc-haha-cli-launcher-'))
+  const configDir = await mkdtemp(path.join(tmpdir(), 'wangmai-cli-launcher-'))
   const repoRoot = path.resolve(import.meta.dir, '..')
 
   try {
     const child = Bun.spawn(
-      [process.execPath, 'run', 'claude-haha', '--version'],
+      [process.execPath, 'run', 'wangmai', '--version'],
       {
         cwd: repoRoot,
         env: {
           ...process.env,
-          CC_HAHA_SKIP_DOTENV: '1',
+          WANGMAI_SKIP_DOTENV: '1',
           CLAUDE_CONFIG_DIR: configDir,
         },
         stdout: 'pipe',

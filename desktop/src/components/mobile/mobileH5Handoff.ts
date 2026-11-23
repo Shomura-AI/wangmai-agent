@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from 'react'
 export const MOBILE_H5_PATH = '/m/'
 /** Written by `mobile/scripts/export-h5.ts`; present only when the phone app was built. */
 export const MOBILE_H5_MARKER_PATH = '/m/h5.json'
-export const MOBILE_H5_MARKER_APP = 'cc-haha-mobile'
+export const MOBILE_H5_MARKER_APP = 'wangmai-mobile'
 
 type MarkerFetch = (
   input: string,

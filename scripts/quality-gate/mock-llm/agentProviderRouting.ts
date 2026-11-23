@@ -100,8 +100,8 @@ export async function runAgentProviderRoutingScenario(rootDir: string, artifactD
     const result: (typeof results)[number] = { id: testCase.id, status: 'failed', agentRequests }
 
     try {
-      mkdirSync(join(sandbox.configDir, 'cc-haha'), { recursive: true })
-      writeFileSync(join(sandbox.configDir, 'cc-haha', 'providers.json'), JSON.stringify({
+      mkdirSync(join(sandbox.configDir, 'wangmai'), { recursive: true })
+      writeFileSync(join(sandbox.configDir, 'wangmai', 'providers.json'), JSON.stringify({
         schemaVersion: 4,
         activeId: null,
         providers: [{
@@ -136,7 +136,7 @@ export async function runAgentProviderRoutingScenario(rootDir: string, artifactD
       ], {
         cwd: workDir, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe',
         env: {
-          ...sandbox.env, ...sessionEnv, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1',
+          ...sandbox.env, ...sessionEnv, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1',
           CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1',
         },
       })

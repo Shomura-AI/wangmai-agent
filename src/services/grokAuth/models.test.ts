@@ -16,16 +16,16 @@ describe('Grok model catalog', () => {
   let originalProvider: string | undefined
   beforeEach(() => {
     originalSnapshot = process.env[GROK_MODEL_CATALOG_ENV_KEY]
-    originalProvider = process.env.CC_HAHA_GROK_OAUTH_PROVIDER
+    originalProvider = process.env.WANGMAI_GROK_OAUTH_PROVIDER
     delete process.env[GROK_MODEL_CATALOG_ENV_KEY]
-    delete process.env.CC_HAHA_GROK_OAUTH_PROVIDER
+    delete process.env.WANGMAI_GROK_OAUTH_PROVIDER
   })
   afterEach(() => {
     setGrokRuntimeModelCatalog(GROK_MODEL_CATALOG)
     if (originalSnapshot === undefined) delete process.env[GROK_MODEL_CATALOG_ENV_KEY]
     else process.env[GROK_MODEL_CATALOG_ENV_KEY] = originalSnapshot
-    if (originalProvider === undefined) delete process.env.CC_HAHA_GROK_OAUTH_PROVIDER
-    else process.env.CC_HAHA_GROK_OAUTH_PROVIDER = originalProvider
+    if (originalProvider === undefined) delete process.env.WANGMAI_GROK_OAUTH_PROVIDER
+    else process.env.WANGMAI_GROK_OAUTH_PROVIDER = originalProvider
   })
 
   test('mirrors the live picker fallback and defaults to Grok 4.7', () => {
@@ -84,7 +84,7 @@ describe('Grok model catalog', () => {
     expect(getGrokModelCatalogEntry('claude-sonnet-4-6', liveCatalog)).toBeUndefined()
 
     // Inside a Grok OAuth CLI subprocess, its own process-scoped launch snapshot applies.
-    process.env.CC_HAHA_GROK_OAUTH_PROVIDER = '1'
+    process.env.WANGMAI_GROK_OAUTH_PROVIDER = '1'
     process.env[GROK_MODEL_CATALOG_ENV_KEY] = JSON.stringify(liveCatalog)
     expect(getGrokContextWindowForModel('grok-4.8')).toBe(1_000_000)
   })
@@ -143,7 +143,7 @@ describe('Grok model catalog', () => {
     }]
     process.env[GROK_MODEL_CATALOG_ENV_KEY] = JSON.stringify(snapshot)
     expect(getGrokRuntimeModelCatalog()).toBe(GROK_MODEL_CATALOG)
-    process.env.CC_HAHA_GROK_OAUTH_PROVIDER = '1'
+    process.env.WANGMAI_GROK_OAUTH_PROVIDER = '1'
     expect(getGrokRuntimeModelCatalog()).toEqual(snapshot)
 
     const live = [{ ...snapshot[0]!, supportsReasoningEffort: false }]
@@ -153,7 +153,7 @@ describe('Grok model catalog', () => {
   })
 
   test('ignores invalid launch snapshots without losing the bundled fallback', () => {
-    process.env.CC_HAHA_GROK_OAUTH_PROVIDER = '1'
+    process.env.WANGMAI_GROK_OAUTH_PROVIDER = '1'
     for (const raw of [
       '{', 'null', '{}', '[]', '[null]',
       JSON.stringify([{ value: ' ' }]),

@@ -93,7 +93,7 @@ let resolveSnapshotPath: () => string = getPromptSnapshotPath
 
 function isEnabled(): boolean {
   if (process.env.CLAUDE_CODE_ENTRYPOINT !== 'claude-desktop') return false
-  const flag = process.env.CC_HAHA_PROMPT_SNAPSHOT
+  const flag = process.env.WANGMAI_PROMPT_SNAPSHOT
   if (flag !== undefined && FALSY_FLAG_VALUES.has(flag.trim().toLowerCase())) {
     return false
   }

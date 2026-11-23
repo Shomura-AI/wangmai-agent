@@ -11,7 +11,7 @@
  * restore identity* — which page to reopen after a restart — and must never be
  * turned into a partition name, or every tab would get its own cookie jar.
  */
-export const WORKSPACE_BROWSER_PARTITION = 'persist:cc-haha-browser-app'
+export const WORKSPACE_BROWSER_PARTITION = 'persist:wangmai-browser-app'
 
 /**
  * A `<webview>` creates no guest until it has a `src`. The renderer always

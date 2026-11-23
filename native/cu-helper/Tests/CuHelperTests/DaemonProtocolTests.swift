@@ -1,5 +1,5 @@
 import XCTest
-@testable import cc_haha_computer_use
+@testable import wangmai_computer_use
 
 final class DaemonProtocolTests: XCTestCase {
     private func request(
@@ -35,7 +35,7 @@ final class DaemonProtocolTests: XCTestCase {
 
     func testProtocolMismatchAndExpiredDeadlineFailClosed() {
         XCTAssertThrowsError(try ComputerUseDaemonProtocol.validate(
-            request(version: "CCHahaComputerUseIPC-1"),
+            request(version: "CCWangMaiComputerUseIPC-1"),
             nowUnixMilliseconds: 1_000
         )) { error in
             XCTAssertEqual((error as? CUError)?.code, "protocol_mismatch")

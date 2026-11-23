@@ -33,7 +33,7 @@ export async function runBackgroundNotificationScenario(rootDir: string, artifac
   })
   const child = Bun.spawn([process.execPath, '--no-env-file', '--preload', join(rootDir, 'preload.ts'), join(rootDir, 'src/entrypoints/cli.tsx'),
     '--print', '--model', 'mock-model', '--permission-mode', 'bypassPermissions', '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose'], {
-    cwd: workDir, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe', env: { ...sandbox.env, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1',
+    cwd: workDir, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe', env: { ...sandbox.env, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1',
       ANTHROPIC_BASE_URL: upstream.url, ANTHROPIC_API_KEY: 'mock-api-key', CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1', CI: '1' },
   })
   const output = Promise.all([new Response(child.stdout).text(), new Response(child.stderr).text()])

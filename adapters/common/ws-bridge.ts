@@ -96,7 +96,7 @@ export class WsBridge {
   constructor(
     serverUrl: string,
     platform: string,
-    localAccessToken = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN,
+    localAccessToken = process.env.WANGMAI_LOCAL_ACCESS_TOKEN,
     options: WsBridgeOptions = {},
   ) {
     this.serverUrl = serverUrl.replace(/\/$/, '')

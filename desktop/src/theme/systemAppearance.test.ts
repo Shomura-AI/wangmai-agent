@@ -164,39 +164,39 @@ describe('stored appearance preferences', () => {
 
   it('leaves an existing install on its fixed theme until it opts in', () => {
     // Upgrading must never silently repaint someone's app.
-    window.localStorage.setItem('cc-haha-theme', 'warm-classic')
+    window.localStorage.setItem('wangmai-theme', 'warm-classic')
     expect(readStoredFollowSystemTheme(window.localStorage)).toBe(false)
   })
 
   it('honours an explicit opt-in and opt-out', () => {
-    window.localStorage.setItem('cc-haha-theme', 'warm-classic')
-    window.localStorage.setItem('cc-haha-follow-system-theme', '1')
+    window.localStorage.setItem('wangmai-theme', 'warm-classic')
+    window.localStorage.setItem('wangmai-follow-system-theme', '1')
     expect(readStoredFollowSystemTheme(window.localStorage)).toBe(true)
 
-    window.localStorage.setItem('cc-haha-follow-system-theme', '0')
+    window.localStorage.setItem('wangmai-follow-system-theme', '0')
     expect(readStoredFollowSystemTheme(window.localStorage)).toBe(false)
   })
 
   it('seeds each ground from a manual theme sitting on it', () => {
-    window.localStorage.setItem('cc-haha-theme', 'celadon')
+    window.localStorage.setItem('wangmai-theme', 'celadon')
     expect(readStoredLightTheme(window.localStorage)).toBe('celadon')
 
-    window.localStorage.setItem('cc-haha-theme', 'ink-blue')
+    window.localStorage.setItem('wangmai-theme', 'ink-blue')
     expect(readStoredDarkTheme(window.localStorage)).toBe('ink-blue')
   })
 
   it('falls back to the defaults when the manual theme is on the other ground', () => {
-    window.localStorage.setItem('cc-haha-theme', 'ink-blue')
+    window.localStorage.setItem('wangmai-theme', 'ink-blue')
     expect(readStoredLightTheme(window.localStorage)).toBe('white')
 
-    window.localStorage.setItem('cc-haha-theme', 'celadon')
+    window.localStorage.setItem('wangmai-theme', 'celadon')
     expect(readStoredDarkTheme(window.localStorage)).toBe('neutral-dark')
   })
 
   it('rejects stored values outside their own ground', () => {
-    window.localStorage.setItem('cc-haha-theme', 'solarized')
-    window.localStorage.setItem('cc-haha-light-theme', 'ink-blue')
-    window.localStorage.setItem('cc-haha-dark-theme', 'celadon')
+    window.localStorage.setItem('wangmai-theme', 'solarized')
+    window.localStorage.setItem('wangmai-light-theme', 'ink-blue')
+    window.localStorage.setItem('wangmai-dark-theme', 'celadon')
 
     expect(readStoredTheme(window.localStorage)).toBe('white')
     expect(readStoredLightTheme(window.localStorage)).toBe('white')
@@ -216,9 +216,9 @@ describe('stored appearance preferences', () => {
   })
 
   it('accepts neutral dark as a manual choice and a dark preference only', () => {
-    window.localStorage.setItem('cc-haha-theme', 'neutral-dark')
-    window.localStorage.setItem('cc-haha-light-theme', 'neutral-dark')
-    window.localStorage.setItem('cc-haha-dark-theme', 'neutral-dark')
+    window.localStorage.setItem('wangmai-theme', 'neutral-dark')
+    window.localStorage.setItem('wangmai-light-theme', 'neutral-dark')
+    window.localStorage.setItem('wangmai-dark-theme', 'neutral-dark')
     expect(readStoredTheme(window.localStorage)).toBe('neutral-dark')
     expect(readStoredLightTheme(window.localStorage)).toBe('white')
     expect(readStoredDarkTheme(window.localStorage)).toBe('neutral-dark')

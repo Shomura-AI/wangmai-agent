@@ -85,10 +85,10 @@ export function navigateMobileUp(): void {
   goMobileHome()
 }
 
-type HistoryGuardState = { ccHahaMobileGuard: true }
+type HistoryGuardState = { wangmaiMobileGuard: true }
 
 function isGuardState(state: unknown): state is HistoryGuardState {
-  return typeof state === 'object' && state !== null && (state as HistoryGuardState).ccHahaMobileGuard === true
+  return typeof state === 'object' && state !== null && (state as HistoryGuardState).wangmaiMobileGuard === true
 }
 
 /**
@@ -119,7 +119,7 @@ export function useMobileHistoryGuard(
   useEffect(() => {
     if (!enabled) return
     if (depth > 0 && !guardedRef.current) {
-      window.history.pushState({ ccHahaMobileGuard: true } satisfies HistoryGuardState, '')
+      window.history.pushState({ wangmaiMobileGuard: true } satisfies HistoryGuardState, '')
       guardedRef.current = true
     } else if (depth === 0 && guardedRef.current) {
       guardedRef.current = false

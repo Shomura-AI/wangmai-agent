@@ -107,14 +107,14 @@ test('internal Computer Use notes stay unpublished while their old URLs remain u
         for (const prefix of ['', '/en']) {
           const route = `${prefix}/internals/${name}`
           assert.equal(await fs.readFile(path.join(fixtureSite, 'dist', route, 'index.html'), 'utf8'), shell)
-          assert.ok(!sitemap.includes(`https://cchaha.ai${route}<`))
+          assert.ok(!sitemap.includes(`https://wangmai.example.com${route}<`))
         }
       }
       for (const prefix of ['', '/en']) {
         const route = `${prefix}/internals/computer-use`
         const page = await fs.readFile(path.join(fixtureSite, 'dist', route, 'index.html'), 'utf8')
-        assert.ok(page.includes(`https://cchaha.ai${route}`))
-        assert.ok(sitemap.includes(`https://cchaha.ai${route}<`))
+        assert.ok(page.includes(`https://wangmai.example.com${route}`))
+        assert.ok(sitemap.includes(`https://wangmai.example.com${route}<`))
       }
       assert.deepEqual(await Promise.all(internalNames.map((name) => digest(path.join(directory, 'docs/internals', `${name}.md`)))), sourceHashes)
     })

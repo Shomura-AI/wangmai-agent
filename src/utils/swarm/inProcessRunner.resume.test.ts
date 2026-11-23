@@ -66,7 +66,7 @@ const reviewer: CustomAgentDefinition = {
 }
 
 beforeEach(async () => {
-  configDir = await mkdtemp(join(tmpdir(), 'cc-haha-runner-resume-'))
+  configDir = await mkdtemp(join(tmpdir(), 'wangmai-runner-resume-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
   process.env.TEST_ENABLE_SESSION_PERSISTENCE = '1'
   process.env.USER_TYPE = 'external'

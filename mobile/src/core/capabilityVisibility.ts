@@ -16,7 +16,7 @@ const withdrawnPluginNames = new Set([
 
 export function isPluginIdVisible(pluginId: string): boolean {
   const [name, marketplace, ...rest] = pluginId.split('@')
-  return marketplace !== 'haha-connectors' || rest.length > 0 || !withdrawnPluginNames.has(name ?? '')
+  return marketplace !== 'wangmai-connectors' || rest.length > 0 || !withdrawnPluginNames.has(name ?? '')
 }
 
 /** 插件的 id 就是 `name@marketplace`；技能的 source 是它所属插件的 id（或 userSettings 这类来源）。 */

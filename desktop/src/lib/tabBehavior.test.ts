@@ -19,7 +19,7 @@ describe('tab behavior preference', () => {
   it('reads storage written before the setting existed as today\'s behavior', () => {
     // A pre-feature profile: open tabs saved, no tab behavior record.
     const storage = memoryStorage({
-      'cc-haha-open-tabs': JSON.stringify({ openTabs: [{ sessionId: 's1', title: 'A', type: 'session' }], activeTabId: 's1' }),
+      'wangmai-open-tabs': JSON.stringify({ openTabs: [{ sessionId: 's1', title: 'A', type: 'session' }], activeTabId: 's1' }),
     })
     expect(readTabBehavior(storage)).toEqual({ sessionTabLimit: null, restoreOnLaunch: true })
     expect(storage.raw(TAB_BEHAVIOR_STORAGE_KEY)).toBeUndefined()

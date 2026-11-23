@@ -57,7 +57,7 @@ test('lean prompt assembly skips MCP instructions and restores standard behavior
   const before = await build()
   setAgentProfile('lean')
   const lean = (await build()).join('\n')
-  expect(lean).toContain('You are cc-haha')
+  expect(lean).toContain('You are wangmai')
   expect(lean).toContain('/fixture/extra')
   expect(lean).not.toContain('MCP_INSTRUCTION_SENTINEL')
   expect(lean).not.toContain('# MCP Server Instructions')

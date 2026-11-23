@@ -104,9 +104,9 @@ describe('SherpaRecognizer', () => {
     })
     await recognizer.transcribe(wav, 'zh', signal())
     await recognizerWithSpy.transcribe(wav, 'zh', signal())
-    expect(seen.CC_HAHA_VOICE_WORKER_TOKEN).toMatch(/^[a-f0-9]{64}$/)
+    expect(seen.WANGMAI_VOICE_WORKER_TOKEN).toMatch(/^[a-f0-9]{64}$/)
     expect(Object.keys(seen)).not.toContain('HTTP_PROXY')
-    expect(JSON.parse(seen.CC_HAHA_VOICE_WORKER_CONFIG!).model).toEqual({ engine: 'sensevoice', model: join(dir, 'model.onnx'), tokens: join(dir, 'tokens.txt') })
+    expect(JSON.parse(seen.WANGMAI_VOICE_WORKER_CONFIG!).model).toEqual({ engine: 'sensevoice', model: join(dir, 'model.onnx'), tokens: join(dir, 'tokens.txt') })
   })
 
   it('stops an idle worker and starts a fresh one for the next request', async () => {
@@ -337,10 +337,10 @@ describe('default worker launch', () => {
   })
 
   it('detects compiled executables by their virtual module URLs', () => {
-    expect(isBundledWorkerHost('file:///$bunfs/root/claude-sidecar', false)).toBe(true)
-    expect(isBundledWorkerHost('file:///B:/~BUN/root/claude-sidecar.exe', false)).toBe(true)
-    expect(isBundledWorkerHost('file:///B:/%7EBUN/root/claude-sidecar.exe', false)).toBe(true)
-    expect(isBundledWorkerHost('file:///B:/%7eBUN/root/claude-sidecar.exe', false)).toBe(true)
+    expect(isBundledWorkerHost('file:///$bunfs/root/wangmai-sidecar', false)).toBe(true)
+    expect(isBundledWorkerHost('file:///B:/~BUN/root/wangmai-sidecar.exe', false)).toBe(true)
+    expect(isBundledWorkerHost('file:///B:/%7EBUN/root/wangmai-sidecar.exe', false)).toBe(true)
+    expect(isBundledWorkerHost('file:///B:/%7eBUN/root/wangmai-sidecar.exe', false)).toBe(true)
     expect(isBundledWorkerHost('file:///repo/src/server/services/voice/sherpa/recognizer.ts', false)).toBe(false)
     expect(isBundledWorkerHost('file:///C:/project/~BUN-tools/recognizer.ts', false)).toBe(false)
     expect(isBundledWorkerHost('https://example.test/B:/%7EBUN/root/recognizer.ts', false)).toBe(false)

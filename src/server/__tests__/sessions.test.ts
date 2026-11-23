@@ -1372,8 +1372,8 @@ describe('SessionService', () => {
         [firstConfigDir, '24300000-bbbb-cccc-dddd-eeeeeeeeeeee'],
         [secondConfigDir, '24300001-bbbb-cccc-dddd-eeeeeeeeeeee'],
       ] as const) {
-        await fs.mkdir(path.join(configDir, 'cc-haha'), { recursive: true })
-        await fs.writeFile(path.join(configDir, 'cc-haha', 'session-archives.json'), JSON.stringify({
+        await fs.mkdir(path.join(configDir, 'wangmai'), { recursive: true })
+        await fs.writeFile(path.join(configDir, 'wangmai', 'session-archives.json'), JSON.stringify({
           schemaVersion: 1, sessions: { [id]: { archived: true } },
         }))
       }
@@ -2477,7 +2477,7 @@ describe('SessionService', () => {
       { ...makeUserEntry('start two background commands', userId), parentUuid: null },
       { ...makeAssistantEntry('dispatched', userId), uuid: dispatchedId },
       {
-        type: 'cc-haha-task-notification',
+        type: 'wangmai-task-notification',
         isMeta: true,
         taskNotification: {
           taskId: 'alpha',
@@ -3627,7 +3627,7 @@ describe('SessionService', () => {
   })
 
   it('should throw when workDir does not exist', async () => {
-    expect(service.createSession('/tmp/definitely-missing-claude-code-haha')).rejects.toThrow(
+    expect(service.createSession('/tmp/definitely-missing-wangmai-agent')).rejects.toThrow(
       'Working directory does not exist'
     )
   })
@@ -4844,7 +4844,7 @@ describe('Sessions API', () => {
     await writeSessionFile('-tmp-api-owned-terminal', sessionId, [
       makeSnapshotEntry(),
       {
-        type: 'cc-haha-task-notification',
+        type: 'wangmai-task-notification',
         isMeta: true,
         taskNotification: {
           taskId: 'nested-workflow-task',
@@ -5555,8 +5555,8 @@ describe('Sessions API', () => {
     git(workDir, 'config', 'core.fsmonitor', fsmonitorPath)
 
     const { sessionId } = await sessionService.createSession(workDir)
-    const oldTimeout = process.env.CC_HAHA_GIT_INFO_TIMEOUT_MS
-    process.env.CC_HAHA_GIT_INFO_TIMEOUT_MS = '80'
+    const oldTimeout = process.env.WANGMAI_GIT_INFO_TIMEOUT_MS
+    process.env.WANGMAI_GIT_INFO_TIMEOUT_MS = '80'
 
     try {
       const startedAt = Date.now()
@@ -5579,9 +5579,9 @@ describe('Sessions API', () => {
       expect(body.changedFiles).toBe(0)
     } finally {
       if (oldTimeout === undefined) {
-        delete process.env.CC_HAHA_GIT_INFO_TIMEOUT_MS
+        delete process.env.WANGMAI_GIT_INFO_TIMEOUT_MS
       } else {
-        process.env.CC_HAHA_GIT_INFO_TIMEOUT_MS = oldTimeout
+        process.env.WANGMAI_GIT_INFO_TIMEOUT_MS = oldTimeout
       }
     }
   })

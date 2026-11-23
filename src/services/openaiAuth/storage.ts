@@ -25,26 +25,26 @@ function getDesktopTokenFilePath(): string | null {
   return filePath ? filePath : null
 }
 
-function getCcHahaDir(): string {
+function getWangMaiDir(): string {
   const configDir =
     process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude')
-  return path.join(configDir, 'cc-haha')
+  return path.join(configDir, 'wangmai')
 }
 
 /** Use one process-shared mutex per credential store, including the keychain. */
 export function getOpenAIOAuthAuthority(): string {
   const filePath = getDesktopTokenFilePath()
   // A lock anchor does not move keychain/plaintext credentials into this file.
-  return oauthFileAuthority(filePath ?? path.join(getCcHahaDir(), 'openai-oauth-secure-store'))
+  return oauthFileAuthority(filePath ?? path.join(getWangMaiDir(), 'openai-oauth-secure-store'))
 }
 
 function getFileBackedStorageMarkerPath(): string {
-  return path.join(getCcHahaDir(), FILE_BACKED_STORAGE_MARKER_FILE)
+  return path.join(getWangMaiDir(), FILE_BACKED_STORAGE_MARKER_FILE)
 }
 
 function markFileBackedStorageUsed(): void {
   try {
-    fs.mkdirSync(getCcHahaDir(), { recursive: true })
+    fs.mkdirSync(getWangMaiDir(), { recursive: true })
     fs.writeFileSync(getFileBackedStorageMarkerPath(), '1\n', { mode: 0o600 })
   } catch (error) {
     logError(error)

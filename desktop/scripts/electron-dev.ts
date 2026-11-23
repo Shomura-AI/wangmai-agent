@@ -29,7 +29,7 @@ export function createElectronDevEnv(env: NodeJS.ProcessEnv = process.env) {
   return {
     ...env,
     ELECTRON_RENDERER_URL: rendererUrl,
-    CC_HAHA_TRUSTED_RENDERER_ORIGIN: new URL(rendererUrl).origin,
+    WANGMAI_TRUSTED_RENDERER_ORIGIN: new URL(rendererUrl).origin,
     NO_PROXY: noProxy,
     no_proxy: noProxy,
   }

@@ -8,8 +8,8 @@ import type { Host } from './types'
  */
 
 /** 桌面 H5 入口验证令牌后写下的两个键，见 desktop/src/lib/desktopRuntime.ts。 */
-export const H5_SERVER_URL_STORAGE_KEY = 'cc-haha-h5-server-url'
-export const H5_TOKEN_STORAGE_KEY = 'cc-haha-h5-token'
+export const H5_SERVER_URL_STORAGE_KEY = 'wangmai-h5-server-url'
+export const H5_TOKEN_STORAGE_KEY = 'wangmai-h5-token'
 export const H5_HOST_ID = 'h5'
 export const H5_HOST_NAME = '这台电脑'
 

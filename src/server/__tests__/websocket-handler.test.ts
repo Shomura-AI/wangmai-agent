@@ -45,7 +45,7 @@ import {
 import * as teleportApi from '../../utils/teleport/api.js'
 import { resetSettingsCache, setSessionSettingsCache } from '../../utils/settings/settingsCache.js'
 import { clearGrokModelCatalogCache, getGrokModelCatalog } from '../../services/grokAuth/modelCatalog.js'
-import { hahaGrokOAuthService } from '../services/hahaGrokOAuthService.js'
+import { wangmaiGrokOAuthService } from '../services/wangmaiGrokOAuthService.js'
 import { createResumableSocketHandler } from '../ws/resumableStreams.js'
 
 function makeClientSocket(sessionId: string, clientKind: 'full' | 'pet' = 'full') {
@@ -338,7 +338,7 @@ describe('WebSocket Grok catalog runtime selection', () => {
     spyOn(ProviderService.prototype, 'listProviders').mockResolvedValue({ providers: [], activeId: 'grok-official', providerOrder: [] })
     spyOn(SettingsService.prototype, 'getUserSettings').mockResolvedValue({})
     spyOn(SettingsService.prototype, 'getPermissionMode').mockResolvedValue('default')
-    const credentials = spyOn(hahaGrokOAuthService, 'ensureFreshTokens').mockResolvedValue({
+    const credentials = spyOn(wangmaiGrokOAuthService, 'ensureFreshTokens').mockResolvedValue({
       accessToken: 'desktop-grok-test-token', refreshToken: null, expiresAt: null, email: 'grok@example.test',
     })
     await getGrokModelCatalog({
@@ -377,7 +377,7 @@ describe('WebSocket Grok catalog runtime selection', () => {
     spyOn(ProviderService.prototype, 'listProviders').mockResolvedValue({ providers: [], activeId: 'grok-official', providerOrder: [] })
     spyOn(SettingsService.prototype, 'getUserSettings').mockResolvedValue({})
     spyOn(SettingsService.prototype, 'getPermissionMode').mockResolvedValue('default')
-    spyOn(hahaGrokOAuthService, 'ensureFreshTokens').mockResolvedValue(null)
+    spyOn(wangmaiGrokOAuthService, 'ensureFreshTokens').mockResolvedValue(null)
     clearGrokModelCatalogCache()
     handleWebSocket.open(ws)
     handleWebSocket.message(ws, JSON.stringify({

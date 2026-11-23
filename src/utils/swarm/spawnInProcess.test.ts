@@ -21,7 +21,7 @@ async function withKillFixture(run: (fixture: {
   unregister: ReturnType<typeof spyOn<typeof tracing, 'unregisterAgent'>>
   timer: ReturnType<typeof spyOn<typeof globalThis, 'setTimeout'>>
 }) => Promise<void>) {
-  const directory = await mkdtemp(join(tmpdir(), 'cc-haha-kill-teammate-'))
+  const directory = await mkdtemp(join(tmpdir(), 'wangmai-kill-teammate-'))
   const originalHome = process.env.HOME
   const originalConfig = process.env.CLAUDE_CONFIG_DIR
   process.env.HOME = directory
@@ -102,7 +102,7 @@ for (const failureCode of [undefined, 'ELOCKED', 'EPERM']) {
 async function withSpawnFixture(run: (fixture: {
   spawn: (resumableAgentId?: string) => ReturnType<typeof spawnInProcessTeammate>
 }) => Promise<void>) {
-  const directory = await mkdtemp(join(tmpdir(), 'cc-haha-spawn-teammate-'))
+  const directory = await mkdtemp(join(tmpdir(), 'wangmai-spawn-teammate-'))
   const originalConfig = process.env.CLAUDE_CONFIG_DIR
   process.env.CLAUDE_CONFIG_DIR = directory
   let state = { tasks: {} } as unknown as AppState

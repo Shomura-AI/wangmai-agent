@@ -11,7 +11,7 @@ let configDir: string
 let previousConfigDir: string | undefined
 
 beforeEach(async () => {
-  configDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-voice-default-'))
+  configDir = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-voice-default-'))
   previousConfigDir = process.env.CLAUDE_CONFIG_DIR
   process.env.CLAUDE_CONFIG_DIR = configDir
 })

@@ -13,9 +13,9 @@ describe('scheduled turn network refresh', () => {
   beforeEach(async () => {
     directory = await mkdtemp(join(tmpdir(), 'scheduled-network-'))
     previousConfig = process.env.CLAUDE_CONFIG_DIR
-    previousShellEnv = process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV
+    previousShellEnv = process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV
     process.env.CLAUDE_CONFIG_DIR = directory
-    process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV = '1'
+    process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV = '1'
     resetTerminalShellEnvironmentCacheForTests()
     await settings()
   })
@@ -23,8 +23,8 @@ describe('scheduled turn network refresh', () => {
   afterEach(async () => {
     if (previousConfig === undefined) delete process.env.CLAUDE_CONFIG_DIR
     else process.env.CLAUDE_CONFIG_DIR = previousConfig
-    if (previousShellEnv === undefined) delete process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV
-    else process.env.CC_HAHA_DISABLE_TERMINAL_SHELL_ENV = previousShellEnv
+    if (previousShellEnv === undefined) delete process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV
+    else process.env.WANGMAI_DISABLE_TERMINAL_SHELL_ENV = previousShellEnv
     resetTerminalShellEnvironmentCacheForTests()
     await rm(directory, { recursive: true, force: true })
   })

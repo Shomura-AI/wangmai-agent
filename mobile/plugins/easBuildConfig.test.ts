@@ -31,7 +31,7 @@ test('iOS builds carry the time-sensitive notification entitlement through app.c
   const resolved = appConfig({ config: app.expo } as never)
   expect(resolved.ios?.entitlements?.[key]).toBe(true)
   // 加 entitlement 不能顶掉原有的 iOS 配置。
-  expect(resolved.ios?.bundleIdentifier).toBe('com.yunce.cchaha.mobile')
+  expect(resolved.ios?.bundleIdentifier).toBe('com.wangmai.agent.mobile')
   expect(resolved.ios?.infoPlist).toEqual(app.expo.ios.infoPlist)
 })
 
@@ -57,7 +57,7 @@ test('production builds use remote credentials, increasing build numbers, and in
 test('only the desktop H5 export is served under a base path, and native builds are untouched', () => {
   const base = { name: 'fixture', slug: 'fixture', web: { bundler: 'metro' as const }, extra: { feature: true } }
   expect(withH5Build(base, {})).toBe(base)
-  const h5 = withH5Build(base, { EXPO_PUBLIC_CC_HAHA_H5: '1' })
+  const h5 = withH5Build(base, { EXPO_PUBLIC_WANGMAI_H5: '1' })
   expect(h5.experiments?.baseUrl).toBe(H5_BASE_PATH)
   expect(h5.web).toMatchObject({ bundler: 'metro', lang: 'zh-CN' })
   expect(h5.extra).toEqual({ feature: true })

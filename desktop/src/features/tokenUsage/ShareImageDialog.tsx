@@ -51,7 +51,7 @@ const DEFAULT_OPTIONS: ShareOptions = {
 function downloadName(now: Date) {
   const month = `${now.getMonth() + 1}`.padStart(2, '0')
   const day = `${now.getDate()}`.padStart(2, '0')
-  return `cc-haha-token-usage-${now.getFullYear()}${month}${day}.png`
+  return `wangmai-token-usage-${now.getFullYear()}${month}${day}.png`
 }
 
 export function ShareImageDialog({ open, onClose, stats, models, daily, totalTokens, locale, profile, avatarUrl }: Props) {

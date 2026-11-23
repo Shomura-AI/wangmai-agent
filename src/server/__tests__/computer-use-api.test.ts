@@ -49,7 +49,7 @@ async function callComputerUseAction(
 }
 
 beforeAll(async () => {
-  configDir = await mkdtemp(join(tmpdir(), 'cc-haha-computer-use-api-'))
+  configDir = await mkdtemp(join(tmpdir(), 'wangmai-computer-use-api-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
   computerUseApi = await import('../api/computer-use.js')
 })
@@ -57,7 +57,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   if (!configDir) throw new Error('configDir was not initialized')
   process.env.CLAUDE_CONFIG_DIR = configDir
-  await rm(join(configDir, 'cc-haha'), { recursive: true, force: true })
+  await rm(join(configDir, 'wangmai'), { recursive: true, force: true })
   await rm(join(configDir, '.runtime'), { recursive: true, force: true })
 })
 
@@ -98,7 +98,7 @@ describe('Computer Use API authorized app config', () => {
     expect(await getRes.json()).toMatchObject({ enabled: false })
 
     const raw = await readFile(
-      join(configDir!, 'cc-haha', 'computer-use-config.json'),
+      join(configDir!, 'wangmai', 'computer-use-config.json'),
       'utf8',
     )
     expect(JSON.parse(raw)).toMatchObject({ enabled: false })
@@ -165,13 +165,13 @@ describe('Computer Use API authorized app config', () => {
     }
 
     await expect(
-      readFile(join(configDir!, 'cc-haha', 'computer-use-config.json'), 'utf8'),
+      readFile(join(configDir!, 'wangmai', 'computer-use-config.json'), 'utf8'),
     ).rejects.toThrow()
   })
 
   it('fails closed on a corrupt stored config and refuses to overwrite it', async () => {
-    const configPath = join(configDir!, 'cc-haha', 'computer-use-config.json')
-    await mkdir(join(configDir!, 'cc-haha'), { recursive: true })
+    const configPath = join(configDir!, 'wangmai', 'computer-use-config.json')
+    await mkdir(join(configDir!, 'wangmai'), { recursive: true })
     await writeFile(configPath, '{"enabled":"yes"}', 'utf8')
 
     const getRes = await callAuthorizedApps('GET')
@@ -191,8 +191,8 @@ describe('Computer Use API authorized app config', () => {
   })
 
   it('preserves old and future config fields while changing a known field', async () => {
-    const configPath = join(configDir!, 'cc-haha', 'computer-use-config.json')
-    await mkdir(join(configDir!, 'cc-haha'), { recursive: true })
+    const configPath = join(configDir!, 'wangmai', 'computer-use-config.json')
+    await mkdir(join(configDir!, 'wangmai'), { recursive: true })
     await writeFile(configPath, JSON.stringify({
       enabled: true,
       authorizedApps: [
@@ -411,7 +411,7 @@ describe('agent-desktop native status', () => {
     it(`reports the real native probe on ${platform} without using saved Python settings`, async () => {
       const { checkStatus } = await importComputerUseApi()
       await callAuthorizedApps('PUT', { pythonPath: '/missing/legacy/python', enabled: true })
-      const configPath = join(configDir!, 'cc-haha', 'computer-use-config.json')
+      const configPath = join(configDir!, 'wangmai', 'computer-use-config.json')
       const original = await readFile(configPath, 'utf8')
       const calls: string[] = []
       const native = {
@@ -512,7 +512,7 @@ describe('runPipInstallWithFallback', () => {
 
   it.skipIf(process.platform === 'win32')('runs pip through the real command runner by default', async () => {
     const { runPipInstallWithFallback } = await importComputerUseApi()
-    const dir = await mkdtemp(join(tmpdir(), 'cc-haha-cu-pip-'))
+    const dir = await mkdtemp(join(tmpdir(), 'wangmai-cu-pip-'))
     const fakePython = join(dir, 'python')
     await writeFile(fakePython, '#!/bin/sh\necho "$@"\n', { mode: 0o755 })
 
@@ -832,14 +832,14 @@ describe('checkCuHelperPermissions failure reporting', () => {
     try {
       const result = await checkCuHelperPermissions(async () => {
         throw new Error(
-          'This helper command requires the signed Claude Code Haha desktop app.',
+          'This helper command requires the signed 网脉智能体 desktop app.',
         )
       })
 
       expect(result).toEqual({
         accessibility: null,
         screenRecording: null,
-        error: 'This helper command requires the signed Claude Code Haha desktop app.',
+        error: 'This helper command requires the signed 网脉智能体 desktop app.',
       })
 
       expect(recorded).toHaveLength(1)
@@ -849,7 +849,7 @@ describe('checkCuHelperPermissions failure reporting', () => {
         // this project's definition of error rather than warn.
         severity: 'error',
         summary:
-          'This helper command requires the signed Claude Code Haha desktop app.',
+          'This helper command requires the signed 网脉智能体 desktop app.',
       })
     } finally {
       spy.mockRestore()

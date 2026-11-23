@@ -378,7 +378,7 @@ describe('EmptySession', () => {
     mocks.resetTaskList.mockResolvedValue(undefined)
     mocks.getProviderAuthStatus.mockResolvedValue({
       hasAuth: true,
-      source: 'cc-haha-provider',
+      source: 'wangmai-provider',
     })
   })
 
@@ -487,7 +487,7 @@ describe('EmptySession', () => {
   })
 
   it.each(['@', '/', '/empty', '+'] as const)('hides withdrawn bundled capabilities in %s while keeping personal skills and other plugins', async (entry) => {
-    const withdrawnPackage = 'office-frontend-design@haha-connectors'
+    const withdrawnPackage = 'office-frontend-design@wangmai-connectors'
     mocks.listReferences.mockResolvedValue({
       plugins: [
         { kind: 'plugin', id: withdrawnPackage, name: 'office-frontend-design', displayName: 'Removed frontend plugin', description: 'Design', source: withdrawnPackage, modelText: 'Use removed plugin' },
@@ -1428,7 +1428,7 @@ describe('EmptySession', () => {
     mocks.createSession.mockResolvedValue({ sessionId: 'explicit-auth-session' })
     mocks.getProviderAuthStatus.mockImplementation(async (providerId?: string) => (
       providerId === 'provider-explicit'
-        ? { hasAuth: true, source: 'cc-haha-provider' }
+        ? { hasAuth: true, source: 'wangmai-provider' }
         : { hasAuth: false, source: 'none' }
     ))
     useSessionRuntimeStore.getState().setSelection('__draft__', {
@@ -1634,7 +1634,7 @@ describe('EmptySession', () => {
 
   it('pastes copied desktop files into a new-session draft as path attachments', async () => {
     mocks.isTauriRuntime = true
-    const copiedFile = new File(['{\"name\":\"cc-haha\"}'], 'ignored-name.json', {
+    const copiedFile = new File(['{\"name\":\"wangmai\"}'], 'ignored-name.json', {
       type: 'application/json',
     })
     Object.defineProperty(copiedFile, 'path', {

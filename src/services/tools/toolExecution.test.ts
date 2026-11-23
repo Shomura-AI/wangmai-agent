@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { createSandboxedTestEnvironment } from '../../../scripts/pr/test-environment.js'
 import type { Tool, ToolUseContext } from '../../Tool.js'
 
-const childScenario = process.env.CC_HAHA_TOOL_INPUT_GUARD_SCENARIO
+const childScenario = process.env.WANGMAI_TOOL_INPUT_GUARD_SCENARIO
 
 // Importing the executor loads the full tools/permissions/MCP graph. Isolate
 // those caches from shared-process suites that install their own module mocks.
@@ -144,7 +144,7 @@ for (const scenario of ['provider', 'history', 'deny-content-blocks']) {
       const child = Bun.spawn([process.execPath, '--no-env-file', 'test', fileURLToPath(import.meta.url)], {
         cwd: root,
         env: createSandboxedTestEnvironment(root, {
-          CC_HAHA_TOOL_INPUT_GUARD_SCENARIO: scenario,
+          WANGMAI_TOOL_INPUT_GUARD_SCENARIO: scenario,
           NODE_ENV: 'production',
           CLAUDE_CODE_SIMPLE: '1',
           CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',

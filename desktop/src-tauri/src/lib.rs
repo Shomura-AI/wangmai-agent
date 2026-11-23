@@ -309,7 +309,7 @@ fn dir_has_portable_data(dir: &Path) -> bool {
         || dir.join("skills").is_dir()
         || dir.join("plugins").is_dir()
         || dir.join("cowork_plugins").is_dir()
-        || dir.join("cc-haha").is_dir()
+        || dir.join("wangmai").is_dir()
 }
 
 /// Resolve the default portable config directory: exe_dir/CLAUDE_CONFIG_DIR.
@@ -419,7 +419,7 @@ struct StoredServerState {
 
 /// 与 ServerState 平级的 adapter 子进程状态。
 ///
-/// adapter sidecar（claude-sidecar adapters --telegram 等）的生命周期
+/// adapter sidecar（wangmai-sidecar adapters --telegram 等）的生命周期
 /// 跟 server 不同：它没有 HTTP 端口可探活，没配凭据时会自己干净退出，
 /// 而且需要支持运行时热重启 —— 用户在设置页保存 IM 凭据后，
 /// 前端会通过 invoke('restart_adapters_sidecar') 来重启它，让新凭据生效。
@@ -556,7 +556,7 @@ fn get_app_mode(app: AppHandle) -> serde_json::Value {
         .clone()
         .or_else(|| app.path().app_config_dir().ok());
     let config_dir_source = if env_config_dir.is_some() {
-        if std::env::var_os("CC_HAHA_APP_PORTABLE_DIR").is_some() {
+        if std::env::var_os("WANGMAI_APP_PORTABLE_DIR").is_some() {
             "portable"
         } else {
             "environment"
@@ -736,7 +736,7 @@ fn is_window_state_visible_on_any_monitor(
 fn window_state_path(app: &AppHandle) -> Option<PathBuf> {
     // honour CLAUDE_CONFIG_DIR so portable installs keep window-state.json
     // and terminal-config.json alongside the config dir instead of
-    // %APPDATA%\com.claude-code-haha.desktop\.
+    // %APPDATA%\com.wangmai.agent\.
     resolve_portable_state_path().or_else(|| match app.path().app_config_dir() {
         Ok(dir) => Some(dir.join(WINDOW_STATE_FILE)),
         Err(err) => {
@@ -753,7 +753,7 @@ fn resolve_portable_state_path() -> Option<PathBuf> {
 }
 
 fn server_state_path() -> Option<PathBuf> {
-    // Lives next to cc-haha/settings.json (CLAUDE_CONFIG_DIR or ~/.claude) so
+    // Lives next to wangmai/settings.json (CLAUDE_CONFIG_DIR or ~/.claude) so
     // the Tauri and Electron shells share the same sticky port across builds.
     claude_config_dir().map(|dir| dir.join(SERVER_STATE_FILE))
 }
@@ -950,13 +950,13 @@ fn show_main_window(app: &AppHandle) {
 
 fn setup_system_tray(app: &mut tauri::App) -> tauri::Result<()> {
     let menu = MenuBuilder::new(app)
-        .text(TRAY_SHOW_ID, "Show Claude Code Haha")
+        .text(TRAY_SHOW_ID, "Show 网脉智能体")
         .separator()
-        .text(TRAY_QUIT_ID, "Quit Claude Code Haha")
+        .text(TRAY_QUIT_ID, "Quit 网脉智能体")
         .build()?;
 
     let mut tray = TrayIconBuilder::with_id("main-tray")
-        .tooltip("Claude Code Haha")
+        .tooltip("网脉智能体")
         .menu(&menu)
         .show_menu_on_left_click(false)
         .on_menu_event(|app, event| match event.id().as_ref() {
@@ -1444,7 +1444,7 @@ fn desktop_terminal_settings_path() -> Option<PathBuf> {
     claude_config_dir().map(|path| path.join("settings.json"))
 }
 
-/// 解析 cc-haha/settings.json 里的 h5Access.fixedPort。范围必须与
+/// 解析 wangmai/settings.json 里的 h5Access.fixedPort。范围必须与
 /// 服务端 h5AccessService 的 MIN/MAX_FIXED_PORT 一致（1024..=65535）。
 fn parse_h5_fixed_port(contents: &str) -> Option<u16> {
     let value: serde_json::Value = serde_json::from_str(contents).ok()?;
@@ -1459,7 +1459,7 @@ fn parse_h5_fixed_port(contents: &str) -> Option<u16> {
 }
 
 fn read_h5_fixed_port() -> Option<u16> {
-    let path = claude_config_dir()?.join("cc-haha").join("settings.json");
+    let path = claude_config_dir()?.join("wangmai").join("settings.json");
     let contents = fs::read_to_string(path).ok()?;
     parse_h5_fixed_port(&contents)
 }
@@ -1786,7 +1786,7 @@ fn start_server_sidecar(app: &AppHandle) -> Result<ServerRuntime, String> {
     // 单一合并 sidecar：第一个参数选 server / cli / adapters 模式。
     let mut sidecar = app
         .shell()
-        .sidecar("claude-sidecar")
+        .sidecar("wangmai-sidecar")
         .map_err(|err| format!("resolve sidecar: {err}"))?;
     for (key, value) in terminal_environment(&default_shell(None)) {
         sidecar = sidecar.env(key, value);
@@ -1931,7 +1931,7 @@ fn start_adapters_sidecars(app: &AppHandle) -> Result<Vec<CommandChild>, String>
     ] {
         let mut sidecar = app
             .shell()
-            .sidecar("claude-sidecar")
+            .sidecar("wangmai-sidecar")
             .map_err(|err| format!("resolve {label} adapter sidecar: {err}"))?;
         for (key, value) in terminal_environment(&default_shell(None)) {
             sidecar = sidecar.env(key, value);
@@ -2101,7 +2101,7 @@ fn kill_stale_unix_adapter_sidecars() {
         if pid == current_pid {
             continue;
         }
-        if !command.contains("claude-sidecar") || !command.contains(" adapters") {
+        if !command.contains("wangmai-sidecar") || !command.contains(" adapters") {
             continue;
         }
 
@@ -2112,9 +2112,9 @@ fn kill_stale_unix_adapter_sidecars() {
 #[cfg(target_os = "windows")]
 fn kill_windows_sidecars() {
     for image_name in [
-        "claude-sidecar-x86_64-pc-windows-msvc.exe",
-        "claude-sidecar-aarch64-pc-windows-msvc.exe",
-        "claude-sidecar.exe",
+        "wangmai-sidecar-x86_64-pc-windows-msvc.exe",
+        "wangmai-sidecar-aarch64-pc-windows-msvc.exe",
+        "wangmai-sidecar.exe",
     ] {
         let _ = StdCommand::new("taskkill")
             .args(["/F", "/T", "/IM", image_name])
@@ -2642,12 +2642,12 @@ pub fn run() {
     let builder = builder
         .menu(|app| {
             let about_item =
-                MenuItemBuilder::with_id("nav_about", "关于 Claude Code Haha").build(app)?;
+                MenuItemBuilder::with_id("nav_about", "关于 网脉智能体").build(app)?;
             let settings_item = MenuItemBuilder::with_id("nav_settings", "设置...")
                 .accelerator("CmdOrCtrl+,")
                 .build(app)?;
 
-            let app_submenu = SubmenuBuilder::new(app, "Claude Code Haha")
+            let app_submenu = SubmenuBuilder::new(app, "网脉智能体")
                 .item(&about_item)
                 .separator()
                 .item(&settings_item)

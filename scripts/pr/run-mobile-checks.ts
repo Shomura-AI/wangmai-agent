@@ -15,7 +15,7 @@ export function mobileCheckEnvironment(home: string, source: NodeJS.ProcessEnv =
 }
 
 export async function runMobileChecks(root = join(import.meta.dir, '..', '..')) {
-  const home = mkdtempSync(join(tmpdir(), 'cc-haha-mobile-checks-'))
+  const home = mkdtempSync(join(tmpdir(), 'wangmai-mobile-checks-'))
   try {
     const env = mobileCheckEnvironment(home)
     // The last step builds the phone H5 the desktop serves (mobile/scripts/export-h5.ts),

@@ -16,7 +16,7 @@ type SavedProviderModels = {
 // modules; only saved API providers can be a member's runtime here.
 function readSavedProviderModels(providerId: string): SavedProviderModels | undefined {
   try {
-    const index = JSON.parse(readFileSync(join(getClaudeConfigHomeDir(), 'cc-haha', 'providers.json'), 'utf8')) as { providers?: unknown }
+    const index = JSON.parse(readFileSync(join(getClaudeConfigHomeDir(), 'wangmai', 'providers.json'), 'utf8')) as { providers?: unknown }
     if (!Array.isArray(index.providers)) return undefined
     const provider = index.providers.find(entry =>
       !!entry && typeof entry === 'object' &&

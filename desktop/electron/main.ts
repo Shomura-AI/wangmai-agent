@@ -351,7 +351,7 @@ function getPublicAccessManager() {
     onDiagnostic: createPublicAccessDiagnosticWriter(electronHostDiagnosticsFile(process.env)),
     onState: status => { void getP2PTerminator().update(p2pHostWanted(status)) },
     powerSaveBlocker,
-    directory: path.join(getAppMode(app).activeConfigDir ?? app.getPath('userData'), 'cc-haha', 'public-access'),
+    directory: path.join(getAppMode(app).activeConfigDir ?? app.getPath('userData'), 'wangmai', 'public-access'),
     backend: {
       request<T>(route: string, method: string, body?: unknown, context?: { attemptId: string }): Promise<T> {
         const operation = queue.catch(() => {}).then(async () => {
@@ -362,7 +362,7 @@ function getPublicAccessManager() {
           const response = await fetch(`${serverUrl}/api/public-access${route}`, {
             method,
             headers: { Authorization: `Bearer ${runtime.getLocalAccessToken()}`, 'Content-Type': 'application/json',
-              ...(context ? { 'X-CC-Haha-Connection-Attempt': context.attemptId } : {}) },
+              ...(context ? { 'X-WangMai-Connection-Attempt': context.attemptId } : {}) },
             body: body === undefined ? undefined : JSON.stringify(body),
             signal: AbortSignal.timeout(10_000),
           })
@@ -1159,7 +1159,7 @@ app.whenReady().then(async () => {
     await createMainWindow()
     return
   }
-  if (validation) process.env.CC_HAHA_MIGRATION_VALIDATION = '1'
+  if (validation) process.env.WANGMAI_MIGRATION_VALIDATION = '1'
   powerMonitor.on('suspend', () => idlePowerService?.stop())
   powerMonitor.on('resume', () => { if (!isQuitting) idlePowerService?.start() })
   powerMonitor.on('lock-screen', () => { if (idlePowerService?.getState().countdown) idlePowerService.cancel('user-activity') })
@@ -1176,14 +1176,14 @@ app.whenReady().then(async () => {
       await getDataMigration().completeValidation()
       validation = false
       await getServerRuntime().activateAfterMigrationValidation()
-      delete process.env.CC_HAHA_MIGRATION_VALIDATION
+      delete process.env.WANGMAI_MIGRATION_VALIDATION
     }
   } catch (error) {
     if (validation) {
       try {
         await getServerRuntime().stopAllAndWait()
         await getDataMigration().failValidation(error)
-        delete process.env.CC_HAHA_MIGRATION_VALIDATION
+        delete process.env.WANGMAI_MIGRATION_VALIDATION
         clearAppManagedPortableEnv()
         applyStartupPortableMode(app)
         serverRuntime = null

@@ -192,7 +192,7 @@ test('process restart revokes ordinary and Live Activity registrations using the
       deviceToken: token,
       activityId: 'activity',
       sessionId: 'session',
-      name: 'CCHahaTaskActivity',
+      name: 'CCWangMaiTaskActivity',
     })
   )
   const restarted = new PushRegistrationCoordinator(store)
@@ -688,7 +688,7 @@ test('an older desktop that rejects delivery with 400 gets one retry without it,
       deviceToken: token,
       sessionId: 's',
       activityId: 'act',
-      name: 'CCHahaTaskActivity',
+      name: 'CCWangMaiTaskActivity',
       delivery,
     })
   )

@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { clearGrokModelCatalogCache } from '../../services/grokAuth/modelCatalog.js'
 import { GROK_MODEL_CATALOG } from '../../services/grokAuth/models.js'
 import { getDesktopGrokModelCatalog, readCachedDesktopGrokModelCatalog } from './grokModelCatalog.js'
-import { hahaGrokOAuthService } from './hahaGrokOAuthService.js'
+import { wangmaiGrokOAuthService } from './wangmaiGrokOAuthService.js'
 import { SettingsService } from './settingsService.js'
 
 describe('desktop Grok catalog credentials and network policy', () => {
@@ -38,7 +38,7 @@ describe('desktop Grok catalog credentials and network policy', () => {
     await rm(directory, { recursive: true, force: true })
   })
 
-  const saveAccount = (account: string) => hahaGrokOAuthService.saveTokens({
+  const saveAccount = (account: string) => wangmaiGrokOAuthService.saveTokens({
     accessToken: `desktop-token-${account}`, refreshToken: null, expiresAt: null, email: null,
   })
 
@@ -61,7 +61,7 @@ describe('desktop Grok catalog credentials and network policy', () => {
     expect(second.map(model => model.value)).toEqual(['grok-account-b'])
     expect(requests[1]?.authorization).toBe('Bearer desktop-token-account-b')
 
-    await hahaGrokOAuthService.deleteTokens()
+    await wangmaiGrokOAuthService.deleteTokens()
     expect(await getDesktopGrokModelCatalog({ fetchOverride, forceRefresh: true })).toEqual(GROK_MODEL_CATALOG)
     await expect(getDesktopGrokModelCatalog({ fetchOverride, forceRefresh: true, throwOnError: true }))
       .rejects.toThrow('Grok OAuth token is unavailable')
@@ -70,7 +70,7 @@ describe('desktop Grok catalog credentials and network policy', () => {
 
   test('does not use CLI credentials when desktop credentials are unreadable', async () => {
     await saveAccount('account-a')
-    await writeFile(hahaGrokOAuthService.getOAuthFilePath(), 'invalid JSON')
+    await writeFile(wangmaiGrokOAuthService.getOAuthFilePath(), 'invalid JSON')
     const fetchOverride = mock(async () => { throw new Error('must not request a CLI catalog') }) as unknown as typeof fetch
     expect(await getDesktopGrokModelCatalog({ fetchOverride, forceRefresh: true })).toEqual(GROK_MODEL_CATALOG)
     expect(fetchOverride).not.toHaveBeenCalled()
@@ -100,7 +100,7 @@ describe('desktop Grok catalog credentials and network policy', () => {
     expect(resolved[0]).toMatchObject({ value: 'grok-4.7', contextWindow: 750_000 })
     expect((await readCachedDesktopGrokModelCatalog())[0]).toMatchObject({ value: 'grok-4.7', contextWindow: 750_000 })
 
-    await hahaGrokOAuthService.deleteTokens()
+    await wangmaiGrokOAuthService.deleteTokens()
     expect(await readCachedDesktopGrokModelCatalog()).toEqual(GROK_MODEL_CATALOG)
   })
 })

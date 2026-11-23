@@ -76,7 +76,7 @@ export function modelSupportsEffort(model: string): boolean {
   }
   // Restored official sessions can start before discovery completes. Preserve
   // their selected effort until actual Grok metadata can constrain it.
-  if (isEnvTruthy(readProviderEnv('CC_HAHA_GROK_OAUTH_PROVIDER'))) return true
+  if (isEnvTruthy(readProviderEnv('WANGMAI_GROK_OAUTH_PROVIDER'))) return true
   // Supported by a subset of Claude 4 models
   if (shouldTrustBuiltInClaudeCapabilityList() && (
     m.includes('opus-4-6') ||
@@ -125,7 +125,7 @@ export function modelSupportsXHighEffort(model: string): boolean {
   if (grokEntry) {
     return grokEntry.reasoningEfforts?.includes('xhigh') ?? false
   }
-  if (isEnvTruthy(readProviderEnv('CC_HAHA_GROK_OAUTH_PROVIDER'))) return true
+  if (isEnvTruthy(readProviderEnv('WANGMAI_GROK_OAUTH_PROVIDER'))) return true
   const m = model.toLowerCase()
   return shouldTrustBuiltInClaudeCapabilityList() && (
     m.includes('opus-4-7') ||
@@ -152,7 +152,7 @@ export function modelSupportsMaxEffort(model: string): boolean {
   if (grokEntry) {
     return grokEntry.reasoningEfforts?.includes('max') ?? false
   }
-  if (isEnvTruthy(readProviderEnv('CC_HAHA_GROK_OAUTH_PROVIDER'))) return true
+  if (isEnvTruthy(readProviderEnv('WANGMAI_GROK_OAUTH_PROVIDER'))) return true
   const m = model.toLowerCase()
   if (shouldTrustBuiltInClaudeCapabilityList() && (
     m.includes('opus-4-6') ||
@@ -228,7 +228,7 @@ export function toPersistableEffort(
 
 export function getInitialEffortSetting(): EffortLevel | undefined {
   // resolveConfiguredEffortSetting filters external 'max' on effortLevel while
-  // keeping 'xhigh'/'max' persisted via cc-haha's `effort` field deterministic.
+  // keeping 'xhigh'/'max' persisted via wangmai's `effort` field deterministic.
   return resolveConfiguredEffortSetting(
     getInitialSettings() as { effort?: unknown; effortLevel?: unknown },
     { allowAntMaxEffortLevel: process.env.USER_TYPE === 'ant' },

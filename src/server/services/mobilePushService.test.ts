@@ -53,7 +53,7 @@ test('relay providers validate their own token shapes and never carry ActivityKi
     input({ provider: 'desktop', platform: 'android', token: 'short' }),
     input({ provider: 'desktop', platform: 'android', token: `${'p'.repeat(43)}/` }),
     { ...input({ token: expoToken }), provider: 'fcm' },
-    input({ provider: 'expo', token: expoToken, kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'a', name: 'CCHahaTaskActivity' }),
+    input({ provider: 'expo', token: expoToken, kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'a', name: 'CCWangMaiTaskActivity' }),
   ]) expect(validatePushInput(value)).toBe(false)
 })
 
@@ -65,17 +65,17 @@ test('a computer without APNs / FCM keys still delivers through Expo and the pho
   expect(f.service.register(input({ provider: 'desktop', platform: 'android', token: pullToken, delivery: { channels: 'split' } }), {}).registered).toBe(true)
   f.state([{ id: 's', activityState: 'running' }]); await f.service.tick()
   f.state([{ id: 's', activityState: 'waiting', requestId: 'q1', toolName: 'Bash', preview: 'rm -rf build' }]); await f.service.tick()
-  expect(f.sent).toEqual([{ platform: 'ios', kind: 'notification', provider: 'expo', token: expoToken, payload: { title: 'fixture session', body: 'rm -rf build', data: { hostId: 'local-phone-host-a', sessionId: 's', requestId: 'q1', eventType: 'decision' }, categoryId: 'cchahaTool', sound: 'default', priority: 'high', ttl: 300, interruptionLevel: 'time-sensitive' } }])
+  expect(f.sent).toEqual([{ platform: 'ios', kind: 'notification', provider: 'expo', token: expoToken, payload: { title: 'fixture session', body: 'rm -rf build', data: { hostId: 'local-phone-host-a', sessionId: 's', requestId: 'q1', eventType: 'decision' }, categoryId: 'wangmaiTool', sound: 'default', priority: 'high', ttl: 300, interruptionLevel: 'time-sensitive' } }])
   const pulled = await f.service.pull(pullToken, undefined, {}, new AbortController().signal)
   const pulledId = pulled?.[0]?.id
   expect(typeof pulledId).toBe('string')
-  expect(pulled).toEqual([{ id: pulledId!, title: 'fixture session', body: 'rm -rf build', data: { hostId: 'local-phone-host-a', sessionId: 's', requestId: 'q1', eventType: 'decision' }, category: 'cchahaTool', channelId: 'cc-haha-decisions' }])
+  expect(pulled).toEqual([{ id: pulledId!, title: 'fixture session', body: 'rm -rf build', data: { hostId: 'local-phone-host-a', sessionId: 's', requestId: 'q1', eventType: 'decision' }, category: 'wangmaiTool', channelId: 'wangmai-decisions' }])
   // An acknowledged alert is never handed out twice.
   expect(await f.service.pull(pullToken, pulledId, {}, new AbortController().signal)).toEqual([])
   f.state([completed()]); await f.service.tick()
-  expect(f.sent[1]?.payload).toMatchObject({ body: '任务已完成', categoryId: 'cchahaResult' })
+  expect(f.sent[1]?.payload).toMatchObject({ body: '任务已完成', categoryId: 'wangmaiResult' })
   expect(f.sent[1]?.payload.interruptionLevel).toBeUndefined()
-  expect(await f.service.pull(pullToken, undefined, {}, new AbortController().signal)).toMatchObject([{ body: '任务已完成', channelId: 'cc-haha-completed' }])
+  expect(await f.service.pull(pullToken, undefined, {}, new AbortController().signal)).toMatchObject([{ body: '任务已完成', channelId: 'wangmai-completed' }])
 })
 
 test('only the registered owner of a pull token may read its alerts', async () => {
@@ -99,10 +99,10 @@ test('the phone test reaches a pull registration and Expo reports removed device
   expect(await f.service.sendTest(pullToken, undefined, {})).toEqual({ status: 'sent' })
   // The test must be able to show a banner: the phone creates "completed" at default
   // importance (no heads-up), so the test rides the high-importance decisions channel.
-  expect(await f.service.pull(pullToken, undefined, {}, new AbortController().signal)).toMatchObject([{ title: '测试通知 · cc-haha', category: 'cchahaResult', channelId: 'cc-haha-decisions', data: { hostId: 'local-phone-host-a', eventType: 'test' } }])
+  expect(await f.service.pull(pullToken, undefined, {}, new AbortController().signal)).toMatchObject([{ title: '测试通知 · wangmai', category: 'wangmaiResult', channelId: 'wangmai-decisions', data: { hostId: 'local-phone-host-a', eventType: 'test' } }])
   f.service.register(input({ provider: 'expo', token: expoToken }), {})
   expect(await f.service.sendTest(expoToken, undefined, {})).toEqual({ status: 'sent' })
-  expect(f.sent[0]?.payload).toMatchObject({ title: '测试通知 · cc-haha', categoryId: 'cchahaResult', data: { eventType: 'test' } })
+  expect(f.sent[0]?.payload).toMatchObject({ title: '测试通知 · wangmai', categoryId: 'wangmaiResult', data: { eventType: 'test' } })
 })
 
 test('a remote listener restart pauses delivery but keeps the registration; only losing the pairing deletes it', async () => {
@@ -126,7 +126,7 @@ test('a remote listener restart pauses delivery but keeps the registration; only
   // The tunnel is back: the approval that started meanwhile still reaches the phone.
   listening = true
   await service.tick()
-  expect(sent.map(item => item.payload.categoryId)).toEqual(['cchahaTool'])
+  expect(sent.map(item => item.payload.categoryId)).toEqual(['wangmaiTool'])
   expect(await service.pull(pullToken, undefined, { remoteDeviceId: 'phone' }, new AbortController().signal)).toHaveLength(1)
   paired = false; listening = false
   await service.tick()
@@ -202,7 +202,7 @@ test('stores written before relay providers load unchanged and keep using direct
   restarted.stop()
   expect(f.sent).toHaveLength(1)
   expect(f.sent[0]?.provider).toBeUndefined()
-  expect(f.sent[0]?.payload).toMatchObject({ aps: { category: 'cchahaTool' } })
+  expect(f.sent[0]?.payload).toMatchObject({ aps: { category: 'wangmaiTool' } })
 })
 
 test('registration rejects client ownership, malformed preferences and invalid time zones', () => {
@@ -237,9 +237,9 @@ test('pushes authoritative transitions once and limits quick actions to ordinary
   expect(f.sent).toHaveLength(0)
   f.state([{ id: 's', activityState: 'waiting', requestId: 'q1', toolName: 'Bash', preview: '等待工具权限确认' }]); await f.service.tick(); await f.service.tick()
   expect(f.sent).toHaveLength(1)
-  expect(f.sent[0]?.payload).toMatchObject({ aps: { category: 'cchahaTool' }, hostId: 'local-phone-host-a', sessionId: 's', requestId: 'q1', eventType: 'decision' })
+  expect(f.sent[0]?.payload).toMatchObject({ aps: { category: 'wangmaiTool' }, hostId: 'local-phone-host-a', sessionId: 's', requestId: 'q1', eventType: 'decision' })
   f.state([{ id: 's', activityState: 'waiting', requestId: 'q2', toolName: 'AskUserQuestion' }]); await f.service.tick()
-  expect(f.sent[1]?.payload.aps).toMatchObject({ category: 'cchahaDecision' })
+  expect(f.sent[1]?.payload.aps).toMatchObject({ category: 'wangmaiDecision' })
   f.state([{ id: 's', activityState: 'running' }]); await f.service.tick()
   f.state([completed()]); await f.service.tick(); await f.service.tick()
   expect(f.sent).toHaveLength(3)
@@ -271,12 +271,12 @@ test('quiet hours respect timezone and midnight and suppress delivery', async ()
 
 test('Live Activity uses ActivityKit content state and sends end when its real run completes', async () => {
   const f = fixture()
-  f.service.register(input({ kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'activity-a', name: 'CCHahaTaskActivity', hostName: 'Computer A' }), {})
+  f.service.register(input({ kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'activity-a', name: 'CCWangMaiTaskActivity', hostName: 'Computer A' }), {})
   f.state([{ id: 's', activityState: 'running' }]); await f.service.tick()
   const aps = f.sent[0]!.payload.aps as Record<string, unknown>
   expect(aps.event).toBe('update')
   const content = aps['content-state'] as { name: string; props: string }
-  expect(content.name).toBe('CCHahaTaskActivity')
+  expect(content.name).toBe('CCWangMaiTaskActivity')
   expect(JSON.parse(content.props)).toMatchObject({ hostName: 'Computer A', status: 'running', sessionId: 's' })
   f.state([completed()]); await f.service.tick()
   expect(f.sent[1]?.payload.aps).toMatchObject({ event: 'end' })
@@ -342,7 +342,7 @@ test('late durable success sends once after idle while initial historical succes
 test('unknown and stopped Live Activities end without a successful completed card', async () => {
   for (const terminal of [[], [{ id: 's', activityState: 'idle' }], [{ id: 's', activityState: 'idle', terminalOutcome: 'stopped' }]] as MobileActivity[][]) {
     const f = fixture()
-    f.service.register(input({ kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'a', name: 'CCHahaTaskActivity' }), {})
+    f.service.register(input({ kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'a', name: 'CCWangMaiTaskActivity' }), {})
     f.state([{ id: 's', activityState: 'waiting', requestId: 'old', toolName: 'Bash' }]); await f.service.tick()
     f.state(terminal); await f.service.tick()
     const aps = f.sent[1]!.payload.aps as Record<string, unknown>
@@ -409,7 +409,7 @@ test('device unregister removes only its ordinary and linked Live Activity token
   const f = fixture()
   const ordinary = input()
   f.service.register(ordinary, {})
-  f.service.register(input({ token: 'b'.repeat(64), deviceToken: ordinary.token, kind: 'liveActivity', sessionId: 's', activityId: 'a', name: 'CCHahaTaskActivity' }), {})
+  f.service.register(input({ token: 'b'.repeat(64), deviceToken: ordinary.token, kind: 'liveActivity', sessionId: 's', activityId: 'a', name: 'CCWangMaiTaskActivity' }), {})
   f.service.register(input({ token: 'c'.repeat(64), hostId: 'other-phone' }), {})
   expect(f.service.unregisterDevice(ordinary.token, 'wrong-host', {})).toBe(0)
   expect(f.service.unregisterDevice(ordinary.token, ordinary.hostId, { remoteDeviceId: 'wrong-owner' })).toBe(0)
@@ -424,7 +424,7 @@ test('a LAN Live Activity can unregister itself using its own token without touc
   const f = fixture()
   const ordinary = f.service.register(input(), {})
   const activityToken = 'b'.repeat(64)
-  const activity = f.service.register(input({ token: activityToken, deviceToken: input().token, kind: 'liveActivity', sessionId: 's', activityId: 'a', name: 'CCHahaTaskActivity' }), {})
+  const activity = f.service.register(input({ token: activityToken, deviceToken: input().token, kind: 'liveActivity', sessionId: 's', activityId: 'a', name: 'CCWangMaiTaskActivity' }), {})
   expect(f.service.unregister(activity.id!, input().token, {})).toBe(false)
   expect(f.service.unregister(activity.id!, activityToken, { remoteDeviceId: 'wrong-owner' })).toBe(false)
   expect(f.service.unregister(activity.id!, activityToken, {})).toBe(true)
@@ -501,7 +501,7 @@ test('Live Activity initial update retries and heartbeats extend its truthful fr
   const f = fixture()
   let attempts = 0
   f.transport.send = async delivery => { attempts++; if (attempts === 1) throw new Error('offline'); f.sent.push(delivery); return 'sent' }
-  f.service.register(input({ kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'activity', name: 'CCHahaTaskActivity' }), {})
+  f.service.register(input({ kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'activity', name: 'CCWangMaiTaskActivity' }), {})
   f.state([{ id: 's', activityState: 'running' }]); await f.service.tick()
   f.advance(5000); await f.service.tick()
   expect(f.sent).toHaveLength(1)
@@ -515,7 +515,7 @@ test('Live Activity initial update retries and heartbeats extend its truthful fr
 test('Live Activity counts waiting work and never restores expired or preference-blocked quick actions', async () => {
   for (const reason of ['enabled', 'preferences', 'quiet', 'expired'] as const) {
     const f = fixture()
-    f.service.register(input({ kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'a', name: 'CCHahaTaskActivity',
+    f.service.register(input({ kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'a', name: 'CCWangMaiTaskActivity',
       ...(reason === 'preferences' ? { preferences: { decisions: false, errors: true, completed: true } } : {}),
       ...(reason === 'quiet' ? { quietHours: { enabled: true, start: '00:00', end: '23:59' } } : {}),
     }), {})
@@ -532,7 +532,7 @@ test('Live Activity counts waiting work and never restores expired or preference
 const androidToken = 'f'.repeat(64)
 const android = (extra: Partial<PushInput> = {}) => input({ platform: 'android', token: androidToken, ...extra })
 const channelOf = (delivery: PushDelivery) => ((delivery.payload.android as { notification: { channel_id: string } }).notification.channel_id)
-const live = (extra: Partial<PushInput> = {}) => input({ kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'activity-a', name: 'CCHahaTaskActivity', ...extra })
+const live = (extra: Partial<PushInput> = {}) => input({ kind: 'liveActivity', deviceToken: 'b'.repeat(64), sessionId: 's', activityId: 'activity-a', name: 'CCWangMaiTaskActivity', ...extra })
 const props = (delivery: PushDelivery) => JSON.parse(((delivery.payload.aps as Record<string, unknown>)['content-state'] as { props: string }).props) as Record<string, unknown>
 
 test('delivery validation is strict and optional', () => {
@@ -555,8 +555,8 @@ test('old registration store without delivery migration loads unchanged and beha
   next.start(() => true)
   await next.tick(); await next.stop()
   const ios = f.sent.find(row => row.platform === 'ios')!, droid = f.sent.find(row => row.platform === 'android')!
-  expect(ios.payload.aps).toEqual({ alert: { title: 'cc-haha 会话', body: '需要你做决定' }, sound: 'default', category: 'cchahaDecision' })
-  expect(channelOf(droid)).toBe('cc-haha')
+  expect(ios.payload.aps).toEqual({ alert: { title: 'wangmai 会话', body: '需要你做决定' }, sound: 'default', category: 'wangmaiDecision' })
+  expect(channelOf(droid)).toBe('wangmai')
 })
 
 test('delivery preferences persist with the registration, survive reload, and are cleared by an old-style re-registration', () => {
@@ -574,7 +574,7 @@ test('delivery preferences persist with the registration, survive reload, and ar
   void next.stop()
 })
 
-test('Android split channels route decisions, completions and errors; default keeps cc-haha', async () => {
+test('Android split channels route decisions, completions and errors; default keeps wangmai', async () => {
   for (const split of [true, false]) {
     const f = fixture()
     f.service.register(android(split ? { delivery: { channels: 'split' } } : {}), {})
@@ -584,13 +584,13 @@ test('Android split channels route decisions, completions and errors; default ke
     f.state([{ id: 's', activityState: 'running' }]); await f.service.tick()
     f.state([completed()]); await f.service.tick()
     expect(f.sent.map(row => (row.payload.data as { eventType: string }).eventType)).toEqual(['decision', 'error', 'completed'])
-    expect(f.sent.map(channelOf)).toEqual(split ? ['cc-haha-decisions', 'cc-haha-errors', 'cc-haha-completed'] : ['cc-haha', 'cc-haha', 'cc-haha'])
+    expect(f.sent.map(channelOf)).toEqual(split ? ['wangmai-decisions', 'wangmai-errors', 'wangmai-completed'] : ['wangmai', 'wangmai', 'wangmai'])
   }
   const failed = fixture()
   failed.service.register(android({ delivery: { channels: 'split' } }), {})
   failed.state([{ id: 's', activityState: 'running' }]); await failed.service.tick()
   failed.state([{ id: 's', activityState: 'failed' }]); await failed.service.tick()
-  expect(channelOf(failed.sent[0]!)).toBe('cc-haha-errors')
+  expect(channelOf(failed.sent[0]!)).toBe('wangmai-errors')
 })
 
 test('iOS time-sensitive interruption applies only to decision pushes', async () => {
@@ -668,9 +668,9 @@ test('explicit push test bypasses preferences and quiet hours, honours ownership
   expect(await f.service.sendTest(input().token, undefined, {})).toEqual({ status: 'noRegistration' })
   expect(f.sent).toHaveLength(0)
   expect(await f.service.sendTest(input().token, 'local-phone-host-a', { remoteDeviceId: 'device-a' })).toEqual({ status: 'sent' })
-  expect(f.sent[0]!.payload).toEqual({ aps: { alert: { title: '测试通知 · cc-haha', body: '电脑推送正常：这条是电脑发给你手机的。' }, sound: 'default', category: 'cchahaResult' }, hostId: 'local-phone-host-a', eventType: 'test' })
+  expect(f.sent[0]!.payload).toEqual({ aps: { alert: { title: '测试通知 · wangmai', body: '电脑推送正常：这条是电脑发给你手机的。' }, sound: 'default', category: 'wangmaiResult' }, hostId: 'local-phone-host-a', eventType: 'test' })
   expect(await f.service.sendTest(androidToken, undefined, { remoteDeviceId: 'device-a' })).toEqual({ status: 'sent' })
-  expect(f.sent[1]!.payload).toMatchObject({ notification: { title: '测试通知 · cc-haha' }, android: { notification: { channel_id: 'cc-haha-decisions' } } })
+  expect(f.sent[1]!.payload).toMatchObject({ notification: { title: '测试通知 · wangmai' }, android: { notification: { channel_id: 'wangmai-decisions' } } })
   const lan = fixture()
   lan.service.register(input(), {})
   expect(await lan.service.sendTest(input().token, undefined, {})).toEqual({ status: 'sent' })
@@ -705,9 +705,9 @@ test('a changed public address goes to remotely paired phones that do not pull f
   expect(f.sent.map(delivery => ({ provider: delivery.provider, token: delivery.token, payload: delivery.payload }))).toEqual([{
     provider: 'expo', token: expoToken,
     payload: {
-      title: '电脑地址已更新 · cc-haha', body: 'Studio Mac重新建立了外出连接，打开 App 会自动换到新地址。',
+      title: '电脑地址已更新 · wangmai', body: 'Studio Mac重新建立了外出连接，打开 App 会自动换到新地址。',
       data: { hostId: 'host-on-phone-a', eventType: 'hostUrl', url: 'https://new-name.trycloudflare.com', mac: 'mac-for-phone-a' },
-      categoryId: 'cchahaResult', sound: 'default', priority: 'high', ttl: 300,
+      categoryId: 'wangmaiResult', sound: 'default', priority: 'high', ttl: 300,
     },
   }])
 })

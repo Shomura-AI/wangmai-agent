@@ -73,7 +73,7 @@ async function main() {
 function exitIfStillRunning(afterMs: number) {
   setTimeout(() => {
     const listing = Bun.spawnSync(['ps', '-eo', 'pid,ppid,pgid,etime,args'], { stdout: 'pipe', stderr: 'ignore' }).stdout.toString()
-    const lingering = listing.split('\n').filter((line) => /\bbun\b|claude-haha|inventory-mcp/.test(line))
+    const lingering = listing.split('\n').filter((line) => /\bbun\b|wangmai|inventory-mcp/.test(line))
     console.warn(`[agent-replay] still running ${afterMs / 1000}s after finishing (pid ${process.pid}); exiting with the verdict. Processes:\n${lingering.join('\n')}`)
     process.exit(process.exitCode ?? 0)
   }, afterMs).unref()

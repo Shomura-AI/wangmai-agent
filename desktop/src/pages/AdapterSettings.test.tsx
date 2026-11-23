@@ -13,7 +13,7 @@ beforeEach(() => {
 })
 
 const FEISHU_CREATE_BOT_URL = 'https://open.feishu.cn/page/openclaw?form=multiAgent'
-const IM_CONFIG_DOCS_URL = 'https://cchaha.ai/im/'
+const IM_CONFIG_DOCS_URL = 'https://wangmai.example.com/im/'
 
 function renderAdapterSettings(
   config: AdapterFileConfig,

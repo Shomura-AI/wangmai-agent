@@ -10,7 +10,7 @@ const hasSession = spyOn(conversationService, 'hasSession').mockReturnValue(true
 const requestControl = spyOn(conversationService, 'requestControl')
 
 test.each(['feishu', 'dingtalk', 'wecom', 'remotion', 'supabase'])('requires the %s connector plugin and skill in the chat, not only on disk', async id => {
-  const requirement = { pluginId: `office-${id}@haha-connectors`, skillName: `office-${id}:office-${id}` }
+  const requirement = { pluginId: `office-${id}@wangmai-connectors`, skillName: `office-${id}:office-${id}` }
   for (const response of [
     { plugins: [], commands: [{ name: requirement.skillName }] },
     { plugins: [{ source: requirement.pluginId }], commands: [] },
@@ -83,7 +83,7 @@ test('a lean chat is not required to have the connector server, only its plugin 
     expect(requestControl.mock.calls.map(call => call[1])).toEqual([{ subtype: 'reload_plugins' }])
 
     // Lean runs skills, so the plugin and its skill are still proven in it.
-    const requirement = { pluginId: 'office-supabase@haha-connectors', skillName: 'office-supabase:office-supabase' }
+    const requirement = { pluginId: 'office-supabase@wangmai-connectors', skillName: 'office-supabase:office-supabase' }
     requestControl.mockReset().mockResolvedValue({ plugins: [], commands: [], error_count: 0, mcpServers: [] })
     expect(await reloadSessionComponents('fixture-session', serverName, requirement)).toMatchObject({ applied: false, reason: 'failed' })
 

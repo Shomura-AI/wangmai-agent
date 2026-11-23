@@ -1,7 +1,7 @@
 import AppKit
 import XCTest
 
-@testable import cc_haha_computer_use
+@testable import wangmai_computer_use
 
 /// Drives `Runtime.live` — the wiring `get_app_state` uses — through fake AX
 /// and window-server answers, so reverting any part of that wiring fails here.

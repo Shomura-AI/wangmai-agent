@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { CircleCheck, Copy, LogIn, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { useHahaGrokOAuthStore } from '../../stores/hahaGrokOAuthStore'
+import { useWangMaiGrokOAuthStore } from '../../stores/wangmaiGrokOAuthStore'
 import { useTranslation } from '../../i18n'
 import { copyTextToClipboard } from '@/lib/clipboard'
 import { getDesktopHost } from '../../lib/desktopHost'
-import { hahaGrokOAuthApi } from '../../api/hahaGrokOAuth'
+import { wangmaiGrokOAuthApi } from '../../api/wangmaiGrokOAuth'
 import { OfficialLoginRiskDialog } from './OfficialLoginRiskDialog'
 
 export function GrokOfficialLogin() {
@@ -14,7 +14,7 @@ export function GrokOfficialLogin() {
   const [riskDialogOpen, setRiskDialogOpen] = useState(false)
   const [isAwaitingAuthorization, setIsAwaitingAuthorization] = useState(false)
   const { status, isLoading, error, fetchStatus, login, logout, startPolling, stopPolling } =
-    useHahaGrokOAuthStore()
+    useWangMaiGrokOAuthStore()
 
   useEffect(() => {
     void fetchStatus()
@@ -28,7 +28,7 @@ export function GrokOfficialLogin() {
   useEffect(() => {
     if (!status?.loggedIn || !isAwaitingAuthorization) return
     setIsAwaitingAuthorization(false)
-    void getDesktopHost().shell.open(hahaGrokOAuthApi.successUrl()).catch((err) => {
+    void getDesktopHost().shell.open(wangmaiGrokOAuthApi.successUrl()).catch((err) => {
       console.error('[GrokOfficialLogin] success page open failed:', err)
     })
   }, [isAwaitingAuthorization, status?.loggedIn])
@@ -45,7 +45,7 @@ export function GrokOfficialLogin() {
         startPolling()
       } catch (err) {
         console.error('[GrokOfficialLogin] shellOpen failed:', err)
-        useHahaGrokOAuthStore.setState({
+        useWangMaiGrokOAuthStore.setState({
           error: t('settings.grokOfficialLogin.openBrowserFailed'),
         })
       }
@@ -59,10 +59,10 @@ export function GrokOfficialLogin() {
     if (await copyTextToClipboard(manualAuthorizeUrl)) {
       setManualAuthorizeUrl(null)
       setIsAwaitingAuthorization(true)
-      useHahaGrokOAuthStore.setState({ error: null })
+      useWangMaiGrokOAuthStore.setState({ error: null })
       startPolling()
     } else {
-      useHahaGrokOAuthStore.setState({
+      useWangMaiGrokOAuthStore.setState({
         error: t('settings.grokOfficialLogin.copyLinkFailed'),
       })
     }

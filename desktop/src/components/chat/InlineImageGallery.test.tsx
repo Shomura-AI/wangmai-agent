@@ -229,7 +229,7 @@ describe('InlineImageGallery', () => {
   it('suppresses host-managed ImageGen paths when their dedicated card owns the image', () => {
     render(
       <InlineImageGallery
-        text={'已生成：/Users/me/.claude/cc-haha/generated-images/session/result.png'}
+        text={'已生成：/Users/me/.claude/wangmai/generated-images/session/result.png'}
         suppressManagedGeneratedImages
       />,
     )
@@ -337,10 +337,10 @@ describe('InlineImageGallery', () => {
     it('shows nothing for a glob quoted in the reply', () => {
       render(
         <InlineImageGallery
-          text={'并截了 8 张关键界面（`/tmp/cc-haha-ui-review/0*.png`，含权限卡片、工具完成态）。'}
+          text={'并截了 8 张关键界面（`/tmp/wangmai-ui-review/0*.png`，含权限卡片、工具完成态）。'}
           sessionId="s1"
           workDir="/w"
-          changedFiles={['/tmp/cc-haha-ui-review/design/index.html']}
+          changedFiles={['/tmp/wangmai-ui-review/design/index.html']}
         />,
       )
 
@@ -366,14 +366,14 @@ describe('InlineImageGallery', () => {
     it('still shows the concrete file named beside the pattern', () => {
       render(
         <InlineImageGallery
-          text={'截图 `/tmp/cc-haha-ui-review/0*.png`，首屏见 `/tmp/cc-haha-ui-review/01-initial.png`'}
+          text={'截图 `/tmp/wangmai-ui-review/0*.png`，首屏见 `/tmp/wangmai-ui-review/01-initial.png`'}
           sessionId="s1"
           workDir="/w"
         />,
       )
 
       expect(imgSrcs()).toEqual([
-        'http://127.0.0.1:3456/api/filesystem/file?path=' + encodeURIComponent('/tmp/cc-haha-ui-review/01-initial.png'),
+        'http://127.0.0.1:3456/api/filesystem/file?path=' + encodeURIComponent('/tmp/wangmai-ui-review/01-initial.png'),
       ])
     })
 

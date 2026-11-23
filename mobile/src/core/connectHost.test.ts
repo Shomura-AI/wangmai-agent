@@ -104,7 +104,7 @@ test('native pairing waits for approval and accepts only the native Bearer contr
   ])
   expect(requests[0].body).toEqual({
     secret: 'fake-secret',
-    name: 'cc-haha App · ios',
+    name: 'wangmai App · ios',
     clientType: 'native',
   })
   expect(requests[1].body).toEqual({ id: 'pair', claimSecret: 'claim' })
@@ -128,7 +128,7 @@ for (const origin of ['https://workstation-fixture.trycloudflare.com', 'https://
     })
     expect(phases).toEqual(['requesting', 'approval'])
     expect(requests.map(request => request.path)).toEqual(['/api/public-access/pair', '/api/public-access/claim'])
-    expect(requests[0].body).toMatchObject({ clientType: 'native', name: `cc-haha App · ${platform}` })
+    expect(requests[0].body).toMatchObject({ clientType: 'native', name: `wangmai App · ${platform}` })
     expect(requests.every(request => request.origin === origin)).toBe(true)
     expect(result.host).toMatchObject({ url: origin, auth: 'remote' })
     expect(JSON.stringify(result.host)).not.toContain('fake-secret')
@@ -149,7 +149,7 @@ for (const origin of ['https://workstation-fixture.trycloudflare.com', 'https://
     const restored = await repository.load()
     expect(restored.hosts).toEqual([{ id: 'b', name: 'Office', url: origin, auth: 'remote' }])
     expect(await repository.credential('b')).toBe('native_fake')
-    const raw = metadata.get('cc-haha.hosts')!
+    const raw = metadata.get('wangmai.hosts')!
     expect(raw).not.toContain('fake-secret')
     expect(raw).not.toContain('native_fake')
     expect(raw).not.toContain('/remote')

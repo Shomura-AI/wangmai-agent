@@ -1,7 +1,7 @@
 import CoreGraphics
 import XCTest
 
-@testable import cc_haha_computer_use
+@testable import wangmai_computer_use
 
 /// Input into a target whose window is not on the Spaces the user is looking
 /// at. Measured on a real machine with the user in a fullscreen app: a

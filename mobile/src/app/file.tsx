@@ -106,7 +106,7 @@ function FilePage({ hostId, id, path }: { hostId: string; id: string; path: stri
           downloadWorkspaceFile(host, credential, id, path, expoFetch as DownloadFetch, signal),
         available: Sharing.isAvailableAsync,
         write(result) {
-          const directory = new Directory(Paths.cache, 'cc-haha-exports', randomUUID())
+          const directory = new Directory(Paths.cache, 'wangmai-exports', randomUUID())
           directory.create({ idempotent: true, intermediates: true })
           const target = new NativeFile(directory, result.name)
           target.write(result.bytes)

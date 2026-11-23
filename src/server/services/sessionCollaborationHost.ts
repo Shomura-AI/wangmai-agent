@@ -64,7 +64,7 @@ export function configureSessionCollaborationHost(serverHost: string, serverPort
 }
 
 function getSessionCollaborationOwner(): CollaborationOwner {
-  const path = join(process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude'), 'cc-haha', 'session-collaboration', 'state.json')
+  const path = join(process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude'), 'wangmai', 'session-collaboration', 'state.json')
   if (!current || current.path !== path) {
     const service = new SessionCollaborationService({
       statePath: path,

@@ -9,9 +9,9 @@ export type Storage = {
   removeItem(key: string): Promise<void>
 }
 export type Registry = { version: 1; hosts: Host[]; selectedId: string | null }
-const key = 'cc-haha.hosts'
+const key = 'wangmai.hosts'
 const empty = (): Registry => ({ version: 1, hosts: [], selectedId: null })
-const credentialKey = (id: string) => `cc-haha.host.${id}`
+const credentialKey = (id: string) => `wangmai.host.${id}`
 
 export class Drafts {
   private values = new Map<string, string>()
@@ -180,7 +180,7 @@ export class HostRepository {
   }
 }
 
-const locatorsKey = 'cc-haha.host-locators'
+const locatorsKey = 'wangmai.host-locators'
 /**
  * 远程电脑的局域网线索（端口 + IPv4，见 core/hostRelocator.ts），按电脑 id 存：
  * `{ version: 1, hosts: { [id]: { port, addresses, updatedAt } } }`。

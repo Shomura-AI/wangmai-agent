@@ -1,4 +1,4 @@
-export const CHAT_APPEARANCE_STORAGE_KEY = 'cc-haha-chat-appearance'
+export const CHAT_APPEARANCE_STORAGE_KEY = 'wangmai-chat-appearance'
 export const CHAT_APPEARANCE_VERSION = 1
 
 export type ChatAppearance = {

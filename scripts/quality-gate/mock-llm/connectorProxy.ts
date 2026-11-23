@@ -45,7 +45,7 @@ export async function runConnectorProxyScenario(rootDir: string, artifactDir: st
         BUN_OPTIONS: searchTransportBunOptions(join(rootDir, 'scripts/quality-gate/mock-llm/connectorProxyTransport.ts')),
         MOCK_CONNECTOR_ENDPOINT: 'https://mcp.blocked.test/mcp',
         MOCK_CONNECTOR_TRACE: join(artifactDir, 'preload.ndjson'),
-        CC_HAHA_SYSTEM_PROXY_URL: proxy.url,
+        WANGMAI_SYSTEM_PROXY_URL: proxy.url,
         NODE_EXTRA_CA_CERTS: certificate,
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',
         CLAUDE_CODE_LOCAL_SKIP_REMOTE_PREFETCH: '1',

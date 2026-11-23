@@ -29,7 +29,7 @@ const tempDirs: string[] = []
 const exactFileTime = new Date(1_700_000_000_000)
 
 async function createTempDir(label: string): Promise<string> {
-  const directory = await mkdtemp(join(tmpdir(), `cc-haha-${label}-`))
+  const directory = await mkdtemp(join(tmpdir(), `wangmai-${label}-`))
   tempDirs.push(directory)
   return directory
 }

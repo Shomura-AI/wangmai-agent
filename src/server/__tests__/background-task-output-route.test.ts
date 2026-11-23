@@ -16,13 +16,13 @@ let server: ReturnType<typeof Bun.serve> | undefined
 let previous: Record<string, string | undefined>
 
 beforeEach(async () => {
-  previous = Object.fromEntries(['HOME', 'CLAUDE_CONFIG_DIR', 'CLAUDE_CODE_TMPDIR', 'CC_HAHA_LOCAL_ACCESS_TOKEN'].map(key => [key, process.env[key]]))
+  previous = Object.fromEntries(['HOME', 'CLAUDE_CONFIG_DIR', 'CLAUDE_CODE_TMPDIR', 'WANGMAI_LOCAL_ACCESS_TOKEN'].map(key => [key, process.env[key]]))
   directory = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'background-output-route-')))
   process.env.HOME = path.join(directory, 'home')
   await fs.mkdir(process.env.HOME)
   process.env.CLAUDE_CONFIG_DIR = path.join(directory, 'config')
   process.env.CLAUDE_CODE_TMPDIR = directory
-  process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = token
+  process.env.WANGMAI_LOCAL_ACCESS_TOKEN = token
   getClaudeTempDir.cache.clear?.()
   const work = path.join(directory, 'work')
   await fs.mkdir(work)

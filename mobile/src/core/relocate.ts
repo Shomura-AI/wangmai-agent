@@ -138,14 +138,14 @@ export function verifyLocate(credential: string, nonce: string, body: unknown): 
   if (!credential || !body || typeof body !== 'object') return null
   const { url, mac } = body as { url?: unknown; mac?: unknown }
   if (typeof url !== 'string' || typeof mac !== 'string') return null
-  if (!sameText(mac, signature(credential, `cc-haha-locate\n${nonce}\n${url}`))) return null
+  if (!sameText(mac, signature(credential, `wangmai-locate\n${nonce}\n${url}`))) return null
   return trustedOrigin(url)
 }
 
 /** 电脑推来的新地址（通知里的 `{ url, mac }`）。 */
 export function verifyHostUrlPush(credential: string, data: { url: unknown; mac: unknown }): string | null {
   if (!credential || typeof data.url !== 'string' || typeof data.mac !== 'string') return null
-  if (!sameText(data.mac, signature(credential, `cc-haha-host-url\n${data.url}`))) return null
+  if (!sameText(data.mac, signature(credential, `wangmai-host-url\n${data.url}`))) return null
   return trustedOrigin(data.url)
 }
 

@@ -16,7 +16,7 @@ export type AgentDesktopCursorConfiguration = {
   warning?: { code: string; message: string }
 }
 
-const cursorFeedbackPrefix = 'CC_HAHA_CURSOR_FEEDBACK '
+const cursorFeedbackPrefix = 'WANGMAI_CURSOR_FEEDBACK '
 
 export function cursorFeedback(stderr: string, configuration: AgentDesktopCursorConfiguration) {
   let attempted = false

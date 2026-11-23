@@ -9,7 +9,7 @@ import { createContextImage } from '../../utils/fixtures/contextImages.js'
 import type { Message } from '../../types/message.js'
 import type { ImageBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs'
 
-const fixture = process.env.CC_HAHA_CONTEXT_IMAGES_FIXTURE === '1'
+const fixture = process.env.WANGMAI_CONTEXT_IMAGES_FIXTURE === '1'
 const fixtureTest = fixture ? test : test.skip
 const root = fileURLToPath(new URL('../../../', import.meta.url))
 if (!fixture) {
@@ -17,7 +17,7 @@ if (!fixture) {
     const home = await mkdtemp(join(tmpdir(), 'context-images-worker-'))
     const child = Bun.spawn([process.execPath, '--no-env-file', 'test', '--timeout=60000', fileURLToPath(import.meta.url)], {
       cwd: home, stdin: 'ignore', stdout: 'pipe', stderr: 'pipe',
-      env: createSandboxedTestEnvironment(home, { CC_HAHA_CONTEXT_IMAGES_FIXTURE: '1' }),
+      env: createSandboxedTestEnvironment(home, { WANGMAI_CONTEXT_IMAGES_FIXTURE: '1' }),
     })
     const timer = setTimeout(() => child.kill('SIGKILL'), 85_000)
     try {
@@ -312,7 +312,7 @@ fixtureTest('actual CLI Read persists compressed images and resumes them without
     ], { cwd: project, stdin: 'ignore', stdout: 'pipe', stderr: 'pipe',
       env: createSandboxedTestEnvironment(home, { NODE_ENV: 'production', ANTHROPIC_API_KEY: 'offline-cli-context-key',
         ANTHROPIC_BASE_URL: `http://127.0.0.1:${server.port}`, CALLER_DIR: project, CLAUDE_CODE_SIMPLE: '1',
-        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1', CC_HAHA_SKIP_DOTENV: '1' }),
+        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1', WANGMAI_SKIP_DOTENV: '1' }),
     })
     const timer = setTimeout(() => child.kill('SIGKILL'), 20_000)
     try {

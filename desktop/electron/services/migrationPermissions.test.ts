@@ -12,7 +12,7 @@ const canRunPowerShell = process.platform === 'win32' || spawnSync('pwsh', ['-No
 
 const roots: string[] = []
 async function fixture() {
-  const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'haha-migration-acl-')))
+  const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-migration-acl-')))
   roots.push(root)
   const sourceParent = path.join(root, 'source-parent')
   const targetParent = path.join(root, 'target-parent')

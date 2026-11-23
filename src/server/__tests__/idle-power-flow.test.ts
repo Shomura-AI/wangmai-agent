@@ -16,7 +16,7 @@ beforeEach(() => {
   sandbox = createQualityGateSandbox({
     label: 'idle-power-flow',
     source: createOfflineTestEnvironment({}, process.env),
-    envOverrides: { NODE_ENV: 'test', CC_HAHA_LOCAL_INDEX: 'off', ANTHROPIC_API_KEY: 'fixture-only' },
+    envOverrides: { NODE_ENV: 'test', WANGMAI_LOCAL_INDEX: 'off', ANTHROPIC_API_KEY: 'fixture-only' },
   })
   for (const key of Object.keys(process.env)) delete process.env[key]
   Object.assign(process.env, sandbox.env)
@@ -471,7 +471,7 @@ test('real prediction fork blocks power through CLI idle until settlement and a 
   await mkdir(work, { recursive: true })
   const root = join(import.meta.dir, '../../..')
   const env = createSandboxedTestEnvironment(home, {
-    NODE_ENV: 'production', CI: '1', CC_HAHA_SKIP_DOTENV: '1',
+    NODE_ENV: 'production', CI: '1', WANGMAI_SKIP_DOTENV: '1',
     CALLER_DIR: work, CFFIXED_USER_HOME: home,
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',
     DISABLE_AUTOUPDATER: '1', DISABLE_TELEMETRY: '1', DISABLE_ERROR_REPORTING: '1',

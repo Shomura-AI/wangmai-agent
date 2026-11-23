@@ -103,7 +103,7 @@ const transcriptPath = join(directory, sessionId + '.jsonl')
 await appendFile(transcriptPath, JSON.stringify({
   type: 'assistant', uuid: crypto.randomUUID(), parentUuid: null, sessionId,
   cwd: process.cwd(), timestamp: new Date().toISOString(),
-  entrypoint: process.env.CC_HAHA_TRANSCRIPT_ENTRYPOINT,
+  entrypoint: process.env.WANGMAI_TRANSCRIPT_ENTRYPOINT,
   message: { role: 'assistant', content: [{ type: 'text', text: 'fixture persisted turn' }] },
 }) + '\\n')
 await appendFile(${JSON.stringify(capturePath)}, JSON.stringify({ args, sessionId, launchCwd, cwd: process.cwd(), transcriptPath }) + '\\n')

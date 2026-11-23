@@ -259,15 +259,15 @@ describe('projectTrajectoryRows review fixes', () => {
     message: { role: 'assistant', id, model: 'claude-test', content, usage, ...message },
   })
 
-  it('takes the per-field max usage across block lines (cc-haha writes the final usage on the last line)', () => {
-    // cc-haha: one line per content block; only the last carries the final usage.
-    const ccHaha = projectTrajectoryRows(page([
+  it('takes the per-field max usage across block lines (wangmai writes the final usage on the last line)', () => {
+    // wangmai: one line per content block; only the last carries the final usage.
+    const wangmai = projectTrajectoryRows(page([
       user('u-01', 'go'),
       line('a-02', 'msg_c', 2, [{ type: 'thinking', thinking: 'x' }], { input_tokens: 0, output_tokens: 0, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 }),
       line('a-03', 'msg_c', 3, [{ type: 'text', text: 'hi' }], { input_tokens: 1200, output_tokens: 0, cache_read_input_tokens: 9000, cache_creation_input_tokens: 0 }),
       line('a-04', 'msg_c', 4, [{ type: 'tool_use', id: 'toolu_c', name: 'Read', input: { file_path: '/a' } }], { input_tokens: 1200, output_tokens: 345, cache_read_input_tokens: 9000, cache_creation_input_tokens: 64 }),
     ]), { turnBase: 0, skipSidechain: true })
-    expect(byId(ccHaha, 'a:msg_c').usage).toEqual({ input: 1200, output: 345, cacheRead: 9000, cacheWrite: 64 })
+    expect(byId(wangmai, 'a:msg_c').usage).toEqual({ input: 1200, output: 345, cacheRead: 9000, cacheWrite: 64 })
 
     // Official CLI: every line repeats the same usage; the merge must not add it up.
     const repeated = { input_tokens: 10, output_tokens: 5, cache_read_input_tokens: 100, cache_creation_input_tokens: 7 }

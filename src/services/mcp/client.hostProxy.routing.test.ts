@@ -13,7 +13,7 @@ import { resolveMcpHostProxy, setMcpHostProxyResolver } from './hostProxy.js'
 import type { ScopedMcpServerConfig } from './types.js'
 import { MCP_FIXTURE_CERT, UNREACHABLE_MCP_HOST, isolateMcpFixtureCredentials, startLegacySseMcpServer, startRecordingProxy, startStreamableMcpServer, waitFor, type McpFixture, type RecordingProxy } from './__tests__/networkProxyFixtures.js'
 
-const keys = ['HTTP_PROXY', 'HTTPS_PROXY', 'http_proxy', 'https_proxy', 'ALL_PROXY', 'all_proxy', 'NO_PROXY', 'no_proxy', 'CC_HAHA_SYSTEM_PROXY_URL', 'CC_HAHA_SYSTEM_PROXY_ERROR', 'CLAUDE_CONFIG_DIR', 'NODE_EXTRA_CA_CERTS'] as const
+const keys = ['HTTP_PROXY', 'HTTPS_PROXY', 'http_proxy', 'https_proxy', 'ALL_PROXY', 'all_proxy', 'NO_PROXY', 'no_proxy', 'WANGMAI_SYSTEM_PROXY_URL', 'WANGMAI_SYSTEM_PROXY_ERROR', 'CLAUDE_CONFIG_DIR', 'NODE_EXTRA_CA_CERTS'] as const
 let previous: Record<string, string | undefined>
 let root: string
 let restoreStorage: () => void
@@ -62,7 +62,7 @@ async function fixtureFor(type: 'http' | 'sse', tls = false) {
 
 async function configure(mode: 'system' | 'manual' | 'direct', proxyUrl: string, register = true) {
   await writeFile(join(root, 'settings.json'), JSON.stringify({ network: { proxy: { mode, url: mode === 'manual' ? proxyUrl : '' } } }))
-  if (mode === 'system') process.env.CC_HAHA_SYSTEM_PROXY_URL = proxyUrl
+  if (mode === 'system') process.env.WANGMAI_SYSTEM_PROXY_URL = proxyUrl
   resetSettingsCache()
   if (register) dispose = configureMcpHostProxy()
 }
@@ -126,8 +126,8 @@ test('NO_PROXY wildcard keeps the real native flow direct even with inherited pr
 for (const explicit of [false, true]) test(`failed bridge still permits ${explicit ? 'explicit NO_PROXY' : 'loopback'} tool calls`, async () => {
   const { fixture, proxy } = await fixtureFor('http')
   await configure('system', proxy.url)
-  delete process.env.CC_HAHA_SYSTEM_PROXY_URL
-  process.env.CC_HAHA_SYSTEM_PROXY_ERROR = 'fixture bridge failed: secret-upstream-detail'
+  delete process.env.WANGMAI_SYSTEM_PROXY_URL
+  process.env.WANGMAI_SYSTEM_PROXY_ERROR = 'fixture bridge failed: secret-upstream-detail'
   if (explicit) process.env.NO_PROXY = '*'
   const host = explicit ? '[::ffff:127.0.0.1]' : '127.0.0.1'
   await call('http', `http://${host}:${fixture.port}/mcp`)
@@ -137,8 +137,8 @@ for (const explicit of [false, true]) test(`failed bridge still permits ${explic
 test('a remote target still fails closed when its bridge is unavailable', async () => {
   const { fixture, proxy } = await fixtureFor('http')
   await configure('system', proxy.url)
-  delete process.env.CC_HAHA_SYSTEM_PROXY_URL
-  process.env.CC_HAHA_SYSTEM_PROXY_ERROR = 'fixture bridge failed: secret-upstream-detail'
+  delete process.env.WANGMAI_SYSTEM_PROXY_URL
+  process.env.WANGMAI_SYSTEM_PROXY_ERROR = 'fixture bridge failed: secret-upstream-detail'
   const config: ScopedMcpServerConfig = { type: 'http', url: `http://${UNREACHABLE_MCP_HOST}/mcp`, scope: 'dynamic' }
   clients.push({ name: 'bridge-failed', config })
   const result = await connectToServer('bridge-failed', config)

@@ -87,7 +87,7 @@ describe('Electron updater service', () => {
 
   it('skips electron-updater when packaged update config is absent', async () => {
     const localUpdater = fakeUpdater()
-    const tempDir = mkdtempSync(join(tmpdir(), 'cc-haha-updater-'))
+    const tempDir = mkdtempSync(join(tmpdir(), 'wangmai-updater-'))
     try {
       const service = new ElectronUpdaterService(localUpdater, undefined, {
         updateConfigPath: join(tempDir, 'app-update.yml'),
@@ -104,7 +104,7 @@ describe('Electron updater service', () => {
   it('treats missing GitHub channel metadata as no update', async () => {
     const service = new ElectronUpdaterService(updater)
     updater.checkForUpdates.mockRejectedValueOnce(Object.assign(
-      new Error('Cannot find latest-mac.yml in the latest release artifacts (https://github.com/NanmiCoder/cc-haha/releases/download/v0.3.2/latest-mac.yml): HttpError: 404'),
+      new Error('Cannot find latest-mac.yml in the latest release artifacts (https://github.com/wangmai-ai/wangmai-agent/releases/download/v0.3.2/latest-mac.yml): HttpError: 404'),
       { code: 'ERR_UPDATER_CHANNEL_FILE_NOT_FOUND' },
     ))
 
@@ -114,7 +114,7 @@ describe('Electron updater service', () => {
   it('treats missing GitHub channel metadata as no update even without an error code', async () => {
     const service = new ElectronUpdaterService(updater)
     updater.checkForUpdates.mockRejectedValueOnce(
-      new Error('Cannot find latest-mac.yml in the latest release artifacts (https://github.com/NanmiCoder/cc-haha/releases/download/v0.3.2/latest-mac.yml): HttpError: 404'),
+      new Error('Cannot find latest-mac.yml in the latest release artifacts (https://github.com/wangmai-ai/wangmai-agent/releases/download/v0.3.2/latest-mac.yml): HttpError: 404'),
     )
 
     await expect(service.checkForUpdates()).resolves.toBeNull()
@@ -123,7 +123,7 @@ describe('Electron updater service', () => {
   it('treats stringified missing GitHub channel metadata as no update', async () => {
     const service = new ElectronUpdaterService(updater)
     updater.checkForUpdates.mockRejectedValueOnce(
-      'Error: Cannot find latest-mac.yml in the latest release artifacts (https://github.com/NanmiCoder/cc-haha/releases/download/v0.3.2/latest-mac.yml): HttpError: 404',
+      'Error: Cannot find latest-mac.yml in the latest release artifacts (https://github.com/wangmai-ai/wangmai-agent/releases/download/v0.3.2/latest-mac.yml): HttpError: 404',
     )
 
     await expect(service.checkForUpdates()).resolves.toBeNull()
@@ -307,9 +307,9 @@ describe('Electron updater service', () => {
     service.stageDownloadedUpdate()
 
     const env: NodeJS.ProcessEnv = {
-      CLAUDE_CONFIG_DIR: 'E:\\cc-haha-data',
-      CC_HAHA_APP_PORTABLE_DIR: '1',
-      WEBVIEW2_USER_DATA_FOLDER: 'E:\\cc-haha-data\\EBWebView',
+      CLAUDE_CONFIG_DIR: 'E:\\wangmai-data',
+      WANGMAI_APP_PORTABLE_DIR: '1',
+      WEBVIEW2_USER_DATA_FOLDER: 'E:\\wangmai-data\\EBWebView',
       APPDATA: 'C:\\Users\\someone\\AppData\\Roaming',
     }
     service.quitAndInstallDownloadedUpdate(env)

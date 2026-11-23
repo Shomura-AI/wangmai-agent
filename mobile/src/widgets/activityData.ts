@@ -28,7 +28,7 @@ export type TaskActivityProps = {
   openUrl: string
   connectionState?: 'stale'
 }
-export const TASK_ACTIVITY_NAME = 'CCHahaTaskActivity'
+export const TASK_ACTIVITY_NAME = 'CCWangMaiTaskActivity'
 /** 结束态在锁屏上停留的时间，与电脑端 APNs 结束推送的 dismissal-date（60 秒）一致。 */
 export const FINISHED_ACTIVITY_MS = 60_000
 const SIMPLE_DECISIONS = ['AskUserQuestion', 'ExitPlanMode', 'ComputerUse']
@@ -72,7 +72,7 @@ export function activityUrl(
   const query = new URLSearchParams({ host: hostId })
   if (requestId) query.set('requestId', requestId)
   if (requestId && action) query.set('notificationAction', action)
-  return `cchaha:///chat/${encodeURIComponent(sessionId)}?${query}`
+  return `wangmai:///chat/${encodeURIComponent(sessionId)}?${query}`
 }
 
 /**

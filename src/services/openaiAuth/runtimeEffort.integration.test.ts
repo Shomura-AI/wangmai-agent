@@ -8,7 +8,7 @@ test('a fresh official OpenAI process preserves future model IDs and selected ef
   const sandbox = await mkdtemp(join(tmpdir(), 'openai-runtime-effort-'))
   try {
     const env = createSandboxedTestEnvironment(sandbox, {
-      CC_HAHA_OPENAI_OAUTH_PROVIDER: '1',
+      WANGMAI_OPENAI_OAUTH_PROVIDER: '1',
     })
     const tokenFile = join(env.CLAUDE_CONFIG_DIR, 'openai-oauth.json')
     await mkdir(env.CLAUDE_CONFIG_DIR, { recursive: true })
@@ -36,7 +36,7 @@ test('a fresh official OpenAI process preserves future model IDs and selected ef
       ]
       const results = []
       for (const item of cases) {
-        process.env.CC_HAHA_OPENAI_REASONING_EFFORT = item.sessionEffort
+        process.env.WANGMAI_OPENAI_REASONING_EFFORT = item.sessionEffort
         const applied = resolveAppliedEffort('codex-future', item.requestEffort)
         const outputConfig = {}
         configureEffortParams(applied, outputConfig, {}, [], 'codex-future')

@@ -843,7 +843,7 @@ describe('VoiceInputSettings microphone', () => {
   })
 
   it('falls back to the system default, with a notice, when the saved device is gone', async () => {
-    localStorage.setItem('cc-haha-voice-input-device', 'mic-unplugged')
+    localStorage.setItem('wangmai-voice-input-device', 'mic-unplugged')
     listInputs.mockResolvedValue([{ deviceId: 'mic-a', label: 'Built-in Microphone' }])
     await renderPage(makeCatalog(READY))
 
@@ -861,7 +861,7 @@ describe('VoiceInputSettings microphone', () => {
   })
 
   it('keeps a saved device selected while names are still hidden', async () => {
-    localStorage.setItem('cc-haha-voice-input-device', 'mic-a')
+    localStorage.setItem('wangmai-voice-input-device', 'mic-a')
     listInputs.mockResolvedValue([])
     await renderPage(makeCatalog(READY))
 
@@ -924,7 +924,7 @@ describe('VoiceInputSettings transcription test', () => {
   it('records with the chosen device, draws the trace, and shows text, duration and timing', async () => {
     // Only the clock's interval and Date: the trace's frames are driven by hand.
     vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval', 'Date'] })
-    localStorage.setItem('cc-haha-voice-input-device', 'mic-b')
+    localStorage.setItem('wangmai-voice-input-device', 'mic-b')
     listInputs.mockResolvedValue([
       { deviceId: 'mic-a', label: 'Built-in Microphone' },
       { deviceId: 'mic-b', label: 'USB Microphone' },

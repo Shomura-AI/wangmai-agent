@@ -185,7 +185,7 @@ test('history from another model loses its signed thinking on every caller, the 
   // Streaming stores each block as its own same-id assistant message.
   const gemini = [
     createAssistantMessage({ content: [{ type: 'thinking', thinking: '', signature: '' }] }),
-    createAssistantMessage({ content: [{ type: 'redacted_thinking', data: 'cc-haha:gemini-thought-signature:v1:abc' }] }),
+    createAssistantMessage({ content: [{ type: 'redacted_thinking', data: 'wangmai:gemini-thought-signature:v1:abc' }] }),
     createAssistantMessage({ content: [{ type: 'text', text: 'gemini answer' }] }),
   ]
   const deepseek = [

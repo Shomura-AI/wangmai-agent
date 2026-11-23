@@ -9,8 +9,8 @@ const { copyMock, logoutMock, startMock, statusMock } = vi.hoisted(() => ({
   statusMock: vi.fn(),
 }))
 
-vi.mock('../../api/hahaDeepSeekOAuth', () => ({
-  hahaDeepSeekOAuthApi: {
+vi.mock('../../api/wangmaiDeepSeekOAuth', () => ({
+  wangmaiDeepSeekOAuthApi: {
     start: startMock,
     status: statusMock,
     logout: logoutMock,
@@ -20,11 +20,11 @@ vi.mock('../../api/hahaDeepSeekOAuth', () => ({
 vi.mock('@/lib/clipboard', () => ({ copyTextToClipboard: copyMock }))
 
 import { DeepSeekAccountLogin } from './DeepSeekAccountLogin'
-import { useHahaDeepSeekOAuthStore } from '../../stores/hahaDeepSeekOAuthStore'
+import { useWangMaiDeepSeekOAuthStore } from '../../stores/wangmaiDeepSeekOAuthStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { browserHost } from '../../lib/desktopHost/browserHost'
 
-const initialOAuthState = useHahaDeepSeekOAuthStore.getState()
+const initialOAuthState = useWangMaiDeepSeekOAuthStore.getState()
 const AUTHORIZE_URL = 'https://platform.deepseek.com/oauth/authorize?state=ds-state'
 
 function installShellOpen(open: ReturnType<typeof vi.fn>) {
@@ -55,7 +55,7 @@ describe('DeepSeekAccountLogin', () => {
     logoutMock.mockResolvedValue({ ok: true })
     copyMock.mockResolvedValue(true)
     useSettingsStore.setState({ locale: 'en' })
-    useHahaDeepSeekOAuthStore.setState({
+    useWangMaiDeepSeekOAuthStore.setState({
       ...initialOAuthState,
       status: null,
       isPolling: false,
@@ -65,8 +65,8 @@ describe('DeepSeekAccountLogin', () => {
   })
 
   afterEach(() => {
-    useHahaDeepSeekOAuthStore.getState().stopPolling()
-    useHahaDeepSeekOAuthStore.setState(initialOAuthState)
+    useWangMaiDeepSeekOAuthStore.getState().stopPolling()
+    useWangMaiDeepSeekOAuthStore.setState(initialOAuthState)
     Reflect.deleteProperty(window, 'desktopHost')
     cleanup()
     vi.restoreAllMocks()
@@ -107,12 +107,12 @@ describe('DeepSeekAccountLogin', () => {
 
     expect(open).toHaveBeenCalledTimes(1)
     expect(open).toHaveBeenCalledWith(AUTHORIZE_URL)
-    expect(useHahaDeepSeekOAuthStore.getState().isPolling).toBe(true)
+    expect(useWangMaiDeepSeekOAuthStore.getState().isPolling).toBe(true)
 
     await act(async () => { await vi.advanceTimersByTimeAsync(2_000) })
 
     expect(screen.getByText(/Signed in as Ada · a\*\*\*@example\.com/)).toBeInTheDocument()
-    expect(useHahaDeepSeekOAuthStore.getState().isPolling).toBe(false)
+    expect(useWangMaiDeepSeekOAuthStore.getState().isPolling).toBe(false)
     // The DeepSeek platform shows its own "authorized" page, so nothing else is opened.
     expect(open).toHaveBeenCalledTimes(1)
   })
@@ -127,13 +127,13 @@ describe('DeepSeekAccountLogin', () => {
 
     expect(open).toHaveBeenCalledWith(AUTHORIZE_URL)
     expect(screen.getByText(/Unable to open browser/)).toBeInTheDocument()
-    expect(useHahaDeepSeekOAuthStore.getState().isPolling).toBe(false)
+    expect(useWangMaiDeepSeekOAuthStore.getState().isPolling).toBe(false)
 
     await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Copy authorization link' })))
 
     expect(copyMock).toHaveBeenCalledWith(AUTHORIZE_URL)
     expect(screen.queryByRole('button', { name: 'Copy authorization link' })).not.toBeInTheDocument()
-    expect(useHahaDeepSeekOAuthStore.getState().isPolling).toBe(true)
+    expect(useWangMaiDeepSeekOAuthStore.getState().isPolling).toBe(true)
   })
 
   it('reports a failed clipboard write and keeps the link available', async () => {
@@ -147,7 +147,7 @@ describe('DeepSeekAccountLogin', () => {
 
     expect(screen.getByText(/Unable to copy authorization link/)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Copy authorization link' })).toBeInTheDocument()
-    expect(useHahaDeepSeekOAuthStore.getState().isPolling).toBe(false)
+    expect(useWangMaiDeepSeekOAuthStore.getState().isPolling).toBe(false)
   })
 
   it('falls back to a generic label when the account has no name or contact, and signs out', async () => {

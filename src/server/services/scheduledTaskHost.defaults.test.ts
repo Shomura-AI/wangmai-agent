@@ -3,10 +3,10 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { ProviderService } from './providerService.js'
-import { hahaOAuthService } from './hahaOAuthService.js'
-import { hahaOpenAIOAuthService } from './hahaOpenAIOAuthService.js'
-import { hahaGrokOAuthService } from './hahaGrokOAuthService.js'
-import { hahaDeepSeekOAuthService } from './hahaDeepSeekOAuthService.js'
+import { wangmaiOAuthService } from './wangmaiOAuthService.js'
+import { wangmaiOpenAIOAuthService } from './wangmaiOpenAIOAuthService.js'
+import { wangmaiGrokOAuthService } from './wangmaiGrokOAuthService.js'
+import { wangmaiDeepSeekOAuthService } from './wangmaiDeepSeekOAuthService.js'
 import { sessionService } from './sessionService.js'
 import { emitSessionTurnEvent } from './sessionTurnEvents.js'
 import { executeScheduledSessionTask } from './scheduledTaskHost.js'
@@ -24,7 +24,7 @@ beforeEach(async () => {
   spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Live provider access is forbidden'))
   spyOn(ProviderService.prototype, 'listProviders').mockResolvedValue({ providers: [provider('active'), provider('other')], activeId: 'active', providerOrder: [] })
   spyOn(ProviderService.prototype, 'getOfficialProviderModels').mockResolvedValue({ main: 'official-fixture', opus: 'official-fixture', sonnet: 'official-fixture', haiku: 'official-fixture' })
-  for (const service of [hahaOAuthService, hahaOpenAIOAuthService, hahaGrokOAuthService, hahaDeepSeekOAuthService]) spyOn(service, 'loadTokens').mockResolvedValue(null)
+  for (const service of [wangmaiOAuthService, wangmaiOpenAIOAuthService, wangmaiGrokOAuthService, wangmaiDeepSeekOAuthService]) spyOn(service, 'loadTokens').mockResolvedValue(null)
   spyOn(sessionService, 'createSession').mockResolvedValue({ sessionId: 'created', workDir: directory } as any)
   spyOn(sessionService, 'appendSessionMetadata').mockResolvedValue(undefined)
   spyOn(handler, 'getSessionTurnState').mockReturnValue('idle')
@@ -49,14 +49,14 @@ const endpoint = { serverHost: '127.0.0.1', serverPort: 1 }
 // Use the actual model catalog and resolver: mocking resolveSessionRuntime hid
 // the original null/default fallback in the task-page creation path.
 test.each([false, true])('task-page omitted runtime uses the active provider (official account present: %s)', async officialAvailable => {
-  if (officialAvailable) spyOn(hahaOAuthService, 'loadTokens').mockResolvedValue({ accessToken: 'fixture-token' } as any)
+  if (officialAvailable) spyOn(wangmaiOAuthService, 'loadTokens').mockResolvedValue({ accessToken: 'fixture-token' } as any)
   expect(await executeScheduledSessionTask(input(), endpoint)).toMatchObject({ status: 'completed' })
   expect(sessionService.appendSessionMetadata).toHaveBeenCalledWith('created', expect.objectContaining({ runtimeProviderId: 'active', runtimeModelId: 'fixture-model' }))
   expect(globalThis.fetch).not.toHaveBeenCalled()
 })
 
 test.each([null, 'other'])('an explicitly selected provider %s overrides the global default', async selected => {
-  spyOn(hahaOAuthService, 'loadTokens').mockResolvedValue({ accessToken: 'fixture-token' } as any)
+  spyOn(wangmaiOAuthService, 'loadTokens').mockResolvedValue({ accessToken: 'fixture-token' } as any)
   const request = input()
   request.task.providerId = selected
   expect(await executeScheduledSessionTask(request, endpoint)).toMatchObject({ status: 'completed' })

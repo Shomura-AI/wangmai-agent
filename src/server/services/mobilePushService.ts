@@ -30,9 +30,9 @@ const deliveryKeys = ['channels', 'timeSensitive', 'liveActivity', 'showCommand'
 const validDelivery = (value: unknown) => record(value) && Object.keys(value).every(key => deliveryKeys.includes(key)) &&
   (value.channels === undefined || value.channels === 'split') && (value.timeSensitive === undefined || typeof value.timeSensitive === 'boolean') &&
   (value.liveActivity === undefined || value.liveActivity === 'running' || value.liveActivity === 'decisions') && (value.showCommand === undefined || typeof value.showCommand === 'boolean')
-const androidChannel = (delivery: PushDeliveryOptions | undefined, event: 'decision' | 'completed' | 'error') => delivery?.channels === 'split' ? event === 'decision' ? 'cc-haha-decisions' : event === 'completed' ? 'cc-haha-completed' : 'cc-haha-errors' : 'cc-haha'
+const androidChannel = (delivery: PushDeliveryOptions | undefined, event: 'decision' | 'completed' | 'error') => delivery?.channels === 'split' ? event === 'decision' ? 'wangmai-decisions' : event === 'completed' ? 'wangmai-completed' : 'wangmai-errors' : 'wangmai'
 const time = (value: unknown) => typeof value === 'string' && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value)
-type Alert = { title: string; body: string; category: 'cchahaTool' | 'cchahaDecision' | 'cchahaResult'; channel: string; timeSensitive: boolean; data: Record<string, string> }
+type Alert = { title: string; body: string; category: 'wangmaiTool' | 'wangmaiDecision' | 'wangmaiResult'; channel: string; timeSensitive: boolean; data: Record<string, string> }
 /** One alert, in the wire format of the registration's provider. */
 function alertPayload(row: Pick<Registration, 'platform' | 'provider'>, alert: Alert): Record<string, unknown> {
   const { title, category, channel, data } = alert
@@ -53,7 +53,7 @@ export function validatePushInput(value: unknown): value is PushInput {
   if (!safeString(value.hostId, 128) || value.hostName !== undefined && !safeString(value.hostName, 128)) return false
   if (value.kind !== undefined && value.kind !== 'notification' && value.kind !== 'liveActivity') return false
   // ActivityKit tokens only work with this computer's own APNs signature.
-  if (value.kind === 'liveActivity' && (value.platform !== 'ios' || value.provider !== undefined || value.name !== 'CCHahaTaskActivity' || typeof value.deviceToken !== 'string' || !safeString(value.sessionId, 128) || !safeString(value.activityId, 256))) return false
+  if (value.kind === 'liveActivity' && (value.platform !== 'ios' || value.provider !== undefined || value.name !== 'CCWangMaiTaskActivity' || typeof value.deviceToken !== 'string' || !safeString(value.sessionId, 128) || !safeString(value.activityId, 256))) return false
   if (!record(value.preferences) || Object.keys(value.preferences).length !== 3 || !['decisions', 'completed', 'errors'].every(key => typeof value.preferences![key] === 'boolean')) return false
   if (value.delivery !== undefined && !validDelivery(value.delivery)) return false
   if (!record(value.quietHours) || Object.keys(value.quietHours).length !== 3 || typeof value.quietHours.enabled !== 'boolean' || !time(value.quietHours.start) || !time(value.quietHours.end)) return false
@@ -106,7 +106,7 @@ export class MobilePushService {
   private expoError?: string
   private readonly file: string
   constructor(private deps: { transport: PushTransport; pull?: (token: string, ack: string | undefined, signal: AbortSignal) => Promise<PulledNotification[]>; activities(): MobileActivity[] | Promise<MobileActivity[]>; summary(id: string): Promise<{ title?: string } | null>; directory?: string; now?: () => number }) {
-    this.file = path.join(deps.directory ?? path.join(process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude'), 'cc-haha'), 'mobile-push.json')
+    this.file = path.join(deps.directory ?? path.join(process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude'), 'wangmai'), 'mobile-push.json')
   }
   private signature(activity: MobileActivity) { return `${activity.activityState}:${activity.requestId ?? ''}:${Boolean(activity.stalled)}:${activity.terminalOutcome ?? ''}:${activity.completedAt ?? ''}` }
   private now() { return this.deps.now?.() ?? Date.now() }
@@ -202,7 +202,7 @@ export class MobilePushService {
       // The test exists to show a banner. Android's "completed" channel is created at
       // default importance (sound, never a heads-up), so it uses the decisions channel,
       // the same one the phone's local test uses.
-      const payload = alertPayload(row, { title: '测试通知 · cc-haha', body: '电脑推送正常：这条是电脑发给你手机的。', category: 'cchahaResult', channel: androidChannel(row.delivery, 'decision'), timeSensitive: false, data: { hostId: row.hostId, eventType: 'test' } })
+      const payload = alertPayload(row, { title: '测试通知 · wangmai', body: '电脑推送正常：这条是电脑发给你手机的。', category: 'wangmaiResult', channel: androidChannel(row.delivery, 'decision'), timeSensitive: false, data: { hostId: row.hostId, eventType: 'test' } })
       try {
         const result = await this.deps.transport.send({ platform: row.platform, kind: 'notification', ...(row.provider ? { provider: row.provider } : {}), token: this.decrypt(row.encryptedToken), payload } satisfies PushDelivery)
         this.recordExpo(row)
@@ -225,7 +225,7 @@ export class MobilePushService {
       const mac = sign(row.owner.slice('remote:'.length))
       if (!mac) continue
       const name = row.hostName?.trim() || '电脑'
-      const payload = alertPayload(row, { title: '电脑地址已更新 · cc-haha', body: `${name}重新建立了外出连接，打开 App 会自动换到新地址。`, category: 'cchahaResult', channel: androidChannel(row.delivery, 'completed'), timeSensitive: false, data: { hostId: row.hostId, eventType: 'hostUrl', url, mac } })
+      const payload = alertPayload(row, { title: '电脑地址已更新 · wangmai', body: `${name}重新建立了外出连接，打开 App 会自动换到新地址。`, category: 'wangmaiResult', channel: androidChannel(row.delivery, 'completed'), timeSensitive: false, data: { hostId: row.hostId, eventType: 'hostUrl', url, mac } })
       try {
         const result = await this.deps.transport.send({ platform: row.platform, kind: 'notification', ...(row.provider ? { provider: row.provider } : {}), token: this.decrypt(row.encryptedToken), payload } satisfies PushDelivery)
         this.recordExpo(row)
@@ -323,7 +323,7 @@ export class MobilePushService {
           if (generation !== this.generation) return
           if (latest ? this.signature(latest) !== signature : activity.activityState !== 'idle' || hasSuccessfulCompletion(activity)) { this.retries.delete(retryKey); continue }
           if (!this.active(registration) || !this.stored!.registrations.includes(registration)) continue
-          const title = summary?.title?.slice(0, 100) || 'cc-haha 会话'
+          const title = summary?.title?.slice(0, 100) || 'wangmai 会话'
           const data = { hostId: registration.hostId, sessionId: activity.id, ...(activity.requestId ? { requestId: activity.requestId } : {}), eventType: event ?? activity.activityState }
           const tool = activity.activityState === 'waiting' && activity.requestId && activity.toolName && registration.preferences.decisions && !inQuietHours(registration, this.now()) && !(typeof activity.autoAnswerDeadline === 'number' && activity.autoAnswerDeadline <= this.now()) && !['AskUserQuestion', 'ExitPlanMode', 'ComputerUse'].includes(activity.toolName)
           // 隐私开关也管锁屏上的普通通知：只有 Bash 的 preview 是命令原文，其他工具的 preview 本来就是通用占位。
@@ -331,7 +331,7 @@ export class MobilePushService {
           const body = event === 'decision' ? hideCommand ? '打开 App 查看命令' : activity.preview || '需要你做决定' : event === 'error' ? activity.stalled ? '超过 5 分钟没有进展，请打开查看' : '任务遇到错误，请打开查看' : '任务已完成'
           let payload: Record<string, unknown>
           if (registration.kind === 'liveActivity') {
-            const base = `cchaha:///chat/${encodeURIComponent(activity.id)}?host=${encodeURIComponent(registration.hostId)}`
+            const base = `wangmai:///chat/${encodeURIComponent(activity.id)}?host=${encodeURIComponent(registration.hostId)}`
             const request = activity.requestId ? `&requestId=${encodeURIComponent(activity.requestId)}` : ''
             const terminal = activity.activityState === 'idle' || activity.activityState === 'review' || activity.activityState === 'failed'
             // 'decisions' mode keeps remote pushes from reviving a running-only activity: end it instead.
@@ -343,8 +343,8 @@ export class MobilePushService {
             const detail = registration.delivery?.showCommand === false
               ? activity.activityState === 'waiting' ? activity.toolName === 'Bash' ? '打开 App 查看命令' : '需要你做决定' : activity.activityState === 'running' ? '' : '本次运行已结束'
               : activity.preview ?? (activity.activityState === 'running' ? '正在运行' : '本次运行已结束')
-            payload = { aps: { timestamp, event: ended ? 'end' : 'update', 'stale-date': unknownEnd ? timestamp - 1 : timestamp + 90, ...(ended ? { 'dismissal-date': timestamp + (unknownEnd || decisionsOnly ? 0 : 60) } : {}), 'content-state': { name: 'CCHahaTaskActivity', props: JSON.stringify({ hostId: registration.hostId, hostName: registration.hostName ?? '电脑', sessionId: activity.id, title, detail: detail, status: completed ? 'completed' : unknownEnd ? 'running' : activity.activityState, ...(unknownEnd ? { connectionState: 'stale' } : {}), activeCount: current.filter(row => row.activityState === 'running' || row.activityState === 'waiting').length, requestId: activity.requestId, openUrl: base + request, ...(tool ? { allowUrl: `${base}${request}&notificationAction=allow`, denyUrl: `${base}${request}&notificationAction=deny` } : {}) }) } } }
-          } else payload = alertPayload(registration, { title, body, category: tool ? 'cchahaTool' : event === 'decision' ? 'cchahaDecision' : 'cchahaResult', channel: androidChannel(registration.delivery, event === 'decision' || event === 'completed' || event === 'error' ? event : 'completed'), timeSensitive: event === 'decision' && registration.delivery?.timeSensitive === true, data })
+            payload = { aps: { timestamp, event: ended ? 'end' : 'update', 'stale-date': unknownEnd ? timestamp - 1 : timestamp + 90, ...(ended ? { 'dismissal-date': timestamp + (unknownEnd || decisionsOnly ? 0 : 60) } : {}), 'content-state': { name: 'CCWangMaiTaskActivity', props: JSON.stringify({ hostId: registration.hostId, hostName: registration.hostName ?? '电脑', sessionId: activity.id, title, detail: detail, status: completed ? 'completed' : unknownEnd ? 'running' : activity.activityState, ...(unknownEnd ? { connectionState: 'stale' } : {}), activeCount: current.filter(row => row.activityState === 'running' || row.activityState === 'waiting').length, requestId: activity.requestId, openUrl: base + request, ...(tool ? { allowUrl: `${base}${request}&notificationAction=allow`, denyUrl: `${base}${request}&notificationAction=deny` } : {}) }) } } }
+          } else payload = alertPayload(registration, { title, body, category: tool ? 'wangmaiTool' : event === 'decision' ? 'wangmaiDecision' : 'wangmaiResult', channel: androidChannel(registration.delivery, event === 'decision' || event === 'completed' || event === 'error' ? event : 'completed'), timeSensitive: event === 'decision' && registration.delivery?.timeSensitive === true, data })
           try {
             const result = await this.deps.transport.send({ platform: registration.platform, kind: registration.kind, ...(registration.provider ? { provider: registration.provider } : {}), token: this.decrypt(registration.encryptedToken), payload } satisfies PushDelivery)
             if (generation !== this.generation) return

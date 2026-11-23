@@ -10,7 +10,7 @@ import { AppState, Platform } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as SecureStore from 'expo-secure-store'
 import { getRandomBytes } from 'expo-crypto'
-import CCHahaDuty from '../../modules/cchaha-duty'
+import CCWangMaiDuty from '../../modules/wangmai-duty'
 import { Drafts, HostRepository, type Registry, type Storage } from './storage'
 import { PushRegistrationCoordinator } from './pushRegistrations'
 import { PushTokens } from './pushProvider'
@@ -50,7 +50,7 @@ export const pushTokens = new PushTokens(secrets, {
 })
 /** The Android foreground service that pulls alerts from computers registered via `desktop`. */
 export const backgroundDuty = new BackgroundDuty(
-  Platform.OS === 'android' ? CCHahaDuty : null
+  Platform.OS === 'android' ? CCWangMaiDuty : null
 )
 type AppContextValue = {
   registry: Registry

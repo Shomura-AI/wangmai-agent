@@ -8,7 +8,7 @@ import {
 
 const NOW = new Date('2026-10-06T12:00:00').getTime()
 
-function session(id: string, modifiedAt: string, projectRoot = '/work/cc-haha', title = id): SessionListItem {
+function session(id: string, modifiedAt: string, projectRoot = '/work/wangmai', title = id): SessionListItem {
   return {
     id,
     title,
@@ -64,20 +64,20 @@ describe('buildMobileSessionGroups', () => {
 
 describe('mobile session filters', () => {
   const sessions = [
-    session('a', '2026-10-01T10:00:00', '/work/cc-haha', 'Fix login i18n'),
+    session('a', '2026-10-01T10:00:00', '/work/wangmai', 'Fix login i18n'),
     session('b', '2026-10-06T10:00:00', '/work/crawler', 'Export comments'),
-    session('c', '2026-10-03T10:00:00', '/work/cc-haha', 'Release notes'),
+    session('c', '2026-10-03T10:00:00', '/work/wangmai', 'Release notes'),
   ]
 
   it('orders project chips by their most recent session', () => {
     const filters = listMobileProjectFilters(sessions, (item) => item.projectRoot ?? '')
-    expect(filters.map((filter) => filter.key)).toEqual(['/work/crawler', '/work/cc-haha'])
+    expect(filters.map((filter) => filter.key)).toEqual(['/work/crawler', '/work/wangmai'])
   })
 
   it('narrows by project and by a case-insensitive title match together', () => {
-    expect(filterMobileSessions(sessions, { projectKey: '/work/cc-haha', query: '' }).map((item) => item.id))
+    expect(filterMobileSessions(sessions, { projectKey: '/work/wangmai', query: '' }).map((item) => item.id))
       .toEqual(['a', 'c'])
-    expect(filterMobileSessions(sessions, { projectKey: '/work/cc-haha', query: 'LOGIN' }).map((item) => item.id))
+    expect(filterMobileSessions(sessions, { projectKey: '/work/wangmai', query: 'LOGIN' }).map((item) => item.id))
       .toEqual(['a'])
     expect(filterMobileSessions(sessions, { projectKey: null, query: '  ' }).map((item) => item.id))
       .toEqual(['a', 'b', 'c'])

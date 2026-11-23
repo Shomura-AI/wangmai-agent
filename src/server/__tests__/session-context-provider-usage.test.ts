@@ -5,8 +5,8 @@ import { dirname, join } from 'node:path'
 import { handleSessionsApi } from '../api/sessions.js'
 import { handleModelsApi } from '../api/models.js'
 import { ProviderService } from '../services/providerService.js'
-import { hahaOpenAIOAuthService } from '../services/hahaOpenAIOAuthService.js'
-import { hahaGrokOAuthService } from '../services/hahaGrokOAuthService.js'
+import { wangmaiOpenAIOAuthService } from '../services/wangmaiOpenAIOAuthService.js'
+import { wangmaiGrokOAuthService } from '../services/wangmaiGrokOAuthService.js'
 import { SessionService } from '../services/sessionService.js'
 import { OPENAI_CODEX_RELEASE_SOURCES } from '../../services/openaiAuth/clientVersion.js'
 import { OPENAI_CODEX_CLIENT_VERSION } from '../../services/openaiAuth/client.js'
@@ -111,7 +111,7 @@ describe('transcript context after switching providers', () => {
       const model = 'gpt-6.2-sol'
       const providerId = 'openai-official'
       await new ProviderService().activateProvider(providerId)
-      await hahaOpenAIOAuthService.saveTokens({ accessToken: 'fixture-token', refreshToken: null,
+      await wangmaiOpenAIOAuthService.saveTokens({ accessToken: 'fixture-token', refreshToken: null,
         accountId: 'fixture-account', expiresAt: null, email: null })
       await writeFile(filePath, [
         { type: 'session-meta', workDir: join(configDir, 'project'), runtimeProviderId: providerId, runtimeModelId: model },
@@ -145,7 +145,7 @@ describe('transcript context after switching providers', () => {
       expect((await inspect()).contextEstimate.rawMaxTokens).toBe(475_000)
       expect(catalogRequests).toBe(1)
 
-      await hahaOpenAIOAuthService.deleteTokens()
+      await wangmaiOpenAIOAuthService.deleteTokens()
       expect((await inspect()).contextEstimate.rawMaxTokens).toBe(200_000)
       expect(catalogRequests).toBe(1)
     } finally {
@@ -160,7 +160,7 @@ describe('transcript context after switching providers', () => {
       const providerId = 'grok-official'
       const providers = new ProviderService()
       await providers.activateProvider(providerId)
-      await hahaGrokOAuthService.saveTokens({ accessToken: 'fixture-grok-token', refreshToken: null,
+      await wangmaiGrokOAuthService.saveTokens({ accessToken: 'fixture-grok-token', refreshToken: null,
         expiresAt: null, email: null })
       await writeFile(filePath, [
         { type: 'session-meta', workDir: join(configDir, 'project'), runtimeProviderId: providerId, runtimeModelId: model },
@@ -218,7 +218,7 @@ describe('transcript context after switching providers', () => {
       expect((await inspect()).contextEstimate.rawMaxTokens).toBe(300_000)
 
       await providers.updateOfficialProviderModels(providerId, mapping, { modelContextWindows: {} })
-      await hahaGrokOAuthService.deleteTokens()
+      await wangmaiGrokOAuthService.deleteTokens()
       // Inspect a brand-new, never-cached session after logout so an earlier snapshot cache entry cannot hide a leak.
       const freshSessionId = 'b2222222-c333-d444-e555-f66666666666'
       await writeFile(join(dirname(filePath), `${freshSessionId}.jsonl`), [

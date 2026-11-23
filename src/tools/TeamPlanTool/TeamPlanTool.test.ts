@@ -23,11 +23,11 @@ let directory: string
 let context: ToolUseContext
 let saved: Record<string, string | undefined>
 const keys = [
-  'HOME', 'CLAUDE_CONFIG_DIR', 'CC_HAHA_TEAM_REVIEW_REQUIRED', 'CC_HAHA_TEAM_LEADER_RUNTIME', 'CLAUDE_CODE_SUBAGENT_MODEL',
+  'HOME', 'CLAUDE_CONFIG_DIR', 'WANGMAI_TEAM_REVIEW_REQUIRED', 'WANGMAI_TEAM_LEADER_RUNTIME', 'CLAUDE_CODE_SUBAGENT_MODEL',
   'ANTHROPIC_BASE_URL', 'ANTHROPIC_MODEL', 'ANTHROPIC_DEFAULT_OPUS_MODEL',
   'ANTHROPIC_DEFAULT_SONNET_MODEL', 'ANTHROPIC_DEFAULT_HAIKU_MODEL',
   'CLAUDE_CODE_USE_BEDROCK', 'CLAUDE_CODE_USE_VERTEX', 'CLAUDE_CODE_USE_FOUNDRY', 'CLAUDE_CODE_USE_AZURE_OPENAI',
-  'CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS', 'CC_HAHA_AGENT_TEAMS_ENABLED',
+  'CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS', 'WANGMAI_AGENT_TEAMS_ENABLED',
 ]
 
 beforeEach(async () => {
@@ -35,10 +35,10 @@ beforeEach(async () => {
   saved = Object.fromEntries(keys.map(key => [key, process.env[key]]))
   process.env.HOME = directory
   process.env.CLAUDE_CONFIG_DIR = directory
-  process.env.CC_HAHA_TEAM_REVIEW_REQUIRED = '1'
+  process.env.WANGMAI_TEAM_REVIEW_REQUIRED = '1'
   process.env.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = '1'
-  process.env.CC_HAHA_AGENT_TEAMS_ENABLED = '1'
-  process.env.CC_HAHA_TEAM_LEADER_RUNTIME = JSON.stringify({ providerId: 'fake-provider', modelId: 'fake-model' })
+  process.env.WANGMAI_AGENT_TEAMS_ENABLED = '1'
+  process.env.WANGMAI_TEAM_LEADER_RUNTIME = JSON.stringify({ providerId: 'fake-provider', modelId: 'fake-model' })
   delete process.env.CLAUDE_CODE_SUBAGENT_MODEL
   let state = { ...getDefaultAppState(), mainLoopModel: 'fake-model', inbox: { messages: [] } } as ReturnType<ToolUseContext['getAppState']>
   context = {
@@ -259,7 +259,7 @@ describe('whole-team planning tools', () => {
       // A Claude Official lead: its tier suggestions are concrete choices, not
       // something normalized away, yet the user's pin still wins.
       for (const key of ['ANTHROPIC_BASE_URL', 'ANTHROPIC_MODEL', 'ANTHROPIC_DEFAULT_OPUS_MODEL', 'ANTHROPIC_DEFAULT_SONNET_MODEL', 'ANTHROPIC_DEFAULT_HAIKU_MODEL']) delete process.env[key]
-      process.env.CC_HAHA_TEAM_LEADER_RUNTIME = JSON.stringify({ providerId: 'claude-official', modelId: 'claude-opus-4-7' })
+      process.env.WANGMAI_TEAM_LEADER_RUNTIME = JSON.stringify({ providerId: 'claude-official', modelId: 'claude-opus-4-7' })
       context.options.mainLoopModel = 'claude-opus-4-7'
 
       const member = resolveProposedTeamPlan(proposal('sonnet', 'claude-official', 'pinned-reviewer'), context).members[0]!
@@ -278,8 +278,8 @@ describe('whole-team planning tools', () => {
     })
 
     test('explicit model suggestions on another configured provider remain available for review', async () => {
-      await mkdir(join(directory, 'cc-haha'), { recursive: true })
-      await writeFile(join(directory, 'cc-haha', 'providers.json'), JSON.stringify({ providers: [{ id: 'other-provider' }] }))
+      await mkdir(join(directory, 'wangmai'), { recursive: true })
+      await writeFile(join(directory, 'wangmai', 'providers.json'), JSON.stringify({ providers: [{ id: 'other-provider' }] }))
       const member = resolveProposedTeamPlan(proposal('opus', 'other-provider'), context).members[0]!
       expect(member.runtime).toEqual({ providerId: 'other-provider', modelId: 'opus', effortLevel: 'high' })
       expect(resolveProposedTeamPlan(proposal('deepseek-v4-pro'), context).members[0]?.runtime)
@@ -319,7 +319,7 @@ describe('whole-team planning tools', () => {
     const result = teamPlanToolResult({ teamName: 'review-team', state: 'running', members: [], tasks: [] } as never)
     expect(result.message).toContain('running')
     expect(result.message).not.toContain('No teammate has started')
-    delete process.env.CC_HAHA_TEAM_REVIEW_REQUIRED
+    delete process.env.WANGMAI_TEAM_REVIEW_REQUIRED
     expect(getPrompt()).not.toContain('Human review before execution')
   })
 
@@ -373,7 +373,7 @@ describe('whole-team planning tools', () => {
 
   test('a persisted desktop draft cannot fall through to an execution backend if the environment flag is absent', async () => {
     await TeamCreateTool.call({ team_name: 'review-team' }, context)
-    delete process.env.CC_HAHA_TEAM_REVIEW_REQUIRED
+    delete process.env.WANGMAI_TEAM_REVIEW_REQUIRED
     const staged = await spawnTeammate({ name: 'worker', team_name: 'review-team', prompt: 'Work' }, context)
     expect(staged.data.staged).toBe(true)
     expect((await readTeamFileAsync('review-team'))?.members).toHaveLength(1)
@@ -405,8 +405,8 @@ describe('whole-team planning tools', () => {
     // move the member to a different, billed provider.
     expect(resolveProposedTeamPlan(proposal('anthropic'), context).members[0]?.runtime).toEqual({ providerId: 'fake-provider', modelId: 'fake-model' })
     expect(resolveProposedTeamPlan(proposal('claude-official'), context).members[0]?.runtime.providerId).toBe('fake-provider')
-    await mkdir(join(directory, 'cc-haha'), { recursive: true })
-    await writeFile(join(directory, 'cc-haha', 'providers.json'), JSON.stringify({ schemaVersion: 6, activeId: null, providers: [{ id: 'configured-provider', presetId: 'custom', name: 'Configured', apiKey: 'fake', baseUrl: 'http://127.0.0.1:1', apiFormat: 'anthropic', models: { main: 'm', haiku: 'm', sonnet: 'm', opus: 'm' } }] }))
+    await mkdir(join(directory, 'wangmai'), { recursive: true })
+    await writeFile(join(directory, 'wangmai', 'providers.json'), JSON.stringify({ schemaVersion: 6, activeId: null, providers: [{ id: 'configured-provider', presetId: 'custom', name: 'Configured', apiKey: 'fake', baseUrl: 'http://127.0.0.1:1', apiFormat: 'anthropic', models: { main: 'm', haiku: 'm', sonnet: 'm', opus: 'm' } }] }))
     expect(resolveProposedTeamPlan(proposal('configured-provider'), context).members[0]?.runtime).toEqual({ providerId: 'configured-provider', modelId: 'claude-sonnet-5-5' })
   })
 

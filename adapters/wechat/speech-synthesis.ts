@@ -30,7 +30,7 @@ try {
     $voiceSynthesizer.SetOutputToNull()
   } finally { $voiceSynthesizer.Dispose() }
 } catch {
-  [Console]::Error.WriteLine('CC_HAHA_SPEECH_ERROR:' + $speechFailureCode)
+  [Console]::Error.WriteLine('WANGMAI_SPEECH_ERROR:' + $speechFailureCode)
   exit 1
 }
 `
@@ -70,7 +70,7 @@ try {
   $fileStream = [System.IO.File]::Create([string]$speechRequest.outputPath)
   $inputStream.CopyTo($fileStream)
 } catch {
-  [Console]::Error.WriteLine('CC_HAHA_SPEECH_ERROR:' + $speechFailureCode)
+  [Console]::Error.WriteLine('WANGMAI_SPEECH_ERROR:' + $speechFailureCode)
   exit 1
 } finally {
   if ($fileStream) { $fileStream.Dispose() }
@@ -90,7 +90,7 @@ try {
   $voices = @([Windows.Media.SpeechSynthesis.SpeechSynthesizer]::AllVoices | ForEach-Object { @{ id = $_.Id; name = $_.DisplayName; language = $_.Language } })
   $json = ConvertTo-Json -InputObject $voices -Compress
   [System.IO.File]::WriteAllText([string]$speechRequest.outputPath, $json, [System.Text.UTF8Encoding]::new($false))
-} catch { [Console]::Error.WriteLine('CC_HAHA_SPEECH_ERROR:ENGINE_FAILED'); exit 1 }
+} catch { [Console]::Error.WriteLine('WANGMAI_SPEECH_ERROR:ENGINE_FAILED'); exit 1 }
 `
 
 export type WechatSpeechVoice = { id: string; name: string; language: string }
@@ -200,13 +200,13 @@ export function runWechatSpeechProcess(
       if (outputBytes > 16 * 1024) stop(new Error('语音合成进程输出异常。'))
     })
     child.on('close', code => {
-      const message = diagnostic.includes('CC_HAHA_SPEECH_ERROR:VOICE_NOT_FOUND')
+      const message = diagnostic.includes('WANGMAI_SPEECH_ERROR:VOICE_NOT_FOUND')
         ? '所选音色已不可用，请发送 /voice list 重新选择，或 /voice select auto 恢复自动。'
-        : diagnostic.includes('CC_HAHA_SPEECH_ERROR:NO_CHINESE_VOICE')
+        : diagnostic.includes('WANGMAI_SPEECH_ERROR:NO_CHINESE_VOICE')
         ? '未安装中文语音包，请在 Windows 的语言和语音设置中安装中文语音后重试。'
-        : diagnostic.includes('CC_HAHA_SPEECH_ERROR:NO_VOICE')
+        : diagnostic.includes('WANGMAI_SPEECH_ERROR:NO_VOICE')
           ? '未安装可用的 Windows 语音包，请在系统语言和语音设置中安装语音包。'
-          : diagnostic.includes('CC_HAHA_SPEECH_ERROR:TOO_LARGE')
+          : diagnostic.includes('WANGMAI_SPEECH_ERROR:TOO_LARGE')
             ? '生成的音频超过 10 MiB 限制。'
             : 'Windows 语音合成失败，请检查系统语音组件或配置可用的 PowerShell 7。'
       finish(failure ?? (code === 0 ? undefined : new Error(message)))
@@ -236,7 +236,7 @@ export async function synthesizeWechatSpeech(text: string, options: WechatSpeech
   if (options.signal?.aborted) throw aborted()
   const parentDir = path.resolve(options.outputDir ?? os.tmpdir())
   await fs.mkdir(parentDir, { recursive: true })
-  const stageDir = await fs.mkdtemp(path.join(parentDir, 'cc-haha-wechat-speech-'))
+  const stageDir = await fs.mkdtemp(path.join(parentDir, 'wangmai-wechat-speech-'))
   const outputPath = path.join(stageDir, 'reply.wav')
   const cleanup = async () => { await fs.rm(stageDir, { recursive: true, force: true }) }
   try {
@@ -272,7 +272,7 @@ export async function listWechatSpeechVoices(options: WechatSpeechOptions = {}):
   if ((options.platform ?? process.platform) !== 'win32') throw new Error('音色选择目前仅支持 Windows。')
   const parent = path.resolve(options.outputDir ?? os.tmpdir())
   await fs.mkdir(parent, { recursive: true })
-  const directory = await fs.mkdtemp(path.join(parent, 'cc-haha-wechat-voices-'))
+  const directory = await fs.mkdtemp(path.join(parent, 'wangmai-wechat-voices-'))
   const outputPath = path.join(directory, 'voices.json')
   try {
     await (options.runner ?? runWechatSpeechProcess)({

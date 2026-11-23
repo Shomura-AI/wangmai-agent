@@ -99,7 +99,7 @@ describe('getAttributionHeader', () => {
       },
     })
 
-    const sandbox = await mkdtemp(join(tmpdir(), 'cc-haha-fable52-compat-'))
+    const sandbox = await mkdtemp(join(tmpdir(), 'wangmai-fable52-compat-'))
     const originalEnv = { ...process.env }
     const interactive = getIsInteractive()
     try {

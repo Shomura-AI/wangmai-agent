@@ -168,7 +168,7 @@ export async function runAgentModelRoutingScenario(rootDir: string, artifactDir:
       ], {
         cwd: workDir, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe',
         env: {
-          ...sandbox.env, ...providerEnv, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1',
+          ...sandbox.env, ...providerEnv, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1',
           // CI's API-key-only auth check rejects DeepSeek's auth-token strategy.
           // This fixture deliberately exercises its actual managed auth env.
           CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1',

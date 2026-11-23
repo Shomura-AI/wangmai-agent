@@ -1,4 +1,4 @@
-/** Development entry for the local speech worker; packaged builds use `claude-sidecar --voice-worker`. */
+/** Development entry for the local speech worker; packaged builds use `wangmai-sidecar --voice-worker`. */
 import { runVoiceWorker } from './worker.js'
 
 try {

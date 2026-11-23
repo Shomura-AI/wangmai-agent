@@ -85,7 +85,7 @@ export async function runLeanNotificationProvenanceScenario(rootDir: string, art
       '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose',
     ], {
       cwd: workDir, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe',
-      env: { ...sandbox.env, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1',
+      env: { ...sandbox.env, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1',
         ANTHROPIC_BASE_URL: upstream.url, ANTHROPIC_API_KEY: 'mock-api-key',
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1', CI: '1' },
     })
@@ -168,7 +168,7 @@ export async function runLeanProfileScenario(rootDir: string, artifactDir: strin
           '--permission-mode', 'bypassPermissions', 'LEAN_PROFILE_FIXTURE: repair value.txt and verify it.']),
       ], {
         cwd: workDir, stdin: 'ignore', stdout: 'pipe', stderr: 'pipe',
-        env: { ...sandbox.env, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1',
+        env: { ...sandbox.env, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1',
           ANTHROPIC_BASE_URL: upstream.url, ANTHROPIC_API_KEY: 'mock-api-key',
           CLAUDE_CODE_ENABLE_TASKS: '1',
           CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1', CI: '1' },
@@ -408,7 +408,7 @@ async function runLeanCapabilitiesScenario(rootDir: string, artifactDir: string)
     ], {
       cwd: workDir, stdin: 'ignore', stdout: 'pipe', stderr: 'pipe',
       env: {
-        ...sandbox.env, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1', CLAUDE_CODE_ENABLE_TASKS: '1',
+        ...sandbox.env, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1', CLAUDE_CODE_ENABLE_TASKS: '1',
         TEST_ENABLE_SESSION_PERSISTENCE: '1', NODE_ENV: 'production',
         ANTHROPIC_BASE_URL: upstream.url, ANTHROPIC_API_KEY: 'mock-api-key',
         ANTHROPIC_DEFAULT_HAIKU_MODEL: 'mock-model', ANTHROPIC_DEFAULT_SONNET_MODEL: 'mock-model',
@@ -465,7 +465,7 @@ async function runLeanCapabilitiesScenario(rootDir: string, artifactDir: string)
     }
     for (const request of childRequests) {
       const system = JSON.stringify(request.system)
-      assert.ok(system.includes('You are cc-haha'), 'child did not inherit the lean system prompt')
+      assert.ok(system.includes('You are wangmai'), 'child did not inherit the lean system prompt')
       assert.ok(!request.tools!.some(tool => tool.name === 'Agent'), 'child can recursively spawn agents')
       assert.ok(!system.includes('## Types of memory'), 'child restored the standard memory guide')
       assert.ok(Buffer.byteLength(system) <= LEAN_REQUEST_BUDGET.childSystemBytes, `child system prompt exceeded lean budget: ${Buffer.byteLength(system)}`)

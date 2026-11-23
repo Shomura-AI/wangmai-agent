@@ -11,7 +11,7 @@ Object.assign(
   process.env,
   createSandboxedTestEnvironment(
     home,
-    { CLAUDE_CODE_SIMPLE: '1', CC_HAHA_AGENT_TEAMS_ENABLED: '1' },
+    { CLAUDE_CODE_SIMPLE: '1', WANGMAI_AGENT_TEAMS_ENABLED: '1' },
     originalEnv,
   ),
 )

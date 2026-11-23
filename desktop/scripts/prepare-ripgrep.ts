@@ -156,7 +156,7 @@ export async function extractArchive(
 
 export async function prepareRipgrep({
   targetTriple,
-  archivePath = process.env.CC_HAHA_RIPGREP_ARCHIVE,
+  archivePath = process.env.WANGMAI_RIPGREP_ARCHIVE,
 }: {
   targetTriple: string
   archivePath?: string
@@ -164,7 +164,7 @@ export async function prepareRipgrep({
   const asset = getRipgrepAsset(targetTriple)
   const desktopRoot = path.resolve(scriptDirectory, '..')
   const binariesDir = path.join(desktopRoot, 'src-tauri', 'binaries')
-  const temporaryDir = await mkdtemp(path.join(tmpdir(), 'cc-haha-ripgrep-'))
+  const temporaryDir = await mkdtemp(path.join(tmpdir(), 'wangmai-ripgrep-'))
 
   try {
     const downloadedArchive = path.join(temporaryDir, asset.archiveName)

@@ -8,7 +8,7 @@ type Runner = (command: string[], options: { cwd: string; env: Record<string, st
 export async function runAgentDesktopChecks(options: { run?: Runner; source?: NodeJS.ProcessEnv } = {}) {
   const root = resolve(import.meta.dir, '../..')
   const source = options.source ?? process.env
-  const sandbox = mkdtempSync(join(tmpdir(), 'cc-haha-native-desktop-'))
+  const sandbox = mkdtempSync(join(tmpdir(), 'wangmai-native-desktop-'))
   const run = options.run ?? (async (command, settings) => {
     const child = Bun.spawn(command, { ...settings, stdout: 'inherit', stderr: 'inherit' })
     return child.exited

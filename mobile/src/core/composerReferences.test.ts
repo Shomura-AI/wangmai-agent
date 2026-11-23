@@ -73,8 +73,8 @@ describe('native composer references', () => {
     expect(result.some((value) => value.name === 'compact')).toBe(true)
   })
   test('withdrawn managed packages never reach the candidate list, same as the desktop composer', async () => {
-    const withdrawnPlugin: ComposerReference = { ...skill, kind: 'plugin', id: 'office-mcp-builder@haha-connectors', name: 'office-mcp-builder', displayName: 'MCP Builder' }
-    const withdrawnSkill = { ...skill, id: 'ws', name: 'old-skill', source: 'office-canvas-design@haha-connectors' }
+    const withdrawnPlugin: ComposerReference = { ...skill, kind: 'plugin', id: 'office-mcp-builder@wangmai-connectors', name: 'office-mcp-builder', displayName: 'MCP Builder' }
+    const withdrawnSkill = { ...skill, id: 'ws', name: 'old-skill', source: 'office-canvas-design@wangmai-connectors' }
     const mine = { ...skill, id: 'mine', name: 'my-skill', source: 'userSettings' }
     const client = { get: async (path: string) =>
       path.includes('slash-commands') || path.includes('/commands')

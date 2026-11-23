@@ -15,7 +15,7 @@ describe('background task notification persistence', () => {
 
   beforeEach(async () => {
     previousConfigDir = process.env.CLAUDE_CONFIG_DIR
-    configDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-task-notification-'))
+    configDir = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-task-notification-'))
     process.env.CLAUDE_CONFIG_DIR = configDir
     await fs.mkdir(path.join(configDir, 'projects'), { recursive: true })
   })
@@ -68,7 +68,7 @@ describe('background task notification persistence', () => {
       result: 'Background verification passed',
       timestamp: '2026-07-18T00:01:00.000Z',
     }])
-    expect(await fs.readFile(transcriptPath, 'utf8')).toContain('"type":"cc-haha-task-notification"')
+    expect(await fs.readFile(transcriptPath, 'utf8')).toContain('"type":"wangmai-task-notification"')
   })
 
   it('aborts and drains an in-flight task append before clearing the transcript', async () => {
@@ -127,7 +127,7 @@ describe('background task notification persistence', () => {
     await append
 
     const cleared = await fs.readFile(transcriptPath, 'utf8')
-    expect(cleared).not.toContain('cc-haha-task-notification')
+    expect(cleared).not.toContain('wangmai-task-notification')
     expect(cleared).not.toContain('agent-task-clear-race')
     expect(cleared).toContain('"type":"session-meta"')
   })

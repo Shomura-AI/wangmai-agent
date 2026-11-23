@@ -9,10 +9,10 @@ import { CLAUDE_OFFICIAL_PROVIDER_ID, OPENAI_OFFICIAL_PROVIDER_ID } from '@/cons
 import { GROK_OFFICIAL_PROVIDER_ID } from '@/constants/grokOfficialProvider'
 import { DEEPSEEK_ACCOUNT_PROVIDER_ID } from '@/constants/deepseekAccountProvider'
 import { groupProviderModels } from '@/lib/providerModels'
-import { useHahaOAuthStore } from '@/stores/hahaOAuthStore'
-import { useHahaOpenAIOAuthStore } from '@/stores/hahaOpenAIOAuthStore'
-import { useHahaGrokOAuthStore } from '@/stores/hahaGrokOAuthStore'
-import { useHahaDeepSeekOAuthStore } from '@/stores/hahaDeepSeekOAuthStore'
+import { useWangMaiOAuthStore } from '@/stores/wangmaiOAuthStore'
+import { useWangMaiOpenAIOAuthStore } from '@/stores/wangmaiOpenAIOAuthStore'
+import { useWangMaiGrokOAuthStore } from '@/stores/wangmaiGrokOAuthStore'
+import { useWangMaiDeepSeekOAuthStore } from '@/stores/wangmaiDeepSeekOAuthStore'
 import { useProviderStore } from '@/stores/providerStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import type { ModelMapping } from '@/types/provider'
@@ -58,10 +58,10 @@ const windowsToInputs = (windows: Record<string, number> | undefined): Record<st
   Object.fromEntries(Object.entries(windows ?? {}).map(([model, window]) => [model, String(window)]))
 
 function useOfficialAccountKey(providerId: string): string {
-  const claude = useHahaOAuthStore((state) => providerId === CLAUDE_OFFICIAL_PROVIDER_ID ? state.status : null)
-  const openai = useHahaOpenAIOAuthStore((state) => providerId === OPENAI_OFFICIAL_PROVIDER_ID ? state.status : null)
-  const grok = useHahaGrokOAuthStore((state) => providerId === GROK_OFFICIAL_PROVIDER_ID ? state.status : null)
-  const deepseek = useHahaDeepSeekOAuthStore((state) => providerId === DEEPSEEK_ACCOUNT_PROVIDER_ID ? state.status : null)
+  const claude = useWangMaiOAuthStore((state) => providerId === CLAUDE_OFFICIAL_PROVIDER_ID ? state.status : null)
+  const openai = useWangMaiOpenAIOAuthStore((state) => providerId === OPENAI_OFFICIAL_PROVIDER_ID ? state.status : null)
+  const grok = useWangMaiGrokOAuthStore((state) => providerId === GROK_OFFICIAL_PROVIDER_ID ? state.status : null)
+  const deepseek = useWangMaiDeepSeekOAuthStore((state) => providerId === DEEPSEEK_ACCOUNT_PROVIDER_ID ? state.status : null)
   if (openai?.loggedIn) return JSON.stringify([openai.accountId, openai.email])
   if (grok?.loggedIn) return JSON.stringify(grok.email)
   if (deepseek?.loggedIn) return JSON.stringify([deepseek.contact, deepseek.name])

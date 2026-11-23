@@ -1,39 +1,39 @@
-# cc-haha
+# WangMai Agent
 
 <p align="center">
-  <img src="docs/images/readme/cover-en.webp" alt="cc-haha — Claude Code for desktop and mobile" width="960">
+  <img src="docs/images/readme/cover-en.webp" alt="WangMai Agent — Claude Code for desktop and mobile" width="960">
 </p>
 
 <div align="center">
 
-[![GitHub Stars](https://img.shields.io/github/stars/NanmiCoder/cc-haha?style=social)](https://github.com/NanmiCoder/cc-haha/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/NanmiCoder/cc-haha?style=social)](https://github.com/NanmiCoder/cc-haha/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/NanmiCoder/cc-haha)](https://github.com/NanmiCoder/cc-haha/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/NanmiCoder/cc-haha)](https://github.com/NanmiCoder/cc-haha/pulls)
-[![License](https://img.shields.io/badge/License-Community_Source-orange)](https://github.com/NanmiCoder/cc-haha/blob/main/LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/wangmai-ai/wangmai-agent?style=social)](https://github.com/wangmai-ai/wangmai-agent/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/wangmai-ai/wangmai-agent?style=social)](https://github.com/wangmai-ai/wangmai-agent/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/wangmai-ai/wangmai-agent)](https://github.com/wangmai-ai/wangmai-agent/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/wangmai-ai/wangmai-agent)](https://github.com/wangmai-ai/wangmai-agent/pulls)
+[![License](https://img.shields.io/badge/License-Community_Source-orange)](https://github.com/wangmai-ai/wangmai-agent/blob/main/LICENSE)
 [![English](https://img.shields.io/badge/🇺🇸_English-Current-blue)](README.en.md)
 [![中文](https://img.shields.io/badge/🇨🇳_简体中文-Available-green)](README.md)
-[![Docs](https://img.shields.io/badge/📖_Documentation-Visit-FF7A00)](https://cchaha.ai)
+[![Docs](https://img.shields.io/badge/📖_Documentation-Visit-FF7A00)](https://wangmai.example.com)
 
 [简体中文](README.md) · **English**
 
 </div>
 
-cc-haha is a **desktop Claude Code workspace** for macOS, Windows, and Linux: multi-session workspaces, global search, branch / Worktree launch, diff review, built-in browser preview, GUI permission approval, any model — Claude, ChatGPT, Grok, presets, or local endpoints — image generation, visual MCP & SubAgent managers, an Agent Teams workbench, dynamic Workflow orchestration, model trace, Computer Use, skill marketplace, colour themes, desktop pets, mobile app and H5 remote access, IM integration, and scheduled tasks, all in one app. **Computer Use keeps the existing native macOS engine and reuses agent-desktop on Windows / Linux. Supported background semantic actions leave the physical pointer alone; physical input still uses the foreground.** The companion Android / iPhone app pairs with your computer by QR code, so you can approve actions and start tasks away from your desk.
+WangMai Agent is a **desktop Claude Code workspace** for macOS, Windows, and Linux: multi-session workspaces, global search, branch / Worktree launch, diff review, built-in browser preview, GUI permission approval, any model — Claude, ChatGPT, Grok, presets, or local endpoints — image generation, visual MCP & SubAgent managers, an Agent Teams workbench, dynamic Workflow orchestration, model trace, Computer Use, skill marketplace, colour themes, desktop pets, mobile app and H5 remote access, IM integration, and scheduled tasks, all in one app. **Computer Use keeps the existing native macOS engine and reuses agent-desktop on Windows / Linux. Supported background semantic actions leave the physical pointer alone; physical input still uses the foreground.** The companion Android / iPhone app pairs with your computer by QR code, so you can approve actions and start tasks away from your desk.
 
 <p align="center"><b>Platinum Sponsor · Modelflare</b></p>
 
 <p align="center">
-  <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=cchaha">
+  <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=wangmai">
     <img src="docs/images/sponsors/modelflare-banner-en.png" width="720" alt="Modelflare: Full strength, stable, nothing watered down. Global SOTA models at a lower cost.">
   </a>
 </p>
 
-<p><sub>Thanks to <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=cchaha">Modelflare</a> for sponsoring this project! Modelflare: Full strength, stable, nothing watered down. Global SOTA models at a lower cost. Operated by US-based Havenbyte LLC, Modelflare supports GPT, Claude, Gemini, Grok, and other leading models through common compatible protocols, plus 40+ image and video models, and supports legitimate business cooperation in mainland China.</sub></p>
+<p><sub>Thanks to <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=wangmai">Modelflare</a> for sponsoring this project! Modelflare: Full strength, stable, nothing watered down. Global SOTA models at a lower cost. Operated by US-based Havenbyte LLC, Modelflare supports GPT, Claude, Gemini, Grok, and other leading models through common compatible protocols, plus 40+ image and video models, and supports legitimate business cooperation in mainland China.</sub></p>
 
 <p><sub><b>Cache compensation is a highlight:</b> selected OpenAI groups (price-first, stable, and premium) guarantee daily cache hit rates of 65%, 75%, or 85%, and if eligible requests fall short, Modelflare refunds the difference, visible on the usage dashboard after settlement.</sub></p>
 
-<p><sub><b>Special offers:</b> a single top-up of US$20 unlocks the GPT discount group at a 0.015x price multiplier, and a single top-up of US$50 unlocks the Claude discount group at a 0.03x multiplier. Register via <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=cchaha">this exclusive link</a> to get started.</sub></p>
+<p><sub><b>Special offers:</b> a single top-up of US$20 unlocks the GPT discount group at a 0.015x price multiplier, and a single top-up of US$50 unlocks the Claude discount group at a 0.03x multiplier. Register via <a href="https://modelflare.dev/sign-up?utm_source=github&amp;utm_campaign=wangmai">this exclusive link</a> to get started.</sub></p>
 
 <p align="center">
   <a href="#feature-preview">Feature Preview</a> · <a href="#install">Install</a> · <a href="#desktop-highlights">Highlights</a> · <a href="#more-documentation">More Docs</a> · <a href="#sponsorship--partnership">Sponsorship</a>
@@ -44,8 +44,8 @@ cc-haha is a **desktop Claude Code workspace** for macOS, Windows, and Linux: mu
 ## Feature Preview
 
 <p align="center">
-  <a href="https://github.com/NanmiCoder/cc-haha/releases"><img src="https://img.shields.io/badge/⬇_Download_Desktop-macOS_%7C_Windows_%7C_Linux-FF7A00?style=for-the-badge" alt="Download Desktop"></a>
-  <a href="https://github.com/NanmiCoder/cc-haha/releases/latest"><img src="https://img.shields.io/badge/Android-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Download the Android APK"></a>
+  <a href="https://github.com/wangmai-ai/wangmai-agent/releases"><img src="https://img.shields.io/badge/⬇_Download_Desktop-macOS_%7C_Windows_%7C_Linux-FF7A00?style=for-the-badge" alt="Download Desktop"></a>
+  <a href="https://github.com/wangmai-ai/wangmai-agent/releases/latest"><img src="https://img.shields.io/badge/Android-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Download the Android APK"></a>
   <a href="https://testflight.apple.com/join/Nd49JrWZ"><img src="https://img.shields.io/badge/iOS-TestFlight-1F1A17?style=for-the-badge&logo=apple&logoColor=white" alt="Install the iOS app with TestFlight"></a>
 </p>
 
@@ -106,12 +106,12 @@ This project is maintained in the author's spare time. Corporate or individual s
     </tr>
     <tr>
       <td align="center" valign="middle">
-        <a href="https://moeapi.cloud/register?utm_source=github&amp;utm_campaign=cchaha">
+        <a href="https://moeapi.cloud/register?utm_source=github&amp;utm_campaign=wangmai">
           <img src="docs/images/sponsors/moeapi-logo.png" width="180" alt="Moe API">
         </a>
       </td>
       <td valign="middle">
-        Thanks to <a href="https://moeapi.cloud/register?utm_source=github&amp;utm_campaign=cchaha">Moe API</a> for sponsoring this project! Moe API is a unified large language model API platform for developers and teams. A single API key provides access to 120+ models, including GPT, Claude, Gemini, Grok, DeepSeek, Kimi, GLM, and Qwen, with native compatibility with OpenAI (Chat / Responses), Anthropic Messages, and Gemini protocols for direct use with cc-haha, Claude Code, Codex, and other tools. Pricing is CNY 1 per US$1 of credit: multipliers start as low as 0.1x for self-operated Codex account pools, with self-operated Gemini at 0.25x, Grok at 0.2x, third-party Claude Code account pools at 0.35x, and DeepSeek / GLM / Kimi starting at 0.5x. It also supports GPT Image and Gemini image generation. Top up via Alipay or WeChat QR code payments, with credit added in real time. Invoices are available on request and balances are refundable, making team purchasing and reimbursement convenient. Global CDN routing is available; API request and response bodies are not persistently stored on the platform.
+        Thanks to <a href="https://moeapi.cloud/register?utm_source=github&amp;utm_campaign=wangmai">Moe API</a> for sponsoring this project! Moe API is a unified large language model API platform for developers and teams. A single API key provides access to 120+ models, including GPT, Claude, Gemini, Grok, DeepSeek, Kimi, GLM, and Qwen, with native compatibility with OpenAI (Chat / Responses), Anthropic Messages, and Gemini protocols for direct use with wangmai, Claude Code, Codex, and other tools. Pricing is CNY 1 per US$1 of credit: multipliers start as low as 0.1x for self-operated Codex account pools, with self-operated Gemini at 0.25x, Grok at 0.2x, third-party Claude Code account pools at 0.35x, and DeepSeek / GLM / Kimi starting at 0.5x. It also supports GPT Image and Gemini image generation. Top up via Alipay or WeChat QR code payments, with credit added in real time. Invoices are available on request and balances are refundable, making team purchasing and reimbursement convenient. Global CDN routing is available; API request and response bodies are not persistently stored on the platform.
       </td>
     </tr>
     <tr>
@@ -145,16 +145,16 @@ This project is maintained in the author's spare time. Corporate or individual s
   </tbody>
 </table>
 
-📧 **Contact**: relakkes@gmail.com
+📧 **Contact**: dev@wangmai.example.com
 
 ---
 
 ## Install
 
-1. Download the macOS / Windows / Linux desktop installer from [Releases](https://github.com/NanmiCoder/cc-haha/releases).
+1. Download the macOS / Windows / Linux desktop installer from [Releases](https://github.com/wangmai-ai/wangmai-agent/releases).
 2. On first launch, configure your model provider, API key, and default model in Settings.
 3. Public macOS releases require signing and notarization. Draft or unsigned temporary builds may still need one-time manual approval. Unsigned Windows installers may show SmartScreen; click "More info" -> "Run anyway". See the [desktop installation guide](docs/en/start/install.md).
-4. Mobile (optional; the app interface is currently Chinese only): on Android, download `cc-haha-mobile-*.apk` from Releases; on iPhone, install TestFlight and open the [public link](https://testflight.apple.com/join/Nd49JrWZ). The mobile app needs desktop v0.7.6 or later. Pair it by scanning the QR code under **Phone connection** in the desktop app: connect directly on the same Wi-Fi, or through Cloudflare when you are away. See [Mobile app and remote connection](docs/en/desktop/remote.md).
+4. Mobile (optional; the app interface is currently Chinese only): on Android, download `wangmai-mobile-*.apk` from Releases; on iPhone, install TestFlight and open the [public link](https://testflight.apple.com/join/Nd49JrWZ). The mobile app needs desktop v0.7.6 or later. Pair it by scanning the QR code under **Phone connection** in the desktop app: connect directly on the same Wi-Fi, or through Cloudflare when you are away. See [Mobile app and remote connection](docs/en/desktop/remote.md).
 
 Release trust and privacy: [Code signing policy](docs/en/start/code-signing.md) · [Privacy and network access](docs/en/start/privacy.md)
 
@@ -175,7 +175,7 @@ If this project helps you, consider buying me a coffee — every bit of support 
 <b>Alipay</b>
 </td>
 <td align="center" width="33%">
-<a href="https://buymeacoffee.com/relakkes" target="_blank">
+<a href="https://buymeacoffee.com/wangmai" target="_blank">
 <img src="docs/images/donate/bmc_button.png" width="250" alt="Buy Me a Coffee">
 </a><br>
 <b>Buy Me a Coffee</b>
@@ -213,7 +213,7 @@ If this project helps you, consider buying me a coffee — every bit of support 
 
 ## More Documentation
 
-Full documentation site: <https://cchaha.ai>
+Full documentation site: <https://wangmai.example.com>
 
 | Section | Documents |
 |------|------|
@@ -248,22 +248,22 @@ Thanks to the following open-source projects and community practices for referen
 - [cc-switch](https://github.com/farion1231/cc-switch): reference for model provider configuration.
 - [t3code](https://github.com/pingdotgg/t3code): visual texture and interaction design reference for the desktop UI.
 - [LINUX DO](https://linux.do/): a new ideal developer community.
-- [AtomGit](https://atomgit.com/NanmiCoder/cc-haha): code hosting for this project in China.
+- [AtomGit](https://atomgit.com/wangmai-ai/wangmai-agent): code hosting for this project in China.
 
 ---
 
 ## ⭐ Star History
 
-If this project helps you, please support it with a ⭐ Star so more people can discover cc-haha.
+If this project helps you, please support it with a ⭐ Star so more people can discover wangmai.
 
-<a href="https://www.repostars.dev/?repos=NanmiCoder%2Fcc-haha&theme=ocean">
-  <img alt="Star History Chart" src="https://www.repostars.dev/api/embed?repo=NanmiCoder%2Fcc-haha&theme=ocean" />
+<a href="https://www.repostars.dev/?repos=wangmai-ai%2Fwangmai&theme=ocean">
+  <img alt="Star History Chart" src="https://www.repostars.dev/api/embed?repo=wangmai-ai%2Fwangmai&theme=ocean" />
 </a>
 
 ---
 
 ## License
 
-Current terms are the [cc-haha Community Source License 1.0](LICENSE). Noncommercial personal use and internal business operations are allowed; paid client work, commercial deliverables, paid customization or secondary development, commercial distribution, and paid services require prior written commercial permission; redistributions require visible source attribution. Existing MIT grants and third-party licenses remain valid. See the [licensing guide](LICENSING.md). This is source-available, not an OSI-approved open-source license.
+Current terms are the [wangmai Community Source License 1.0](LICENSE). Noncommercial personal use and internal business operations are allowed; paid client work, commercial deliverables, paid customization or secondary development, commercial distribution, and paid services require prior written commercial permission; redistributions require visible source attribution. Existing MIT grants and third-party licenses remain valid. See the [licensing guide](LICENSING.md). This is source-available, not an OSI-approved open-source license.
 
 Original reused agent-desktop code remains under Apache-2.0; the project's Community Source License does not add restrictions to those existing grants. Third-party dependencies retain their own licenses; see [Third-Party Licenses](THIRD_PARTY_LICENSES.md).

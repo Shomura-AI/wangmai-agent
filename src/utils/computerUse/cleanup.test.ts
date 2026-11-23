@@ -42,7 +42,7 @@ function makeCtx(): CleanupCtx {
 const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
 
 test('a stale finalizer leaves the replacement turn’s overlay and lock alone', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'cc-haha-computer-use-turn-'))
+  const root = await mkdtemp(join(tmpdir(), 'wangmai-computer-use-turn-'))
   const previousConfig = process.env.CLAUDE_CONFIG_DIR
   process.env.CLAUDE_CONFIG_DIR = root
   const first = Symbol()
@@ -76,7 +76,7 @@ test('a stale finalizer leaves the replacement turn’s overlay and lock alone',
 })
 
 test('a resumed session recovers a lock after its previous process exits', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'cc-haha-computer-use-resume-'))
+  const root = await mkdtemp(join(tmpdir(), 'wangmai-computer-use-resume-'))
   const previousConfig = process.env.CLAUDE_CONFIG_DIR
   const predecessor = Bun.spawn([process.execPath, '--no-env-file', '-e', 'setInterval(() => {}, 1000)'], {
     cwd: root,

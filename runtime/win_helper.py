@@ -90,7 +90,7 @@ if hasattr(sys.stderr, "reconfigure"):
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
 
-DESKTOP_HOST_BUNDLE_ID = "com.claude-code-haha.desktop"
+DESKTOP_HOST_BUNDLE_ID = "com.wangmai.agent"
 
 # ---------------------------------------------------------------------------
 # Key mapping — Windows uses 'win' instead of 'command'
@@ -523,7 +523,7 @@ def app_display_name(bundle_id: str) -> str | None:
 def _windows_bundle_id(exe_path: str) -> str:
     """Stable identity for the packaged Electron host; stem for other apps."""
     stem = Path(exe_path).stem
-    if stem.casefold() == "claude code haha":
+    if stem.casefold() == "wangmai-desktop":
         return DESKTOP_HOST_BUNDLE_ID
     return stem
 
@@ -809,7 +809,7 @@ SM_CYVIRTUALSCREEN = 79
 # The TypeScript parent shares one tag with the virtual-cursor process so that
 # it follows our SendInput stream, not injected input from unrelated software.
 try:
-    _INPUT_TAG = int(os.environ["CC_HAHA_COMPUTER_USE_INPUT_TAG"]) & 0xFFFFFFFF
+    _INPUT_TAG = int(os.environ["WANGMAI_COMPUTER_USE_INPUT_TAG"]) & 0xFFFFFFFF
 except (KeyError, TypeError, ValueError):
     _INPUT_TAG = int.from_bytes(os.urandom(4), "little") or 0x43434841
 

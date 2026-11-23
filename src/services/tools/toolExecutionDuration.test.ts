@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { createSandboxedTestEnvironment } from '../../../scripts/pr/test-environment.js'
 import type { Tool, ToolUseContext } from '../../Tool.js'
 
-const childScenario = process.env.CC_HAHA_TOOL_EXEC_DURATION_SCENARIO
+const childScenario = process.env.WANGMAI_TOOL_EXEC_DURATION_SCENARIO
 const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms))
 
 async function runScenario(root: string) {
@@ -265,7 +265,7 @@ test('records per-tool execution durationMs excluding serial queue and permissio
   const child = Bun.spawn([process.execPath, '--no-env-file', 'test', fileURLToPath(import.meta.url)], {
     cwd: root,
     env: createSandboxedTestEnvironment(root, {
-      CC_HAHA_TOOL_EXEC_DURATION_SCENARIO: '1',
+      WANGMAI_TOOL_EXEC_DURATION_SCENARIO: '1',
       NODE_ENV: 'production',
       CLAUDE_CODE_SIMPLE: '1',
       CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',

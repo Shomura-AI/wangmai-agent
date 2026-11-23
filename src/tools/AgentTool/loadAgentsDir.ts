@@ -125,7 +125,7 @@ export type BaseAgentDefinition = {
   hooks?: HooksSettings // Session-scoped hooks registered when agent starts
   color?: AgentColorName
   model?: string
-  /** Saved cc-haha provider id that serves this Agent's model instead of the session's provider. */
+  /** Saved wangmai provider id that serves this Agent's model instead of the session's provider. */
   provider?: string
   effort?: EffortValue
   permissionMode?: PermissionMode

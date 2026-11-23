@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Release script for Claude Code Haha Desktop
+ * Release script for 网脉智能体 Desktop
  *
  * main is protected (the PR gate must pass, admins included), so a release is
  * two steps: a release PR, then a tag on the merged commit.

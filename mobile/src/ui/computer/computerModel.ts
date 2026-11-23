@@ -89,7 +89,7 @@ export function activitySummary(input: { running: number; read: number; total: n
 
 /* ───────────── 只能在电脑上改 ───────────── */
 
-export const desktopOnlyText = `${desktopOnly}。在电脑上打开 cc-haha 的设置。`
+export const desktopOnlyText = `${desktopOnly}。在电脑上打开 wangmai 的设置。`
 
 /* ───────────── 移除 ───────────── */
 

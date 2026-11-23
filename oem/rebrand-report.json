@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-11-23T08:33:53.563Z",
+  "dryRun": false,
+  "root": "G:\\zhongkongtai\\cc-haha",
+  "brand": {
+    "nameZh": "网脉智能体",
+    "nameEn": "WangMai Agent",
+    "appId": "com.wangmai.agent",
+    "slug": "wangmai"
+  },
+  "scannedFiles": 9619,
+  "changedFiles": 0,
+  "rules": [],
+  "patchedJson": [
+    {
+      "file": "desktop/package.json",
+      "keys": [
+        "name",
+        "author",
+        "build.appId",
+        "build.productName",
+        "build.executableName",
+        "build.nsis.shortcutName",
+        "build.linux.maintainer"
+      ]
+    },
+    {
+      "file": "desktop/src-tauri/tauri.conf.json",
+      "keys": [
+        "productName",
+        "identifier",
+        "app.windows.0.title",
+        "plugins.updater.endpoints"
+      ]
+    },
+    {
+      "file": "mobile/app.json",
+      "keys": [
+        "expo.name",
+        "expo.slug",
+        "expo.scheme",
+        "expo.owner",
+        "expo.ios.bundleIdentifier",
+        "expo.android.package"
+      ]
+    },
+    {
+      "file": "package.json",
+      "keys": [
+        "name"
+      ]
+    },
+    {
+      "file": "site/package.json",
+      "keys": [
+        "name"
+      ]
+    }
+  ],
+  "renamed": [],
+  "changed": [],
+  "skipped": [
+    {
+      "file": "docs/en/internals/images/11-agent-framework-overview.png",
+      "reason": "too-large"
+    }
+  ]
+}

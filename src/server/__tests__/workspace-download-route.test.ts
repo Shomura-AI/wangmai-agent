@@ -23,11 +23,11 @@ let previousToken: string | undefined
 
 beforeEach(async () => {
   previousConfig = process.env.CLAUDE_CONFIG_DIR
-  previousToken = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
+  previousToken = process.env.WANGMAI_LOCAL_ACCESS_TOKEN
   clearFilesystemAccessRootsForTests()
   directory = await fs.mkdtemp(path.join(os.tmpdir(), 'workspace-download-'))
   process.env.CLAUDE_CONFIG_DIR = path.join(directory, 'config')
-  process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = TOKEN
+  process.env.WANGMAI_LOCAL_ACCESS_TOKEN = TOKEN
   await fs.mkdir(path.join(process.env.CLAUDE_CONFIG_DIR, 'projects'), { recursive: true })
   workDir = path.join(directory, 'work')
   await fs.mkdir(workDir)
@@ -49,8 +49,8 @@ afterEach(async () => {
   clearFilesystemAccessRootsForTests()
   if (previousConfig === undefined) delete process.env.CLAUDE_CONFIG_DIR
   else process.env.CLAUDE_CONFIG_DIR = previousConfig
-  if (previousToken === undefined) delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-  else process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = previousToken
+  if (previousToken === undefined) delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+  else process.env.WANGMAI_LOCAL_ACCESS_TOKEN = previousToken
   await fs.rm(directory, { recursive: true, force: true })
 })
 

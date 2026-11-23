@@ -81,7 +81,7 @@ describe('VoiceShortcutSettings', () => {
     expect(recorder()).toHaveTextContent('Right ⌃')
   })
 
-  it('refuses a key cc-haha already uses and keeps the old one', () => {
+  it('refuses a key wangmai already uses and keeps the old one', () => {
     render(<VoiceShortcutSettings />)
     startListening()
     keyDown({ code: 'KeyK', key: 'k', metaKey: true })

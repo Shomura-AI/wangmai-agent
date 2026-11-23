@@ -34,7 +34,7 @@ function parseJournal(value: unknown): Journal {
   const parsed = value as Journal
   if (parsed.version !== 1 || !parsed.status || typeof parsed.status.id !== 'string' || !/^[a-zA-Z0-9_-]{1,80}$/.test(parsed.status.id) ||
     !stages.includes(parsed.status.stage) || !absoluteDirectory(parsed.status.sourceDir) || !absoluteDirectory(parsed.status.targetDir) ||
-    !absoluteDirectory(parsed.stagingDir) || parsed.stagingDir !== path.join(parsed.status.targetDir, `.cc-haha-migration-${parsed.status.id}`) ||
+    !absoluteDirectory(parsed.stagingDir) || parsed.stagingDir !== path.join(parsed.status.targetDir, `.wangmai-migration-${parsed.status.id}`) ||
     !Array.isArray(parsed.createdCredentials) || !Array.isArray(parsed.credentials) || (parsed.oldMode !== null && typeof parsed.oldMode !== 'string') ||
     (parsed.directories !== undefined && (!directoryIdentity(parsed.directories?.source) || !directoryIdentity(parsed.directories?.target))) ||
     (parsed.stagingIdentity !== undefined && !directoryIdentity(parsed.stagingIdentity))) throw new Error('Unsupported migration recovery record')
@@ -129,7 +129,7 @@ export class DataMigration {
     if (this.running) throw new Error('Data migration is already running')
     this.previewState = null
     this.previewDirectories = undefined
-    if (this.env.CLAUDE_CONFIG_DIR && this.env.CC_HAHA_APP_PORTABLE_DIR !== '1') throw new Error('CLAUDE_CONFIG_DIR is controlled by the launch environment')
+    if (this.env.CLAUDE_CONFIG_DIR && this.env.WANGMAI_APP_PORTABLE_DIR !== '1') throw new Error('CLAUDE_CONFIG_DIR is controlled by the launch environment')
     const target = normalizedCustomDir(this.app, targetDir)
     const sourceReal = await canonicalPath(this.sourceDir)
     const targetReal = await canonicalPath(target)
@@ -246,7 +246,7 @@ export class DataMigration {
   private async execute(preview: MigrationPreview, directories: NonNullable<Journal['directories']>, signal: AbortSignal): Promise<void> {
     let quiescing = false
     let switched = false
-    const stagingDir = path.join(preview.targetDir, `.cc-haha-migration-${preview.id}`)
+    const stagingDir = path.join(preview.targetDir, `.wangmai-migration-${preview.id}`)
     try {
       const oldMode = await fs.readFile(this.modePath, 'utf8').catch(error => {
         if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
@@ -378,7 +378,7 @@ export class DataMigration {
 
   private async removeStaging(): Promise<void> {
     const journal = this.journal!
-    const expected = path.join(journal.status.targetDir, `.cc-haha-migration-${journal.status.id}`)
+    const expected = path.join(journal.status.targetDir, `.wangmai-migration-${journal.status.id}`)
     if (journal.stagingDir !== expected || path.dirname(expected) !== journal.status.targetDir || expected === journal.status.targetDir) throw new Error('Invalid migration staging path')
     const stat = await fs.lstat(expected).catch(() => null)
     if (stat && (!stat.isDirectory() || stat.isSymbolicLink())) throw new Error('Migration staging directory was replaced')
@@ -421,7 +421,7 @@ export class DataMigration {
     if (parsed.status.stage === 'completed') {
       // A disconnected migrated disk must not be recreated as an empty store.
       // An explicit launch override still selects its own independent store.
-      if (this.env.CLAUDE_CONFIG_DIR && this.env.CC_HAHA_APP_PORTABLE_DIR !== '1' &&
+      if (this.env.CLAUDE_CONFIG_DIR && this.env.WANGMAI_APP_PORTABLE_DIR !== '1' &&
         path.relative(path.resolve(this.env.CLAUDE_CONFIG_DIR), parsed.status.targetDir) !== '') return 'normal'
       let mode: { mode?: string; portable_dir?: string }
       try { mode = JSON.parse(await fs.readFile(this.modePath, 'utf8')) } catch (error) {

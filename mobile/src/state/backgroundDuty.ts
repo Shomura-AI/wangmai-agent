@@ -10,7 +10,7 @@ export type DutyHost = {
   token: string
 }
 
-/** `modules/cchaha-duty`; absent on iOS, web and builds without the module. */
+/** `modules/wangmai-duty`; absent on iOS, web and builds without the module. */
 export type DutyNative = {
   setHost(json: string): void
   removeHost(hostId: string): void

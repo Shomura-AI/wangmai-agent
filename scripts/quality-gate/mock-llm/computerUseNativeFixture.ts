@@ -38,7 +38,7 @@ mock.module(import.meta.resolve('../../../src/utils/computerUse/mcpServer.ts'), 
     appendFileSync(log, JSON.stringify({ event: 'connect', pid: process.pid }) + '\n')
     const server = new Server({ name: 'computer-use-native-fixture', version: '1' }, { capabilities: { tools: {} } })
     server.setRequestHandler(ListToolsRequestSchema, async () => {
-      const config = JSON.parse(readFileSync(join(configDir, 'cc-haha', 'computer-use-config.json'), 'utf8'))
+      const config = JSON.parse(readFileSync(join(configDir, 'wangmai', 'computer-use-config.json'), 'utf8'))
       return {
         tools: config.enabled
           ? buildPlatformComputerUseTools({

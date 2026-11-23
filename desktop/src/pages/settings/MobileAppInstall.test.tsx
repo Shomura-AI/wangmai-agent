@@ -18,12 +18,12 @@ afterEach(() => {
 
 it('sends Android users to the latest GitHub release that carries the APK', () => {
   const { container } = render(<MobileAppInstall connectionMethodsId="connection-methods" onUseBrowser={vi.fn()} />)
-  expect(screen.getByRole('heading', { name: 'Get cc-haha on your phone' })).toBeVisible()
+  expect(screen.getByRole('heading', { name: 'Get wangmai on your phone' })).toBeVisible()
   expect(screen.getByText(/ships with every desktop release on GitHub Releases/)).toBeVisible()
   expect(screen.queryByText('Not released')).toBeNull()
   fireEvent.click(screen.getByRole('button', { name: 'Download from GitHub' }))
   expect(mocks.open).toHaveBeenCalledTimes(1)
-  expect(mocks.open).toHaveBeenCalledWith('https://github.com/NanmiCoder/cc-haha/releases/latest')
+  expect(mocks.open).toHaveBeenCalledWith('https://github.com/wangmai-ai/wangmai-agent/releases/latest')
   expect(container.querySelector('a, img')).toBeNull()
 })
 

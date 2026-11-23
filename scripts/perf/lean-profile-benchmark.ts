@@ -187,12 +187,12 @@ export async function runBenchmarkCase(options: {
   // No production gate or tool description is altered for the benchmark.
   const interceptPath = join(runDir, 'recording-preload.ts')
   writeFileSync(interceptPath, `const originalFetch = globalThis.fetch
-const upstream = new URL(process.env.CC_HAHA_BENCH_UPSTREAM_BASE!)
-const recorder = process.env.CC_HAHA_BENCH_RECORDER_URL!
+const upstream = new URL(process.env.WANGMAI_BENCH_UPSTREAM_BASE!)
+const recorder = process.env.WANGMAI_BENCH_RECORDER_URL!
 globalThis.fetch = (async (input, init) => {
   const request = new Request(input, init)
   const url = new URL(request.url)
-  if (process.env.CC_HAHA_BENCH_ALLOW_DOCS === '1' && url.protocol === 'https:' && url.hostname === 'api-docs.deepseek.com') {
+  if (process.env.WANGMAI_BENCH_ALLOW_DOCS === '1' && url.protocol === 'https:' && url.hostname === 'api-docs.deepseek.com') {
     request.headers.delete('authorization')
     request.headers.delete('x-api-key')
     return originalFetch(request)
@@ -203,10 +203,10 @@ globalThis.fetch = (async (input, init) => {
 }) as typeof fetch
 `)
   const env = buildSandboxLaneEnv(home, {
-    CALLER_DIR: work, CC_HAHA_SKIP_DOTENV: '1',
+    CALLER_DIR: work, WANGMAI_SKIP_DOTENV: '1',
     ANTHROPIC_BASE_URL: provider.baseUrl!, ANTHROPIC_API_KEY: 'benchmark-fake-key',
-    CC_HAHA_BENCH_UPSTREAM_BASE: provider.baseUrl!, CC_HAHA_BENCH_RECORDER_URL: recorder.url,
-    CC_HAHA_BENCH_ALLOW_DOCS: fixture.kind === 'web' ? '1' : '0',
+    WANGMAI_BENCH_UPSTREAM_BASE: provider.baseUrl!, WANGMAI_BENCH_RECORDER_URL: recorder.url,
+    WANGMAI_BENCH_ALLOW_DOCS: fixture.kind === 'web' ? '1' : '0',
     ANTHROPIC_MODEL: model, ANTHROPIC_SMALL_FAST_MODEL: model,
     ANTHROPIC_DEFAULT_FABLE_MODEL: model, ANTHROPIC_DEFAULT_HAIKU_MODEL: model,
     ANTHROPIC_DEFAULT_SONNET_MODEL: model, ANTHROPIC_DEFAULT_OPUS_MODEL: model,
@@ -217,7 +217,7 @@ globalThis.fetch = (async (input, init) => {
     CLAUDE_CODE_MODEL_CONTEXT_WINDOWS: JSON.stringify({ [model]: 1_000_000 }),
     CLAUDE_CODE_AUTO_COMPACT_WINDOW: '1000000', CLAUDE_CODE_MAX_OUTPUT_TOKENS: '16384',
     CLAUDE_CODE_EFFORT_LEVEL: 'medium', CLAUDE_CODE_ENABLE_TASKS: '1',
-    CC_HAHA_AGENT_TEAMS_ENABLED: '0', ENABLE_TOOL_SEARCH: 'false',
+    WANGMAI_AGENT_TEAMS_ENABLED: '0', ENABLE_TOOL_SEARCH: 'false',
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1',
     CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK: '1', CLAUDE_CODE_MAX_RETRIES: '0', CI: '1',
   })

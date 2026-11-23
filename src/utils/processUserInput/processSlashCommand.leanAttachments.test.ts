@@ -32,7 +32,7 @@ async function firstAgentRequest(profile: 'standard' | 'lean') {
         ANTHROPIC_BASE_URL: upstream.url,
         ANTHROPIC_API_KEY: 'fixture-lean-attachments-key',
         CALLER_DIR: workDir,
-        CC_HAHA_SKIP_DOTENV: '1',
+        WANGMAI_SKIP_DOTENV: '1',
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',
         DISABLE_AUTOUPDATER: '1',
       }),

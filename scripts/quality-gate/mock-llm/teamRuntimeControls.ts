@@ -96,7 +96,7 @@ function ownedCli(ctx: LiveContext, rootDir: string, sessionId: string, startedA
     const match = /^\s*(\d+)\s+(\d+)\s+(.+)$/.exec(line)
     return match && sessionFlags.test(match[3]!) ? [{ pid: Number(match[1]), ppid: Number(match[2]), command: match[3]! }] : []
   })
-  const wrapper = rows.find(row => hasEntrypoint(row.command, join(rootDir, 'bin/claude-haha')) && row.ppid === ctx.serverProcessId)
+  const wrapper = rows.find(row => hasEntrypoint(row.command, join(rootDir, 'bin/wangmai')) && row.ppid === ctx.serverProcessId)
   assert.ok(wrapper, `No source CLI wrapper owned by server ${ctx.serverProcessId} for ${sessionId}`)
   const child = rows.find(row => hasEntrypoint(row.command, join(rootDir, 'src/entrypoints/cli.tsx')) && row.ppid === wrapper.pid)
   assert.ok(child, `No source execution child of wrapper ${wrapper.pid}`)
@@ -198,8 +198,8 @@ export async function runTeamRuntimeControlsScenario(rootDir: string, artifactDi
       rootDir, artifactDir, label: 'team-runtime-controls', seedProviders: false, stepTimeoutMs: TIMEOUT_MS,
       sandboxSource: { PATH: process.env.PATH, SHELL: process.env.SHELL, SYSTEMROOT: process.env.SYSTEMROOT,
         CLAUDE_CONFIG_DIR: join(artifactDir, 'unused-source-config') },
-      envOverrides: { CC_HAHA_SKIP_DOTENV: '1', CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1',
-        CC_HAHA_AGENT_TEAMS_ENABLED: '1', CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: '1' },
+      envOverrides: { WANGMAI_SKIP_DOTENV: '1', CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1',
+        WANGMAI_AGENT_TEAMS_ENABLED: '1', CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: '1' },
       scenarios: [{ id: 'mock-team-runtime-controls', title: 'Stop, edit and explicitly resume the same team across an application server restart (#1878)' }],
       async resolveTarget(server) {
         baseUrl = server.baseUrl

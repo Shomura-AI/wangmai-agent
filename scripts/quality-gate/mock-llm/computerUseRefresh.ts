@@ -24,10 +24,10 @@ export async function runComputerUseRefreshScenario(rootDir: string, artifactDir
     source: { PATH: process.env.PATH, SHELL: process.env.SHELL, SYSTEMROOT: process.env.SYSTEMROOT },
   })
   const workDir = join(sandbox.home, 'project')
-  const configPath = join(sandbox.configDir, 'cc-haha', 'computer-use-config.json')
+  const configPath = join(sandbox.configDir, 'wangmai', 'computer-use-config.json')
   const fixtureLog = join(sandbox.configDir, 'computer-use-native-fixture.ndjson')
   mkdirSync(workDir, { recursive: true })
-  mkdirSync(join(sandbox.configDir, 'cc-haha'), { recursive: true })
+  mkdirSync(join(sandbox.configDir, 'wangmai'), { recursive: true })
   const setEnabled = (enabled: boolean) => writeFileSync(configPath, JSON.stringify({
     enabled,
     grantFlags: { clipboardRead: true, clipboardWrite: true, systemKeyCombos: true },
@@ -147,7 +147,7 @@ export async function runComputerUseRefreshScenario(rootDir: string, artifactDir
       env: {
         ...sandbox.env,
         CALLER_DIR: workDir,
-        CC_HAHA_SKIP_DOTENV: '1',
+        WANGMAI_SKIP_DOTENV: '1',
         ANTHROPIC_BASE_URL: upstream.url,
         ANTHROPIC_API_KEY: 'mock-api-key',
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1',

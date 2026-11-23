@@ -10,17 +10,17 @@ const template = fixture('MainApplication.kt')
 const pinnedOnly = fixture('MainApplication.pinned-websocket-v1.kt')
 const moduleImport =
   'import com.facebook.react.modules.websocket.WebSocketModule'
-const edgeImport = 'import app.cchaha.network.CloudflareEdge'
+const edgeImport = 'import app.wangmai.network.CloudflareEdge'
 const policy = [
   '    super.onCreate()',
-  '    // cc-haha: native network policy (begin)',
+  '    // wangmai: native network policy (begin)',
   '    CloudflareEdge.install(this)',
   '    WebSocketModule.setCustomClientBuilder { builder ->',
   '      builder.followRedirects(false)',
   '      builder.followSslRedirects(false)',
   '      CloudflareEdge.configureWebSocket(builder)',
   '    }',
-  '    // cc-haha: native network policy (end)',
+  '    // wangmai: native network policy (end)',
   '    DefaultNewArchitectureEntryPoint.releaseLevel = try {',
 ].join('\n')
 
@@ -28,7 +28,7 @@ describe('native network policy config plugin', () => {
   test('pins WebSocket redirects and routes HTTP and WebSocket clients through the edge fallback before React initializes', () => {
     const output = pinWebSockets(template, 'kt')
     expect(output).toStartWith(
-      `package app.cchaha.mobile\n\n${edgeImport}\n${moduleImport}\n\nimport android.app.Application\n`
+      `package app.wangmai.mobile\n\n${edgeImport}\n${moduleImport}\n\nimport android.app.Application\n`
     )
     expect(output).toContain(policy)
     expect(output.indexOf('CloudflareEdge.install(this)')).toBeLessThan(
@@ -40,7 +40,7 @@ describe('native network policy config plugin', () => {
   })
 
   test('upgrades the previously generated WebSocket-only policy to exactly a fresh generation', () => {
-    expect(pinnedOnly).toContain('// cc-haha: pinned WebSocket origin (begin)')
+    expect(pinnedOnly).toContain('// wangmai: pinned WebSocket origin (begin)')
     const fresh = pinWebSockets(template, 'kt')
     expect(pinWebSockets(pinnedOnly, 'kt')).toBe(fresh)
     expect(pinWebSockets(pinnedOnly.replace(/\n/g, '\r\n'), 'kt')).toBe(
@@ -142,7 +142,7 @@ describe('native network policy config plugin', () => {
       output.replace('followRedirects(false)', 'followRedirects(true)'),
       output.replace('      CloudflareEdge.configureWebSocket(builder)\n', ''),
       output.replace('    CloudflareEdge.install(this)\n', ''),
-      output.replace('    // cc-haha: native network policy (end)', ''),
+      output.replace('    // wangmai: native network policy (end)', ''),
       output.replace(
         '    super.onCreate()\n',
         '    super.onCreate()\n    loadReactNative(this)\n'
@@ -151,7 +151,7 @@ describe('native network policy config plugin', () => {
       expect(() => pinWebSockets(modified, 'kt')).toThrow('modified or moved')
     for (const modified of [
       pinnedOnly.replace('followRedirects(false)', 'followRedirects(true)'),
-      pinnedOnly.replace('    // cc-haha: pinned WebSocket origin (end)', ''),
+      pinnedOnly.replace('    // wangmai: pinned WebSocket origin (end)', ''),
       pinnedOnly.replace(
         '    super.onCreate()\n',
         '    super.onCreate()\n    loadReactNative(this)\n'

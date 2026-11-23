@@ -4,10 +4,10 @@ import * as os from 'node:os'
 import * as path from 'node:path'
 import { ProviderService } from './providerService.js'
 import { drainTraceCaptureForTests } from './traceCaptureService.js'
-import { hahaOAuthService } from './hahaOAuthService.js'
-import { hahaOpenAIOAuthService } from './hahaOpenAIOAuthService.js'
-import { hahaGrokOAuthService } from './hahaGrokOAuthService.js'
-import { hahaDeepSeekOAuthService } from './hahaDeepSeekOAuthService.js'
+import { wangmaiOAuthService } from './wangmaiOAuthService.js'
+import { wangmaiOpenAIOAuthService } from './wangmaiOpenAIOAuthService.js'
+import { wangmaiGrokOAuthService } from './wangmaiGrokOAuthService.js'
+import { wangmaiDeepSeekOAuthService } from './wangmaiDeepSeekOAuthService.js'
 import {
   decideAutoQuestionAnswers,
   type AutoQuestion,
@@ -38,12 +38,12 @@ describe('autoQuestionDecisionService', () => {
     originalFetch = globalThis.fetch
     configDir = await fs.mkdtemp(path.join(os.tmpdir(), 'auto-question-test-'))
     process.env.CLAUDE_CONFIG_DIR = configDir
-    await fs.mkdir(path.join(configDir, 'cc-haha', 'traces'), { recursive: true })
+    await fs.mkdir(path.join(configDir, 'wangmai', 'traces'), { recursive: true })
   })
 
   afterEach(async () => {
     globalThis.fetch = originalFetch
-    hahaOpenAIOAuthService.dispose()
+    wangmaiOpenAIOAuthService.dispose()
     await drainTraceCaptureForTests()
     if (originalConfigDir === undefined) delete process.env.CLAUDE_CONFIG_DIR
     else process.env.CLAUDE_CONFIG_DIR = originalConfigDir
@@ -233,7 +233,7 @@ describe('autoQuestionDecisionService', () => {
     // A hand-built request cannot carry the Claude Code CLI's identity
     // (User-Agent, system prefix, billing header, body signature), so the
     // subscription token must not leave through this path at all.
-    await hahaOAuthService.saveTokens({
+    await wangmaiOAuthService.saveTokens({
       accessToken: 'fake-claude-token', refreshToken: 'fake-refresh-token',
       expiresAt: Date.now() + 60 * 60_000, scopes: ['user:inference'], subscriptionType: 'pro',
     })
@@ -252,7 +252,7 @@ describe('autoQuestionDecisionService', () => {
   })
 
   test('uses ChatGPT Official OAuth through its Responses endpoint', async () => {
-    await hahaOpenAIOAuthService.saveTokens({
+    await wangmaiOpenAIOAuthService.saveTokens({
       accessToken: 'fake-openai-token', refreshToken: 'fake-refresh-token',
       expiresAt: Date.now() + 60 * 60_000, accountId: 'acct-auto-question', email: 'test@example.com',
     })
@@ -281,7 +281,7 @@ describe('autoQuestionDecisionService', () => {
   })
 
   test('uses Grok Official OAuth when no API key is saved', async () => {
-    await hahaGrokOAuthService.saveTokens({
+    await wangmaiGrokOAuthService.saveTokens({
       accessToken: 'fake-grok-token', refreshToken: 'fake-refresh-token',
       expiresAt: Date.now() + 60 * 60_000, email: null,
     })
@@ -304,7 +304,7 @@ describe('autoQuestionDecisionService', () => {
   })
 
   test.each([false, true])('answers with the DeepSeek account token header, never an API key (thinking retry: %s)', async (retryThinking) => {
-    await hahaDeepSeekOAuthService.saveTokens({
+    await wangmaiDeepSeekOAuthService.saveTokens({
       token: 'dsh_test_account_token',
       issuer: 'https://platform.deepseek.com',
       deviceId: 'device-1',

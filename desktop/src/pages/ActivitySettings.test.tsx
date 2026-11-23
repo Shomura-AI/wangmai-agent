@@ -118,8 +118,8 @@ describe('ActivitySettings', () => {
       preferences: {
         schemaVersion: 2,
         profile: {
-          displayName: 'cc-haha',
-          subtitle: 'github.com/NanmiCoder/cc-haha',
+          displayName: 'wangmai',
+          subtitle: 'github.com/wangmai-ai/wangmai-agent',
           avatarFile: null,
           avatarUpdatedAt: null,
         },
@@ -156,8 +156,8 @@ describe('ActivitySettings', () => {
       preferences: {
         schemaVersion: 2,
         profile: {
-          displayName: 'cc-haha',
-          subtitle: 'github.com/NanmiCoder/cc-haha',
+          displayName: 'wangmai',
+          subtitle: 'github.com/wangmai-ai/wangmai-agent',
           avatarFile: 'profile/avatar.png',
           avatarUpdatedAt: '2026-05-09T12:00:00.000Z',
         },
@@ -175,8 +175,8 @@ describe('ActivitySettings', () => {
       preferences: {
         schemaVersion: 2,
         profile: {
-          displayName: 'cc-haha',
-          subtitle: 'github.com/NanmiCoder/cc-haha',
+          displayName: 'wangmai',
+          subtitle: 'github.com/wangmai-ai/wangmai-agent',
           avatarFile: null,
           avatarUpdatedAt: null,
         },
@@ -203,12 +203,12 @@ describe('ActivitySettings', () => {
 
     expect(getStatsMock).toHaveBeenCalledWith('all')
     expect(screen.getByRole('heading', { name: 'Token usage' })).toBeInTheDocument()
-    expect(screen.getByText('cc-haha')).toBeInTheDocument()
-    expect(screen.getByAltText('cc-haha avatar')).toHaveAttribute('src', '/app-icon.png')
-    expect(screen.getByAltText('cc-haha avatar')).toHaveClass('scale-[1.28]')
-    expect(screen.getByRole('link', { name: 'github.com/NanmiCoder/cc-haha' })).toHaveAttribute(
+    expect(screen.getByText('wangmai')).toBeInTheDocument()
+    expect(screen.getByAltText('wangmai avatar')).toHaveAttribute('src', '/app-icon.png')
+    expect(screen.getByAltText('wangmai avatar')).toHaveClass('scale-[1.28]')
+    expect(screen.getByRole('link', { name: 'github.com/wangmai-ai/wangmai-agent' })).toHaveAttribute(
       'href',
-      'https://github.com/NanmiCoder/cc-haha',
+      'https://github.com/wangmai-ai/wangmai-agent',
     )
     // 2,672,000 + 64,000 + 128,000 tokens.
     expect(screen.getByTestId('token-total-value')).toHaveTextContent('2.9')
@@ -471,20 +471,20 @@ describe('ActivitySettings', () => {
     const input = screen.getByLabelText('显示名称')
     const displayName = '大厂程序员阿江的 Token 活动统计展示'
     fireEvent.change(input, { target: { value: displayName } })
-    fireEvent.change(screen.getByLabelText('第二行'), { target: { value: 'relakkes.dev' } })
+    fireEvent.change(screen.getByLabelText('第二行'), { target: { value: 'wangmai.dev' } })
     fireEvent.click(screen.getByRole('button', { name: '保存' }))
 
     await flushActivityLoad()
 
     expect(updateProfilePreferencesMock).toHaveBeenCalledWith({
       displayName,
-      subtitle: 'relakkes.dev',
+      subtitle: 'wangmai.dev',
     })
     // A long display name wraps beside the avatar instead of being cut off.
     const heading = screen.getByRole('heading', { name: displayName })
     expect(heading).toHaveClass('break-words')
     expect(heading).not.toHaveClass('truncate')
-    expect(screen.getByRole('link', { name: 'relakkes.dev' })).toHaveAttribute('href', 'https://relakkes.dev')
+    expect(screen.getByRole('link', { name: 'wangmai.dev' })).toHaveAttribute('href', 'https://wangmai.dev')
   })
 
   it('handles avatar upload, fallback, removal, save failure, and cancel reset', async () => {
@@ -548,7 +548,7 @@ describe('ActivitySettings', () => {
     await flushActivityLoad()
 
     expect(deleteProfileAvatarMock).toHaveBeenCalled()
-    expect(screen.getByAltText('cc-haha avatar')).toHaveAttribute('src', '/app-icon.png')
+    expect(screen.getByAltText('wangmai avatar')).toHaveAttribute('src', '/app-icon.png')
   })
 
   it('shows localized duration and the Chinese streak figures', async () => {

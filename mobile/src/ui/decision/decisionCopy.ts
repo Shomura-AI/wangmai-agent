@@ -134,7 +134,7 @@ export function approvalDescription(
   return text(description) ?? text(input.description)
 }
 
-/** “在 ~/code/cc-haha”：把用户主目录缩写成 ~，拿不到工作目录时不显示。 */
+/** “在 ~/code/wangmai”：把用户主目录缩写成 ~，拿不到工作目录时不显示。 */
 export function workDirCaption(workDir?: string | null) {
   const value = workDir?.trim()
   if (!value) return undefined

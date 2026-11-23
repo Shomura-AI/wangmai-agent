@@ -60,7 +60,7 @@ export async function createWhatsAppSocket(options: {
     version,
     logger,
     printQRInTerminal: false,
-    browser: ['cc-haha', 'desktop', '1.0'],
+    browser: ['wangmai', 'desktop', '1.0'],
     syncFullHistory: false,
     markOnlineOnConnect: false,
   })

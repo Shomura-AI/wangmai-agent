@@ -42,7 +42,7 @@ Response shape:
 2. In the same synchronous call, background index startup begins. The session projection opens SQLite and reads `source_files` before its first `await`; the full-text backfill follows later.
 3. `/health` is answered once that synchronous part returns to the event loop. It does not wait for discovery, projection, or backfill; the file watchers that follow open 25 project directories at a time and yield in between. REST requests that need the index await `localIndexCoordinator.start()` inside `fetch`.
 
-Before any of this, `startServer` logs `[Server] modules loaded <ms> ms after process start; binding <host>:<port>`. In the desktop sidecar, the time between `[claude-sidecar] starting server mode` and that line is module loading; whatever follows until `[Server] Claude Code API server running` is startup work.
+Before any of this, `startServer` logs `[Server] modules loaded <ms> ms after process start; binding <host>:<port>`. In the desktop sidecar, the time between `[wangmai-sidecar] starting server mode` and that line is module loading; whatever follows until `[Server] Claude Code API server running` is startup work.
 
 Binding first does not make `/health` answer sooner, because HTTP still waits for the synchronous part. What it changes is what the host can see: with the old order the port stayed unbound for the whole synchronous pass, which looked like a dead process. Now an open port with a silent `/health` reads as "alive but busy", and the desktop host words its timeout accordingly.
 

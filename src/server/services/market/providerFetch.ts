@@ -3,7 +3,7 @@
  *
  * Every upstream request goes through providerFetch: 10s timeout, one retry,
  * network-proxy settings, source-health bookkeeping, and env-based test hooks
- * (HAHA_MARKET_DISABLE_PROVIDERS / HAHA_MARKET_BASE_CLAWHUB / HAHA_MARKET_BASE_SKILLHUB).
+ * (WANGMAI_MARKET_DISABLE_PROVIDERS / WANGMAI_MARKET_BASE_CLAWHUB / WANGMAI_MARKET_BASE_SKILLHUB).
  */
 
 import {
@@ -67,12 +67,12 @@ export async function readResponseTextWithLimit(
 }
 
 export function getProviderBase(source: MarketSource): string {
-  const envKey = source === 'clawhub' ? 'HAHA_MARKET_BASE_CLAWHUB' : 'HAHA_MARKET_BASE_SKILLHUB'
+  const envKey = source === 'clawhub' ? 'WANGMAI_MARKET_BASE_CLAWHUB' : 'WANGMAI_MARKET_BASE_SKILLHUB'
   return process.env[envKey] || DEFAULT_BASES[source]
 }
 
 export function isProviderDisabled(source: MarketSource): boolean {
-  const disabled = process.env.HAHA_MARKET_DISABLE_PROVIDERS
+  const disabled = process.env.WANGMAI_MARKET_DISABLE_PROVIDERS
   if (!disabled) return false
   return disabled.split(',').map((s) => s.trim()).includes(source)
 }

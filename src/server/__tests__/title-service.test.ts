@@ -13,8 +13,8 @@ import {
 } from '../services/titleService.js'
 import { sessionService } from '../services/sessionService.js'
 import { drainTraceCaptureForTests } from '../services/traceCaptureService.js'
-import { hahaOpenAIOAuthService } from '../services/hahaOpenAIOAuthService.js'
-import { hahaDeepSeekOAuthService } from '../services/hahaDeepSeekOAuthService.js'
+import { wangmaiOpenAIOAuthService } from '../services/wangmaiOpenAIOAuthService.js'
+import { wangmaiDeepSeekOAuthService } from '../services/wangmaiDeepSeekOAuthService.js'
 import { SYSTEM_PROXY_URL_ENV } from '../services/networkSettings.js'
 
 describe('titleService', () => {
@@ -33,7 +33,7 @@ describe('titleService', () => {
 
   afterEach(async () => {
     globalThis.fetch = originalFetch
-    hahaOpenAIOAuthService.dispose()
+    wangmaiOpenAIOAuthService.dispose()
     restoreEnv('CLAUDE_CONFIG_DIR', originalConfigDir)
     restoreEnv(SYSTEM_PROXY_URL_ENV, originalSystemProxyUrl)
     await fs.rm(tmpDir, { recursive: true, force: true })
@@ -81,9 +81,9 @@ describe('titleService', () => {
 
     try {
       const providerId = 'zhipu-test'
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
       await fs.writeFile(
-        path.join(tmpDir, 'cc-haha', 'providers.json'),
+        path.join(tmpDir, 'wangmai', 'providers.json'),
         JSON.stringify({
           activeId: providerId,
           providers: [
@@ -131,9 +131,9 @@ describe('titleService', () => {
 
     try {
       const providerId = 'fallback-thinking-test'
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
       await fs.writeFile(
-        path.join(tmpDir, 'cc-haha', 'providers.json'),
+        path.join(tmpDir, 'wangmai', 'providers.json'),
         JSON.stringify({
           activeId: providerId,
           providers: [
@@ -179,9 +179,9 @@ describe('titleService', () => {
 
     try {
       const providerId = 'deepseek-test'
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
       await fs.writeFile(
-        path.join(tmpDir, 'cc-haha', 'providers.json'),
+        path.join(tmpDir, 'wangmai', 'providers.json'),
         JSON.stringify({
           activeId: providerId,
           providers: [
@@ -332,9 +332,9 @@ describe('titleService', () => {
 
     try {
       const providerId = 'title-clean-test'
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
       await fs.writeFile(
-        path.join(tmpDir, 'cc-haha', 'providers.json'),
+        path.join(tmpDir, 'wangmai', 'providers.json'),
         JSON.stringify({
           activeId: providerId,
           providers: [
@@ -394,9 +394,9 @@ describe('titleService', () => {
 
     try {
       const providerId = 'title-language-test'
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
       await fs.writeFile(
-        path.join(tmpDir, 'cc-haha', 'providers.json'),
+        path.join(tmpDir, 'wangmai', 'providers.json'),
         JSON.stringify({
           activeId: providerId,
           providers: [
@@ -467,7 +467,7 @@ describe('titleService', () => {
     )
     const providerService = new ProviderService()
     await providerService.activateProvider('openai-official')
-    await hahaOpenAIOAuthService.saveTokens({
+    await wangmaiOpenAIOAuthService.saveTokens({
       accessToken: 'access-for-title',
       refreshToken: 'refresh-for-title',
       expiresAt: Date.now() + 60 * 60_000,
@@ -509,7 +509,7 @@ describe('titleService', () => {
 
   test.each([false, true])('generates titles with the account token when DeepSeek Account is active (thinking retry: %s)', async (retryThinking) => {
     await new ProviderService().activateProvider('deepseek-account')
-    await hahaDeepSeekOAuthService.saveTokens({
+    await wangmaiDeepSeekOAuthService.saveTokens({
       token: 'dsh_test_account_token',
       issuer: 'https://platform.deepseek.com',
       deviceId: 'device-1',
@@ -569,9 +569,9 @@ describe('titleService', () => {
 
     try {
       const providerId = 'auth-token-title-test'
-      await fs.mkdir(path.join(tmpDir, 'cc-haha'), { recursive: true })
+      await fs.mkdir(path.join(tmpDir, 'wangmai'), { recursive: true })
       await fs.writeFile(
-        path.join(tmpDir, 'cc-haha', 'providers.json'),
+        path.join(tmpDir, 'wangmai', 'providers.json'),
         JSON.stringify({
           activeId: providerId,
           providers: [
@@ -669,7 +669,7 @@ describe('titleService protocol routing', () => {
     process.env.CLAUDE_CONFIG_DIR = tmpDir
     // The proxy records traces for a session-scoped request; give them a home so
     // the background writer does not fail the run with an unhandled ENOENT.
-    await fs.mkdir(path.join(tmpDir, 'cc-haha', 'traces'), { recursive: true })
+    await fs.mkdir(path.join(tmpDir, 'wangmai', 'traces'), { recursive: true })
   })
 
   afterEach(async () => {

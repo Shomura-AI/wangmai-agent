@@ -252,5 +252,5 @@ export function shouldEnableThinkingByDefault(): boolean {
 }
 
 export function shouldSendExplicitDisabledThinking(): boolean {
-  return isEnvTruthy(readProviderEnv('CC_HAHA_SEND_DISABLED_THINKING'))
+  return isEnvTruthy(readProviderEnv('WANGMAI_SEND_DISABLED_THINKING'))
 }

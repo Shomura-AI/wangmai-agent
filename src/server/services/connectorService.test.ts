@@ -198,7 +198,7 @@ function failingRemoteBridge(upstream: unknown) {
     probe: async () => { throw upstream }, oauth: async () => {}, disconnect: async () => {},
     loadOptions: () => ({}), saveOptions: () => {}, deleteOptions: () => {}, clearOAuth: () => {},
   }
-  return createRemoteConnectorBridge({ id: 'feishu', pluginId: 'office-feishu@haha-connectors', version: '1.0.0', endpoint: 'https://fixture.invalid/mcp', transport: 'http', auth: { type: 'none' } }, dependencies)
+  return createRemoteConnectorBridge({ id: 'feishu', pluginId: 'office-feishu@wangmai-connectors', version: '1.0.0', endpoint: 'https://fixture.invalid/mcp', transport: 'http', auth: { type: 'none' } }, dependencies)
 }
 
 test.each([

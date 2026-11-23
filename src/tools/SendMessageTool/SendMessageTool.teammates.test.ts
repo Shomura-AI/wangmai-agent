@@ -104,7 +104,7 @@ function member(
 }
 
 beforeEach(async () => {
-  configDir = await mkdtemp(join(tmpdir(), 'cc-haha-send-teammates-'))
+  configDir = await mkdtemp(join(tmpdir(), 'wangmai-send-teammates-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
   process.env.TEST_ENABLE_SESSION_PERSISTENCE = '1'
   process.env.USER_TYPE = 'external'

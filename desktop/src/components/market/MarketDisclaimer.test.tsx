@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 import { MarketDisclaimer } from './MarketDisclaimer'
 import { useSettingsStore } from '../../stores/settingsStore'
 
-const STORAGE_KEY = 'cc-haha-market-disclaimer-dismissed'
+const STORAGE_KEY = 'wangmai-market-disclaimer-dismissed'
 
 beforeEach(() => {
   localStorage.clear()

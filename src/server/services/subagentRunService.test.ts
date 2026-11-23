@@ -166,7 +166,7 @@ function makeTaskNotificationEntry(
   } = {},
 ): Record<string, unknown> {
   return {
-    type: 'cc-haha-task-notification',
+    type: 'wangmai-task-notification',
     isMeta: true,
     taskNotification: {
       taskId,

@@ -8,7 +8,7 @@ test.each(['browser', 'native'] as const)('real server remote listener serves bo
   const home = mkdtempSync(path.join(os.tmpdir(), 'public-access-integration-'))
   try {
     const child = Bun.spawn([process.execPath, '--no-env-file', path.join(import.meta.dir, '__fixtures__/publicAccessSmoke.ts')], {
-      env: createSandboxedTestEnvironment(home, { CC_HAHA_LOCAL_ACCESS_TOKEN: 'fixture-process-credential', CC_HAHA_PUBLIC_ACCESS_TEST_CLIENT: clientType }),
+      env: createSandboxedTestEnvironment(home, { WANGMAI_LOCAL_ACCESS_TOKEN: 'fixture-process-credential', WANGMAI_PUBLIC_ACCESS_TEST_CLIENT: clientType }),
       stdout: 'pipe', stderr: 'pipe',
     })
     const timeout = setTimeout(() => child.kill(), 15_000)

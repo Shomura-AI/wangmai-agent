@@ -93,7 +93,7 @@ export async function runContextUsageScenario(rootDir: string, artifactDir: stri
   ], {
     cwd: workDir, stdin: 'pipe', stdout: 'pipe', stderr: 'pipe',
     env: {
-      ...sandbox.env, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1',
+      ...sandbox.env, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1',
       ANTHROPIC_BASE_URL: upstream.url.origin, ANTHROPIC_API_KEY: 'context-meter-fake-key',
       ANTHROPIC_MODEL: MODEL, CI: '1',
       CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', CLAUDE_CODE_DISABLE_AUTO_MEMORY: '1',

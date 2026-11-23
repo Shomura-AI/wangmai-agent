@@ -20,8 +20,8 @@ vi.mock('@tauri-apps/plugin-shell', () => ({
   open: shellOpenMock,
 }))
 
-vi.mock('../../api/hahaOpenAIOAuth', () => ({
-  hahaOpenAIOAuthApi: {
+vi.mock('../../api/wangmaiOpenAIOAuth', () => ({
+  wangmaiOpenAIOAuthApi: {
     start: startMock,
     status: statusMock,
     logout: logoutMock,
@@ -33,11 +33,11 @@ vi.mock('@/lib/clipboard', () => ({
 }))
 
 import { ChatGPTOfficialLogin } from './ChatGPTOfficialLogin'
-import { useHahaOpenAIOAuthStore } from '../../stores/hahaOpenAIOAuthStore'
+import { useWangMaiOpenAIOAuthStore } from '../../stores/wangmaiOpenAIOAuthStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { browserHost } from '../../lib/desktopHost/browserHost'
 
-const initialOAuthState = useHahaOpenAIOAuthStore.getState()
+const initialOAuthState = useWangMaiOpenAIOAuthStore.getState()
 
 describe('ChatGPTOfficialLogin', () => {
   beforeEach(() => {
@@ -49,7 +49,7 @@ describe('ChatGPTOfficialLogin', () => {
     copyTextToClipboardMock.mockReset()
     Reflect.deleteProperty(window, 'desktopHost')
     useSettingsStore.setState({ locale: 'en' })
-    useHahaOpenAIOAuthStore.setState({
+    useWangMaiOpenAIOAuthStore.setState({
       ...initialOAuthState,
       status: null,
       isPolling: false,
@@ -60,8 +60,8 @@ describe('ChatGPTOfficialLogin', () => {
 
   afterEach(() => {
     act(() => {
-      useHahaOpenAIOAuthStore.getState().stopPolling()
-      useHahaOpenAIOAuthStore.setState(initialOAuthState)
+      useWangMaiOpenAIOAuthStore.getState().stopPolling()
+      useWangMaiOpenAIOAuthStore.setState(initialOAuthState)
     })
     vi.useRealTimers()
     cleanup()
@@ -109,8 +109,8 @@ describe('ChatGPTOfficialLogin', () => {
     })
 
     expect(copyTextToClipboardMock).toHaveBeenCalledWith(authorizeUrl)
-    expect(useHahaOpenAIOAuthStore.getState().error).toBeNull()
-    expect(useHahaOpenAIOAuthStore.getState().isPolling).toBe(true)
+    expect(useWangMaiOpenAIOAuthStore.getState().error).toBeNull()
+    expect(useWangMaiOpenAIOAuthStore.getState().isPolling).toBe(true)
     expect(screen.queryByText(/Unable to open browser/)).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Copy authorization link' })).not.toBeInTheDocument()
   })
@@ -151,7 +151,7 @@ describe('ChatGPTOfficialLogin', () => {
     })
 
     expect(copyTextToClipboardMock).toHaveBeenCalledWith(authorizeUrl)
-    expect(useHahaOpenAIOAuthStore.getState().isPolling).toBe(false)
+    expect(useWangMaiOpenAIOAuthStore.getState().isPolling).toBe(false)
     expect(screen.getByText(/Unable to copy authorization link/)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Copy authorization link' })).toBeInTheDocument()
   })
@@ -191,7 +191,7 @@ describe('ChatGPTOfficialLogin', () => {
   })
 
   it('shows a refresh failure while retaining the signed-in account', async () => {
-    useHahaOpenAIOAuthStore.setState({ status: {
+    useWangMaiOpenAIOAuthStore.setState({ status: {
       loggedIn: true, expiresAt: 1, email: 'user@example.com', accountId: 'acct_123',
     } })
     statusMock.mockRejectedValue(new Error('Unable to verify OpenAI sign-in status right now. Please retry.'))

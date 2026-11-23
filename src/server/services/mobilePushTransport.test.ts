@@ -22,9 +22,9 @@ test('APNs HTTP/2 transport signs ES256 and uses the dedicated Live Activity top
   await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve))
   const address = server.address() as { port: number }
   const origins: string[] = []
-  const transport = new DirectMobilePushTransport({ CC_HAHA_APNS_KEY_PATH: keyPath, CC_HAHA_APNS_KEY_ID: 'FIXTUREKEY', CC_HAHA_APNS_TEAM_ID: 'FIXTURETEAM', CC_HAHA_APNS_TOPIC: 'app.fixture.mobile', CC_HAHA_APNS_SANDBOX: 'true' }, { connect: origin => { origins.push(origin); return connect(`http://127.0.0.1:${address.port}`) } })
+  const transport = new DirectMobilePushTransport({ WANGMAI_APNS_KEY_PATH: keyPath, WANGMAI_APNS_KEY_ID: 'FIXTUREKEY', WANGMAI_APNS_TEAM_ID: 'FIXTURETEAM', WANGMAI_APNS_TOPIC: 'app.fixture.mobile', WANGMAI_APNS_SANDBOX: 'true' }, { connect: origin => { origins.push(origin); return connect(`http://127.0.0.1:${address.port}`) } })
   try {
-    expect(await transport.send({ platform: 'ios', kind: 'liveActivity', token: 'a'.repeat(64), payload: { aps: { event: 'update', 'content-state': { name: 'CCHahaTaskActivity', props: '{}' } } } })).toBe('sent')
+    expect(await transport.send({ platform: 'ios', kind: 'liveActivity', token: 'a'.repeat(64), payload: { aps: { event: 'update', 'content-state': { name: 'CCWangMaiTaskActivity', props: '{}' } } } })).toBe('sent')
     expect(origins).toEqual(['https://api.sandbox.push.apple.com'])
     expect(calls[0]?.headers['apns-topic']).toBe('app.fixture.mobile.push-type.liveactivity')
     expect(calls[0]?.headers['apns-push-type']).toBe('liveactivity')
@@ -53,7 +53,7 @@ test('FCM exchanges explicit service-account JWT and posts v1 notification/data 
     return fetch(`http://127.0.0.1:${server.port}/${url.includes('oauth2') ? 'token' : 'send'}`, init)
   } })
   try {
-    const delivery = { platform: 'android' as const, kind: 'notification' as const, token: 'fixture-device-token'.repeat(3), payload: { notification: { title: 'fixture', body: 'ready' }, data: { hostId: 'a', sessionId: 's' }, android: { priority: 'high', notification: { channel_id: 'cc-haha' } } } }
+    const delivery = { platform: 'android' as const, kind: 'notification' as const, token: 'fixture-device-token'.repeat(3), payload: { notification: { title: 'fixture', body: 'ready' }, data: { hostId: 'a', sessionId: 's' }, android: { priority: 'high', notification: { channel_id: 'wangmai' } } } }
     expect(await transport.send(delivery)).toBe('sent')
     expect(calls.map(call => call.url)).toEqual(['https://oauth2.googleapis.com/token', 'https://fcm.googleapis.com/v1/projects/fixture-project/messages:send'])
     expect(calls.every(call => call.init.redirect === 'error')).toBe(true)
@@ -78,7 +78,7 @@ test('Expo relay posts one message per ticket and maps only DeviceNotRegistered 
   const calls: { url: string; init: RequestInit }[] = []
   let reply: () => Response = () => Response.json({ data: [{ status: 'ok', id: 'ticket-1' }] })
   const transport = new ExpoPushTransport({ fetch: async (url, init) => { calls.push({ url, init }); return reply() }, fetchOptions: async () => ({ proxy: 'http://proxy.fixture:7890' }) })
-  const delivery = { platform: 'ios' as const, kind: 'notification' as const, provider: 'expo' as const, token: 'ExponentPushToken[fixture]', payload: { title: 'fixture', body: 'ready', categoryId: 'cchahaTool', data: { hostId: 'a' }, to: 'ExponentPushToken[someone-else]' } }
+  const delivery = { platform: 'ios' as const, kind: 'notification' as const, provider: 'expo' as const, token: 'ExponentPushToken[fixture]', payload: { title: 'fixture', body: 'ready', categoryId: 'wangmaiTool', data: { hostId: 'a' }, to: 'ExponentPushToken[someone-else]' } }
   expect(transport.configured()).toBe(true)
   expect(await transport.send(delivery)).toBe('sent')
   expect(calls[0]?.url).toBe(EXPO_PUSH_URL)

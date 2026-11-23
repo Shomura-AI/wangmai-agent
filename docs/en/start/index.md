@@ -1,11 +1,11 @@
 ---
-title: What cc-haha is
+title: What WangMai Agent is
 nav_title: What it is
 description: An AI coding workbench that runs on your own machine. You pick the model; you approve every change.
 order: 0
 ---
 
-# What cc-haha is
+# What WangMai Agent is
 
 It's an app on your computer. You hand it a project folder, describe what you want in plain language, and it goes off to read the code, edit files, and run commands — with every change laid out in front of you, waiting for your approval.
 
@@ -15,7 +15,7 @@ That's a real session. Projects and history on the left, the conversation in the
 
 ## How this relates to the Claude Code CLI
 
-Claude Code is Anthropic's command-line coding agent. The engine inside cc-haha is a CLI built from repaired Claude Code sources (it's called `claude-haha` in this repo), and the desktop app is the graphical shell wrapped around it.
+Claude Code is Anthropic's command-line coding agent. The engine inside WangMai Agent is a CLI built from repaired Claude Code sources (it's called `wangmai` in this repo), and the desktop app is the graphical shell wrapped around it.
 
 Two practical consequences:
 
@@ -34,7 +34,7 @@ If you'd rather stay in the terminal, the CLI is still there: see [Command line]
 
 **Runs on a schedule.** Tidy up logs every morning, audit dependencies every week — set a job on a schedule and it clocks in on its own, leaving a record of each run.
 
-**Follows you to your phone.** Install the cc-haha app on Android or iPhone and pair it by scanning the QR code under **Phone connection** in the desktop app. Away from your computer, you can approve commands, answer questions, and start new tasks; without the app, scan the code with your phone's browser instead. Or connect Telegram, Feishu, or WeChat and drive it from a chat window. See [Mobile app and remote connection](../desktop/remote.md).
+**Follows you to your phone.** Install the WangMai Agent app on Android or iPhone and pair it by scanning the QR code under **Phone connection** in the desktop app. Away from your computer, you can approve commands, answer questions, and start new tasks; without the app, scan the code with your phone's browser instead. Or connect Telegram, Feishu, or WeChat and drive it from a chat window. See [Mobile app and remote connection](../desktop/remote.md).
 
 ## Three commitments
 

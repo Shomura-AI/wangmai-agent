@@ -8,9 +8,9 @@ import { createSandboxedTestEnvironment, removeTestSandbox } from '../../scripts
 
 const root = resolve(import.meta.dir, '..')
 const read = (path: string) => readFileSync(join(root, path), 'utf8')
-const moduleDir = 'modules/cchaha-network/android'
-const edgeSource = read(`${moduleDir}/src/main/java/app/cchaha/network/CloudflareEdge.kt`)
-const raceSource = read(`${moduleDir}/src/main/java/app/cchaha/network/CloudflareEdgeRace.kt`)
+const moduleDir = 'modules/wangmai-network/android'
+const edgeSource = read(`${moduleDir}/src/main/java/app/wangmai/network/CloudflareEdge.kt`)
+const raceSource = read(`${moduleDir}/src/main/java/app/wangmai/network/CloudflareEdgeRace.kt`)
 
 function autolinkedProjects(platform: 'android' | 'apple') {
   const sandbox = mkdtempSync(join(tmpdir(), 'mobile-network-build-config-'))
@@ -45,11 +45,11 @@ function kotlinList(source: string, name: string) {
 describe('Cloudflare edge fallback native wiring', () => {
   test('the module that MainApplication imports is linked into Android builds only', () => {
     expect(autolinkedProjects('android')).toContainEqual({
-      packageName: 'cchaha-network',
-      name: 'cchaha-network',
+      packageName: 'wangmai-network',
+      name: 'wangmai-network',
       sourceDir: join(root, moduleDir),
     })
-    expect(autolinkedProjects('apple').map(project => project.packageName)).not.toContain('cchaha-network')
+    expect(autolinkedProjects('apple').map(project => project.packageName)).not.toContain('wangmai-network')
   }, 40000)
 
   test('the module still exposes what the generated MainApplication calls', () => {
@@ -78,7 +78,7 @@ describe('Cloudflare edge fallback native wiring', () => {
 
   test('release shrinking keeps the fallback', () => {
     expect(read(`${moduleDir}/build.gradle`)).toContain("consumerProguardFiles 'proguard-rules.pro'")
-    expect(read(`${moduleDir}/proguard-rules.pro`)).toContain('-keep class app.cchaha.network.** { *; }')
+    expect(read(`${moduleDir}/proguard-rules.pro`)).toContain('-keep class app.wangmai.network.** { *; }')
   })
 
   test('every built-in alternate is a Cloudflare address, in both families', () => {

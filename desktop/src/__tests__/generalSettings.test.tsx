@@ -221,7 +221,7 @@ describe('Settings > General tab', () => {
     tauriCoreMock.invoke.mockReset()
     tauriCoreMock.invoke.mockResolvedValue(undefined)
     tauriDialogMock.open.mockReset()
-    tauriDialogMock.open.mockResolvedValue('/Users/test/cc-haha-data')
+    tauriDialogMock.open.mockResolvedValue('/Users/test/wangmai-data')
     tauriProcessMock.relaunch.mockReset()
     tauriProcessMock.relaunch.mockResolvedValue(undefined)
     delete (window as unknown as { __TAURI_INTERNALS__?: object }).__TAURI_INTERNALS__
@@ -266,7 +266,7 @@ describe('Settings > General tab', () => {
       autoDreamEnabled: false,
       skipWebFetchPreflight: true,
       desktopNotificationsEnabled: true,
-      traceCapture: { enabled: true, storageDir: '/Users/test/.claude/cc-haha/traces' },
+      traceCapture: { enabled: true, storageDir: '/Users/test/.claude/wangmai/traces' },
       chatSendBehavior: 'enter',
       responseLanguage: '',
       proxyManagedSettingsWarning: false,
@@ -1093,7 +1093,7 @@ describe('Settings > General tab', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Choose Folder' }))
 
     await waitFor(() => {
-      expect(screen.getByLabelText('Custom data directory')).toHaveValue('/Users/test/cc-haha-data')
+      expect(screen.getByLabelText('Custom data directory')).toHaveValue('/Users/test/wangmai-data')
     })
 
     fireEvent.click(screen.getByRole('button', { name: 'Use This Folder and Restart' }))
@@ -1101,7 +1101,7 @@ describe('Settings > General tab', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Save and Restart' }))
 
     await waitFor(() => {
-      expect(useSettingsStore.getState().setAppMode).toHaveBeenCalledWith('portable', '/Users/test/cc-haha-data')
+      expect(useSettingsStore.getState().setAppMode).toHaveBeenCalledWith('portable', '/Users/test/wangmai-data')
       expect(tauriCoreMock.invoke).toHaveBeenCalledWith('prepare_for_app_mode_restart')
       expect(tauriProcessMock.relaunch).toHaveBeenCalledTimes(1)
     })
@@ -1111,8 +1111,8 @@ describe('Settings > General tab', () => {
     useSettingsStore.setState({
       appMode: {
         mode: 'portable',
-        portableDir: '/Users/test/cc-haha-data',
-        activeConfigDir: '/Users/test/cc-haha-data',
+        portableDir: '/Users/test/wangmai-data',
+        activeConfigDir: '/Users/test/wangmai-data',
         configDirSource: 'portable',
       },
     })
@@ -1764,7 +1764,7 @@ describe('Settings > General tab', () => {
       expect(desktopNotificationsMock.requestDesktopNotificationPermission).toHaveBeenCalledTimes(1)
     })
     expect(desktopNotificationsMock.notifyDesktop).toHaveBeenCalledWith({
-      title: 'Claude Code Haha notifications are enabled',
+      title: '网脉智能体 notifications are enabled',
       body: 'Permission prompts and completed agent replies will now use system notifications.',
     })
   })
@@ -3954,7 +3954,7 @@ describe('Settings > About tab', () => {
     useUpdateStore.setState({
       status: 'available',
       availableVersion: '0.1.5',
-      releaseNotes: '# Claude Code Haha v0.1.5\n\n- Fixed updater rendering\n- Added markdown support',
+      releaseNotes: '# 网脉智能体 v0.1.5\n\n- Fixed updater rendering\n- Added markdown support',
       progressPercent: 0,
       downloadedBytes: 0,
       totalBytes: null,
@@ -3971,7 +3971,7 @@ describe('Settings > About tab', () => {
   it('renders release notes with markdown formatting', async () => {
     render(<Settings />)
 
-    expect(await screen.findByRole('heading', { name: 'Claude Code Haha v0.1.5' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: '网脉智能体 v0.1.5' })).toBeInTheDocument()
     expect(screen.getByText('Fixed updater rendering')).toBeInTheDocument()
     expect(screen.getByText('Added markdown support')).toBeInTheDocument()
   })
@@ -4016,7 +4016,7 @@ describe('Settings > About tab', () => {
     useUpdateStore.setState({
       status: 'downloading',
       availableVersion: '0.1.5',
-      releaseNotes: '# Claude Code Haha v0.1.5',
+      releaseNotes: '# 网脉智能体 v0.1.5',
       progressPercent: 0,
       downloadedBytes: 1536,
       totalBytes: null,

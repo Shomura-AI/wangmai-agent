@@ -10,7 +10,7 @@ let originalConfigDir: string | undefined
 let server: ReturnType<typeof startServer> | undefined
 
 beforeEach(async () => {
-  configDir = await mkdtemp(join(tmpdir(), 'cc-haha-health-startup-'))
+  configDir = await mkdtemp(join(tmpdir(), 'wangmai-health-startup-'))
   originalConfigDir = process.env.CLAUDE_CONFIG_DIR
   process.env.CLAUDE_CONFIG_DIR = configDir
 })

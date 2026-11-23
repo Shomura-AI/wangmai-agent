@@ -264,7 +264,7 @@ export async function openAntigravityAcp(cwd: string, nativeSessionId?: string, 
   }
   const rpc = new AntigravityRpc(binary, cwd, { ...process.env, ...networkEnv })
   try {
-    const clientInfo = { name: 'cc-haha', version: '0.1.0' }
+    const clientInfo = { name: 'wangmai', version: '0.1.0' }
     const init = await rpc.request('initialize', { protocolVersion: 1, clientInfo, clientCapabilities: {} })
     if (init.protocolVersion !== 1) {
       throw new AntigravityError('ANTIGRAVITY_UNSUPPORTED', 'This version of Antigravity CLI did not negotiate ACP version 1. Update the CLI and retry.')
@@ -327,7 +327,7 @@ export function discoverAntigravity(): Promise<AntigravityStatus> {
   pendingDiscovery = (async () => {
     const binary = executable()
     if (!binary) return report('not_installed')
-    const cwd = await mkdtemp(join(tmpdir(), 'cchaha-agy-'))
+    const cwd = await mkdtemp(join(tmpdir(), 'wangmai-agy-'))
     try {
       const acp = await openAntigravityAcp(cwd)
       acp.close()

@@ -22,7 +22,7 @@ import type {
 export const DEEPSEEK_PLATFORM_ORIGIN = 'https://platform.deepseek.com'
 export const DEEPSEEK_INFERENCE_ORIGIN = 'https://api.deepseek.com'
 export const DEEPSEEK_ANTHROPIC_BASE_URL = `${DEEPSEEK_INFERENCE_ORIGIN}/anthropic`
-export const DEEPSEEK_PLATFORM_ORIGIN_ENV_KEY = 'CC_HAHA_DEEPSEEK_PLATFORM_ORIGIN'
+export const DEEPSEEK_PLATFORM_ORIGIN_ENV_KEY = 'WANGMAI_DEEPSEEK_PLATFORM_ORIGIN'
 export const DEEPSEEK_AUTH_HEADER = 'x-dsh-auth-token'
 export const DEEPSEEK_OAUTH_DUMMY_KEY = 'deepseek-oauth-dummy-key'
 export const DEEPSEEK_CALLBACK_PATH = '/oauth/callback'

@@ -19,13 +19,13 @@ import {
   type SavedProvider,
 } from '../types/provider.js'
 import {
-  getHahaDeepSeekOAuthFilePath,
-  hahaDeepSeekOAuthService,
-} from './hahaDeepSeekOAuthService.js'
+  getWangMaiDeepSeekOAuthFilePath,
+  wangmaiDeepSeekOAuthService,
+} from './wangmaiDeepSeekOAuthService.js'
 
 export { DEEPSEEK_ACCOUNT_PROVIDER_ID, DEEPSEEK_OAUTH_FILE_ENV_KEY }
 export const DEEPSEEK_ACCOUNT_PROVIDER_NAME = 'DeepSeek Account'
-export const DEEPSEEK_OAUTH_PROVIDER_ENV_KEY = 'CC_HAHA_DEEPSEEK_OAUTH_PROVIDER'
+export const DEEPSEEK_OAUTH_PROVIDER_ENV_KEY = 'WANGMAI_DEEPSEEK_OAUTH_PROVIDER'
 
 export function isDeepSeekAccountProviderId(id: string | null | undefined): boolean {
   return id === DEEPSEEK_ACCOUNT_PROVIDER_ID
@@ -104,7 +104,7 @@ export function applyDeepSeekAccountRuntimeEnv(
     ...env,
     ANTHROPIC_API_KEY: DEEPSEEK_OAUTH_DUMMY_KEY,
     [DEEPSEEK_OAUTH_PROVIDER_ENV_KEY]: '1',
-    [DEEPSEEK_OAUTH_FILE_ENV_KEY]: getHahaDeepSeekOAuthFilePath(),
+    [DEEPSEEK_OAUTH_FILE_ENV_KEY]: getWangMaiDeepSeekOAuthFilePath(),
   }
 }
 
@@ -116,7 +116,7 @@ export function applyDeepSeekAccountRuntimeEnv(
 export async function resolveDeepSeekAccountRequestHeaders(): Promise<
   Record<string, string> | null
 > {
-  const tokens = await hahaDeepSeekOAuthService.loadTokens()
+  const tokens = await wangmaiDeepSeekOAuthService.loadTokens()
   if (!tokens || !isInferenceEligibleGrant(tokens)) return null
   return {
     'Content-Type': 'application/json',
@@ -134,12 +134,12 @@ export async function resolveDeepSeekAccountRequestHeaders(): Promise<
 export async function listDeepSeekAccountModels(
   options?: { forceRefresh?: boolean; throwOnError?: boolean },
 ): Promise<readonly DeepSeekAccountModel[]> {
-  const tokens = await hahaDeepSeekOAuthService.loadTokens()
+  const tokens = await wangmaiDeepSeekOAuthService.loadTokens()
   return getDeepSeekAccountModelCatalog({
     token: tokens && isInferenceEligibleGrant(tokens) ? tokens.token : null,
     ...(options?.forceRefresh && { forceRefresh: true }),
     ...(options?.throwOnError && { throwOnError: true }),
     // Same network proxy as the account's sign-in and status requests.
-    resolveProxyUrl: async () => (await hahaDeepSeekOAuthService.getRequestOptions()).proxyUrl,
+    resolveProxyUrl: async () => (await wangmaiDeepSeekOAuthService.getRequestOptions()).proxyUrl,
   })
 }

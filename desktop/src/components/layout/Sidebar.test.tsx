@@ -268,12 +268,12 @@ import {
 import type { SessionListItem } from '../../types/session'
 import type { PerSessionState } from '../../stores/chatStore'
 
-const PROJECT_ORDER_STORAGE_KEY = 'cc-haha-sidebar-project-order'
-const PROJECT_PINNED_STORAGE_KEY = 'cc-haha-sidebar-pinned-projects'
-const PROJECT_HIDDEN_STORAGE_KEY = 'cc-haha-sidebar-hidden-projects'
-const PROJECT_COLLAPSED_STORAGE_KEY = 'cc-haha-sidebar-collapsed-projects'
-const PROJECT_ORGANIZATION_STORAGE_KEY = 'cc-haha-sidebar-project-organization'
-const PROJECT_SORT_STORAGE_KEY = 'cc-haha-sidebar-project-sort'
+const PROJECT_ORDER_STORAGE_KEY = 'wangmai-sidebar-project-order'
+const PROJECT_PINNED_STORAGE_KEY = 'wangmai-sidebar-pinned-projects'
+const PROJECT_HIDDEN_STORAGE_KEY = 'wangmai-sidebar-hidden-projects'
+const PROJECT_COLLAPSED_STORAGE_KEY = 'wangmai-sidebar-collapsed-projects'
+const PROJECT_ORGANIZATION_STORAGE_KEY = 'wangmai-sidebar-project-organization'
+const PROJECT_SORT_STORAGE_KEY = 'wangmai-sidebar-project-sort'
 
 function makeSession(
   id: string,
@@ -360,8 +360,8 @@ function makeDesktopUiPreferencesResponse({
       sidebar,
       projectDisplayNames,
       profile: {
-        displayName: 'cc-haha',
-        subtitle: 'github.com/NanmiCoder/cc-haha',
+        displayName: 'wangmai',
+        subtitle: 'github.com/wangmai-ai/wangmai-agent',
         avatarFile: null,
         avatarUpdatedAt: null,
       },
@@ -1053,7 +1053,7 @@ describe('Sidebar', () => {
     expect(createSession).not.toHaveBeenCalled()
   })
 
-  // The header used to render both "Claude Code Haha" and "cc-haha" and hide
+  // The header used to render both "网脉智能体" and "wangmai" and hide
   // one with a container query, so the app answered to two names depending on
   // how far the sidebar had been dragged. Only the short one ships now — and
   // the long one must not linger in the DOM, since a display-hidden copy still
@@ -1063,7 +1063,7 @@ describe('Sidebar', () => {
 
     const region = screen.getByTestId('sidebar-title-region')
 
-    expect(region).toHaveTextContent('cc-haha')
+    expect(region).toHaveTextContent('wangmai')
     expect(region).not.toHaveTextContent('Claude Code')
   })
 
@@ -2410,7 +2410,7 @@ describe('Sidebar', () => {
     const now = new Date().toISOString()
     useSessionStore.setState({
       sessions: [
-        makeSession('child-1', 'Child Session', 'D:\\workspace\\code\\cc-haha', now),
+        makeSession('child-1', 'Child Session', 'D:\\workspace\\code\\wangmai', now),
       ],
     })
     useTabStore.setState({
@@ -2425,7 +2425,7 @@ describe('Sidebar', () => {
     })
 
     await waitFor(() => {
-      expect(useUIStore.getState().newSessionDraft?.workDir).toBe('D:\\workspace\\code\\cc-haha')
+      expect(useUIStore.getState().newSessionDraft?.workDir).toBe('D:\\workspace\\code\\wangmai')
     })
     expect(JSON.parse(window.localStorage.getItem(PROJECT_HIDDEN_STORAGE_KEY) ?? '[]')).toEqual(['D:\\'])
     expect(desktopUiPreferencesApiMock.updateSidebarPreferences).not.toHaveBeenCalled()
@@ -2725,7 +2725,7 @@ describe('Sidebar', () => {
 
     // Scope to the wordmark's own row — the GitHub link in the same header is
     // also an svg and would answer a looser query.
-    const brandRow = () => screen.getByText('haha').closest('div')
+    const brandRow = () => screen.getByText('wangmai').closest('div')
 
     // Expanded, the name carries the brand and the mark beside it is clutter.
     expect(brandRow()?.querySelector('svg')).toBeNull()

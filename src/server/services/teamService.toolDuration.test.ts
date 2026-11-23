@@ -13,17 +13,17 @@ let oldLocalIndex: string | undefined
 
 beforeEach(async () => {
   oldConfigDir = process.env.CLAUDE_CONFIG_DIR
-  oldLocalIndex = process.env.CC_HAHA_LOCAL_INDEX
-  configDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cc-haha-team-duration-'))
+  oldLocalIndex = process.env.WANGMAI_LOCAL_INDEX
+  configDir = await fs.mkdtemp(path.join(os.tmpdir(), 'wangmai-team-duration-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
-  process.env.CC_HAHA_LOCAL_INDEX = 'off'
+  process.env.WANGMAI_LOCAL_INDEX = 'off'
 })
 
 afterEach(async () => {
   if (oldConfigDir === undefined) delete process.env.CLAUDE_CONFIG_DIR
   else process.env.CLAUDE_CONFIG_DIR = oldConfigDir
-  if (oldLocalIndex === undefined) delete process.env.CC_HAHA_LOCAL_INDEX
-  else process.env.CC_HAHA_LOCAL_INDEX = oldLocalIndex
+  if (oldLocalIndex === undefined) delete process.env.WANGMAI_LOCAL_INDEX
+  else process.env.WANGMAI_LOCAL_INDEX = oldLocalIndex
   await fs.rm(configDir, { recursive: true, force: true })
 })
 

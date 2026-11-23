@@ -228,7 +228,7 @@ describe('delivery card', () => {
 
 describe('settings summaries and copy', () => {
   test('local fallback note says it only tests the system banner', () => {
-    expect(testNotificationContent.title).toBe('测试通知 · cc-haha')
+    expect(testNotificationContent.title).toBe('测试通知 · wangmai')
     expect(testNotificationNote).toContain('升级电脑端')
     expect(testNotificationNote).toContain('只测试手机通知，未验证电脑推送')
   })
@@ -245,7 +245,7 @@ describe('settings summaries and copy', () => {
 
   test('about links point at the public repository', () => {
     for (const url of Object.values(aboutLinks))
-      expect(url.startsWith('https://github.com/NanmiCoder/cc-haha')).toBe(true)
+      expect(url.startsWith('https://github.com/wangmai-ai/wangmai-agent')).toBe(true)
     expect(aboutLinks.issues.endsWith('/issues')).toBe(true)
     expect(aboutLinks.license.endsWith('/LICENSE')).toBe(true)
   })

@@ -3,7 +3,7 @@ import { ScheduledTaskTool } from './ScheduledTaskTool.js'
 import { callScheduledTaskBridge } from './bridge.js'
 import { getAgentProfile, setAgentProfile } from '../../utils/agentProfile.js'
 
-const names = ['CC_HAHA_DESKTOP_SERVER_URL', 'CC_HAHA_SESSION_COLLABORATION_TOKEN', 'CC_HAHA_SESSION_ID'] as const
+const names = ['WANGMAI_DESKTOP_SERVER_URL', 'WANGMAI_SESSION_COLLABORATION_TOKEN', 'WANGMAI_SESSION_ID'] as const
 const original = names.map(name => process.env[name])
 const profile = getAgentProfile()
 afterEach(() => {
@@ -11,9 +11,9 @@ afterEach(() => {
   setAgentProfile(profile)
 })
 function configure(url: string) {
-  process.env.CC_HAHA_DESKTOP_SERVER_URL = url
-  process.env.CC_HAHA_SESSION_COLLABORATION_TOKEN = 'fixture-token'
-  process.env.CC_HAHA_SESSION_ID = 'fixture-session'
+  process.env.WANGMAI_DESKTOP_SERVER_URL = url
+  process.env.WANGMAI_SESSION_COLLABORATION_TOKEN = 'fixture-token'
+  process.env.WANGMAI_SESSION_ID = 'fixture-session'
 }
 
 test('desktop scheduling is available without a cron feature flag but respects bridge and lean profile', () => {

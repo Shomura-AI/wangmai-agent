@@ -12,8 +12,8 @@ import { isPublicAccessRuntime } from '../../lib/publicAccessRuntime'
 type DisplayProfile = DesktopProfilePreferences & { avatarDataUrl?: string | null }
 
 export const DEFAULT_PROFILE: DesktopProfilePreferences = {
-  displayName: 'cc-haha',
-  subtitle: 'github.com/NanmiCoder/cc-haha',
+  displayName: 'wangmai',
+  subtitle: 'github.com/wangmai-ai/wangmai-agent',
   avatarFile: null,
   avatarUpdatedAt: null,
 }

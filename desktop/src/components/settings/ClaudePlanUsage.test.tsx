@@ -4,8 +4,8 @@ import '@testing-library/jest-dom'
 
 const { planUsageMock } = vi.hoisted(() => ({ planUsageMock: vi.fn() }))
 
-vi.mock('../../api/hahaOAuth', () => ({
-  hahaOAuthApi: { planUsage: planUsageMock },
+vi.mock('../../api/wangmaiOAuth', () => ({
+  wangmaiOAuthApi: { planUsage: planUsageMock },
 }))
 
 import { ClaudePlanUsage } from './ClaudePlanUsage'

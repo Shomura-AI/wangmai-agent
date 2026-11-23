@@ -16,7 +16,7 @@ let upstream: MockLlmServer
 let firstAgentRequestAt = 0
 
 beforeAll(() => {
-  home = mkdtempSync(join(tmpdir(), 'cc-haha-lean-mcp-'))
+  home = mkdtempSync(join(tmpdir(), 'wangmai-lean-mcp-'))
   workDir = join(home, 'project')
   markers = join(home, 'launches')
   mkdirSync(workDir, { recursive: true })
@@ -57,7 +57,7 @@ async function runCli(profile: 'standard' | 'lean', mcpTimeoutMs: number, extraA
   ], {
     cwd: workDir, stdin: 'ignore', stdout: 'pipe', stderr: 'pipe',
     env: {
-      ...env, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1',
+      ...env, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1',
       ANTHROPIC_BASE_URL: upstream.url, ANTHROPIC_API_KEY: 'mock-api-key',
       CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1', DISABLE_AUTOUPDATER: '1', MCP_TIMEOUT: String(mcpTimeoutMs),
     },

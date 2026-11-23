@@ -32,7 +32,7 @@ Downloads show progress, allow up to 10 minutes per attempt, stop after 60 secon
 HTTPS_PROXY=http://127.0.0.1:7890 bun run prepare:cloudflared
 ```
 
-Replace the example with your proxy address. If this network cannot download the file, download the matching version and platform asset from the official URL in the error, then import it with `CC_HAHA_CLOUDFLARED_ARCHIVE=/absolute/path/to/asset bun run prepare:cloudflared`. Offline imports still require the pinned SHA-256; other versions and unverified executables are rejected.
+Replace the example with your proxy address. If this network cannot download the file, download the matching version and platform asset from the official URL in the error, then import it with `WANGMAI_CLOUDFLARED_ARCHIVE=/absolute/path/to/asset bun run prepare:cloudflared`. Offline imports still require the pinned SHA-256; other versions and unverified executables are rejected.
 
 If your change touches `adapters/`, or if you run `check:adapters` / `check:native`, install adapter dependencies:
 
@@ -337,7 +337,7 @@ The release workflow generates `latest*.yml` inside each platform matrix job, re
 
 ### Artifact names
 
-File names are written for the people downloading them: `Claude-Code-Haha-<version>-macOS-Apple-Silicon.dmg` / `-macOS-Intel.dmg`, `-Windows-x64-Setup.exe` / `-Windows-arm64-Setup.exe`, and `-Linux-x64` / `-Linux-arm64` with `.AppImage`, `.deb` and `.rpm`. The Mac auto-update zips are `-macOS-arm64-update.zip` / `-macOS-x64-update.zip`. Default names live in the `artifactName` of `mac`, `dmg`, `nsis` and `linux` in `desktop/package.json`; the DMG chip names and the uniform Linux `x64` are overridden per row in the release matrix `builder_args`, because electron-builder spells `${arch}` per Linux format (`x86_64`, `amd64`, `aarch64`). Those overrides must stay in single quotes, or the shell expands `${version}` first.
+File names are written for the people downloading them: `WangMai-Agent-<version>-macOS-Apple-Silicon.dmg` / `-macOS-Intel.dmg`, `-Windows-x64-Setup.exe` / `-Windows-arm64-Setup.exe`, and `-Linux-x64` / `-Linux-arm64` with `.AppImage`, `.deb` and `.rpm`. The Mac auto-update zips are `-macOS-arm64-update.zip` / `-macOS-x64-update.zip`. Default names live in the `artifactName` of `mac`, `dmg`, `nsis` and `linux` in `desktop/package.json`; the DMG chip names and the uniform Linux `x64` are overridden per row in the release matrix `builder_args`, because electron-builder spells `${arch}` per Linux format (`x86_64`, `amd64`, `aarch64`). Those overrides must stay in single quotes, or the shell expands `${version}` first.
 
 Renames have three hard constraints, each checked by `scripts/pr/release-workflow.test.ts` against electron-updater's selection logic:
 
@@ -367,7 +367,7 @@ Windows signing goes through SignPath and is off until approval lands: tag pushe
 - `true`: the `SIGNPATH_*` variables and `SIGNPATH_API_TOKEN` are required, and a non-draft release with missing configuration is refused.
 - A manual `Release Desktop` run can override it with the `windows_signing` input: `auto` follows the variable, `unsigned` skips signing for that run, and `signed` forces it (failing if configuration is incomplete), so a draft can be trial-signed before the variable is turned on.
 
-Before turning signing on, update the installer artifact configuration in SignPath to match `.github/signpath/windows-installer.xml` (`Claude-Code-Haha-*-Windows-*-Setup.exe`), then trial-sign a draft. As long as unsigned Windows releases remain possible, never add `publisherName` or `verifyUpdateCodeSignature` to `desktop/package.json`: clients built with either would reject every later unsigned update, with no way to recover in place.
+Before turning signing on, update the installer artifact configuration in SignPath to match `.github/signpath/windows-installer.xml` (`WangMai-Agent-*-Windows-*-Setup.exe`), then trial-sign a draft. As long as unsigned Windows releases remain possible, never add `publisherName` or `verifyUpdateCodeSignature` to `desktop/package.json`: clients built with either would reject every later unsigned update, with no way to recover in place.
 
 The application artifact configuration must also match `.github/signpath/windows-application.xml`: it includes the source-built `agent-desktop.exe` alongside the main application and sidecar. When signing is enabled, the workflow submits, restores, and verifies all three executables before building the installer. After adding the native runtime, synchronize the SignPath configuration and trial-sign a draft first; signing the installer does not sign its embedded runtime executables.
 

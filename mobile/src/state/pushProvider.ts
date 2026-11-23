@@ -35,7 +35,7 @@ export function choosePushProvider(
 }
 
 /** One per computer: a computer learns only its own, so it cannot read another's alerts. */
-export const pullTokenKey = (hostId: string) => `cc-haha.pushPullToken.${hostId}`
+export const pullTokenKey = (hostId: string) => `wangmai.pushPullToken.${hostId}`
 const PULL_TOKEN = /^[A-Za-z0-9_-]{43,128}$/
 const ALPHABET =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'

@@ -3,7 +3,7 @@ set -euo pipefail
 
 # install-macos-unsigned.sh
 #
-# Installs the unsigned macOS build of Claude Code Haha from a DMG that sits
+# Installs the unsigned macOS build of 网脉智能体 from a DMG that sits
 # next to this script (download both from the same GitHub Release into one
 # folder, e.g. ~/Downloads, then run this script).
 #
@@ -14,9 +14,9 @@ set -euo pipefail
 #
 # Usage:
 #   bash install-macos-unsigned.sh                       # auto-pick the DMG next to this script
-#   bash install-macos-unsigned.sh /path/to/Claude-Code-Haha-0.7.7-macOS-Apple-Silicon.dmg
+#   bash install-macos-unsigned.sh /path/to/WangMai-Agent-0.7.7-macOS-Apple-Silicon.dmg
 
-APP_NAME="Claude Code Haha.app"
+APP_NAME="网脉智能体.app"
 APP_PATH="/Applications/${APP_NAME}"
 
 script_dir() {
@@ -33,7 +33,7 @@ find_dmg() {
   # and development builds by arch (macOS-arm64 / macOS-x64), and releases
   # before 0.7.7 used mac-arm64 / mac-x64.
   shopt -s nullglob
-  local matches=("${dir}"/Claude-Code-Haha-*-macOS-*.dmg "${dir}"/Claude-Code-Haha-*-mac-*.dmg)
+  local matches=("${dir}"/WangMai-Agent-*-macOS-*.dmg "${dir}"/WangMai-Agent-*-mac-*.dmg)
   shopt -u nullglob
 
   if [ "${#matches[@]}" -eq 0 ]; then
@@ -70,9 +70,9 @@ main() {
   local dmg="${1:-}"
   if [ -z "$dmg" ]; then
     if ! dmg="$(find_dmg "$base_dir")"; then
-      echo "No Claude Code Haha macOS DMG found next to this script."
+      echo "No 网脉智能体 macOS DMG found next to this script."
       echo "Download the DMG into the same folder as this script, then run it again."
-      echo "Usage: bash install-macos-unsigned.sh /path/to/Claude-Code-Haha-0.7.7-macOS-Apple-Silicon.dmg"
+      echo "Usage: bash install-macos-unsigned.sh /path/to/WangMai-Agent-0.7.7-macOS-Apple-Silicon.dmg"
       exit 1
     fi
   fi
@@ -104,11 +104,11 @@ main() {
     exit 1
   fi
 
-  osascript -e 'quit app "Claude Code Haha"' >/dev/null 2>&1 || true
+  osascript -e 'quit app "网脉智能体"' >/dev/null 2>&1 || true
 
   if [ -d "$APP_PATH" ]; then
     local backup
-    backup="${HOME}/.Trash/Claude Code Haha.$(date +%Y%m%d%H%M%S).app"
+    backup="${HOME}/.Trash/网脉智能体.$(date +%Y%m%d%H%M%S).app"
     echo "Moving existing app to: $backup"
     mv "$APP_PATH" "$backup"
   fi
@@ -117,7 +117,7 @@ main() {
   ditto "$app_in_volume" "$APP_PATH"
   xattr -dr com.apple.quarantine "$APP_PATH" 2>/dev/null || true
 
-  echo "Opening Claude Code Haha..."
+  echo "Opening 网脉智能体..."
   open "$APP_PATH"
 }
 

@@ -588,7 +588,7 @@ describe('MessageList nested tool calls', () => {
   })
 
   it('keeps the ImageGen result as the only image owner when final Markdown repeats its managed path', () => {
-    const generatedPath = '/Users/me/.claude/cc-haha/generated-images/session/result.png'
+    const generatedPath = '/Users/me/.claude/wangmai/generated-images/session/result.png'
     render(<MessageList sessionId={ACTIVE_TAB} />)
     const store = useChatStore.getState()
 
@@ -2882,7 +2882,7 @@ describe('MessageList nested tool calls', () => {
   it('summarizes repeated Edit events for one path as one changed file', () => {
     render(<MessageList sessionId={ACTIVE_TAB} />)
     const store = useChatStore.getState()
-    const filePath = '/tmp/cc-haha-manual-qa/live-run.json'
+    const filePath = '/tmp/wangmai-manual-qa/live-run.json'
 
     act(() => {
       for (let index = 0; index < 4; index += 1) {
@@ -2926,8 +2926,8 @@ describe('MessageList nested tool calls', () => {
 
     act(() => {
       for (const [index, filePath] of [
-        '/tmp/cc-haha-manual-qa/live-run.json',
-        '/tmp/cc-haha-manual-qa/summary.json',
+        '/tmp/wangmai-manual-qa/live-run.json',
+        '/tmp/wangmai-manual-qa/summary.json',
       ].entries()) {
         const toolUseId = `edit-distinct-${index}`
         store.handleServerMessage(ACTIVE_TAB, {
@@ -7916,7 +7916,7 @@ describe('MessageList nested tool calls', () => {
   it('relativizes Windows checkpoint paths against the turn workdir', () => {
     expect(relativizeWorkspacePath(
       'C:\\Users\\Relakkes\\aacc\\src\\App.tsx',
-      'c:/users/relakkes/aacc',
+      'c:/users/wangmai/aacc',
     )).toBe('src/App.tsx')
   })
 

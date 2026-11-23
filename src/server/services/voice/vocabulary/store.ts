@@ -2,7 +2,7 @@
  * Personal voice vocabulary: terms the correction model should know, terms it
  * keeps fixing (suggestions), and terms the user said no to.
  *
- * Stored in `<cc-haha>/voice-vocabulary.json`:
+ * Stored in `<wangmai>/voice-vocabulary.json`:
  *   { version: 1, terms, suggestions, dismissed: string[] (lowercased), history }
  * Writes are serialized per file and atomic (tmp + rename). Unknown top-level
  * and per-entry fields survive every write. An unparsable file reads as empty
@@ -14,7 +14,7 @@ import { randomBytes } from 'node:crypto'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import { ApiError } from '../../../middleware/errorHandler.js'
-import { getCcHahaDir } from '../../../../utils/envUtils.js'
+import { getWangMaiDir } from '../../../../utils/envUtils.js'
 import {
   VOICE_VOCABULARY_MAX_TERMS,
   type VoiceVocabulary,
@@ -245,7 +245,7 @@ function withFileLock<T>(filePath: string, task: () => Promise<T>): Promise<T> {
 }
 
 export function defaultVoiceVocabularyPath(): string {
-  return path.join(getCcHahaDir(), VOICE_VOCABULARY_FILE_NAME)
+  return path.join(getWangMaiDir(), VOICE_VOCABULARY_FILE_NAME)
 }
 
 export class FileVoiceVocabularyStore implements VoiceVocabularyStore {

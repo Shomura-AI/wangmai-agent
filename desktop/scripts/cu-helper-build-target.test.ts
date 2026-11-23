@@ -16,12 +16,12 @@ describe('cu-helper release target', () => {
     expect(createCuHelperBuildEnv('x86_64-apple-darwin', {
       CU_HELPER_ARCH: 'arm64',
       CU_HELPER_IDENTITY: 'Apple Development: Stale Identity',
-      CC_HAHA_SIGN_IDENTITY: 'Developer ID Application: Example',
+      WANGMAI_SIGN_IDENTITY: 'Developer ID Application: Example',
       PATH: '/usr/bin',
     })).toMatchObject({
       CU_HELPER_ARCH: 'x86_64',
       CU_HELPER_IDENTITY: 'Developer ID Application: Example',
-      CC_HAHA_SIGN_IDENTITY: 'Developer ID Application: Example',
+      WANGMAI_SIGN_IDENTITY: 'Developer ID Application: Example',
       PATH: '/usr/bin',
     })
   })
@@ -34,14 +34,14 @@ describe('cu-helper release target', () => {
 
   it('forwards explicit local unsigned mode to the helper with the build-wide ad-hoc identity', () => {
     expect(createCuHelperBuildEnv('aarch64-apple-darwin', {
-      CC_HAHA_SIGN_IDENTITY: '-',
-      CC_HAHA_LOCAL_UNSIGNED_BUILD: '1',
+      WANGMAI_SIGN_IDENTITY: '-',
+      WANGMAI_LOCAL_UNSIGNED_BUILD: '1',
       CU_HELPER_IDENTITY: 'Apple Development: Stale Identity',
     })).toMatchObject({
       CU_HELPER_ARCH: 'arm64',
       CU_HELPER_IDENTITY: '-',
-      CC_HAHA_SIGN_IDENTITY: '-',
-      CC_HAHA_LOCAL_UNSIGNED_BUILD: '1',
+      WANGMAI_SIGN_IDENTITY: '-',
+      WANGMAI_LOCAL_UNSIGNED_BUILD: '1',
     })
   })
 

@@ -129,7 +129,7 @@ describe('teammate mailbox drain', () => {
 
   beforeEach(async () => {
     originalConfigDir = process.env.CLAUDE_CONFIG_DIR
-    configDir = await mkdtemp(join(tmpdir(), 'cc-haha-runner-drain-'))
+    configDir = await mkdtemp(join(tmpdir(), 'wangmai-runner-drain-'))
     process.env.CLAUDE_CONFIG_DIR = configDir
   })
 

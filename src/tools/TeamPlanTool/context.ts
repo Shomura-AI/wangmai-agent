@@ -77,7 +77,7 @@ function isConfiguredProviderSuggestion(providerId: string, leaderRuntime: TeamP
   // Only the saved ids matter here; parsing the file directly keeps this tool
   // free of the server's provider modules (importing them is an init cycle).
   try {
-    const index = JSON.parse(readFileSync(join(getClaudeConfigHomeDir(), 'cc-haha', 'providers.json'), 'utf8')) as { providers?: unknown }
+    const index = JSON.parse(readFileSync(join(getClaudeConfigHomeDir(), 'wangmai', 'providers.json'), 'utf8')) as { providers?: unknown }
     return Array.isArray(index.providers) && index.providers.some(provider =>
       !!provider && typeof provider === 'object' && (provider as { id?: unknown }).id === providerId)
   } catch {

@@ -24,9 +24,9 @@ function tarEntry(archive: Buffer, wanted: string): string {
 test('desktop control failures survive recording and real diagnostic bundle export with the same connection attempt', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'remote-access-export-'))
   const previousConfig = process.env.CLAUDE_CONFIG_DIR
-  const previousToken = process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
+  const previousToken = process.env.WANGMAI_LOCAL_ACCESS_TOKEN
   process.env.CLAUDE_CONFIG_DIR = directory
-  process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = 'fixture-local-access'
+  process.env.WANGMAI_LOCAL_ACCESS_TOKEN = 'fixture-local-access'
   const settings = async (): Promise<NetworkSettings> => ({ aiRequestTimeoutMs: 30000, proxy: { mode: 'manual', url: 'http://private-proxy-user:private-proxy-pass@127.0.0.1:9999' } })
   const cause = Object.assign(new Error('connect ECONNREFUSED http://private-proxy-user:private-proxy-pass@127.0.0.1:9999 token=private-query-secret'), { code: 'ECONNREFUSED', syscall: 'connect' })
   const service = new PublicAccessServer({
@@ -38,7 +38,7 @@ test('desktop control failures survive recording and real diagnostic bundle expo
   try {
     service.enable('https://probe.example.test')
     const attemptId = '81d5559c-a61e-4871-a185-4e7aaf02c693'
-    const request = (route: string, method: string) => service.control(new Request(`http://localhost/api/public-access/${route}`, { method, headers: { Authorization: 'Bearer fixture-local-access', 'X-CC-Haha-Connection-Attempt': attemptId } }))
+    const request = (route: string, method: string) => service.control(new Request(`http://localhost/api/public-access/${route}`, { method, headers: { Authorization: 'Bearer fixture-local-access', 'X-WangMai-Connection-Attempt': attemptId } }))
     expect((await request('network', 'GET')).ok).toBe(true)
     expect(await (await request('verify', 'POST')).json()).toEqual({ ok: false })
     const bundle = await diagnosticsService.exportBundle()
@@ -56,8 +56,8 @@ test('desktop control failures survive recording and real diagnostic bundle expo
     await diagnosticsService.drainForMigration()
     if (previousConfig === undefined) delete process.env.CLAUDE_CONFIG_DIR
     else process.env.CLAUDE_CONFIG_DIR = previousConfig
-    if (previousToken === undefined) delete process.env.CC_HAHA_LOCAL_ACCESS_TOKEN
-    else process.env.CC_HAHA_LOCAL_ACCESS_TOKEN = previousToken
+    if (previousToken === undefined) delete process.env.WANGMAI_LOCAL_ACCESS_TOKEN
+    else process.env.WANGMAI_LOCAL_ACCESS_TOKEN = previousToken
     await rm(directory, { recursive: true, force: true })
   }
 })

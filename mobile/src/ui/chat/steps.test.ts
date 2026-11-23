@@ -295,7 +295,7 @@ describe('turn folding', () => {
 
 describe('step labels', () => {
   test('maps every documented tool to its verb and object', () => {
-    const workDir = '/Users/me/code/cc-haha'
+    const workDir = '/Users/me/code/wangmai'
     const label = (name: string, input: unknown) => describeStep(tool('x', name, input), workDir)
     expect(label('Read', { file_path: `${workDir}/src/app/connect.tsx` })).toEqual({
       verb: '读取',

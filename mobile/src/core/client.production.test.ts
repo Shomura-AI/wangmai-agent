@@ -20,7 +20,7 @@ test('LAN verify agrees with the production H5 handler in an isolated process', 
   try {
     const env = createSandboxedTestEnvironment(sandboxHome)
     const fakeToken = 'h5_mobile_contract_fixture_only'
-    const managedDir = join(env.CLAUDE_CONFIG_DIR, 'cc-haha')
+    const managedDir = join(env.CLAUDE_CONFIG_DIR, 'wangmai')
     mkdirSync(managedDir, { recursive: true })
     writeFileSync(
       join(managedDir, 'settings.json'),
@@ -101,7 +101,7 @@ test('native LAN WebSocket empty Origin retains real-server authentication and b
   try {
     const env = createSandboxedTestEnvironment(sandboxHome)
     const fakeToken = 'h5_mobile_socket_fixture_only'
-    const managedDir = join(env.CLAUDE_CONFIG_DIR, 'cc-haha')
+    const managedDir = join(env.CLAUDE_CONFIG_DIR, 'wangmai')
     mkdirSync(managedDir, { recursive: true })
     writeFileSync(
       join(managedDir, 'settings.json'),

@@ -47,7 +47,7 @@ export type NotificationEvent = {
   kind: 'decision' | 'completed' | 'error'
   toolName?: string
   preview: string
-  category: 'cchahaTool' | 'cchahaDecision' | 'cchahaResult'
+  category: 'wangmaiTool' | 'wangmaiDecision' | 'wangmaiResult'
   key: string
 }
 export function notificationEvents(
@@ -81,8 +81,8 @@ export function notificationEvents(
           ),
           category:
             item.toolName && !SIMPLE_TOOLS.has(item.toolName)
-              ? 'cchahaTool'
-              : 'cchahaDecision',
+              ? 'wangmaiTool'
+              : 'wangmaiDecision',
           key: `${item.id}:decision:${item.requestId ?? ''}`,
         } satisfies NotificationEvent,
       ]
@@ -98,7 +98,7 @@ export function notificationEvents(
           sessionId: item.id,
           kind: 'error',
           preview: NOTIFICATION_COPY.stalled,
-          category: 'cchahaResult',
+          category: 'wangmaiResult',
           key: `${item.id}:stalled:${item.lastProgressAt ?? ''}`,
         } satisfies NotificationEvent,
       ]
@@ -113,7 +113,7 @@ export function notificationEvents(
           sessionId: item.id,
           kind: 'error',
           preview: NOTIFICATION_COPY.failed,
-          category: 'cchahaResult',
+          category: 'wangmaiResult',
           key: `${item.id}:error`,
         } satisfies NotificationEvent,
       ]
@@ -131,7 +131,7 @@ export function notificationEvents(
           sessionId: item.id,
           kind: 'completed',
           preview: NOTIFICATION_COPY.completed,
-          category: 'cchahaResult',
+          category: 'wangmaiResult',
           key: `${item.id}:completed:${item.completedAt}`,
         } satisfies NotificationEvent,
       ]

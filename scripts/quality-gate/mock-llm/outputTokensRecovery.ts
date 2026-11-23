@@ -219,7 +219,7 @@ export async function runOutputTokensRecoveryScenario(rootDir: string, artifactD
       ], {
         cwd: workDir, stdin: 'ignore', stdout: 'pipe', stderr: 'pipe',
         env: {
-          ...sandbox.env, ...testCase.env, CALLER_DIR: workDir, CC_HAHA_SKIP_DOTENV: '1',
+          ...sandbox.env, ...testCase.env, CALLER_DIR: workDir, WANGMAI_SKIP_DOTENV: '1',
           ANTHROPIC_BASE_URL: upstream.url.origin, ANTHROPIC_API_KEY: 'mock-output-recovery-key', CI: '1',
           // Keep the legacy model whose 32K/4K boundary this scenario verifies.
           CLAUDE_CODE_DISABLE_LEGACY_MODEL_REMAP: '1',

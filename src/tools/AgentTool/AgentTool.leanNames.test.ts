@@ -68,7 +68,7 @@ function holdNextRun() {
 
 beforeEach(() => {
   previousSession = { id: getSessionId(), projectDir: getSessionProjectDir() }
-  configDir = mkdtempSync(join(tmpdir(), 'cc-haha-lean-names-'))
+  configDir = mkdtempSync(join(tmpdir(), 'wangmai-lean-names-'))
   process.env.CLAUDE_CONFIG_DIR = configDir
   process.env.TEST_ENABLE_SESSION_PERSISTENCE = '1'
   switchSession('62b92be7-2304-43f0-9dd5-7c78ad20a1ef' as SessionId, join(configDir, 'project'))

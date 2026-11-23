@@ -50,7 +50,7 @@ describe('proxy-managed user settings warning', () => {
     })).toBe(true)
   })
 
-  it('does not flag a CC Switch template when non-default cc-haha General settings are present', () => {
+  it('does not flag a CC Switch template when non-default wangmai General settings are present', () => {
     expect(hasProxyManagedOnlyUserSettings({
       $schema: 'https://json.schemastore.org/claude-code-settings.json',
       env: {
@@ -68,7 +68,7 @@ describe('proxy-managed user settings warning', () => {
     })).toBe(false)
   })
 
-  it('keeps the takeover warning active when effort and language were hydrated from cc-haha/settings.json fallback', () => {
+  it('keeps the takeover warning active when effort and language were hydrated from wangmai/settings.json fallback', () => {
     expect(hasProxyManagedOnlyUserSettings({
       $schema: 'https://json.schemastore.org/claude-code-settings.json',
       cleanupPeriodDays: 36500,
@@ -83,7 +83,7 @@ describe('proxy-managed user settings warning', () => {
       statusLine: { command: '~/.claude/ccline/ccline', padding: 0, type: 'command' },
       effort: 'xhigh',
       language: 'chinese',
-      ccHahaFallbackKeys: ['language', 'effort'],
+      wangmaiFallbackKeys: ['language', 'effort'],
       leanModeEnabled: false,
       autoUpdateEnabled: true,
       agentTeamsEnabled: true,
@@ -96,7 +96,7 @@ describe('proxy-managed user settings warning', () => {
         ANTHROPIC_API_KEY: 'PROXY_MANAGED',
       },
       language: 'chinese',
-      ccHahaFallbackKeys: ['language'],
+      wangmaiFallbackKeys: ['language'],
       alwaysThinkingEnabled: false,
     })).toBe(false)
   })

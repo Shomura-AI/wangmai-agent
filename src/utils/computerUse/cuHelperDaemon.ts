@@ -36,7 +36,7 @@ import { NativeCommandError } from '../../vendor/computer-use-mcp/nativeError.js
 const REQUEST_TIMEOUT_MS = 20_000
 const READINESS_TIMEOUT_MS = 8_000
 const SHUTDOWN_GRACE_MS = 1_000
-export const CU_HELPER_PROTOCOL_VERSION = 'CCHahaComputerUseIPC-2'
+export const CU_HELPER_PROTOCOL_VERSION = 'CCWangMaiComputerUseIPC-2'
 const CONNECTION_SCOPED_COMMANDS = new Set([
   'ping',
   'check_permissions',
@@ -233,7 +233,7 @@ function pidsRunningCuHelper(pids: number[]): Set<number> {
     if (res.status !== 0 || !res.stdout) return found
     for (const line of res.stdout.split('\n')) {
       const m = line.trim().match(/^(\d+)\s+(.*)$/)
-      if (m && m[2].includes('cc-haha-computer-use')) found.add(Number.parseInt(m[1], 10))
+      if (m && m[2].includes('wangmai-computer-use')) found.add(Number.parseInt(m[1], 10))
     }
   } catch {
     // ps unavailable → reap nothing (fail safe: never kill unverified pids).

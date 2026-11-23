@@ -150,7 +150,7 @@ describe('bundled provider presets', () => {
       baseUrl: 'https://modelflare.dev',
       apiFormat: 'anthropic',
       authStrategy: 'auth_token',
-      apiKeyUrl: 'https://modelflare.dev/sign-up?utm_source=github&utm_campaign=cchaha',
+      apiKeyUrl: 'https://modelflare.dev/sign-up?utm_source=github&utm_campaign=wangmai',
       featured: true,
       isNew: true,
       needsApiKey: true,
@@ -249,7 +249,7 @@ describe('bundled provider presets', () => {
       { prefixes: ['gemini-'], apiFormat: 'gemini', baseUrl: '/inference/go/google/v1beta' },
     ])
     expect(preset?.upstreamHeaders).toEqual({
-      'User-Agent': 'cc-haha/$VERSION',
+      'User-Agent': 'wangmai/$VERSION',
       'x-opencode-session': '$SESSION_ID',
     })
     expect(selectableProviderPresets(BUNDLED_PROVIDER_PRESETS).map((candidate) => candidate.id))

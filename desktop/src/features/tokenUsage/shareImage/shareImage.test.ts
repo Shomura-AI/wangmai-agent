@@ -33,7 +33,7 @@ const models = [
 
 const DATA: ShareImageData = {
   displayName: 'Ada Lovelace',
-  linkText: 'github.com/NanmiCoder/cc-haha',
+  linkText: 'github.com/wangmai-ai/wangmai-agent',
   dateLabel: '2026.10.17',
   caption: '累计 Token',
   totalValue: '241',
@@ -109,7 +109,7 @@ describe('buildShareLayout', () => {
   it('leaves out what the user turned off', () => {
     const bare = buildShareLayout(DATA, THEME, { ...OPTIONS, showIdentity: false, showModels: false, showLink: false }, measure)
     const out = texts(bare.ops)
-    expect(out).toContain('cc-haha') // the brand mark stays; the name line goes
+    expect(out).toContain('wangmai') // the brand mark stays; the name line goes
     expect(out).not.toContain(DATA.displayName)
     expect(out).not.toContain(DATA.summaryLine)
     expect(out).not.toContain('DeepSeek V4 Flash')
@@ -156,7 +156,7 @@ describe('buildShareImageData', () => {
     totalTokens: 24_100_000_000,
     locale,
     t: (key, params) => translate(locale, key, params),
-    profile: { displayName: 'Ada', subtitle: 'github.com/NanmiCoder/cc-haha' },
+    profile: { displayName: 'Ada', subtitle: 'github.com/wangmai-ai/wangmai-agent' },
     now: new Date('2026-10-17T12:00:00'),
   })
 

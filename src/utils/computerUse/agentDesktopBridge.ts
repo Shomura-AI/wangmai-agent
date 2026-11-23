@@ -224,7 +224,7 @@ export function createAgentDesktopBackend(provided: AgentDesktopBackendOptions =
     unregisterShutdown ??= (options.registerCleanup ?? registerCleanup)(shutdown, { timeoutMs: 4_500 })
     const suppliedName = args.some(arg => arg === '--name' || arg.startsWith('--name='))
     const startArgs = ['session', 'start', ...args]
-    if (!suppliedName) startArgs.push('--name', `cc-haha-${productSession}`.slice(0, 128))
+    if (!suppliedName) startArgs.push('--name', `wangmai-${productSession}`.slice(0, 128))
     if (args.includes('--cursor') && !args.includes('--multi-agent')) startArgs.push('--multi-agent')
     if (args.includes('--multi-agent') && !args.includes('--cursor')) startArgs.push('--cursor')
     const result = await rawCommand(options, binaryPath, startArgs, signal)

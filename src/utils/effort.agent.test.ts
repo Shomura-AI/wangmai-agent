@@ -123,12 +123,12 @@ describe('agent effort values', () => {
   })
 
   test('preserves saved Grok effort while discovery is cold without overriding known capabilities', () => {
-    const originalProvider = process.env.CC_HAHA_GROK_OAUTH_PROVIDER
+    const originalProvider = process.env.WANGMAI_GROK_OAUTH_PROVIDER
     const originalEffort = process.env.CLAUDE_CODE_EFFORT_LEVEL
     delete process.env.CLAUDE_CODE_EFFORT_LEVEL
     setGrokRuntimeModelCatalog(GROK_MODEL_CATALOG)
     try {
-      process.env.CC_HAHA_GROK_OAUTH_PROVIDER = '1'
+      process.env.WANGMAI_GROK_OAUTH_PROVIDER = '1'
       expect(modelSupportsEffort('grok-future-release')).toBe(true)
       expect(resolveAppliedEffort('grok-future-release', 'xhigh')).toBe('xhigh')
       expect(resolveAppliedEffort('grok-future-release', 'max')).toBe('max')
@@ -144,13 +144,13 @@ describe('agent effort values', () => {
       expect(modelSupportsMaxEffort('grok-future-release')).toBe(false)
 
       setGrokRuntimeModelCatalog(GROK_MODEL_CATALOG)
-      process.env.CC_HAHA_GROK_OAUTH_PROVIDER = '0'
+      process.env.WANGMAI_GROK_OAUTH_PROVIDER = '0'
       expect(resolveAppliedEffort('grok-future-release', 'xhigh')).toBe('high')
       expect(resolveAppliedEffort('grok-future-release', 'max')).toBe('high')
     } finally {
       setGrokRuntimeModelCatalog(GROK_MODEL_CATALOG)
-      if (originalProvider === undefined) delete process.env.CC_HAHA_GROK_OAUTH_PROVIDER
-      else process.env.CC_HAHA_GROK_OAUTH_PROVIDER = originalProvider
+      if (originalProvider === undefined) delete process.env.WANGMAI_GROK_OAUTH_PROVIDER
+      else process.env.WANGMAI_GROK_OAUTH_PROVIDER = originalProvider
       if (originalEffort === undefined) delete process.env.CLAUDE_CODE_EFFORT_LEVEL
       else process.env.CLAUDE_CODE_EFFORT_LEVEL = originalEffort
     }

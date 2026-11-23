@@ -300,7 +300,7 @@ function candidateById(candidates: CcSwitchCandidate[], sourceId: string): CcSwi
 }
 
 async function readProvidersConfig(): Promise<Record<string, unknown>> {
-  const raw = await fs.readFile(path.join(tmpDir, 'cc-haha', 'providers.json'), 'utf-8')
+  const raw = await fs.readFile(path.join(tmpDir, 'wangmai', 'providers.json'), 'utf-8')
   return JSON.parse(raw) as Record<string, unknown>
 }
 
@@ -344,7 +344,7 @@ function usageScriptFixture(overrides?: Partial<ProviderUsageScript>): ProviderU
     accessToken: USAGE_SCRIPT_TOKEN,
     userId: '42',
     autoQueryInterval: 15,
-    // A cc-switch template field cc-haha does not model.
+    // A cc-switch template field wangmai does not model.
     codingPlanProvider: 'kimi',
     ...overrides,
   }
@@ -1427,7 +1427,7 @@ describe('cc-switch candidate mapping', () => {
   })
 
   test('refuses a provider whose base URL is a full endpoint', async () => {
-    // cc-haha always appends /v1/messages etc., so importing one of these would
+    // wangmai always appends /v1/messages etc., so importing one of these would
     // produce an entry that 404s on every request.
     await writeFixtureDb([{
       id: 'full',

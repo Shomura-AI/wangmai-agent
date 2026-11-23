@@ -9,8 +9,8 @@ import {
   type Storage,
 } from './storage'
 
-const registryKey = 'cc-haha.hosts'
-const credentialKey = (id: string) => `cc-haha.host.${id}`
+const registryKey = 'wangmai.hosts'
+const credentialKey = (id: string) => `wangmai.host.${id}`
 const hostA: Host = {
   id: 'host-a',
   name: '电脑 A',
@@ -575,7 +575,7 @@ describe('a remote computer moving to a new public address', () => {
 })
 
 describe('local-network hints for finding a moved computer', () => {
-  const locatorsKey = 'cc-haha.host-locators'
+  const locatorsKey = 'wangmai.host-locators'
   const record = { port: 3456, addresses: ['192.168.1.8'], updatedAt: 1_700_000_000_000 }
 
   test('missing, corrupt, unversioned or newer data reads as empty', () => {

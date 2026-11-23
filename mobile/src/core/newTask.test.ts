@@ -55,8 +55,8 @@ test('typed directories join the recent list once and keep a readable name', () 
 })
 
 test('home directories are abbreviated for display only', () => {
-  expect(displayPath('/Users/me/code/cc-haha/mobile')).toBe(
-    '~/code/cc-haha/mobile'
+  expect(displayPath('/Users/me/code/wangmai/mobile')).toBe(
+    '~/code/wangmai/mobile'
   )
   expect(displayPath('/home/dev')).toBe('~')
   expect(displayPath('C:\\Users\\me\\site')).toBe('~\\site')

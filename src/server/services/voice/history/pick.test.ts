@@ -12,7 +12,7 @@ const candidates: HistoryCandidate[] = [
   { term: 'claude', sessions: 120, count: 400 },
   { term: 'Codex', sessions: 90, count: 300 },
   { term: 'deepseek', sessions: 40, count: 80 },
-  { term: 'cc-haha', sessions: 30, count: 50 },
+  { term: 'wangmai', sessions: 30, count: 50 },
   { term: 'Go', sessions: 12, count: 20 },
   { term: 'dont', sessions: 9, count: 12 },
   { term: 'review', sessions: 200, count: 900 },
@@ -33,7 +33,7 @@ describe('parsePickResponse', () => {
   test('keeps candidates only, in the model\'s casing, once across groups, in category order', () => {
     const answer = JSON.stringify({
       groups: [
-        { category: 'tool', terms: [{ term: 'cc-haha', doubtful: false }, { term: 'Bun', doubtful: false }] },
+        { category: 'tool', terms: [{ term: 'wangmai', doubtful: false }, { term: 'Bun', doubtful: false }] },
         { category: 'model', terms: [{ term: 'Claude', doubtful: false }, { term: 'DeepSeek', doubtful: false }] },
         { category: 'project', terms: [{ term: 'CLAUDE', doubtful: false }, 'Codex'] },
         { category: 'weird', terms: [{ term: 'Go' }, { term: 'Claude Code', doubtful: false }, { nope: true }] },
@@ -49,7 +49,7 @@ describe('parsePickResponse', () => {
           { term: 'DeepSeek', sessions: 40, doubtful: false, inVocabulary: false },
         ],
       },
-      { category: 'tool', terms: [{ term: 'cc-haha', sessions: 30, doubtful: false, inVocabulary: false }] },
+      { category: 'tool', terms: [{ term: 'wangmai', sessions: 30, doubtful: false, inVocabulary: false }] },
       // Unknown category → other; "Go" is short mixed case → doubtful even though the model said nothing.
       { category: 'other', terms: [{ term: 'Go', sessions: 12, doubtful: true, inVocabulary: false }] },
     ])

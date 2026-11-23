@@ -1,14 +1,14 @@
 import { afterEach, describe, expect, test } from 'bun:test'
 import { callSessionBridge, isSessionBridgeAvailable } from './bridge.js'
 
-const keys = ['CC_HAHA_DESKTOP_SERVER_URL', 'CC_HAHA_SESSION_COLLABORATION_TOKEN', 'CC_HAHA_SESSION_ID'] as const
+const keys = ['WANGMAI_DESKTOP_SERVER_URL', 'WANGMAI_SESSION_COLLABORATION_TOKEN', 'WANGMAI_SESSION_ID'] as const
 const original = Object.fromEntries(keys.map(key => [key, process.env[key]]))
 afterEach(() => { for (const key of keys) { if (original[key] === undefined) delete process.env[key]; else process.env[key] = original[key] } })
 
 function configure(url: string) {
-  process.env.CC_HAHA_DESKTOP_SERVER_URL = url
-  process.env.CC_HAHA_SESSION_COLLABORATION_TOKEN = 'fixture-token'
-  process.env.CC_HAHA_SESSION_ID = 'fixture-session'
+  process.env.WANGMAI_DESKTOP_SERVER_URL = url
+  process.env.WANGMAI_SESSION_COLLABORATION_TOKEN = 'fixture-token'
+  process.env.WANGMAI_SESSION_ID = 'fixture-session'
 }
 
 describe('desktop session bridge', () => {

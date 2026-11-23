@@ -2,10 +2,10 @@ import Svg, { Path } from 'react-native-svg'
 import { useColors } from './kit'
 
 /**
- * cc-haha 的 CC 标志（取自 docs/images/logo-horizontal.svg，去掉底色）。
+ * wangmai 的 CC 标志（取自 docs/images/logo-horizontal.svg，去掉底色）。
  * 笔画跟随文字色，所以深色模式自动变浅；陶土色只出现在这里。
  */
-export function Logo({ size = 34, label = 'cc-haha 标志' }: { size?: number; label?: string }) {
+export function Logo({ size = 34, label = 'wangmai 标志' }: { size?: number; label?: string }) {
   const colors = useColors()
   // viewBox 只裁出标志本身，宽高比 524:434。
   const height = (size * 434) / 524

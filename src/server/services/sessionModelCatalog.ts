@@ -1,10 +1,10 @@
 import type { SessionRuntimeSelection, SessionModelOption } from '../../shared/sessionDelegation.js'
 import { resolveModelReasoningProfile, getModelReasoningCapabilityOverride } from '../../shared/modelReasoning.js'
 import { ProviderService } from './providerService.js'
-import { hahaOAuthService } from './hahaOAuthService.js'
-import { hahaOpenAIOAuthService } from './hahaOpenAIOAuthService.js'
-import { hahaGrokOAuthService } from './hahaGrokOAuthService.js'
-import { hahaDeepSeekOAuthService } from './hahaDeepSeekOAuthService.js'
+import { wangmaiOAuthService } from './wangmaiOAuthService.js'
+import { wangmaiOpenAIOAuthService } from './wangmaiOpenAIOAuthService.js'
+import { wangmaiGrokOAuthService } from './wangmaiGrokOAuthService.js'
+import { wangmaiDeepSeekOAuthService } from './wangmaiDeepSeekOAuthService.js'
 import { CLAUDE_OFFICIAL_DEFAULT_MODELS, normalizeExplicitClaudeOfficialModelId } from './claudeOfficialRuntime.js'
 import { OPENAI_CODEX_MODEL_CATALOG, OPENAI_DEFAULT_MAIN_MODEL } from '../../services/openaiAuth/models.js'
 import { GROK_MODEL_CATALOG, GROK_DEFAULT_MAIN_MODEL } from '../../services/grokAuth/models.js'
@@ -20,8 +20,8 @@ const slots = ['main', 'fable', 'opus', 'sonnet', 'haiku'] as const
 /** Only local account presence is inspected; catalog discovery never refreshes tokens or calls a provider. */
 export async function listSessionModels(): Promise<SessionModelOption[]> {
   const [index, claude, openai, grok, deepseek] = await Promise.all([
-    providers.listProviders(), hahaOAuthService.loadTokens(), hahaOpenAIOAuthService.loadTokens(),
-    hahaGrokOAuthService.loadTokens(), hahaDeepSeekOAuthService.loadTokens(),
+    providers.listProviders(), wangmaiOAuthService.loadTokens(), wangmaiOpenAIOAuthService.loadTokens(),
+    wangmaiGrokOAuthService.loadTokens(), wangmaiDeepSeekOAuthService.loadTokens(),
   ])
   // Magpie's catalog as last fetched (settings, model picker or a session start), never refetched here.
   const catalog = buildSessionModelCatalog(index.providers, { claude: !!claude, openai: !!openai, grok: !!grok, deepseek: !!deepseek }, index.activeId, getCachedMagpieModels())

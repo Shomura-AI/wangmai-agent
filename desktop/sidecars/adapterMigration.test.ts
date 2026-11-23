@@ -7,13 +7,13 @@ import path from 'node:path'
 import { expect, it } from 'vitest'
 
 it('the real adapter launcher confirms inactivity when migration races credential gating', async () => {
-  const root = await mkdtemp(path.join(tmpdir(), 'haha-adapter-inactive-'))
+  const root = await mkdtemp(path.join(tmpdir(), 'wangmai-adapter-inactive-'))
   const data = path.join(root, 'data')
   await mkdir(data)
   const repo = path.resolve(import.meta.dirname, '../..')
   // Run from the fixture with env files off: Bun would otherwise load a `.env`
   // from the caller's checkout, and adapter credentials there change the gate.
-  const child = spawn('bun', ['--no-env-file', path.join(repo, 'desktop/sidecars/claude-sidecar.ts'), 'adapters', '--app-root', repo, '--feishu', '--telegram', '--wechat', '--dingtalk', '--whatsapp', '--wecom', '--qq', '--slack'], {
+  const child = spawn('bun', ['--no-env-file', path.join(repo, 'desktop/sidecars/wangmai-sidecar.ts'), 'adapters', '--app-root', repo, '--feishu', '--telegram', '--wechat', '--dingtalk', '--whatsapp', '--wecom', '--qq', '--slack'], {
     cwd: root,
     env: {
       PATH: process.env.PATH,
@@ -24,8 +24,8 @@ it('the real adapter launcher confirms inactivity when migration races credentia
       TMP: root,
       TEMP: root,
       CLAUDE_CONFIG_DIR: data,
-      CC_HAHA_MIGRATION_CONTROL: '1',
-      CC_HAHA_LOCAL_ACCESS_TOKEN: 'isolated-migration-token',
+      WANGMAI_MIGRATION_CONTROL: '1',
+      WANGMAI_LOCAL_ACCESS_TOKEN: 'isolated-migration-token',
     },
     stdio: ['pipe', 'pipe', 'pipe'],
   })

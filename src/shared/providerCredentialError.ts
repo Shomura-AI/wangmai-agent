@@ -1,6 +1,6 @@
 // Only the local provider proxy sets this after an upstream explicitly rejects
 // the saved key. The CLI checks the request route before trusting it.
-export const INVALID_PROVIDER_KEY_HEADER = 'x-cc-haha-invalid-provider-key'
+export const INVALID_PROVIDER_KEY_HEADER = 'x-wangmai-invalid-provider-key'
 
 export function isInvalidSavedProviderKey(status: number, payload: unknown): boolean {
   if (status !== 401 || !payload || typeof payload !== 'object' || Array.isArray(payload)) return false

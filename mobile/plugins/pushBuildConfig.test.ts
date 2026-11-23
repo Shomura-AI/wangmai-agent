@@ -10,12 +10,12 @@ afterEach(() => {
     rmSync(directory, { recursive: true, force: true })
 })
 const config = {
-  name: 'cc-haha',
-  slug: 'cc-haha-mobile',
-  android: { package: 'app.cchaha.mobile', permissions: ['CAMERA'] },
+  name: 'wangmai',
+  slug: 'wangmai-mobile',
+  android: { package: 'app.wangmai.mobile', permissions: ['CAMERA'] },
 }
 function fixture(value: unknown) {
-  const directory = mkdtempSync(join(tmpdir(), 'cc-haha-fcm-config-'))
+  const directory = mkdtempSync(join(tmpdir(), 'wangmai-fcm-config-'))
   directories.push(directory)
   const file = join(directory, 'google-services.json')
   writeFileSync(file, JSON.stringify(value))

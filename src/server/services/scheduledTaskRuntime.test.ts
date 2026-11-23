@@ -16,11 +16,11 @@ let service: CronService
 let scheduler: CronScheduler
 let dispose: (() => void) | undefined
 const previousConfig = process.env.CLAUDE_CONFIG_DIR
-const previousIndex = process.env.CC_HAHA_LOCAL_INDEX
+const previousIndex = process.env.WANGMAI_LOCAL_INDEX
 beforeEach(async () => {
   directory = await fs.mkdtemp(path.join(os.tmpdir(), 'scheduled-session-test-'))
   process.env.CLAUDE_CONFIG_DIR = directory
-  process.env.CC_HAHA_LOCAL_INDEX = 'off'
+  process.env.WANGMAI_LOCAL_INDEX = 'off'
   service = new CronService()
   scheduler = new CronScheduler(service)
 })
@@ -32,8 +32,8 @@ afterEach(async () => {
   resetPersistentStorageMigrationsForTests()
   if (previousConfig === undefined) delete process.env.CLAUDE_CONFIG_DIR
   else process.env.CLAUDE_CONFIG_DIR = previousConfig
-  if (previousIndex === undefined) delete process.env.CC_HAHA_LOCAL_INDEX
-  else process.env.CC_HAHA_LOCAL_INDEX = previousIndex
+  if (previousIndex === undefined) delete process.env.WANGMAI_LOCAL_INDEX
+  else process.env.WANGMAI_LOCAL_INDEX = previousIndex
   await fs.rm(directory, { recursive: true, force: true })
 })
 function install(executor: ScheduledSessionTaskExecutor) { dispose = setScheduledSessionTaskExecutor(executor) }

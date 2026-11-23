@@ -32,7 +32,7 @@ bun install
 HTTPS_PROXY=http://127.0.0.1:7890 bun run prepare:cloudflared
 ```
 
-请将示例地址改为自己的 HTTP 代理地址。如果当前网络无法下载，可以从报错中的官方地址下载对应版本和平台的文件，再用 `CC_HAHA_CLOUDFLARED_ARCHIVE=/绝对路径/下载文件 bun run prepare:cloudflared` 导入。离线导入仍会校验固定的 SHA-256，不接受其他版本或未校验的可执行文件。
+请将示例地址改为自己的 HTTP 代理地址。如果当前网络无法下载，可以从报错中的官方地址下载对应版本和平台的文件，再用 `WANGMAI_CLOUDFLARED_ARCHIVE=/绝对路径/下载文件 bun run prepare:cloudflared` 导入。离线导入仍会校验固定的 SHA-256，不接受其他版本或未校验的可执行文件。
 
 如果改动涉及 `adapters/`，或者要运行 `check:adapters` / `check:native`，安装 adapter 依赖：
 
@@ -337,7 +337,7 @@ Release workflow 先在各平台 matrix 里生成 `latest*.yml`，把同名 meta
 
 ### 产物命名
 
-文件名面向下载的用户：`Claude-Code-Haha-<版本>-macOS-Apple-Silicon.dmg` / `-macOS-Intel.dmg`、`-Windows-x64-Setup.exe` / `-Windows-arm64-Setup.exe`、`-Linux-x64` / `-Linux-arm64` 加 `.AppImage`、`.deb`、`.rpm`。Mac 自动更新用的 zip 叫 `-macOS-arm64-update.zip` / `-macOS-x64-update.zip`。默认名写在 `desktop/package.json` 的 `mac`、`dmg`、`nsis`、`linux` 的 `artifactName` 里；dmg 的芯片名和 Linux 统一的 `x64` 由 release matrix 的 `builder_args` 逐行覆盖，因为 electron-builder 的 `${arch}` 在 Linux 上会按格式变成 `x86_64`、`amd64`、`aarch64`。这些覆盖值必须用单引号包住，否则 shell 会先展开 `${version}`。
+文件名面向下载的用户：`WangMai-Agent-<版本>-macOS-Apple-Silicon.dmg` / `-macOS-Intel.dmg`、`-Windows-x64-Setup.exe` / `-Windows-arm64-Setup.exe`、`-Linux-x64` / `-Linux-arm64` 加 `.AppImage`、`.deb`、`.rpm`。Mac 自动更新用的 zip 叫 `-macOS-arm64-update.zip` / `-macOS-x64-update.zip`。默认名写在 `desktop/package.json` 的 `mac`、`dmg`、`nsis`、`linux` 的 `artifactName` 里；dmg 的芯片名和 Linux 统一的 `x64` 由 release matrix 的 `builder_args` 逐行覆盖，因为 electron-builder 的 `${arch}` 在 Linux 上会按格式变成 `x86_64`、`amd64`、`aarch64`。这些覆盖值必须用单引号包住，否则 shell 会先展开 `${version}`。
 
 改名时有三条硬约束，`scripts/pr/release-workflow.test.ts` 会按 electron-updater 的挑包逻辑逐一验证：
 
@@ -367,7 +367,7 @@ Windows 签名走 SignPath，审批通过前默认关闭：tag 推送、手动�
 - 设为 `true`：要求 `SIGNPATH_*` 变量和 `SIGNPATH_API_TOKEN` 齐全，非草稿发布缺配置时拒绝发布。
 - 手动运行 `Release Desktop` 时，`windows_signing` 输入可以临时改写：`auto` 跟随变量，`unsigned` 本次不签，`signed` 本次一定签（配置不全直接失败），用来在打开变量前先拿草稿试签。
 
-打开签名前，先把 SignPath 后台的 installer artifact configuration 改成和 `.github/signpath/windows-installer.xml` 一致（匹配 `Claude-Code-Haha-*-Windows-*-Setup.exe`），再用草稿试签一次。只要还可能发布未签名的 Windows 包，就不要在 `desktop/package.json` 里加 `publisherName` 或 `verifyUpdateCodeSignature`：加了之后，用该配置构建的客户端会拒收之后所有未签名的更新，而且无法自愈。
+打开签名前，先把 SignPath 后台的 installer artifact configuration 改成和 `.github/signpath/windows-installer.xml` 一致（匹配 `WangMai-Agent-*-Windows-*-Setup.exe`），再用草稿试签一次。只要还可能发布未签名的 Windows 包，就不要在 `desktop/package.json` 里加 `publisherName` 或 `verifyUpdateCodeSignature`：加了之后，用该配置构建的客户端会拒收之后所有未签名的更新，而且无法自愈。
 
 application artifact configuration 也须与 `.github/signpath/windows-application.xml` 同步：除主程序与 sidecar，还包含从源码构建的 `agent-desktop.exe`。签名开启时，工作流会送签、恢复并验证这三个可执行文件后再制作安装包。添加原生运行组件后，应先同步 SignPath 后台配置并进行草稿试签；仅签安装包不会给内部的运行组件补签。
 

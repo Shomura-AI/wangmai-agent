@@ -122,9 +122,9 @@ describe('ImageGen backend', () => {
       const originalRoot = join(outputDir, 'absent-original')
       const uploadDir = join(outputDir, 'uploads', getSessionId())
       await mkdir(uploadDir, { recursive: true })
-      await mkdir(join(outputDir, 'cc-haha'))
+      await mkdir(join(outputDir, 'wangmai'))
       await writeFile(join(uploadDir, 'source.png'), PNG_BYTES)
-      await writeFile(join(outputDir, 'cc-haha/storage-relocations.json'), JSON.stringify({ version: 1, previousRoots: [originalRoot] }))
+      await writeFile(join(outputDir, 'wangmai/storage-relocations.json'), JSON.stringify({ version: 1, previousRoots: [originalRoot] }))
       const result = await generateImages({ prompt: 'edit my image', count: 1, referenced_image_paths: [join(originalRoot, 'uploads', getSessionId(), 'source.png')] }, customConfig, {
         outputDir,
         fetchImpl: async () => Response.json({ data: [{ b64_json: PNG_BYTES.toString('base64') }] }),

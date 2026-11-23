@@ -588,7 +588,7 @@ class TestCursorBadge(unittest.TestCase):
     def test_overlay_and_helper_share_a_session_input_tag(self):
         overlay = CURSOR_BADGE.read_text(encoding="utf-8")
         helper = _win_source()
-        env_name = "CC_HAHA_COMPUTER_USE_INPUT_TAG"
+        env_name = "WANGMAI_COMPUTER_USE_INPUT_TAG"
         self.assertIn(env_name, overlay)
         self.assertIn(env_name, helper)
         self.assertIn("dwExtraInfo", overlay)
@@ -696,10 +696,10 @@ class TestDesktopHostIdentity(unittest.TestCase):
     def test_packaged_exe_maps_to_the_host_identity_sent_by_desktop(self):
         source = _win_source()
         self.assertIn(
-            'DESKTOP_HOST_BUNDLE_ID = "com.claude-code-haha.desktop"',
+            'DESKTOP_HOST_BUNDLE_ID = "com.wangmai.agent"',
             source,
         )
-        self.assertIn('stem.casefold() == "claude code haha"', source)
+        self.assertIn('stem.casefold() == "wangmai-desktop"', source)
         self.assertIn('"bundleId": _windows_bundle_id(exe_path)', source)
 
 

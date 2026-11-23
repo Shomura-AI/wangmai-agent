@@ -37,16 +37,16 @@ export const VALID_PERMISSION_MODES = [
 
 export type PermissionMode = (typeof VALID_PERMISSION_MODES)[number]
 
-const CC_HAHA_FALLBACK_KEYS = Symbol('ccHahaFallbackKeys')
+const WANGMAI_FALLBACK_KEYS = Symbol('wangmaiFallbackKeys')
 
-export type CcHahaFallbackKey = 'effort' | 'language'
+export type WangMaiFallbackKey = 'effort' | 'language'
 
-export function getCcHahaFallbackKeys(
+export function getWangMaiFallbackKeys(
   settings: Record<string, unknown> | null | undefined,
-): CcHahaFallbackKey[] {
+): WangMaiFallbackKey[] {
   if (!settings) return []
-  const raw = (settings as Record<symbol, unknown>)[CC_HAHA_FALLBACK_KEYS]
-  return Array.isArray(raw) ? raw.filter((key): key is CcHahaFallbackKey => key === 'effort' || key === 'language') : []
+  const raw = (settings as Record<symbol, unknown>)[WANGMAI_FALLBACK_KEYS]
+  return Array.isArray(raw) ? raw.filter((key): key is WangMaiFallbackKey => key === 'effort' || key === 'language') : []
 }
 
 export function isValidPermissionMode(mode: unknown): mode is PermissionMode {
@@ -139,7 +139,7 @@ export class SettingsService {
       return user
     }
 
-    const fallbackKeys: CcHahaFallbackKey[] = []
+    const fallbackKeys: WangMaiFallbackKey[] = []
     if (fallbackLanguage !== undefined) fallbackKeys.push('language')
     if (fallbackEffort !== undefined) fallbackKeys.push('effort')
 
@@ -148,7 +148,7 @@ export class SettingsService {
       ...(fallbackLanguage !== undefined ? { language: fallbackLanguage } : {}),
       ...(fallbackEffort !== undefined ? { effort: fallbackEffort } : {}),
     }
-    Object.defineProperty(hydrated, CC_HAHA_FALLBACK_KEYS, {
+    Object.defineProperty(hydrated, WANGMAI_FALLBACK_KEYS, {
       value: fallbackKeys,
       enumerable: false,
     })
@@ -194,7 +194,7 @@ export class SettingsService {
   async getAgentTeamsEnabled(): Promise<boolean> {
     const user = await this.getUserSettings()
     if (typeof user.agentTeamsEnabled === 'boolean') return user.agentTeamsEnabled
-    const managed = await this.readJsonFile(path.join(this.getConfigDir(), 'cc-haha', 'settings.json'))
+    const managed = await this.readJsonFile(path.join(this.getConfigDir(), 'wangmai', 'settings.json'))
     const inherited = await getProcessEnvWithTerminalShellEnvironment()
     const key = 'CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS'
     const legacyValue = normalizeJsonObject(managed.env)?.[key] ??
@@ -309,7 +309,7 @@ export class SettingsService {
     await this.withWriteLock(filePath, async () => {
       const current = await this.readJsonFile(filePath)
       const merged = Object.assign({}, current, settings)
-      delete merged.ccHahaFallbackKeys
+      delete merged.wangmaiFallbackKeys
 
       if (
         Object.hasOwn(settings, 'language') &&
@@ -408,7 +408,7 @@ export class SettingsService {
       (nextDefaultEffort === undefined || nextDefaultEffort === null) &&
       (nextLanguage === undefined || nextLanguage === null)
     if (onlyClearing) {
-      const managedPath = path.join(this.getConfigDir(), 'cc-haha', 'settings.json')
+      const managedPath = path.join(this.getConfigDir(), 'wangmai', 'settings.json')
       const exists = await fs.access(managedPath).then(() => true, () => false)
       if (!exists) {
         return

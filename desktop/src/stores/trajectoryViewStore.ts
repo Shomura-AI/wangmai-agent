@@ -3,7 +3,7 @@ import type { ChatNavigationTarget } from '../lib/trajectory/chatTarget'
 
 export type SessionViewMode = 'chat' | 'trajectory'
 
-export const TRAJECTORY_DETAIL_WIDTH_KEY = 'cc-haha-trajectory-detail-width'
+export const TRAJECTORY_DETAIL_WIDTH_KEY = 'wangmai-trajectory-detail-width'
 export const TRAJECTORY_DETAIL_WIDTH_DEFAULT = 440
 export const TRAJECTORY_DETAIL_WIDTH_MIN = 320
 export const TRAJECTORY_DETAIL_WIDTH_MAX = 720
