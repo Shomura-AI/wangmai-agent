@@ -18,7 +18,7 @@
     "androidPackage": "app.wangmai.mobile",
     "repoOwner": "Shomura-AI",
     "repoName": "wangmai-agent",
-    "company": "网脉科技",
+    "company": "网脉/青盟科技",
     "email": "dev@wangmai.example.com",
     "updaterEndpoint": "https://github.com/Shomura-AI/wangmai-agent/releases/latest/download/latest.json",
     "packageDescription": "网脉智能体 · 本地优先的跨平台 AI Agent 桌面工作台"

@@ -55,7 +55,7 @@ const LANGUAGE_NEUTRAL: Record<string, string[]> = {
   'components/search/GlobalSearchModal.tsx': ['esc'], // the key, as printed on its keycap
   'pages/MemorySettings.tsx': ['Markdown'], // file format
   'pages/settings/AboutSettings.tsx': [ // product, repository and author; example proxy
-    '网脉智能体', 'GitHub', 'Shomura-AI/wangmai-agent', '程序员阿江-Relakkes', 'http://127.0.0.1:7890',
+    '网脉智能体', 'GitHub', 'Shomura-AI/wangmai-agent', '网脉/青盟科技', 'http://127.0.0.1:7890',
   ],
   'pages/settings/ChatAppearanceSettings.tsx': ['px', '${}px'], // unit
   'pages/settings/GeneralSettings.tsx': ['http://127.0.0.1:7890', 'tvly-...'], // example proxy, key format
